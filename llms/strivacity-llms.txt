@@ -1,0 +1,802 @@
+# Strivacity Documentation Documentation
+
+> Product and API documentation for Strivacity, a platform that lets you add secure login and identity management (CIAM) capabilities to your customer-facing applications without tying up an army of developers.
+
+Append .md to any documentation page URL to get its markdown version.
+
+## Guides
+- [Overview](https://docs.strivacity.com/docs/overview.md)
+- [Architecture](https://docs.strivacity.com/docs/architecture.md)
+- [Product concepts](https://docs.strivacity.com/docs/product-concepts.md): Let's get straight on the basics of Strivacity before digging deeper
+- [No-code components](https://docs.strivacity.com/docs/no-code-components.md)
+- [Policy-driven configuration](https://docs.strivacity.com/docs/policy-driven-configuration.md)
+- [Extensibility platform](https://docs.strivacity.com/docs/extensibility-platform.md)
+- [APIs and SDKs](https://docs.strivacity.com/docs/apis-and-sdks.md)
+- [Product components](https://docs.strivacity.com/docs/product-components.md): Gain an understanding of Strivacity's infrastructure services, user interfaces, and APIs.
+- [Security, privacy, and compliance](https://docs.strivacity.com/docs/our-security-and-privacy-commitment.md): Learn more about the security and privacy efforts that Strivacity makes to ensure that we can deliver on our service commitment to our customers.
+- [Brute-force protections](https://docs.strivacity.com/docs/brute-force-protections.md)
+- [Rate limiting](https://docs.strivacity.com/docs/rate-limiting.md)
+- [Bring and Hold Your Own Key](https://docs.strivacity.com/docs/bring-your-own-key-byok-and-hold-your-own-key-hyok.md)
+- [Accessibility](https://docs.strivacity.com/docs/accessibility.md)
+- [Global deployment scenarios](https://docs.strivacity.com/docs/global-deployment-approaches.md)
+- [Same-country hosting model](https://docs.strivacity.com/docs/same-country-hosting-model.md)
+- [Localized application hosting model](https://docs.strivacity.com/docs/localized-application-hosting-model.md)
+- [Automated regional routing model](https://docs.strivacity.com/docs/global-catalog-authentication.md)
+- [Setting up your instance](https://docs.strivacity.com/docs/setting-up-your-instance.md)
+- [Creating your first application](https://docs.strivacity.com/docs/creating-your-first-application.md): Every configuration that goes into your customer experience is brought to your customers by applications. In the most practical sense, an "Application" is a collection of policies that define the sign-in, sign-up, and self-service journey for a protected resource.
+- [Customer journeys](https://docs.strivacity.com/docs/customer-journeys.md)
+- [Login journey](https://docs.strivacity.com/docs/login-journey.md)
+- [Identify step](https://docs.strivacity.com/docs/identify-step.md)
+- [Organization identification](https://docs.strivacity.com/docs/organization-identifier.md)
+- [Local identity](https://docs.strivacity.com/docs/local-identity.md)
+- [External identity](https://docs.strivacity.com/docs/external-identity.md)
+- [Account linking](https://docs.strivacity.com/docs/account-linking-screen.md)
+- [Authenticate step](https://docs.strivacity.com/docs/authenticate-step.md)
+- [OTP MFA](https://docs.strivacity.com/docs/login-journey-otp-mfa.md)
+- [Push notification MFA ](https://docs.strivacity.com/docs/login-journey-push-mfa.md)
+- [Magic link MFA](https://docs.strivacity.com/docs/login-journey-magic-link-mfa.md)
+- [Security keys](https://docs.strivacity.com/docs/login-journey-security-keys.md)
+- [Passkeys](https://docs.strivacity.com/docs/passkeys-authenticate-step.md)
+- [Progressive profiling and MFA enrollment step](https://docs.strivacity.com/docs/progressive-profiling-and-mfa-enrollment-step.md)
+- [OIDC token or SAML2 response generation step](https://docs.strivacity.com/docs/oidc-token-or-saml2-response-generation-step.md)
+- [Redirect step](https://docs.strivacity.com/docs/login-journey-redirect-step.md)
+- [Registration journey](https://docs.strivacity.com/docs/registration-journey.md)
+- [Organization step](https://docs.strivacity.com/docs/organization-step.md)
+- [Account registration step](https://docs.strivacity.com/docs/account-registration-step.md)
+- [Identity verification step](https://docs.strivacity.com/docs/identity-verification-step.md)
+- [Physical document verification](https://docs.strivacity.com/docs/physical-document-verification.md)
+- [Knowledge-based verification](https://docs.strivacity.com/docs/registration-journey-knowledge-based-verification.md)
+- [MFA enrollment step](https://docs.strivacity.com/docs/mfa-enrollment-step.md)
+- [OTP MFA](https://docs.strivacity.com/docs/registration-journey-otp-mfa.md)
+- [Magic link MFA](https://docs.strivacity.com/docs/registration-journey-magic-link-mfa.md)
+- [Security keys](https://docs.strivacity.com/docs/registration-journey-security-keys.md)
+- [Push notification MFA](https://docs.strivacity.com/docs/registration-journey-push-mfa.md)
+- [Passkey promotion step](https://docs.strivacity.com/docs/passkey-promotion-step.md)
+- [Account activation step](https://docs.strivacity.com/docs/account-activation-step.md)
+- [Token generation step](https://docs.strivacity.com/docs/token-generation-step.md)
+- [Redirect step](https://docs.strivacity.com/docs/registration-journey-redirect-step.md)
+- [Account recovery journey](https://docs.strivacity.com/docs/account-recovery-journey.md)
+- [Journey builder](https://docs.strivacity.com/docs/journey-builder.md)
+- [Plugin library](https://docs.strivacity.com/docs/plugin-library.md)
+- [Input step](https://docs.strivacity.com/docs/journey-input-step.md)
+- [Persist data step](https://docs.strivacity.com/docs/journey-persist-data-step.md)
+- [Condition step](https://docs.strivacity.com/docs/journey-condition-step.md)
+- [Identity verification step](https://docs.strivacity.com/docs/journey-identity-verification-step.md)
+- [Phone fraud: risk evaluation step](https://docs.strivacity.com/docs/phone-fraud-risk-evaluation-step.md)
+- [Phone fraud: attribute matching step](https://docs.strivacity.com/docs/phone-fraud-attribute-matching-step.md)
+- [Identity fraud detection step](https://docs.strivacity.com/docs/identity-fraud-detection-step.md)
+- [Risk policy step](https://docs.strivacity.com/docs/risk-policy-step.md)
+- [MFA authentication step](https://docs.strivacity.com/docs/journey-mfa-authentication-step.md)
+- [Password authentication step](https://docs.strivacity.com/docs/journey-password-authentication-step.md)
+- [Consent step](https://docs.strivacity.com/docs/journey-consent-step.md)
+- [Custom code step](https://docs.strivacity.com/docs/journey-custom-code-step.md)
+- [Set cookie step](https://docs.strivacity.com/docs/set-cookie-step.md): you're missing an n in native for "using data from a ative claim, local variable"
+- [Simulated password step](https://docs.strivacity.com/docs/simulated-password-step.md)
+- [Simulated forgotten password email step](https://docs.strivacity.com/docs/simulated-forgotten-password-step.md)
+- [Exit success and exit failure steps](https://docs.strivacity.com/docs/journey-exit-success-and-exit-failure-steps.md)
+- [High-risk transaction step-up flow](https://docs.strivacity.com/docs/high-risk-transaction-step-up.md)
+- [Login hint support](https://docs.strivacity.com/docs/login-hint-support.md)
+- [Dashboard](https://docs.strivacity.com/docs/dashboard-overview.md)
+- [Variables](https://docs.strivacity.com/docs/variables.md)
+- [Rule builders](https://docs.strivacity.com/docs/rule-builders.md)
+- [Policy and application tags](https://docs.strivacity.com/docs/policy-application-tags.md)
+- [Entity linking and contextual navigation](https://docs.strivacity.com/docs/entity-linking-and-contextual-navigation.md)
+- [AI Assist](https://docs.strivacity.com/docs/ai-assist.md)
+- [Applications](https://docs.strivacity.com/docs/applications.md)
+- [Application types](https://docs.strivacity.com/docs/application-types.md)
+- [Application settings](https://docs.strivacity.com/docs/application-settings.md)
+- [Fastpath](https://docs.strivacity.com/docs/fastpath.md)
+- [Device session behavior and seamless SSO](https://docs.strivacity.com/docs/device-session-behavior-and-seamless-sso.md)
+- [Application clients](https://docs.strivacity.com/docs/clients.md)
+- [OIDC client (using no-code components)](https://docs.strivacity.com/docs/oidc-client-no-code-components.md)
+- [OIDC client (using a simple API)](https://docs.strivacity.com/docs/simplified-client.md)
+- [OIDC client (using the Journey Flow API)](https://docs.strivacity.com/docs/oidc-client-using-the-journey-flow-api.md)
+- [OIDC client (using the token exchange mechanism)](https://docs.strivacity.com/docs/token-exchange.md)
+- [Token exchange example calls and responses](https://docs.strivacity.com/docs/token-exchange-example-calls-and-responses.md)
+- [OAuth2/OIDC properties setup](https://docs.strivacity.com/docs/oauth2-oidc-properties-setup.md)
+- [SAML2 client (using no-code components)](https://docs.strivacity.com/docs/setup-a-saml2-integration.md)
+- [OIDC support](https://docs.strivacity.com/docs/oidc-support.md)
+- [Authorization code flow](https://docs.strivacity.com/docs/modern-authentication-with-strivacity.md)
+- [PKCE flow](https://docs.strivacity.com/docs/pkce-flow.md)
+- [Access and refresh tokens](https://docs.strivacity.com/docs/oidc-access-and-refresh-tokens.md)
+- [Configuring redirection with OIDC](https://docs.strivacity.com/docs/configuring-redirection-with-oidc.md)
+- [Configuring a popup window with OIDC](https://docs.strivacity.com/docs/configuring-a-popup-window-with-oidc.md)
+- [Configure your web application with Strivacity (self-service)](https://docs.strivacity.com/docs/configure-your-web-application-with-strivacity-self-service.md)
+- [Passkeys for native applications](https://docs.strivacity.com/docs/passkeys-for-native-applications.md)
+- [Log out](https://docs.strivacity.com/docs/log-out.md)
+- [OIDC RP-initiated logout](https://docs.strivacity.com/docs/oidc-rp-initiated-logout.md)
+- [OIDC back-channel logout](https://docs.strivacity.com/docs/oidc-back-channel-logout.md)
+- [SAML logout](https://docs.strivacity.com/docs/saml-logout.md)
+- [Cookies](https://docs.strivacity.com/docs/cookies.md)
+- [SSO and cross-platform authentication](https://docs.strivacity.com/docs/sso-and-cross-platform-authentication.md)
+- [OAuth 2.0 security best practices (RFC 9700)](https://docs.strivacity.com/docs/oauth-security-best-practices.md)
+- [A/B testing](https://docs.strivacity.com/docs/ab-testing.md)
+- [Configure an A/B test](https://docs.strivacity.com/docs/configure-an-ab-test.md)
+- [View A/B test results](https://docs.strivacity.com/docs/view-ab-test-results.md)
+- [Manage policies](https://docs.strivacity.com/docs/manage-policies.md): Learn how to create, assign, edit, copy, import/export, and delete policies.
+- [Adaptive access](https://docs.strivacity.com/docs/adaptive-access.md): Learn how to set up and use an Adaptive Access policy to enhance the security of your portal or web application.
+- [General settings](https://docs.strivacity.com/docs/adaptive-access-general-settings.md): Strivacity provides several built-in login workflows to choose from when planning your customer journey. Learn about the basic settings of your adaptive access policy here.
+- [Multi-factor methods](https://docs.strivacity.com/docs/multi-factor-methods.md): Manage your policy's secondary authentication methods here.
+- [Push notification MFA](https://docs.strivacity.com/docs/adaptive-access-push-mfa.md)
+- [Adaptive rules](https://docs.strivacity.com/docs/adaptive-rules.md)
+- [Risk policy mode](https://docs.strivacity.com/docs/risk-policy-mode.md): Use risk policies in your adaptive access policy to drive block, step-up, and step-down decisions from built-in and third party risk signals.
+- [Brute-force protections](https://docs.strivacity.com/docs/brute-force-protections-configuration.md)
+- [Create an adaptive access policy](https://docs.strivacity.com/docs/creating-an-adaptive-access-policy.md)
+- [How customers manage adaptive access](https://docs.strivacity.com/docs/how-customers-manage-adaptive-access.md)
+- [Passkeys](https://docs.strivacity.com/docs/passkeys.md)
+- [Identity verification](https://docs.strivacity.com/docs/identity-verification.md)
+- [Identity verification policies overview](https://docs.strivacity.com/docs/identity-verification-policies-overview.md): A high-level overview of Strivacity's identity verification features
+- [Create an identity verification policy](https://docs.strivacity.com/docs/create-an-identity-verification-policy.md)
+- [Custom messaging](https://docs.strivacity.com/docs/custom-messaging.md)
+- [Verification notification](https://docs.strivacity.com/docs/identity-verification-notification.md)
+- [Failure message](https://docs.strivacity.com/docs/identity-verification-failure-message.md)
+- [Data collection](https://docs.strivacity.com/docs/identity-verification-data-collection.md): Learn how to add data fields to the verification flow to display or collect additional details from customers.
+- [Phone fraud: risk evaluation](https://docs.strivacity.com/docs/phone-fraud-risk-evaluation.md)
+- [Phone fraud: attribute matching](https://docs.strivacity.com/docs/phone-fraud-attribute-matching.md)
+- [Knowledge-based verification](https://docs.strivacity.com/docs/knowledge-based-verification.md)
+- [Identity fraud detection](https://docs.strivacity.com/docs/identity-fraud-detection.md)
+- [Risk policy evaluation](https://docs.strivacity.com/docs/risk-policy-evaluation.md)
+- [Physical document verification](https://docs.strivacity.com/docs/document-verification.md)
+- [Set up document verification](https://docs.strivacity.com/docs/set-up-document-verification.md)
+- [Customer experience](https://docs.strivacity.com/docs/document-verification-customer-experience.md)
+- [Best practices for successful document verification](https://docs.strivacity.com/docs/best-practices-for-successful-document-verification.md)
+- [Risk](https://docs.strivacity.com/docs/risk-policies.md): Learn how risk policies combine built-in and third party risk signals, rules, and scoring to drive access decisions across your customer journeys.
+- [Create a risk policy](https://docs.strivacity.com/docs/create-a-risk-policy.md)
+- [Self-service](https://docs.strivacity.com/docs/self-service.md): Self-service policies allow you to decide how to empower your customers in managing their own customer experience.
+- [Self-service policy settings](https://docs.strivacity.com/docs/policy-settings.md)
+- [Self-service registration](https://docs.strivacity.com/docs/self-service-registration.md): This page walks you through configuration options for self-service registration.
+- [Account linking](https://docs.strivacity.com/docs/account-linking.md)
+- [Customer invite registration](https://docs.strivacity.com/docs/customer-invite-registration.md): This page walks you through configuration options for sending customer account invitations.
+- [Password and identifier recovery](https://docs.strivacity.com/docs/password-and-identifier-recovery.md)
+- [Promote passkey](https://docs.strivacity.com/docs/promote-passkey.md)
+- [Self-service account management](https://docs.strivacity.com/docs/self-service-account-management.md)
+- [Application launcher](https://docs.strivacity.com/docs/application-launcher.md): Here, you can learn how to add quick access tiles to your customer's self-service accounts that allow them to launch other applications.
+- [Enable application launcher](https://docs.strivacity.com/docs/enable-application-launcher.md): This page contains high-level information about the 'Your applications' self-service menu.
+- [Create a self-service policy](https://docs.strivacity.com/docs/creating-a-self-service-policy.md)
+- [Customer experience](https://docs.strivacity.com/docs/customer-experience.md)
+- [My Account portal](https://docs.strivacity.com/docs/my-account-portal.md)
+- [Notifications](https://docs.strivacity.com/docs/notification-policies.md)
+- [Create a notification policy](https://docs.strivacity.com/docs/creating-a-notification-policy.md)
+- [Conditional notification contents](https://docs.strivacity.com/docs/conditional-notification-contents.md)
+- [Consent management](https://docs.strivacity.com/docs/consent-management.md): Learn how to set up and use consents to help adhere to regulatory and legal requirements for your portal or web application.
+- [Consent settings](https://docs.strivacity.com/docs/consent-settings.md): This page gathers every consent editing and configuration option available from the Admin Console'user interface.
+- [Conditional notification contents](https://docs.strivacity.com/docs/creating-a-consent.md): Create consents that you can easily add to your application to comply with any data protection regulation you're contending with.
+- [Consent versioning](https://docs.strivacity.com/docs/consent-versioning.md): Learn how to maintain and update the versions of your consent requests.
+- [Assigning a consent to an application](https://docs.strivacity.com/docs/assigning-a-consent-to-an-application.md): Learn how to assign any consent to an application and choose which consent type to apply.
+- [Manage customers' consent receipts](https://docs.strivacity.com/docs/manage-a-customers-consent-receipts.md): Learn how to mange your customers consent receipts for audit and compliance purposes.
+- [How customers manage consent receipts](https://docs.strivacity.com/docs/how-customers-manage-consent-receipts.md): Learn more about how customers can view and manage any consent receipts
+- [Password quality](https://docs.strivacity.com/docs/password-quality.md): Password quality policies provide a way to enforce password characteristics and mitigate password risk for all accounts in an identity store. Learn more about how to setup and manage these policies.
+- [Creating a password policy](https://docs.strivacity.com/docs/creating-a-password-policy.md)
+- [Password quality settings](https://docs.strivacity.com/docs/password-quality-settings.md)
+- [Good password practices](https://docs.strivacity.com/docs/good-password-practices.md)
+- [API security](https://docs.strivacity.com/docs/api-sec-policy.md)
+- [Create API security policies](https://docs.strivacity.com/docs/create-api-security-policies.md)
+- [Branding](https://docs.strivacity.com/docs/branding.md)
+- [Branding policy editor](https://docs.strivacity.com/docs/branding-policy-editor.md)
+- [Branding policy general settings](https://docs.strivacity.com/docs/general-settings-for-branding-policies.md)
+- [Create a branding policy](https://docs.strivacity.com/docs/create-a-branding-policy.md)
+- [Using multiple custom domain names](https://docs.strivacity.com/docs/using-multiple-custom-domain-names.md): Learn more about how Strivacity provides complete flexibility for using multiple and different domain names for multiple customer facing apps.
+- [Customizing email templates](https://docs.strivacity.com/docs/customizing-email-templates.md): Learn how to use the HTML editor to customize all of your customer email notifications.
+- [Customizing SMS templates](https://docs.strivacity.com/docs/customizing-sms-templates.md): Learn how to use the editor to customize all of your customer SMS notifications.
+- [Localization](https://docs.strivacity.com/docs/localization.md)
+- [Admin policies](https://docs.strivacity.com/docs/admin-policies.md)
+- [Admin adaptive access](https://docs.strivacity.com/docs/admin-adaptive-access.md): Learn how to set up and use Adaptive access policies to enhance the security of your administrative accounts and Strivacity console.
+- [Login workflows for admin accounts](https://docs.strivacity.com/docs/login-workflows-for-admin-accounts.md): Strivacity provides several login workflows for you to choose from to protect your Admin Console.
+- [Multi-factor methods for administrative accounts](https://docs.strivacity.com/docs/multi-factor-methods-for-administrative-accounts.md): Add multi-factor authentication methods to the authentication journey for your administrative staff to enroll in.
+- [Adaptive rules for admin accounts](https://docs.strivacity.com/docs/adaptive-rules-for-admin-accounts.md): You can customize rules for your adaptive access policy to define appropriate actions based on online behavior: block access, ask for second factors, or let admins skip MFA in trusted contexts.
+- [Custom multi-factor authenticator](https://docs.strivacity.com/docs/custom-multi-factor-authenticator.md)
+- [Admin branding](https://docs.strivacity.com/docs/admin-branding.md): Learn how to use your own brand's logo and color scheme with Strivacity's admin console.
+- [Admin notifications](https://docs.strivacity.com/docs/admin-notifications.md)
+- [REST API access policies](https://docs.strivacity.com/docs/rest-api-access-policies.md): Learn how to use Strivacity's REST API Access Policies to define API permission for your Strivacity instance.
+- [Web analytics](https://docs.strivacity.com/docs/web-analytics.md): This sections goes through the supported web analytics packages, their configuration, and the customer actions that can be made available for the analytics package(s) of your choice.
+- [Amplitude](https://docs.strivacity.com/docs/amplitude.md): This page explains how to integrate with Amplitude to pass customer data on to your web analytics package from Strivacity-managed experiences.
+- [Google Analytics](https://docs.strivacity.com/docs/google-analytics.md): This page explains how to integrate with Google Analytics to pass customer data on to your web analytics package from Strivacity-managed experiences.
+- [Google Tag Manager](https://docs.strivacity.com/docs/google-tag-manager.md): This page explains how to integrate with Google Tag Manager to pass customer data on to your web analytics package from Strivacity-managed experiences.
+- [Mixpanel](https://docs.strivacity.com/docs/mixpanel.md): This page explains how to integrate with Mixpanel to pass customer data on to your web analytics package from Strivacity-managed experiences.
+- [Identity stores](https://docs.strivacity.com/docs/identity-stores.md): Strivacity provides its own built-in identity store capability which is a highly scalable and performant directory service capable of storing billions of identities.
+- [Identity store schema](https://docs.strivacity.com/docs/identity-store-schema.md): You can learn about how to set up customer identification and data collection fields for identity stores.
+- [Creating an identity store](https://docs.strivacity.com/docs/creating-an-identity-store.md)
+- [Export and import identity stores](https://docs.strivacity.com/docs/export-and-import-identity-stores.md)
+- [Identifier configuration effects](https://docs.strivacity.com/docs/effects-of-identifier-types.md)
+- [Create new attributes](https://docs.strivacity.com/docs/create-new-attributes.md)
+- [Edit attributes](https://docs.strivacity.com/docs/edit-attributes.md)
+- [Checkbox type](https://docs.strivacity.com/docs/checkbox-type.md): Checkboxes allow a customer to select a value from a small set of options, often binary.
+- [String type](https://docs.strivacity.com/docs/string-type.md): An input string is used to elicit a response from the customer where they have to type in the value.
+- [Select type](https://docs.strivacity.com/docs/select-type.md): A select-type attribute allows a customer to choose and select a value from a series of options
+- [Phone type](https://docs.strivacity.com/docs/phone-type.md): A phone number attribute allows customer to enter and validate a phone number easily.
+- [Date type](https://docs.strivacity.com/docs/date-type.md): A date attribute allows a customer to easily enter a date manually or using a date picker.
+- [Email type](https://docs.strivacity.com/docs/email-type.md)
+- [Simple list type](https://docs.strivacity.com/docs/simple-list-type.md)
+- [Complex list type](https://docs.strivacity.com/docs/complex-list-type.md)
+- [Automated account lifecycle management](https://docs.strivacity.com/docs/automated-account-lifecycle-management.md)
+- [Claim dialects](https://docs.strivacity.com/docs/claim-dialects.md): Learn more about how to use claims to map account attributes in the identity store to a set of defined claims
+- [Native claims](https://docs.strivacity.com/docs/native-claims.md)
+- [Dialects](https://docs.strivacity.com/docs/claim-mapping.md)
+- [External login providers](https://docs.strivacity.com/docs/external-login-provider.md): Learn how to use 3rd party identity providers and integrate those enterprise logins to your applications.
+- [Set up an external OIDC identity provider](https://docs.strivacity.com/docs/external-oidc-login.md)
+- [Set up an external SAML2 identity provider](https://docs.strivacity.com/docs/setup-and-external-saml-identity-provider.md)
+- [Social login](https://docs.strivacity.com/docs/social-login.md)
+- [Amazon login setup](https://docs.strivacity.com/docs/amazon-login-setup.md)
+- [Apple login setup](https://docs.strivacity.com/docs/apple-login-setup.md)
+- [Facebook login setup](https://docs.strivacity.com/docs/setup-facebook-login.md)
+- [GitHub login setup](https://docs.strivacity.com/docs/setup-github-login.md)
+- [Google login setup](https://docs.strivacity.com/docs/setup-google-sign-in.md)
+- [LinkedIn login setup](https://docs.strivacity.com/docs/linkedin-login-setup.md)
+- [Microsoft login setup](https://docs.strivacity.com/docs/setup-microsoft-login.md)
+- [X login setup](https://docs.strivacity.com/docs/setup-x-sign-in.md)
+- [Manage social login providers](https://docs.strivacity.com/docs/manage-social-login-providers.md)
+- [Claim mappings for social login](https://docs.strivacity.com/docs/claim-management.md)
+- [Outbound provisioning](https://docs.strivacity.com/docs/outbound-provisioning.md)
+- [Inbound connection](https://docs.strivacity.com/docs/inbound-connection.md)
+- [Agentic AI](https://docs.strivacity.com/docs/agentic-ai.md): Let your customers authorize AI agents to act on their accounts.
+- [AI agents](https://docs.strivacity.com/docs/ai-agents.md): Register AI agents as OAuth2/OIDC clients so customers can delegate access to their accounts.
+- [Integrating an MCP server with Strivacity](https://docs.strivacity.com/docs/integrating-an-mcp-server-with-strivacity.md): Use Strivacity as the authorization server for your MCP server, from discovery through token validation and step-up authorization.
+- [Protected resources](https://docs.strivacity.com/docs/protected-resources.md): Register the MCP servers and APIs that Strivacity issues tokens for, and describe their scopes in language your customers understand.
+- [Authorization consents](https://docs.strivacity.com/docs/authorization-consents.md): How customers approve, review, and revoke an AI agent's access to their account.
+- [Dynamic clients](https://docs.strivacity.com/docs/dynamic-clients.md): Let your customers' AI agents connect as dynamic clients through Client ID Metadata Documents.
+- [Lifecycle event hooks](https://docs.strivacity.com/docs/lifecycle-event-hooks.md): Learn how to setup and use Lifecycle Event Hooks to integrate your customer-facing applications with any other homegrown systems or third-party products that you may own, such as CRM or Marketing Hubs
+- [Using the IDE](https://docs.strivacity.com/docs/using-the-ide.md)
+- [Creating an event hook](https://docs.strivacity.com/docs/creating-an-event-hook.md): Learn how to create an event hook and assign it to an application
+- [Assigning an event hook](https://docs.strivacity.com/docs/assigning-an-event-hook.md): Learn how to assign your event hooks to an application or identity store for integration with third-party systems.
+- [Event hook logs](https://docs.strivacity.com/docs/event-hook-logs.md)
+- [Organizations](https://docs.strivacity.com/docs/organizations.md)
+- [Creating an organization](https://docs.strivacity.com/docs/creating-an-organization.md)
+- [Organization-enabled applications](https://docs.strivacity.com/docs/organization-enabled-applications.md)
+- [Organization policies](https://docs.strivacity.com/docs/organization-policies.md)
+- [Login hint for organizational routing](https://docs.strivacity.com/docs/login-hint-for-base-organizations.md)
+- [Identifier-based routing](https://docs.strivacity.com/docs/identifier-based-routing.md)
+- [Base organizations](https://docs.strivacity.com/docs/clients-base-organizations.md)
+- [Organization portal](https://docs.strivacity.com/docs/organization-portal.md)
+- [Organization roles](https://docs.strivacity.com/docs/organization-roles.md)
+- [Account management](https://docs.strivacity.com/docs/account-management.md): You can discover the many ways your support team can resolve customer pain points through the Strivacity administrative experience
+- [Account management capabilities](https://docs.strivacity.com/docs/account-management-capabilities.md)
+- [Customer invitation](https://docs.strivacity.com/docs/customer-invitation.md)
+- [Bulk customer invitation](https://docs.strivacity.com/docs/bulk-customer-invitation.md)
+- [Invitation login hint](https://docs.strivacity.com/docs/invitation-login-hint.md)
+- [Finding accounts](https://docs.strivacity.com/docs/finding-accounts.md): This page shows you how to find a customer's profile as quickly as possible.
+- [Creating an account](https://docs.strivacity.com/docs/creating-accounts.md): Learn how to use the Admin Console to create and manage customer identities.
+- [Enable/disable an account](https://docs.strivacity.com/docs/enable-disable-accounts.md)
+- [Delete an account](https://docs.strivacity.com/docs/deleting-accounts.md): Learn how to use the Admin Console to delete customer identities.
+- [Account impersonation](https://docs.strivacity.com/docs/account-impersonation.md)
+- [Groups](https://docs.strivacity.com/docs/groups.md): Groups allow you to control which application can customers and other account holders can have access to within the same identity store.
+- [Applying group restriction to applications](https://docs.strivacity.com/docs/applying-group-restriction-to-applications.md)
+- [Creating a group](https://docs.strivacity.com/docs/create-a-group.md): Here, you can learn how to create and manage customer groups. You can use groups to restrict customers from accessing applications that are off-limits or irrelevant to them.
+- [Deleting a group](https://docs.strivacity.com/docs/deleting-a-group.md): Here, you can learn how to delete customer groups.
+- [Managing group membership](https://docs.strivacity.com/docs/managing-group-membership.md): Here, you can learn how to manage group memberships on account and group levels.
+- [API security policy assignments](https://docs.strivacity.com/docs/api-security-policy-assignments.md)
+- [Customer migration](https://docs.strivacity.com/docs/customer-migration.md)
+- [Just-in-time migration](https://docs.strivacity.com/docs/just-in-time-migration.md)
+- [Bulk import](https://docs.strivacity.com/docs/bulk-import-migration.md)
+- [Import validator](https://docs.strivacity.com/docs/import-validator.md)
+- [Admin accounts](https://docs.strivacity.com/docs/admin-accounts.md)
+- [Inviting administrative accounts](https://docs.strivacity.com/docs/inviting-administrative-accounts.md)
+- [Creating administrative accounts](https://docs.strivacity.com/docs/creating-administrative-accounts.md): This page walks you through how to create an administrative identity in the Admin Console.
+- [Password management for admin accounts](https://docs.strivacity.com/docs/password-management-for-admin-accounts.md)
+- [MFA management for administrative accounts](https://docs.strivacity.com/docs/mfa-management-for-administrative-account.md): This page explains how to manage your MFA options in an administrative account.
+- [Admin roles](https://docs.strivacity.com/docs/admin-roles.md)
+- [Account events](https://docs.strivacity.com/docs/account-events.md)
+- [Account activity](https://docs.strivacity.com/docs/account-activity.md)
+- [Document verification](https://docs.strivacity.com/docs/document-verification-1.md)
+- [Identity verification](https://docs.strivacity.com/docs/identity-verification-2.md)
+- [Knowledge-based verification](https://docs.strivacity.com/docs/knowledge-based-verification-1.md)
+- [Multi-factor authentication](https://docs.strivacity.com/docs/multi-factor-authentication.md)
+- [Multi-factor authentication enrollment](https://docs.strivacity.com/docs/multi-factor-authentication-enrollment.md)
+- [Password authentication](https://docs.strivacity.com/docs/password-authentication.md)
+- [Phone-based identity verification](https://docs.strivacity.com/docs/phone-based-identity-verification.md)
+- [Progressive profiling](https://docs.strivacity.com/docs/progressive-profiling.md)
+- [Registration and login](https://docs.strivacity.com/docs/registration-and-login.md)
+- [Users, roles, and groups](https://docs.strivacity.com/docs/users-roles-and-groups.md)
+- [Miscellaneous](https://docs.strivacity.com/docs/miscellaneous.md)
+- [Audit logs](https://docs.strivacity.com/docs/audit-logs.md)
+- [Instance configuration](https://docs.strivacity.com/docs/instance-configuration.md)
+- [Risk signal sources](https://docs.strivacity.com/docs/risk-signal-sources.md): Configure built-in and third party sources that produce data for your risk policies.
+- [Variable and secret management](https://docs.strivacity.com/docs/variable-and-secret-management.md)
+- [Translations](https://docs.strivacity.com/docs/translations.md)
+- [Admin login providers](https://docs.strivacity.com/docs/admin-login-providers.md)
+- [Push notification configuration](https://docs.strivacity.com/docs/push-notification-configuration.md)
+- [Email configuration](https://docs.strivacity.com/docs/smtp-email-configuration.md)
+- [Telephony provider configuration](https://docs.strivacity.com/docs/telephony-provider-configuration.md)
+- [Event streaming](https://docs.strivacity.com/docs/event-streaming.md)
+- [Splunk configuration](https://docs.strivacity.com/docs/splunk-configuration.md)
+- [Elasticsearch configuration](https://docs.strivacity.com/docs/elasticsearch-configuration.md)
+- [Generic HTTPS configuration](https://docs.strivacity.com/docs/generic-https-configuration.md)
+- [Instance information](https://docs.strivacity.com/docs/general-configuration.md)
+- [Strivacity Login Gateway](https://docs.strivacity.com/docs/strivacity-login-gateway.md)
+- [Using mTLS with the Strivacity Login Gateway](https://docs.strivacity.com/docs/using-mtls-with-the-strivacity-login-gateway.md)
+- [Strivacity Directory Connector](https://docs.strivacity.com/docs/strivacity-directory-connector.md)
+- [LDAP Connector](https://docs.strivacity.com/docs/ldap-connector.md)
+- [JDBC Connector](https://docs.strivacity.com/docs/jdbc-connector.md)
+- [Using journeys](https://docs.strivacity.com/docs/using-journeys.md)
+- [Using Lifecycle Event Hooks](https://docs.strivacity.com/docs/using-lifecycle-event-hooks.md)
+- [Deduce](https://docs.strivacity.com/docs/deduce.md)
+- [Hubspot CRM](https://docs.strivacity.com/docs/hubspot.md)
+- [ID DataWeb - Attribute Exchange Network (AXN)](https://docs.strivacity.com/docs/id-dataweb-attribute-exchange-network-axn.md)
+- [Microsoft Dynamics 365](https://docs.strivacity.com/docs/microsoft-dynamics-365.md)
+- [SailPoint Identity Cloud](https://docs.strivacity.com/docs/sailpoint-identity-cloud.md)
+- [Salesforce Lightning](https://docs.strivacity.com/docs/salesforce-lightning.md)
+- [ServiceNow](https://docs.strivacity.com/docs/servicenow.md)
+- [Splunk](https://docs.strivacity.com/docs/splunk.md)
+- [Integrations overview](https://docs.strivacity.com/docs/integrations-overview.md)
+- [CRM, CDP, and marketing](https://docs.strivacity.com/docs/crm-cdp-and-marketing.md): Learn how to quickly integration Strivacity with CRM, CDP, and other Marketing investments.
+- [HubSpot](https://docs.strivacity.com/docs/hubspot-old.md): Integration guide for leveraging your HubSpot customer data.
+- [Salesforce Lightning](https://docs.strivacity.com/docs/salesforce-lightning-old.md): Integration guide for leveraging your Salesforce Lightning customer data.
+- [ServiceNow](https://docs.strivacity.com/docs/servicenow-old.md): Learn how to enhance your ServiceNow implementation using Adaptive Multi-Factor Authentication, Consent Management, Social Login, and Self-Service Account Management.
+- [Microsoft Dynamics 365](https://docs.strivacity.com/docs/microsoft-dynamics-365-old.md): Learn how to integrate your Microsoft Dynamics instance with Strivacity, allowing Strivacity to add, update and maintain customer information and use it as a source of entitlement.
+- [Digital banking solutions](https://docs.strivacity.com/docs/digital-banking-solutions.md)
+- [Q2 digital banking platform](https://docs.strivacity.com/docs/q2-digital-banking-platform.md): Learn how to integrate Strivacity with the Q2 digital banking platform.
+- [External identity providers](https://docs.strivacity.com/docs/external-identity-providers.md): Learn how Strivacity can integrate with External Identity Providers (IdPs).
+- [Microsoft Azure AD (B2E)](https://docs.strivacity.com/docs/microsoft-azure-ad-b2e.md): Learn how to integrate Strivacity with Microsoft Azure AD (B2E) so that your enterprise users can log into Strivacity protected applications.
+- [Passwordless](https://docs.strivacity.com/docs/passwordless.md)
+- [HYPR](https://docs.strivacity.com/docs/hypr.md): Integration guide for adding HYPR as a passwordless authentication provider
+- [Transmit BindID](https://docs.strivacity.com/docs/transmit-bindid.md): Integration guide for using Transmit BindID as a passwordless authentication provider.
+- [Integrating Strivacity CIAM with a Web Application Firewall (WAF)](https://docs.strivacity.com/docs/integrating-strivacity-ciam-with-a-web-application-firewall-waf.md)
+- [SDKs](https://docs.strivacity.com/docs/sdks.md)
+- [Secure coding guidance](https://docs.strivacity.com/docs/secure-coding-guidance.md): For Web and Mobile teams using Strivacity as their OAuth 2.0 and OpenID Connect Provider
+- [Raising a support ticket](https://docs.strivacity.com/docs/raising-a-support-case.md): Need to raise a support ticket? Would like to learn more about our support services? Please see below to learn more.
+- [Security vulnerability response](https://docs.strivacity.com/docs/security-vulnerability-response.md): Learn more about how we rate and resolve security vulnerabilities in our products.
+- [Reporting a security issue](https://docs.strivacity.com/docs/reporting-a-security-issue.md): Here is our guidance on working with us to report a security issue in any of our products (including our website).
+- [Our service level commitment](https://docs.strivacity.com/docs/service-levels.md): Learn more about the efforts that Strivacity makes to ensure that we can deliver on our service commitment to our customers.
+- [Supported browsers](https://docs.strivacity.com/docs/supported-browsers.md)
+- [Release support matrix](https://docs.strivacity.com/docs/release-support-matrix.md)
+- [Privacy notice](https://docs.strivacity.com/docs/privacy-notice.md)
+- [Terms of use](https://docs.strivacity.com/docs/terms-of-use.md)
+
+## API Reference
+- [Overview](https://docs.strivacity.com/reference/overview.md)
+- [Getting started](https://docs.strivacity.com/reference/getting-started-1.md)
+- [Developer tools](https://docs.strivacity.com/reference/developer-tools.md)
+- [OpenAPI specs](https://docs.strivacity.com/reference/openapi-specs.md)
+- [Hosted journey](https://docs.strivacity.com/reference/hosted-journey.md)
+- [How the hosted journey works](https://docs.strivacity.com/reference/how-the-hosted-journey-works.md)
+- [Embedded journey](https://docs.strivacity.com/reference/embedded-journey.md)
+- [How the embedded journey works](https://docs.strivacity.com/reference/how-the-embedded-journey-works.md)
+- [Native journey](https://docs.strivacity.com/reference/native-journey.md)
+- [How the native journey works](https://docs.strivacity.com/reference/how-the-native-journey-works.md)
+- [Rendering reference](https://docs.strivacity.com/reference/rendering-reference.md)
+- [SDKs](https://docs.strivacity.com/reference/sdks.md)
+- [JavaScript SDKs](https://docs.strivacity.com/reference/javascript-sdks.md)
+- [Mobile SDKs](https://docs.strivacity.com/reference/mobile-sdks.md)
+- [Mobile SDK OS support](https://docs.strivacity.com/reference/mobile-sdk-os-support.md)
+- [Authenticate with identifier and password](https://docs.strivacity.com/reference/authenticate-with-identifier-and-password.md)
+- [Simple token request](https://docs.strivacity.com/reference/token-request.md)
+- [Getting started with the admin API](https://docs.strivacity.com/reference/getting-started-with-the-admin-api.md)
+- [Exchange credentials for a token](https://docs.strivacity.com/reference/tokenpost.md): Exchange credentials for a token.  Use your client_id as the username and client_secret as the password
+- [List accounts](https://docs.strivacity.com/reference/listaccounts-1.md): You can list the existing accounts by calling this endpoint. Filtering can be done by the parameters listed below and by custom searchable attributes. The `password` type authenticator will be excluded from the response.  | REQUIRED API PERMISSION | |:------------------------| | read:account |
+- [Create an account](https://docs.strivacity.com/reference/createaccount-1.md): You can create an account by calling this endpoint.  Identifiers must be set depending on which identifiers are mandatory in the identity store. Username: `local.id` Email: `email.id` Phone: `phone.id`  | REQUIRED API PERMISSION | |:------------------------| | write:account |
+- [Delete an account](https://docs.strivacity.com/reference/deleteaccountbyid-1.md): You can delete an account by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | delete:account |
+- [Get an account](https://docs.strivacity.com/reference/getaccountbyid-1.md): You can get an account by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:account |
+- [Create authenticator for an account](https://docs.strivacity.com/reference/addauthenticator-1.md): You can create an authenticator for an account by calling this endpoint. Authenticator type can be either `email` or `phone`.  | REQUIRED API PERMISSION | |:------------------------| | write:account_authenticator |
+- [Delete authenticator for an account](https://docs.strivacity.com/reference/deleteauthenticator-1.md): You can delete an authenticator for an account by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | delete:account_authenticator |
+- [Disable an account](https://docs.strivacity.com/reference/disableaccount-1.md): You can disable an account by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | write:account |
+- [Enable an account](https://docs.strivacity.com/reference/enableaccount-1.md): You can enable an account by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | write:account |
+- [Assign groups to an account](https://docs.strivacity.com/reference/addgroupstoaccount-1.md): You can assign one or multiple groups to an account by calling this endpoint. To use this endpoint, both `read:config_identity_store` and `write:account` scopes should be granted.  | REQUIRED API PERMISSION | |:------------------------| | read:config_identity_store | | write:account |
+- [Update identifier for an account](https://docs.strivacity.com/reference/updateaccountidentifier-1.md): You can update the identifier for an account by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | write:account_identity |
+- [Request impersonation of an account](https://docs.strivacity.com/reference/impersonation-1.md): You can request an impersonation for an account by calling this endpoint. A impersonation link will be generated to impersonate the corresponding account.  | REQUIRED API PERMISSION | |:------------------------| | write:account_impersonation |
+- [Lift passcode lock for an account](https://docs.strivacity.com/reference/liftpasscodelock.md): You can lift passcode lock for an account by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | write:account |
+- [Lift password lock for an account](https://docs.strivacity.com/reference/liftpasswordlock.md): You can lift password lock for an account by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | write:account |
+- [Update organization for an account](https://docs.strivacity.com/reference/updateaccountorganization.md): You can change the organization of an account by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | write:account |
+- [Change password for an account](https://docs.strivacity.com/reference/resetpassword-1.md): You can change the password for an account by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | write:account_authenticator |
+- [Request password reset for an account](https://docs.strivacity.com/reference/admininitiatedpasswordreset-1.md): You can request a password reset for an account by calling this endpoint. A password reset email will be sent to the email address of the corresponding account.  | REQUIRED API PERMISSION | |:------------------------| | write:account_authenticator |
+- [List role assignments for an account](https://docs.strivacity.com/reference/getaccountrolesbyid-1.md): You can list existing organization role assignments for an account by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:account |
+- [Update metadata of an account](https://docs.strivacity.com/reference/updatelocalmetadata-1.md): You can update the metadata of an account by calling this endpoint. Attributes specified in the identity store can be modified for an account. Only the given attributes will be modified. After a successful update, the entire metadata will be returned. Attributes provided with an explicit `null` value won't be overridden by external metadata values.  | REQUIRED API PERMISSION | |:------------------------| | write:account |
+- [Assign multiple roles to an organization for an account](https://docs.strivacity.com/reference/addrolestoaccount-1.md): You can assign one or more organization roles for an account by calling this endpoint. To use this endpoint, both `read:config_identity_store` and `write:account` scopes should be granted.  | REQUIRED API PERMISSION | |:------------------------| | read:config_identity_store | | write:account |
+- [Delete an organization role assignment from an account](https://docs.strivacity.com/reference/deleterolesfromaccount-1.md): You can delete an organization role assignment from an account by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | write:account |
+- [Clear sessions for an account](https://docs.strivacity.com/reference/clearaccountdevicesessions-1.md): You can clear the sessions for an account by calling this endpoint. Note that clearing sessions for an account results in logging out of all browsers that user had been logged into previously. This performs a back-channel logout on the specified account.  | REQUIRED API PERMISSION | |:------------------------| | write:account |
+- [List sessions for an account](https://docs.strivacity.com/reference/getidentifiedaccountdevicesessions-1.md): You can list the sessions for an account by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:account |
+- [Delete session for an account](https://docs.strivacity.com/reference/deleteaccountdevicesession-1.md): You can delete a session for an account by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | write:account |
+- [Update notification preferences for an account](https://docs.strivacity.com/reference/updateaccountnotificationpreferences.md): You can update the notification preferences for an account by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | write:account |
+- [List provision statuses for an account](https://docs.strivacity.com/reference/getprovisionstatuses.md): You can list provision statuses for an account by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:account |
+- [Set provision target priority for an account](https://docs.strivacity.com/reference/outboundprovisionmanualprioritysync.md): You can set provision target priority for an account by calling this endpoint. This will tell the provision target to sync the account with a higher priority.  | REQUIRED API PERMISSION | |:------------------------| | write:account |
+- [Set lock for an account](https://docs.strivacity.com/reference/lock.md): You can set a lock for an account by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | write:account |
+- [List attributes](https://docs.strivacity.com/reference/getallaccountattributes-1.md): You can list the existing attributes for an identity store with this API.  | REQUIRED API PERMISSION | |:------------------------| | read:config_identity_store |
+- [Create an attribute](https://docs.strivacity.com/reference/createaccountattribute-1.md): You can create an attribute for an identity store by calling this endpoint. A maximum of 5 indexed attributes can be created for an identity store.  | REQUIRED API PERMISSION | |:------------------------| | write:config_identity_store |
+- [Reorder attributes](https://docs.strivacity.com/reference/reorderaccountattributes-1.md): You can reorder attributes for an identity store by calling this endpoint. Request body should contain the existing attribute IDs in the desired order.  | REQUIRED API PERMISSION | |:------------------------| | write:config_identity_store |
+- [Get an Attribute](https://docs.strivacity.com/reference/getaccountattribute-1.md): You can get a child attribute for an complex attribute by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:config_identity_store |
+- [Update a child attribute](https://docs.strivacity.com/reference/updateaccountattribute-1.md): You can update a child attribute for a complex attribute by calling this endpoint. The attribute type, name, path and searchability cannot be altered.  | REQUIRED API PERMISSION | |:------------------------| | write:config_identity_store |
+- [Get an Attribute](https://docs.strivacity.com/reference/getaccountattribute_1.md): You can get an attribute for an identity store by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:config_identity_store |
+- [Update an attribute](https://docs.strivacity.com/reference/updateaccountattribute_1.md): You can update an attribute for an identity store by calling this endpoint. The attribute type, name, path and searchability cannot be altered.  | REQUIRED API PERMISSION | |:------------------------| | write:config_identity_store |
+- [List child attributes](https://docs.strivacity.com/reference/getallaccountattributes_1.md): You can list the existing child attributes for a complex attribute with this API.  | REQUIRED API PERMISSION | |:------------------------| | read:config_identity_store |
+- [Create a child attribute](https://docs.strivacity.com/reference/createaccountattribute_1.md): You can create a child attribute for a complex attribute by calling this endpoint. A maximum of 5 indexed attributes can be created for an identity store.  | REQUIRED API PERMISSION | |:------------------------| | write:config_identity_store |
+- [Reorder attributes](https://docs.strivacity.com/reference/reorderaccountattributes_1.md): You can reorder child attributes for a complex attribute by calling this endpoint. Request body should contain the existing child attribute IDs in the desired order.  | REQUIRED API PERMISSION | |:------------------------| | write:config_identity_store |
+- [List account events](https://docs.strivacity.com/reference/getaccountevents-1.md): You can list the account events by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:event_account |
+- [Get an account event](https://docs.strivacity.com/reference/getaccounteventbyid-1.md): You can get an account event by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:event_account |
+- [List descriptors for account events](https://docs.strivacity.com/reference/getdescriptor-1.md): You can list the possible descriptors for account events by calling this endpoint. Descriptors for account events are in the following format: `(failure|success):{eventType}`.  | REQUIRED API PERMISSION | |:------------------------| | read:event_account |
+- [List notification events](https://docs.strivacity.com/reference/getnotificationevents-1.md): You can list the notification events by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:event_account |
+- [Get a notification event](https://docs.strivacity.com/reference/getnotificationeventbyid-1.md): You can get a notification event by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:event_account |
+- [Get available account event TTLs](https://docs.strivacity.com/reference/getavailableaccounteventttls-1.md): Returns the list of account event TTL options defined in days. An account event TTL determines how long account events will be stored in a given identity store.  | REQUIRED API PERMISSION | |:------------------------| | read:config_identity_store |
+- [List identities for an account](https://docs.strivacity.com/reference/getidentities-1.md): You can list the identities for an account by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:account_identity |
+- [Unlink an external identity from an account](https://docs.strivacity.com/reference/deleteexternalidentity.md): You can unlink an external identity from an account by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | delete:account_identity |
+- [Force sync a connector identity for an account](https://docs.strivacity.com/reference/forcesyncconnectoridentity.md): You can force sync a connector identity for an account by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | write:account_identity |
+- [List account invitations](https://docs.strivacity.com/reference/getaccountinvitations-1.md): You can list the existing account invitations by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:account |
+- [Create an account invitation](https://docs.strivacity.com/reference/createinvitation-1.md): You can create an account invitation by calling this endpoint. An invite will be sent to the given email address to register a new account. If the given client doesn't have a login url, a bad request will be returned. If a pending invitation exists with the given email address, the response contains the existing invitation ID. If an account exists with the given email address and email mismatch is allowed in the Self-service policy, the invitation will be sent.  | REQUIRED API PERMISSION | |:------------------------| | write:account |
+- [Revoke an account invitation](https://docs.strivacity.com/reference/deleteaccountinvitation-1.md): You can revoke an account invitation by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | write:account |
+- [Get an account invitation](https://docs.strivacity.com/reference/getaccountinvitation-1.md): You can get an account invitation by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:account |
+- [Resend an account invitation](https://docs.strivacity.com/reference/resendinvitation-1.md): You can resend an account invitation by calling this endpoint. Once an invite is sent, the `validUntil` field is updated.  | REQUIRED API PERMISSION | |:------------------------| | write:account |
+- [List account lifecycle rules](https://docs.strivacity.com/reference/listlifecyclerules-1.md): You can list the existing lifecycle rules of an identity store by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:config_identity_store |
+- [Create an account lifecycle rule](https://docs.strivacity.com/reference/createlifecyclerule-1.md): You can create a lifecycle rule by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | write:config_identity_store |
+- [Delete an account lifecycle rule](https://docs.strivacity.com/reference/deletelifecyclerule-1.md): You can delete a lifecycle rule by calling this endpoint  | REQUIRED API PERMISSION | |:------------------------| | write:config_identity_store |
+- [Get an account lifecycle rule](https://docs.strivacity.com/reference/getlifecyclerule-1.md): You can get a lifecycle rule by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:config_identity_store |
+- [Update an account lifecycle rule](https://docs.strivacity.com/reference/updatelifecyclerule-1.md): You can update a lifecycle rule by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | write:config_identity_store |
+- [List active telephony service providers](https://docs.strivacity.com/reference/readactivetelephonyproviders-1.md): You can list active telephony service providers by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:config_admin_telephony_service_provider |
+- [Deactivate telephony service provider by type](https://docs.strivacity.com/reference/deactivate-1.md): You can deactivate existing telephony service provider.  | REQUIRED API PERMISSION | |:------------------------| | delete:config_admin_telephony_service_provider |
+- [Get active telephony service provider](https://docs.strivacity.com/reference/readactivetelephonyprovider-1.md): You can get active telephony service provider by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:config_admin_telephony_service_provider |
+- [Activate telephony service provider](https://docs.strivacity.com/reference/activate-1.md): You can activate existing telephony service provider.     Previously activated telephony service provider will be deactivated.   | REQUIRED API PERMISSION | |:------------------------| | write:config_admin_telephony_service_provider |
+- [List adaptive access policies](https://docs.strivacity.com/reference/getmfapolicies-1.md): You can list the existing adaptive access policies by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:config_adaptive_mfa |
+- [Create an adaptive access policy](https://docs.strivacity.com/reference/createadaptivemfa-1.md): You can create an adaptive access policy by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | write:config_adaptive_mfa |
+- [Filter for locations](https://docs.strivacity.com/reference/getmfapolicylocation-1.md): You can search for locations by a prefix with this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:config_adaptive_mfa |
+- [Delete an adaptive access policy](https://docs.strivacity.com/reference/deleteadaptivemfabyid-1.md): You can delete an adaptive access policy by calling this endpoint. MFA policies assigned to applications or organization assignments cannot be deleted.  | REQUIRED API PERMISSION | |:------------------------| | delete:config_adaptive_mfa |
+- [Get an adaptive access policy](https://docs.strivacity.com/reference/getadaptivemfa-1.md): You can get an adaptive access policy by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:config_adaptive_mfa |
+- [Update an adaptive access policy](https://docs.strivacity.com/reference/updateadaptivemfa-1.md): You can update an adaptive access policy by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | write:config_adaptive_mfa |
+- [Get admin information](https://docs.strivacity.com/reference/adminprincipal-1.md): You can get the admin information by calling this endpoint.
+- [Update UI settings for admin account](https://docs.strivacity.com/reference/updateadminprincipal-1.md): You can update the UI settings by calling this endpoint.
+- [List API security policies](https://docs.strivacity.com/reference/listapiaccesspolicies-1.md): You can list the existing API security policies by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:config_api_access |
+- [Create an API security policy](https://docs.strivacity.com/reference/createapiaccesspolicy-1.md): You can create an API security policy by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | write:config_api_access |
+- [Delete an API security policy](https://docs.strivacity.com/reference/deleteapiaccesspolicy-1.md): You can delete an API security policy by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | delete:config_api_access |
+- [Get an API security policy](https://docs.strivacity.com/reference/getapiaccesspolicy-1.md): You can get an API security policy by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:config_api_access |
+- [Update an API security policy](https://docs.strivacity.com/reference/updateapiaccesspolicy-1.md): You can update an API security policy by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | write:config_api_access |
+- [Assign a client to an API security policy](https://docs.strivacity.com/reference/createapplicationassignment-1.md): You can assign a client to an API security policy by calling this endpoint. Only available clients can be assigned.  | REQUIRED API PERMISSION | |:------------------------| | write:config_api_access |
+- [Delete an API security policy assignment](https://docs.strivacity.com/reference/deleteapplicationassignmentfromapiaccesspolicy-1.md): You can delete an API security policy assignment by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | write:config_api_access |
+- [Get an API security policy assignment](https://docs.strivacity.com/reference/getapiaccesspolicyassignmentbyclientid-1.md): You can get an API security policy assignment for a given client ID by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:config_api_access |
+- [Update an API security policy assignment](https://docs.strivacity.com/reference/updateapplicationassignment-1.md): You can update an API security policy assignment by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | write:config_api_access |
+- [Create a scope for an API security policy](https://docs.strivacity.com/reference/createscope-1.md): You can create a scope for an API security policy by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | write:config_api_access |
+- [Delete a scope for an API security policy](https://docs.strivacity.com/reference/deletescope-1.md): You can delete a scope for an API security policy by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | write:config_api_access |
+- [Get a scope for an API security policy](https://docs.strivacity.com/reference/getscope-1.md): You can get a scope for an API security policy by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:config_api_access |
+- [Update a scope for an API security policy](https://docs.strivacity.com/reference/updatescope-1.md): You can update a scope for an API security policy by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | write:config_api_access |
+- [List applications](https://docs.strivacity.com/reference/getallapplicationconfigs-1.md): You can list the existing applications by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:config_application |
+- [Create an application](https://docs.strivacity.com/reference/createapplicationconfig-1.md): You can create an application by calling this endpoint. Inactivity timeout is calculated by `inactivityTimeoutHours` * 60 + `inactivityTimeoutMinutes`  | REQUIRED API PERMISSION | |:------------------------| | write:config_application |
+- [Delete an application](https://docs.strivacity.com/reference/deleteapplicationconfig-1.md): You can delete an application by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | delete:config_application |
+- [Get an application](https://docs.strivacity.com/reference/getapplicationconfig-1.md): You can get an application by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:config_application |
+- [Update an application](https://docs.strivacity.com/reference/updateapplicationconfig-1.md): You can update an application by calling this endpoint. The application type cannot be altered.  | REQUIRED API PERMISSION | |:------------------------| | write:config_application |
+- [List application clients](https://docs.strivacity.com/reference/getallclients-1.md): You can list the existing application clients by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:config_application |
+- [Create an application client](https://docs.strivacity.com/reference/createclient-1.md): You can create an application client by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | write:config_application |
+- [Delete an application client](https://docs.strivacity.com/reference/deleteapplicationclient-1.md): You can delete an application client by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | write:config_application |
+- [Get an application client](https://docs.strivacity.com/reference/getclient-1.md): You can get an application client by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:config_application |
+- [Update an application client](https://docs.strivacity.com/reference/updateclient-1.md): You can update an application client by calling this endpoint. The `name` and `loginUrl` fields for SSP clients cannot be altered.  | REQUIRED API PERMISSION | |:------------------------| | write:config_application |
+- [Get SAML2 metadata for an application client](https://docs.strivacity.com/reference/getsaml2metadatadescriptor-1.md): You can get the SAML2 metadata for an application client by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:config_application |
+- [List token exchange claim mapping function logs](https://docs.strivacity.com/reference/gettokenexchangeclaimmappinglogs.md): You can list the token exchange claim mapping function logs by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:config_application |
+- [Get the token exchange claim mapping function log](https://docs.strivacity.com/reference/gettokenexchangeeventhooklogbyid.md): You can get the token exchange claim mapping function log by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:config_application |
+- [Get status of the token exchange claim mapping function](https://docs.strivacity.com/reference/gettokenexchangestatus.md): You an get the status of the token exchange claim mapping function by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:config_application |
+- [List variants](https://docs.strivacity.com/reference/applicationvariants-1.md): You can list all the existing variants grouped by applications.  | REQUIRED API PERMISSION | |:------------------------| | read:config_application |
+- [List application config A/B testing variants](https://docs.strivacity.com/reference/listvariants-1.md): You can list the existing variants of an application by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:config_application |
+- [Create an application config A/B testing variant](https://docs.strivacity.com/reference/createvariant-1.md): You can create a variant by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | write:config_application |
+- [Update the order of application config A/B testing variants](https://docs.strivacity.com/reference/reordervariants-1.md): You can reorder variants by calling this endpoint. Request body should contain the existing resource IDs in the desired order.  | REQUIRED API PERMISSION | |:------------------------| | write:config_application |
+- [Delete an application config A/B testing variant](https://docs.strivacity.com/reference/deletevariant-1.md): You can delete a variant by calling this endpoint  | REQUIRED API PERMISSION | |:------------------------| | delete:config_application |
+- [Get an application config A/B testing variant](https://docs.strivacity.com/reference/getvariant-1.md): You can get a variant by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:config_application |
+- [Update an application config A/B testing variant](https://docs.strivacity.com/reference/updatevariant-1.md): You can update a variant by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | write:config_application |
+- [List audit logs](https://docs.strivacity.com/reference/list_6.md): You can list the audit logs by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:admin_event_audit |
+- [Create a variable](https://docs.strivacity.com/reference/create_5.md): You can create a variable by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | write:config_admin_variable |
+- [Delete an event streaming configuration](https://docs.strivacity.com/reference/delete_7.md): You can delete an event streaming configuration by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | write:config_instance |
+- [Get an event streaming configuration](https://docs.strivacity.com/reference/getbyid.md): You can get an event streaming configuration by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:config_instance |
+- [Update an event streaming configuration](https://docs.strivacity.com/reference/update_5.md): You can update an event streaming configuration by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | write:config_instance |
+- [Test an event streaming configuration](https://docs.strivacity.com/reference/sendtestevent-1.md): You can test an event streaming configuration by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | write:config_instance |
+- [List available scopes](https://docs.strivacity.com/reference/getscopes-1.md): You can list the available scopes for a role by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:config_identity_store |
+- [List branding policies](https://docs.strivacity.com/reference/getbrands-1.md): You can list the existing branding policies by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:config_brand |
+- [Create a branding policy](https://docs.strivacity.com/reference/createbrand-1.md): You can create a branding policy by calling this endpoint. Primary and background colors are valid colors in hexadecimal format. For the additional content, either the `html` or the `link` field should be provided.  | REQUIRED API PERMISSION | |:------------------------| | write:config_brand |
+- [Delete a branding policy](https://docs.strivacity.com/reference/deletebrandbyid-1.md): You can delete a branding policy by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | delete:config_brand |
+- [Get a branding policy](https://docs.strivacity.com/reference/getbrand-1.md): You can get a branding policy by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:config_brand |
+- [Update a branding policy](https://docs.strivacity.com/reference/updatebrand-1.md): You can update a branding policy by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | write:config_brand |
+- [List bridge policies](https://docs.strivacity.com/reference/list_1-1.md): You can list bridge policies by calling this endpoint  | REQUIRED API PERMISSION | |:------------------------| | read:config_application |
+- [Create an identity verification step](https://docs.strivacity.com/reference/create_1-1.md): You can create an identity verification step by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | write:config_identity_proofing |
+- [Update the order of bridge policy resources](https://docs.strivacity.com/reference/reorder-1.md): You can reorder resources by calling this endpoint. Request body should contain the existing resource IDs in the desired order.  | REQUIRED API PERMISSION | |:------------------------| | write:config_application |
+- [Delete a bridge policy resource](https://docs.strivacity.com/reference/delete_1-1.md): You can delete a bridge resource policy by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | write:config_application |
+- [Get a bridge policy resource](https://docs.strivacity.com/reference/get_1.md): You can get a bridge policy resource by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:config_application |
+- [Update a bridge policy resource](https://docs.strivacity.com/reference/update_1.md): You can update a bridge policy resource by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | write:config_application |
+- [List a bridge policy resources](https://docs.strivacity.com/reference/list-1.md): You can list bridge policy resources by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:config_application |
+- [Create a bridge policy resource](https://docs.strivacity.com/reference/create-1.md): You can create a bridge policy resource by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | write:config_application |
+- [Delete a bridge policy](https://docs.strivacity.com/reference/delete-1.md): You can delete a bridge policy by calling this endpoint  | REQUIRED API PERMISSION | |:------------------------| | write:config_application |
+- [Get a bridge policy](https://docs.strivacity.com/reference/get-1.md): You can get a bridge policy by calling this endpoint  | REQUIRED API PERMISSION | |:------------------------| | read:config_application |
+- [Update a bridge policy](https://docs.strivacity.com/reference/update-1.md): You can update a bridge policy by calling this endpoint  | REQUIRED API PERMISSION | |:------------------------| | write:config_application |
+- [Query if there is a running bulk operation](https://docs.strivacity.com/reference/isrunning-1.md): | REQUIRED API PERMISSION | |:------------------------| | read:admin_bulk_operation |
+- [Create a bulk operation job](https://docs.strivacity.com/reference/createjob-1.md): By calling this endpoint you can create a bulk operation job, the endpoint responds with the id of the created job.  | REQUIRED API PERMISSION | |:------------------------| | write:admin_bulk_operation |
+- [Get status of a job](https://docs.strivacity.com/reference/getjobstatus-1.md): By calling this endpoint you can get the status of a job.  | REQUIRED API PERMISSION | |:------------------------| | read:admin_bulk_operation |
+- [Get errors for a job](https://docs.strivacity.com/reference/errors-1.md): By calling this endpoint you can get a list of errors for a given job.  | REQUIRED API PERMISSION | |:------------------------| | read:admin_bulk_operation |
+- [List claims](https://docs.strivacity.com/reference/getclaims-1.md): You can list the existing claims of a dialect by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:config_claim |
+- [Create a claim](https://docs.strivacity.com/reference/createclaim-1.md): You can create a claim for a dialect by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | write:config_claim |
+- [Delete a claim](https://docs.strivacity.com/reference/deleteclaimbyid-1.md): You can delete a claim for a dialect by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | delete:config_claim |
+- [Get a claim](https://docs.strivacity.com/reference/getclaim-1.md): You can get a claim of a dialect by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:config_claim |
+- [Update a claim](https://docs.strivacity.com/reference/updateclaim-1.md): You can update a claim for a dialect by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | write:config_claim |
+- [List consents](https://docs.strivacity.com/reference/getallconsents-1.md): You can list the existing consents by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:config_consent |
+- [Create a consent](https://docs.strivacity.com/reference/createconsent-1.md): You can create a consent by calling this endpoint. The version of the new consent must be 1.  | REQUIRED API PERMISSION | |:------------------------| | write:config_consent |
+- [Get a consent](https://docs.strivacity.com/reference/getconsentbyid-1.md): You can get a consent by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:config_consent |
+- [Update a consent](https://docs.strivacity.com/reference/updateconsent-1.md): You can update a consent by calling this endpoint. The consent version must be unchanged or incremented by one.  | REQUIRED API PERMISSION | |:------------------------| | write:config_consent |
+- [List dialects](https://docs.strivacity.com/reference/getdialects-1.md): You can list the existing dialects by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:config_claim |
+- [Create a dialect](https://docs.strivacity.com/reference/createdialect-1.md): You can create a dialect by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | write:config_claim |
+- [Delete a dialect](https://docs.strivacity.com/reference/deletedialectbyid-1.md): You can delete a dialect by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | delete:config_claim |
+- [Get a dialect](https://docs.strivacity.com/reference/getdialect-1.md): You can get a dialect by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:config_claim |
+- [Update a dialect](https://docs.strivacity.com/reference/updatedialect-1.md): You can update a dialect by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | write:config_claim |
+- [Get active email service provider](https://docs.strivacity.com/reference/getactiveproviderid.md): You can get active email service provider by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:config_admin_email_service_provider |
+- [Set active email service provider](https://docs.strivacity.com/reference/setactiveproviderid.md): You can set active email service provider by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | write:config_admin_email_service_provider |
+- [List email service providers](https://docs.strivacity.com/reference/reademailproviders.md): You can list existing email service providers by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:config_admin_email_service_provider |
+- [Create email service provider](https://docs.strivacity.com/reference/createemailproviders.md): You can create the existing email service provider by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | write:config_admin_email_service_provider |
+- [Delete email service provider](https://docs.strivacity.com/reference/deleteemailprovider.md): You can delete existing email service provider by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | delete:config_admin_email_service_provider |
+- [Get email service provider](https://docs.strivacity.com/reference/reademailprovider.md): You can get existing email service provider by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:config_admin_email_service_provider |
+- [Update email service provider](https://docs.strivacity.com/reference/updateemailprovider.md): You can update existing email service provider by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | write:config_admin_email_service_provider |
+- [List available native claims](https://docs.strivacity.com/reference/getnotassignednativeclaims_1.md): You can list the available native claims for an enterprise login provider by calling this endpoint. A native claim is listed if it's not assigned to an enterprise login provider. A native claim with name `id` will not be listed.  | REQUIRED API PERMISSION | |:------------------------| | read:config_login_provider |
+- [List claim mappings](https://docs.strivacity.com/reference/getenterpriseloginmappings-1.md): You can list the claim mappings for an enterprise login provider by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:config_login_provider |
+- [Create a claim mapping](https://docs.strivacity.com/reference/createenterpriseloginmapping-1.md): You can create a mapping to a native claim for an enterprise login provider by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | write:config_login_provider |
+- [Delete claim mapping](https://docs.strivacity.com/reference/delete_3.md): You can delete a claim mapping for a social login provider by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | delete:config_login_provider |
+- [Get a claim mapping](https://docs.strivacity.com/reference/getenterpriseloginmapping-1.md): You can get a claim mapping for an enterprise login provider by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:config_login_provider |
+- [Update claim mapping](https://docs.strivacity.com/reference/updategenericoidcmapping-1.md): You can update a claim mapping for an enterprise login provider by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | write:config_login_provider |
+- [List enterprise login providers](https://docs.strivacity.com/reference/getenterpriseloginproviders-1.md): You can list the enterprise login providers by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:config_login_provider |
+- [Create an enterprise login provider](https://docs.strivacity.com/reference/createenterpriseloginprovider-1.md): You can create an enterprise login provider by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | write:config_login_provider |
+- [Delete an enterprise login provider](https://docs.strivacity.com/reference/deleteenterpriseloginprovider-1.md): You can delete an enterprise login provider by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | delete:config_login_provider |
+- [Get an enterprise login provider](https://docs.strivacity.com/reference/getenterpriseloginprovider-1.md): You can get an enterprise login provider by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:config_login_provider |
+- [Update an enterprise login provider](https://docs.strivacity.com/reference/updateenterpriseloginprovider-1.md): You can update an enterprise login provider by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | write:config_login_provider |
+- [List event streaming configurations](https://docs.strivacity.com/reference/list_4.md): You can list the existing event streaming configurations by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:config_instance |
+- [Create a bridge policy](https://docs.strivacity.com/reference/create_2.md): You can create a bridge policy by calling this endpoint  | REQUIRED API PERMISSION | |:------------------------| | write:config_application |
+- [Get total size in MB](https://docs.strivacity.com/reference/gettotalsize.md): Get total size in MB of all password restrictions.  | REQUIRED API PERMISSION | |:------------------------| | read:config_password_policy |
+- [Delete a password word restriction](https://docs.strivacity.com/reference/delete_2.md): You can delete a password word restriction by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | write:config_password_policy |
+- [Get a web analytics integration](https://docs.strivacity.com/reference/get_3.md): You can get a web analytics integration by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:config_instance_webanalytics |
+- [Update a password word restriction](https://docs.strivacity.com/reference/update_2.md): You can update a password word restriction by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | write:config_password_policy |
+- [Export a password restriction](https://docs.strivacity.com/reference/export_1.md): You can export a password restriction by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:config_password_policy |
+- [List groups](https://docs.strivacity.com/reference/getgroups-1.md): You can list the existing groups by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:config_identity_store |
+- [Create a group](https://docs.strivacity.com/reference/creategroup-1.md): You can create a group by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | write:config_identity_store |
+- [Delete a group](https://docs.strivacity.com/reference/deletegroup-1.md): You can delete a group by calling this endpoint. Groups that have members cannot be deleted.  | REQUIRED API PERMISSION | |:------------------------| | write:config_identity_store |
+- [Get a group](https://docs.strivacity.com/reference/getgroup-1.md): You can get a group by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:config_identity_store |
+- [Update a group](https://docs.strivacity.com/reference/updategroup-1.md): You can update a group by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | write:config_identity_store |
+- [List API security policy assignments for a group](https://docs.strivacity.com/reference/listgroupapiaccesspolicyassignments-1.md): You can list existing API security policy assignments for a given group ID by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:config_identity_store |
+- [Assign API security policy to a group](https://docs.strivacity.com/reference/creategroupapiaccesspolicyassignment-1.md): You can assign an API security policy and its scopes to a group by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | write:config_identity_store |
+- [Delete a group API security policy assignment](https://docs.strivacity.com/reference/deletegroupapiaccesspolicyassignment-1.md): You can delete a group API security policy assignment by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | write:config_identity_store |
+- [Get API security policy assignment for a group](https://docs.strivacity.com/reference/getgroupapiaccesspolicyassignment-1.md): You can get an API security policy assignment for a given group ID by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:config_identity_store |
+- [Update assigned scopes](https://docs.strivacity.com/reference/updategroupapiaccesspolicyassignment-1.md): You can update the scopes of an API security policy group assignment by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | write:config_identity_store |
+- [List group members](https://docs.strivacity.com/reference/listgroupmembers-1.md): You can list the existing group members by calling this endpoint. To use this endpoint, both `read:config_identity_store` and `read:account` scopes should be granted.  | REQUIRED API PERMISSION | |:------------------------| | read:config_identity_store | | read:account |
+- [Add member to a group](https://docs.strivacity.com/reference/addgroup.md): You can add a member to a group by calling this endpoint. To use this endpoint, both `read:config_identity_store` and `write:account` scopes should be granted.  | REQUIRED API PERMISSION | |:------------------------| | read:config_identity_store | | write:account |
+- [Remove member from a group](https://docs.strivacity.com/reference/removegroup.md): You can remove a member from a group by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | write:account |
+- [List identity stores](https://docs.strivacity.com/reference/getidentitystores-1.md): You can list the existing identity stores by calling this endpoint. Keep in mind that the `policyTags` query param is ignored when using this endpoint without the `read:config_identity_store` scope.  | REQUIRED API PERMISSION | |:------------------------| | read:config_identity_store |
+- [Create an identity store](https://docs.strivacity.com/reference/createidentitystore-1.md): You can create an identity store by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | write:config_identity_store |
+- [Delete an identity store](https://docs.strivacity.com/reference/deleteidentitystorebyname-1.md): You can delete an identity store by calling this endpoint. When you try to delete an identity store that's still in use (assigned to an application, contains identities or pending invitations), this endpoint will return a 409 Conflict response.   | REQUIRED API PERMISSION | |:------------------------| | delete:config_identity_store |
+- [Get an identity store](https://docs.strivacity.com/reference/getidentitystore-1.md): You can get an identity store by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:config_identity_store |
+- [Update an identity store](https://docs.strivacity.com/reference/updateidentitystore-1.md): You can update an identity store by calling this endpoint. The request path and body should contain the same name for a successful update. The name of an identity store cannot be altered.  | REQUIRED API PERMISSION | |:------------------------| | write:config_identity_store |
+- [List available native claims](https://docs.strivacity.com/reference/getavailablenativeclaims-1.md): You can list the available native claims of an identity store by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:config_identity_store |
+- [List native claim mappings](https://docs.strivacity.com/reference/getnativeclaimmappings-1.md): You can list the current native claim mappings of an identity store by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:config_identity_store |
+- [List identity verifications](https://docs.strivacity.com/reference/getaccountproofing-1.md): You can list the existing identity verifications by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:account_proofing |
+- [Create an identity verification](https://docs.strivacity.com/reference/addaccountproofing-1.md): You can create an identity verification for an account by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | write:account_proofing |
+- [Delete attempts for an identity verification](https://docs.strivacity.com/reference/deleteaccountproofingfailures-1.md): You can delete the attempts for an identity verification by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | delete:account_proofing |
+- [Invalidate an identity verification](https://docs.strivacity.com/reference/invalidateaccountproofing-1.md): You can invalidate an identity verification by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | write:account_proofing |
+- [List identity verification policies](https://docs.strivacity.com/reference/getallidentityproofings-1.md): You can list the existing identity verification policies by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:config_identity_proofing |
+- [Create an identity verification policy](https://docs.strivacity.com/reference/createidentityproofing-1.md): You can create an identity verification policy by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | write:config_identity_proofing |
+- [Delete an identity verification policy](https://docs.strivacity.com/reference/deleteidentityproofingbyid-1.md): You can delete an identity verification policy by calling this endpoint. Identity verification policies assigned to applications cannot be deleted.  | REQUIRED API PERMISSION | |:------------------------| | delete:config_identity_proofing |
+- [Get an identity verification policy](https://docs.strivacity.com/reference/getidentityproofingbyid-1.md): You can get an identity verification policy by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:config_identity_proofing |
+- [Update an identity verification policy](https://docs.strivacity.com/reference/updateidentityproofing-1.md): You can update an identity verification policy by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | write:config_identity_proofing |
+- [List identity verification steps](https://docs.strivacity.com/reference/findall.md): You can list the existing identity verification steps by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:config_identity_proofing |
+- [Create a role](https://docs.strivacity.com/reference/create_7.md): You can create a role by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | write:config_identity_store |
+- [Reorder verification steps](https://docs.strivacity.com/reference/reorder.md): You can reorder verification steps by calling this endpoint. Request body should contain the existing verification step IDs in the desired order.  | REQUIRED API PERMISSION | |:------------------------| | write:config_identity_proofing |
+- [Delete an identity verification step](https://docs.strivacity.com/reference/deletebyid.md): You can delete an identity verification step by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | write:config_identity_proofing |
+- [Get an identity verification step](https://docs.strivacity.com/reference/findbyid.md): You can get an identity verification step by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:config_identity_proofing |
+- [Update an identity verification step](https://docs.strivacity.com/reference/update_7.md): You can update an identity verification step by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | write:config_identity_proofing |
+- [List inbound connections](https://docs.strivacity.com/reference/listinboundconnections.md): List the existing inbound connections of an identity store.  | REQUIRED API PERMISSION | |:------------------------| | read:config_inbound_connection |
+- [Create an inbound connection](https://docs.strivacity.com/reference/createinboundconnection.md): Create an inbound connection for an identity store.  | REQUIRED API PERMISSION | |:------------------------| | write:config_inbound_connection |
+- [Delete an inbound connection](https://docs.strivacity.com/reference/deleteinboundconnection.md): Delete an inbound connection from an identity store.  | REQUIRED API PERMISSION | |:------------------------| | delete:config_inbound_connection |
+- [Get an inbound connection](https://docs.strivacity.com/reference/getinboundconnection.md): Get an inbound connection by its ID.  | REQUIRED API PERMISSION | |:------------------------| | read:config_inbound_connection |
+- [Update an inbound connection](https://docs.strivacity.com/reference/updateinboundconnection.md): Update an inbound connection for an identity store.  | REQUIRED API PERMISSION | |:------------------------| | write:config_inbound_connection |
+- [Forces a sync for inbound connection](https://docs.strivacity.com/reference/inboundconnectionfullsync.md): Forces a sync for inbound connection  | REQUIRED API PERMISSION | |:------------------------| | write:config_inbound_connection |
+- [Get instance config](https://docs.strivacity.com/reference/getinstanceconfig-1.md): You can get the instance configuration by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:config_instance |
+- [Update instance config](https://docs.strivacity.com/reference/updateinstanceconfig-1.md): You can update the instance configuration by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | write:config_instance |
+- [Get instance address](https://docs.strivacity.com/reference/getinstanceaddress-1.md): You can get the instance address by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:config_instance | | read:config_application |
+- [List lifecycle event hooks](https://docs.strivacity.com/reference/getalleventhookfunctions-1.md): You can list the existing lifecycle event hooks by calling this endpoint. Keep in mind that the `policyTags` query param is ignored when the `hook` query param is sent.  | REQUIRED API PERMISSION | |:------------------------| | read:config_event_hook |
+- [Create a lifecycle event hook](https://docs.strivacity.com/reference/createeventhookfunction-1.md): You can create a lifecycle event hook by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | write:config_event_hook |
+- [Delete a lifecycle event hook](https://docs.strivacity.com/reference/deleteeventhookfunction-1.md): You can delete a lifecycle event hook by calling this endpoint. If lifecycle event hook is assigned then cannot be deleted.  | REQUIRED API PERMISSION | |:------------------------| | delete:config_event_hook |
+- [Get a lifecycle event hook](https://docs.strivacity.com/reference/geteventhookfunctionbyid-1.md): You can get a lifecycle event hook by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:config_event_hook |
+- [Update a lifecycle event hook](https://docs.strivacity.com/reference/updateeventhookfunction-1.md): You can update a lifecycle event hook by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | write:config_event_hook |
+- [Deploy a lifecycle event hook](https://docs.strivacity.com/reference/deployeventhookfunction-1.md): You can deploy a lifecycle event hook by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | write:config_event_hook |
+- [Get status of a lifecycle event hook](https://docs.strivacity.com/reference/geteventhookfunctionstatusbyid-1.md): You an get the status of a lifecycle event hook by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:config_event_hook |
+- [List descriptors for event hooks](https://docs.strivacity.com/reference/getalleventhooks-1.md): You can list the possible descriptors for lifecycle event hooks by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:config_event_hook |
+- [List event hook logs](https://docs.strivacity.com/reference/geteventhooklogs.md): You can list the event hook logs by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:event_hook_log |
+- [Get an event hook log](https://docs.strivacity.com/reference/geteventhooklogbyid.md): You can get an event hook log by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:event_hook_log |
+- [Create a tryout function resource](https://docs.strivacity.com/reference/createfunctionresource-1.md): You can create a tryout function resource by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | write:config_event_hook |
+- [Delete a tryout function resource](https://docs.strivacity.com/reference/deletefunctionresource-1.md): You can delete a tryout function resource by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | delete:config_event_hook |
+- [Call a tryout function resource](https://docs.strivacity.com/reference/callfunctionresource-1.md): You can call a tryout function resource by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | write:config_event_hook |
+- [List native claims](https://docs.strivacity.com/reference/getallnativeclaims-1.md): You can list the existing native claims by calling this endpoint.
+- [Create a native claim](https://docs.strivacity.com/reference/createnativeclaim-1.md): You can create a native claim by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | write:config_claim |
+- [Delete a native claim](https://docs.strivacity.com/reference/deletenativeclaim-1.md): You can delete a native claim by calling this endpoint. Native claims assigned to account attributes cannot be deleted.  | REQUIRED API PERMISSION | |:------------------------| | delete:config_claim |
+- [Get a native claim](https://docs.strivacity.com/reference/getnativeclaim-1.md): You can get a native claim by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:config_claim |
+- [Update a native claim](https://docs.strivacity.com/reference/updatenativeclaim-1.md): You can update a native claim by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | write:config_claim |
+- [List notification policies](https://docs.strivacity.com/reference/getnotificationpolicies-1.md): You can list the existing notification policies by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:config_notification_policy |
+- [Create a notification policy](https://docs.strivacity.com/reference/createnotificationpolicy-1.md): You can create a notification policy by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | write:config_notification_policy |
+- [Delete a notification policy](https://docs.strivacity.com/reference/deletenotificationpolicy-1.md): You can delete a notification policy by calling this endpoint. Notification policies assigned to applications or organization assignments cannot be deleted.  | REQUIRED API PERMISSION | |:------------------------| | delete:config_notification_policy |
+- [Get a notification policy](https://docs.strivacity.com/reference/getnotificationpolicy-1.md): You can get a notification policy by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:config_notification_policy |
+- [Update a notification policy](https://docs.strivacity.com/reference/updatenotificationpolicy-1.md): You can update a notification policy by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | write:config_notification_policy |
+- [List descriptors for notification preferences](https://docs.strivacity.com/reference/getnotificationpreferencesdescriptor.md): You can list the possible descriptors for notification preferences by calling this endpoint.
+- [Update a notification template (email)](https://docs.strivacity.com/reference/updatenotificationtemplateemail-1.md): You can update a notification template for an email type and ID by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | write:config_notification_policy |
+- [Update a notification template (SMS)](https://docs.strivacity.com/reference/updatenotificationtemplatesms.md): You can update a notification template for an SMS type and ID by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | write:config_notification_policy |
+- [List notification templates](https://docs.strivacity.com/reference/getnotificationtemplateparameters-1.md): You can list the existing notification templates by a notification type with this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:config_notification_policy |
+- [Get a notification template](https://docs.strivacity.com/reference/getnotificationtemplate-1.md): You can get a notification template by a notification type and ID with this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:config_notification_policy |
+- [List NPM dependency versions](https://docs.strivacity.com/reference/getpackage-1.md): You can list the versions for an NPM dependency by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:config_event_hook | | read:config_journey | | read:config_custom_mfa |
+- [Filter for NPM dependency suggestions for a lifecycle event hook](https://docs.strivacity.com/reference/getsuggestions-1.md): You can filter for NPM dependency suggestions for a lifecycle event hook by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:config_event_hook | | read:config_journey | | read:config_custom_mfa |
+- [List organizations](https://docs.strivacity.com/reference/getorganizations-1.md): You can list the existing organizations by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:config_identity_store |
+- [Create an organization](https://docs.strivacity.com/reference/createorganization-1.md): You can create an organization by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | write:config_identity_store |
+- [Delete an organization](https://docs.strivacity.com/reference/deleteorganization-1.md): You can delete an organization by calling this endpoint. Organizations assigned to applications, organizations with accounts or roles in it, and parent organizations cannot be deleted.  | REQUIRED API PERMISSION | |:------------------------| | write:config_identity_store |
+- [Get an organization](https://docs.strivacity.com/reference/getorganization-1.md): You can get an organization by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:config_identity_store |
+- [Update an organization](https://docs.strivacity.com/reference/updateorganization-1.md): You can update an organization by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | write:config_identity_store |
+- [List organization policies](https://docs.strivacity.com/reference/getorganizationpolicies-1.md): You can list the existing organization policies for an application by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:config_application |
+- [Create an organization policy](https://docs.strivacity.com/reference/createorganizationpolicy-1.md): You can create an organization policy for an application by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | write:config_application |
+- [Delete an organization policy](https://docs.strivacity.com/reference/deleteorganizationpolicy-1.md): You can delete an organization policy for an application by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | write:config_application |
+- [Get an organization policy](https://docs.strivacity.com/reference/getorganizationpolicy-1.md): You can get an organization policy for an application by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:config_application |
+- [Update an organization policy](https://docs.strivacity.com/reference/updateorganizationpolicy-1.md): You can update an organization policy for an application by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | write:config_application |
+- [List outbound provisions](https://docs.strivacity.com/reference/listoutboundprovisions.md): List the existing outbound provisions of an identity store.  | REQUIRED API PERMISSION | |:------------------------| | read:config_identity_store |
+- [Create an outbound provision](https://docs.strivacity.com/reference/createoutboundprovision.md): Create an outbound provision for an identity store.  | REQUIRED API PERMISSION | |:------------------------| | write:config_identity_store |
+- [Delete an outbound provision](https://docs.strivacity.com/reference/deleteoutboundprovision.md): Delete an outbound provision from an identity store.  | REQUIRED API PERMISSION | |:------------------------| | write:config_identity_store |
+- [Get an outbound provision](https://docs.strivacity.com/reference/getoutboundprovision.md): Get an outbound provision by its ID.  | REQUIRED API PERMISSION | |:------------------------| | read:config_identity_store |
+- [Update an outbound provision](https://docs.strivacity.com/reference/updateoutboundprovision.md): Update an outbound provision for an identity store.  | REQUIRED API PERMISSION | |:------------------------| | write:config_identity_store |
+- [List provision function logs](https://docs.strivacity.com/reference/getprovisionfunctionlogs.md): You can list the provision function logs by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:config_identity_store |
+- [Get the provision function log](https://docs.strivacity.com/reference/getprovisionfunctionlog.md): You can get the provision function log by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:config_identity_store |
+- [Get status of the provision function](https://docs.strivacity.com/reference/getprovisionstatus.md): You an get the status of the provision function by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:config_identity_store |
+- [Full resync an outbound provision](https://docs.strivacity.com/reference/syncoutboundprovision.md): Trigger a full resync for an outbound provision target. This will re-apply the provisioning logic to all accounts in the identity store.  | REQUIRED API PERMISSION | |:------------------------| | write:config_identity_store |
+- [List password quality policies](https://docs.strivacity.com/reference/getallpasswordpolicies-1.md): You can list the existing password quality policies by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:config_password_policy |
+- [Create a password quality policy](https://docs.strivacity.com/reference/createpasswordpolicy-1.md): You can create a password quality policy by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | write:config_password_policy |
+- [Delete a password quality policy](https://docs.strivacity.com/reference/deletepasswordpolicy-1.md): You can delete a password quality policy by calling this endpoint. Password quality policies assigned to identity stores cannot be deleted.  | REQUIRED API PERMISSION | |:------------------------| | delete:config_password_policy |
+- [Get a password quality policy](https://docs.strivacity.com/reference/getpasswordpolicy-1.md): You can get a password quality policy by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:config_password_policy |
+- [Update a password quality policy](https://docs.strivacity.com/reference/updatepasswordpolicy-1.md): You can update a password quality policy by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | write:config_password_policy |
+- [Download account information](https://docs.strivacity.com/reference/getpersonaldata-1.md): You can download the account information in HTML or JSON format by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:account_download |
+- [Get categories for plugin library](https://docs.strivacity.com/reference/getcategories-1.md): You can get the available categories by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:config_event_hook | | read:config_journey |
+- [Get snippets by hook type](https://docs.strivacity.com/reference/getsnippets-1.md): You can get snippets for a specific hook type by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:config_event_hook |
+- [Get snippet code](https://docs.strivacity.com/reference/getsnippetcode-1.md): You can get snippet code by defining the hook type and snippet ID.  | REQUIRED API PERMISSION | |:------------------------| | read:config_event_hook |
+- [Get plugin library for lifecycle event hooks](https://docs.strivacity.com/reference/geteventhooks-1.md): You can get the integrations for lifecycle event hooks by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:config_event_hook |
+- [Get an integration for lifecycle event hook](https://docs.strivacity.com/reference/geteventhookintegration-1.md): You can get an integration by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:config_event_hook |
+- [Get plugin library for journeys](https://docs.strivacity.com/reference/getjourneys-1.md): You can get the integrations for journeys by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:config_journey |
+- [Get an integration for journey](https://docs.strivacity.com/reference/getjourneyintegration-1.md): You can get an integration by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:config_journey |
+- [List password word restrictions](https://docs.strivacity.com/reference/list_2.md): You can list the existing password word restrictions by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:config_password_policy |
+- [Get a password word restriction](https://docs.strivacity.com/reference/get_2.md): You can get a password word restriction by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:config_password_policy |
+- [List roles](https://docs.strivacity.com/reference/list_5.md): You can list the existing roles by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:config_identity_store |
+- [Create a password word restriction](https://docs.strivacity.com/reference/create_3.md): You can create a password word restriction by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | write:config_password_policy |
+- [Delete a web analytics integration](https://docs.strivacity.com/reference/delete_5.md): You can delete a web analytics integration by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | delete:config_instance_webanalytics |
+- [Get a variable](https://docs.strivacity.com/reference/get_4.md): You can get a variable by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:config_admin_variable |
+- [Update a web analytics integration](https://docs.strivacity.com/reference/update_3.md): You can update a web analytics integration by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | write:config_instance_webanalytics |
+- [List self-service policies](https://docs.strivacity.com/reference/getselfservicepolicies-1.md): You can list the existing self-service policies by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:config_self_service_policy |
+- [Create a self-service policy](https://docs.strivacity.com/reference/createselfservicepolicy-1.md): You can create a self-service policy by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | write:config_self_service_policy |
+- [Delete a self-service policy](https://docs.strivacity.com/reference/deleteselfservicepolicybyid-1.md): You can delete a self-service policy by calling this endpoint. Self-service policies assigned to applications or organization assignments cannot be deleted.  | REQUIRED API PERMISSION | |:------------------------| | delete:config_self_service_policy |
+- [Get a self-service policy](https://docs.strivacity.com/reference/getselfservicepolicy-1.md): You can get a self-service policy by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:config_self_service_policy |
+- [Update a self-service policy](https://docs.strivacity.com/reference/updateselfservicepolicy-1.md): You can update a self-service policy by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | write:config_self_service_policy |
+- [List available native claims](https://docs.strivacity.com/reference/getnotassignednativeclaims-1.md): You can list the available native claims for a social login provider by calling this endpoint. A native claim is listed if it's not assigned to a social login provider. A native claim with name `id` will not be listed.  | REQUIRED API PERMISSION | |:------------------------| | read:config_login_provider |
+- [List claim mappings](https://docs.strivacity.com/reference/getsocialmappings-1.md): You can list the claim mappings for a social login provider by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:config_login_provider |
+- [Create a claim mapping](https://docs.strivacity.com/reference/createsocialmapping-1.md): You can create a mapping to a native claim for a social login provider by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | write:config_login_provider |
+- [Delete claim mapping](https://docs.strivacity.com/reference/delete_4.md): You can delete a claim mapping for an enterprise login provider by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | delete:config_login_provider |
+- [Get a claim mapping](https://docs.strivacity.com/reference/getsocialmapping-1.md): You can get a claim mapping for a social login provider by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:config_login_provider |
+- [Update claim mapping](https://docs.strivacity.com/reference/updatesocialmapping-1.md): You can update a claim mapping for a social login provider by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | write:config_login_provider |
+- [List social login providers](https://docs.strivacity.com/reference/getloginproviders-1.md): You can list the existing social login providers by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:config_login_provider |
+- [Create a social login provider](https://docs.strivacity.com/reference/createloginprovider-1.md): You can create a social login provider by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | write:config_login_provider |
+- [Delete a social login provider](https://docs.strivacity.com/reference/deleteloginprovider-1.md): You can delete a social login provider by calling this endpoint. Social login providers assigned to applications or organization assignments cannot be deleted.  | REQUIRED API PERMISSION | |:------------------------| | delete:config_login_provider |
+- [Get a social login provider](https://docs.strivacity.com/reference/getloginprovider-1.md): You can get a social login provider by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:config_login_provider |
+- [Update a social login provider](https://docs.strivacity.com/reference/updateloginprovider-1.md): You can update a social login provider by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | write:config_login_provider |
+- [Query active account statistics](https://docs.strivacity.com/reference/queryactiveaccountsstatistics-1.md): You can query the active account statistics by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:statistic |
+- [Query connector uptime statistics](https://docs.strivacity.com/reference/queryconnectoruptimestatistics-1.md): You can query the connector uptime statistics by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:statistic |
+- [Query consent acceptance statistics](https://docs.strivacity.com/reference/queryconsentacceptancestatistics-1.md): You can query the consent acceptance statistics by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:statistic |
+- [Query statistics](https://docs.strivacity.com/reference/querynamedstatistics-1.md): You can query statistics by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:statistic |
+- [Query connector job statistics [beta]](https://docs.strivacity.com/reference/connectorjobstatistics.md): You can query the connector job statistics by calling this endpoint. This endpoint is subject to change  | REQUIRED API PERMISSION | |:------------------------| | read:statistic |
+- [List telephony service providers](https://docs.strivacity.com/reference/readtelephonyproviders.md): You can list existing telephony service providers by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:config_admin_telephony_service_provider |
+- [Create telephony service provider](https://docs.strivacity.com/reference/createtelephonyproviders-1.md): You can create the existing telephony service provider by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | write:config_admin_telephony_service_provider |
+- [Delete telephony service provider](https://docs.strivacity.com/reference/deletetelephonyprovider-1.md): You can delete existing telephony service provider by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | delete:config_admin_telephony_service_provider |
+- [Get telephony service provider](https://docs.strivacity.com/reference/readtelephonyprovider-1.md): You can get existing telephony service provider by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:config_admin_telephony_service_provider |
+- [Update telephony service provider](https://docs.strivacity.com/reference/updatetelephonyprovider-1.md): You can update existing telephony service provider by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | write:config_admin_telephony_service_provider |
+- [List translations](https://docs.strivacity.com/reference/list_7.md): You can list the translations by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:config_admin_translation | | brand_admin | | api_key |
+- [Create an event streaming configuration](https://docs.strivacity.com/reference/create_6.md): You can create an event streaming configuration by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | write:config_instance |
+- [Delete a role](https://docs.strivacity.com/reference/delete_8.md): You can delete a role by calling this endpoint. Roles assigned to accounts cannot be deleted.  | REQUIRED API PERMISSION | |:------------------------| | write:config_identity_store |
+- [Get an audit log](https://docs.strivacity.com/reference/get_6.md): You can get the audit log for a given ID by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:admin_event_audit |
+- [Update a role](https://docs.strivacity.com/reference/update_6.md): You can update a role by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | write:config_identity_store |
+- [List variables](https://docs.strivacity.com/reference/getall.md): You can list variables by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:config_admin_variable |
+- [Create a web analytics integration](https://docs.strivacity.com/reference/create_4.md): You can create a web analytics integration by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | write:config_instance_webanalytics |
+- [Delete a variable](https://docs.strivacity.com/reference/delete_6.md): You can delete a variable by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | delete:config_admin_variable |
+- [Get a role](https://docs.strivacity.com/reference/get_5.md): You can get a role by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:config_identity_store |
+- [Update a variable](https://docs.strivacity.com/reference/update_4.md): You can update a variable by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | write:config_admin_variable |
+- [List web analytics integrations](https://docs.strivacity.com/reference/list_3.md): You can list the existing web analytics integrations by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:config_instance_webanalytics |
+- [Reset a translation](https://docs.strivacity.com/reference/reset.md): Clears previously imported translations for the language.  | REQUIRED API PERMISSION | |:------------------------| | write:config_admin_translation |
+- [Export a translation](https://docs.strivacity.com/reference/export.md): You can export a translation by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:config_admin_translation |
+- [Import a translation](https://docs.strivacity.com/reference/importtranslation-1.md): You can import a translation by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | write:config_admin_translation |
+- [Disable a translation](https://docs.strivacity.com/reference/disablelanguage-1.md): You can disable a translation by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | write:config_admin_translation |
+- [Enable a translation](https://docs.strivacity.com/reference/enablelanguage-1.md): You can enable a translation by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | write:config_admin_translation |
+- [Get the admin adaptive access policy](https://docs.strivacity.com/reference/getinternaladaptivemfa.md): You can get the admin adaptive access policy by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:config_admin_adaptive_mfa |
+- [Update the admin adaptive access policy](https://docs.strivacity.com/reference/updateinternaladaptivemfa.md): You can update the admin adaptive access policy by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | write:config_admin_adaptive_mfa |
+- [Filter for locations](https://docs.strivacity.com/reference/getadminmfapolicylocation.md): You can search for locations by a prefix with this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:config_admin_adaptive_mfa |
+- [List admin accounts](https://docs.strivacity.com/reference/listaccounts.md): You can list the existing admin accounts by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:admin_account |
+- [Create an admin account](https://docs.strivacity.com/reference/createaccount.md): You can create an admin account by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | write:admin_account |
+- [Delete an admin account](https://docs.strivacity.com/reference/deleteaccountbyid.md): You can delete an admin account by calling this endpoint. Admin accounts cannot delete themselves. The last existing admin account cannot be deleted.  | REQUIRED API PERMISSION | |:------------------------| | delete:admin_account |
+- [Get an admin account](https://docs.strivacity.com/reference/getaccountbyid.md): You can get an admin account by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:admin_account |
+- [Create authenticator for an admin account](https://docs.strivacity.com/reference/addauthenticator.md): You can create an authenticator for an admin account by calling this endpoint. Authenticator type can be either `email` or `phone`.  | REQUIRED API PERMISSION | |:------------------------| | write:admin_account_authenticator |
+- [Delete authenticator for an admin account](https://docs.strivacity.com/reference/deleteauthenticator.md): You can delete an authenticator for an admin account by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | delete:admin_account_authenticator |
+- [Disable an admin account](https://docs.strivacity.com/reference/disableaccount.md): You can disable an admin account by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | write:admin_account |
+- [Download admin account information](https://docs.strivacity.com/reference/getpersonaldata.md): You can download the admin account information in HTML or JSON format by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:admin_account_download |
+- [Enable an admin account](https://docs.strivacity.com/reference/enableaccount.md): You can enable an admin account by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | write:admin_account |
+- [List identities for an admin account](https://docs.strivacity.com/reference/getidentities.md): You can list the existing identities for an admin account by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:admin_account_identity |
+- [Update identifier for an admin account](https://docs.strivacity.com/reference/updateaccountidentifier.md): You can update the identifier for an admin account by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | write:admin_account_identity |
+- [Lift passcode lock for an admin account](https://docs.strivacity.com/reference/liftpasscodelock-1.md): You can lift passcode lock for an admin account by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | write:admin_account |
+- [Lift password lock for an admin account](https://docs.strivacity.com/reference/liftpasswordlock-1.md): You can lift password lock for an admin account by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | write:admin_account |
+- [Change password for an admin account](https://docs.strivacity.com/reference/resetpassword.md): You can change the password for an admin account by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | write:admin_account_authenticator |
+- [Request password reset for an admin account](https://docs.strivacity.com/reference/admininitiatedforgottenpassword.md): You can request a password reset for an admin account by calling this endpoint. A password reset email will be sent to the email address of the corresponding admin account.  | REQUIRED API PERMISSION | |:------------------------| | write:admin_account_authenticator |
+- [Update metadata for an admin account](https://docs.strivacity.com/reference/updatelocalmetadata.md): You can update metadata for an admin account by calling this endpoint. Only the given attributes will be modified. After a successful update, the entire metadata will be returned. Attributes provided with an explicit `null` value won't be overridden by external metadata values.  | REQUIRED API PERMISSION | |:------------------------| | write:admin_account |
+- [Assign multiple roles to an account](https://docs.strivacity.com/reference/addrolestoaccount.md): You can assign one or more roles to an account by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | write:admin_account |
+- [Clear sessions for an admin account](https://docs.strivacity.com/reference/clearaccountdevicesessions.md): You can clear the sessions for an admin account by calling this endpoint. Note that clearing sessions for an admin account results in logging out of all browsers that admin had been logged into previously. This performs a back-channel logout on the specified admin account.  | REQUIRED API PERMISSION | |:------------------------| | write:admin_account |
+- [List sessions for an admin account](https://docs.strivacity.com/reference/getidentifiedaccountdevicesessions.md): You can list the sessions for an admin account by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:admin_account |
+- [Delete session for an admin account](https://docs.strivacity.com/reference/deleteaccountdevicesession.md): You can delete a session for an admin account by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | write:admin_account |
+- [Update notification preferences for an admin account](https://docs.strivacity.com/reference/updateadminaccountnotificationpreferences.md): You can update the notification preferences for an admin account by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | write:admin_account |
+- [List admin account attributes](https://docs.strivacity.com/reference/getallaccountattributes.md): You can list the existing admin account attributes by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:config_admin_identity_store |
+- [List admin account events](https://docs.strivacity.com/reference/getaccountevents.md): You can list the admin account events by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:admin_event_account |
+- [Get an admin account event](https://docs.strivacity.com/reference/getaccounteventbyid.md): You can get an admin account event by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:admin_event_account |
+- [List descriptors for admin account events](https://docs.strivacity.com/reference/getdescriptor.md): You can list the possible descriptors for admin account events by calling this endpoint. Descriptors for admin account events are in the following format: `(failure|success):{eventType}`.  | REQUIRED API PERMISSION | |:------------------------| | read:admin_event_account |
+- [List admin notification events](https://docs.strivacity.com/reference/getnotificationevents.md): You can list the admin notification events by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:admin_event_account |
+- [Get an admin notification event](https://docs.strivacity.com/reference/getnotificationeventbyid.md): You can get an admin notification event by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:admin_event_account |
+- [List admin account invitations](https://docs.strivacity.com/reference/getaccountinvitations.md): You can list the existing admin account invitations by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:admin_account |
+- [Create an admin account invitation](https://docs.strivacity.com/reference/createinvitation.md): You can create an admin account invitation by calling this endpoint. An invite will be sent to the given email address to register a new admin account. If a pending invitation exists with the given email address, the response contains the existing invitation ID. If an admin account exists with the given email address, the invitation will not be sent, because email mismatch is not allowed for admin invites.  | REQUIRED API PERMISSION | |:------------------------| | write:admin_account |
+- [Revoke an admin account invitation](https://docs.strivacity.com/reference/deleteaccountinvitation.md): You can revoke an admin account invitation by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | write:admin_account |
+- [Get an admin account invitation](https://docs.strivacity.com/reference/getaccountinvitation.md): You can get an admin account invitation by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:admin_account |
+- [Resend an admin account invitation](https://docs.strivacity.com/reference/resendinvitation.md): You can resend an admin account invitation by calling this endpoint. Once an invite is sent, the `validUntil` field is updated.  | REQUIRED API PERMISSION | |:------------------------| | write:admin_account |
+- [Get admin API security policy](https://docs.strivacity.com/reference/getadminapiaccesspolicy.md): You can get the admin API security policy by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:config_admin_api_access |
+- [Create a client assignment](https://docs.strivacity.com/reference/createapplicationassignment.md): You can create a client assignment for the admin API security policy by calling this endpoint. A client can only have one assignment.  | REQUIRED API PERMISSION | |:------------------------| | write:config_admin_api_access |
+- [Delete a client assignment](https://docs.strivacity.com/reference/deleteadminapplicationassignmentfromapiaccesspolicy.md): You can delete a client assignment from the admin API security policy by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | delete:config_admin_api_access |
+- [Get a client assignment](https://docs.strivacity.com/reference/getadminapiaccesspolicybyclientid.md): You can get a client assignment to the admin API security policy by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:config_admin_api_access |
+- [Update a client assignment](https://docs.strivacity.com/reference/updateapplicationassignment.md): You can update a client assignment for the admin API security policy by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | write:config_admin_api_access |
+- [List available native claims](https://docs.strivacity.com/reference/getavailablenativeclaims.md): You can list the native claims that are still not assigned to an account attribute.  | REQUIRED API PERMISSION | |:------------------------| | read:config_admin_identity_store |
+- [List native claim mappings](https://docs.strivacity.com/reference/getnativeclaimmappings.md): You can list the native claims with the assigned account attributes.  | REQUIRED API PERMISSION | |:------------------------| | read:config_admin_identity_store |
+- [List available native claims](https://docs.strivacity.com/reference/getnotassignednativeclaims.md): You can list the available native claims for an admin external login provider by calling this endpoint. A native claim is listed if it's not assigned to an external login provider. A native claim with name `id` will not be listed.  | REQUIRED API PERMISSION | |:------------------------| | read:config_admin_login_provider |
+- [List claim mappings](https://docs.strivacity.com/reference/getenterpriseloginmappings.md): You can list the claim mappings for an admin external login provider by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:config_admin_login_provider |
+- [Create a claim mapping](https://docs.strivacity.com/reference/createenterpriseloginmapping.md): You can create a mapping to a native claim for an admin external login provider by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | write:config_admin_login_provider |
+- [Delete claim mapping](https://docs.strivacity.com/reference/delete.md): You can delete a claim mapping for an admin external login provider by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | delete:config_admin_login_provider |
+- [Get a claim mapping](https://docs.strivacity.com/reference/getenterpriseloginmapping.md): You can get a claim mapping for an admin external login provider by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:config_admin_login_provider |
+- [Update claim mapping](https://docs.strivacity.com/reference/updategenericoidcmapping.md): You can update a claim mapping for an admin external login provider by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | write:config_admin_login_provider |
+- [List admin external login providers](https://docs.strivacity.com/reference/getexternalloginproviders.md): You can list the admin external login providers by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:config_admin_login_provider | | read:admin_account | | read:admin_account_identity |
+- [Create an admin external login provider](https://docs.strivacity.com/reference/createexternalloginprovider.md): You can create an admin external login provider by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | write:config_admin_login_provider |
+- [Delete an admin external login provider](https://docs.strivacity.com/reference/deleteexternalloginprovider.md): You can delete an admin external login provider by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | delete:config_admin_login_provider |
+- [Get an admin external login provider](https://docs.strivacity.com/reference/getexternalloginprovider.md): You can get an admin external login provider by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:config_admin_login_provider |
+- [Update an admin external login provider](https://docs.strivacity.com/reference/updateexternalloginprovider.md): You can update an admin external login provider by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | write:config_admin_login_provider |
+- [List descriptors for admin notification preferences](https://docs.strivacity.com/reference/getnotificationpreferencesdescriptor-1.md): You can list the possible descriptors for admin notification preferences by calling this endpoint.
+- [List admin roles](https://docs.strivacity.com/reference/list.md): You can list the existing admin role by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:config_admin_identity_store |
+- [Create an admin role](https://docs.strivacity.com/reference/create.md): You can create an admin role by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | write:config_admin_identity_store |
+- [List scopes](https://docs.strivacity.com/reference/getallscopes.md): You can list the existing scopes by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:config_admin_identity_store |
+- [Delete an admin role](https://docs.strivacity.com/reference/delete_2-1.md): You can delete an admin role by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | write:config_admin_identity_store |
+- [Get an admin role](https://docs.strivacity.com/reference/get_1-1.md): You can get an admin role by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:config_admin_identity_store |
+- [Update an admin role](https://docs.strivacity.com/reference/update_1-1.md): You can update an admin role by calling this endpoint. The default admin role cannot be modified.  | REQUIRED API PERMISSION | |:------------------------| | write:config_admin_identity_store |
+- [List role assignees](https://docs.strivacity.com/reference/listroleassignees.md): You can list the admin role assignees by calling this endpoint. To use this endpoint, both `read:admin_account` and `read:config_identity_store` scopes should be granted.  | REQUIRED API PERMISSION | |:------------------------| | read:admin_account | | read:config_admin_identity_store |
+- [Assign an admin account to a role](https://docs.strivacity.com/reference/assignrole.md): You can assign an admin account to a role by calling this endpoint. To use this endpoint, both `write:admin_account` and `read:config_identity_store` scopes should be granted.  | REQUIRED API PERMISSION | |:------------------------| | write:admin_account | | read:config_admin_identity_store |
+- [Remove an admin account from a role](https://docs.strivacity.com/reference/removerole.md): You can unassign a role from an admin account by calling this endpoint. To use this endpoint, both `write:admin_account` and `read:config_identity_store` scopes should be granted. The Admin role cannot be unassigned from the last admin account.  | REQUIRED API PERMISSION | |:------------------------| | write:admin_account | | read:config_admin_identity_store |
+- [Get admin branding policy](https://docs.strivacity.com/reference/getinternalbrand.md): You can get the admin branding policy by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:config_admin_brand |
+- [Update admin branding policy](https://docs.strivacity.com/reference/updateinternalbrand.md): You can update the admin branding policy by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | write:config_admin_brand |
+- [List custom mfas](https://docs.strivacity.com/reference/list_2-1.md): You can list the existing custom mfas by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:config_custom_mfa | | read:config_admin_adaptive_mfa | | read:config_adaptive_mfa |
+- [Create a custom mfa policy](https://docs.strivacity.com/reference/create_2-1.md): You can create a custom mfa by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | write:config_custom_mfa |
+- [Delete a custom mfa](https://docs.strivacity.com/reference/deleteadaptivemfabyid.md): You can delete a custom mfa by calling this endpoint. Custom mfa assigned to MFA policy assignments cannot be deleted.  | REQUIRED API PERMISSION | |:------------------------| | delete:config_custom_mfa |
+- [Get a custom mfa](https://docs.strivacity.com/reference/getcustommfa.md): You can get a custom mfa by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:config_custom_mfa |
+- [Update a custom mfa](https://docs.strivacity.com/reference/updatecustommfa.md): You can update a custom mfa by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | write:config_custom_mfa |
+- [Get admin notification policy](https://docs.strivacity.com/reference/getadminnotificationpolicy.md): You can get admin notification policy by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:config_admin_notification_policy |
+- [Update admin notification policy](https://docs.strivacity.com/reference/updateadminnotificationpolicy.md): You can update admin notification policy by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | write:config_admin_notification_policy |
+- [Update an admin notification template (email)](https://docs.strivacity.com/reference/updateadminnotificationtemplateemail.md): You can update an admin notification template for an email type and ID by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | write:config_admin_notification_policy |
+- [Update an admin notification template (SMS)](https://docs.strivacity.com/reference/updateadminnotificationtemplatesms.md): You can update an admin notification template for an SMS type and ID by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | write:config_admin_notification_policy |
+- [List admin notification templates](https://docs.strivacity.com/reference/getadminnotificationtemplateparameters.md): You can list the existing admin notification templates by a notification type with this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:config_admin_notification_policy |
+- [Get an admin notification template](https://docs.strivacity.com/reference/getadminnotificationtemplate.md): You can get an admin notification template by a notification type and ID with this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:config_admin_notification_policy |
+- [List policy tags](https://docs.strivacity.com/reference/getalltags.md): You can list the existing policy tags by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:config_admin_policy_tag |
+- [Create a policy tag](https://docs.strivacity.com/reference/createtag.md): You can create a policy tag by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | write:config_admin_policy_tag |
+- [Delete a policy tag](https://docs.strivacity.com/reference/deletetag.md): You can delete a policy tag by calling this endpoint. Assigned policy tags cannot be deleted.  | REQUIRED API PERMISSION | |:------------------------| | delete:config_admin_policy_tag |
+- [Get a policy tag](https://docs.strivacity.com/reference/getpolicytag.md): You can get an existing policy tag by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:config_admin_policy_tag |
+- [Update a policy tag](https://docs.strivacity.com/reference/updatetag.md): You can update a policy tag by calling this endpoint. The name of a policy tag cannot be altered.  | REQUIRED API PERMISSION | |:------------------------| | write:config_admin_policy_tag |
+- [List tag based permissions](https://docs.strivacity.com/reference/list_1.md): You can list the existing tag based permissions for an admin role by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:config_admin_identity_store |
+- [Create tag based permissions for an admin role](https://docs.strivacity.com/reference/create_1.md): You can create tag based permissions for an admin role by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | write:config_admin_identity_store |
+- [Delete a tag based permission entry](https://docs.strivacity.com/reference/delete_1.md): You can delete a tag based permission entry for an admin role by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | write:config_admin_identity_store |
+- [Get a tag based permission entry](https://docs.strivacity.com/reference/get.md): You can get a tag based permission entry for an admin role by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | read:config_admin_identity_store |
+- [Update a tag based permission entry](https://docs.strivacity.com/reference/update.md): You can update a tag based permission entry for an admin role by calling this endpoint.  | REQUIRED API PERMISSION | |:------------------------| | write:config_admin_identity_store |
+- [Enroll an authenticator](https://docs.strivacity.com/reference/addauthenticatorrequest.md): You can enroll authenticator of the authenticated account using this endpoint. This action needs verification. The request should be repeated with X-Challenge header filled with the verification code sent right after the first request.
+- [Delete an authenticator](https://docs.strivacity.com/reference/removeauthenticatorrequest.md): You can delete an authenticator of the authenticated account using this endpoint. This action needs verification. The request should be repeated with X-Challenge header filled with the verification code sent right after the first request.
+- [Update authenticator methods](https://docs.strivacity.com/reference/updateauthenticator.md): You can update the methods of an authenticator of the authenticated account using this endpoint.
+- [List consents](https://docs.strivacity.com/reference/getconsents.md): You can list the consents of the authenticated account by calling this endpoint.  To use this endpoint, the "Allow customers to manage their consents" option must be turned on in the Self-service policy settings.
+- [Accept a consent](https://docs.strivacity.com/reference/optinconsent.md): You can accept a consent for the authenticated account by calling this endpoint.  To use this endpoint, the "Allow customers to manage their consents" option must be turned on in the Self-service policy settings.
+- [Revoke a consent](https://docs.strivacity.com/reference/optoutconsent.md): You can revoke a consent for the authenticated account by calling this endpoint.  To use this endpoint, the "Allow customers to manage their consents" option must be turned on in the Self-service policy settings.
+- [Download account information](https://docs.strivacity.com/reference/getpersonaldata-2.md): You can download the account information of the authenticated account in HTML or JSON format by calling this endpoint.  To use this endpoint, the "Allow customers to download their data" option must be turned on in the Self-service policy settings.
+- [Update identifier](https://docs.strivacity.com/reference/updateidentifierrequest.md): You can update identifiers of the authenticated account using this endpoint. The update attempt of email and phone identifiers needs verification. Those requests should be repeated with X-Challenge header filled with the verification code sent right after the first request.
+- [List identities](https://docs.strivacity.com/reference/getmyidentities.md): You can list the identities of the authenticated account by calling this endpoint.
+- [Get account information](https://docs.strivacity.com/reference/getprincipal.md): You can get the account information of the authenticated account by calling this endpoint.
+- [Change password](https://docs.strivacity.com/reference/updatepassword.md): You can change the password of the authenticated account by calling this endpoint.  To use this endpoint, the "Allow customers to change their password" option must be turned on in the Self-service policy settings.
+- [Get account metadata](https://docs.strivacity.com/reference/getpersonal.md): You can get the metadata of the authenticated account by calling this endpoint.  To use this endpoint, the "Allow customers to manage their personal information" option must be turned on in the Self-service policy settings.
+- [Update metadata](https://docs.strivacity.com/reference/updatepersonal.md): You can update the metadata of the authenticated account by calling this endpoint.  To use this endpoint, the "Allow customers to manage their personal information" option must be turned on in the Self-service policy settings.  Attributes provided with an explicit `null` value won't be overridden by external metadata values.
+- [List available attributes](https://docs.strivacity.com/reference/getavailableattributes.md): You can list the available attributes by calling this endpoint.  To use this endpoint, the "Allow customers to manage their personal information" option must be turned on in the Self-service policy settings.
+- [Unlink an external identity from the account](https://docs.strivacity.com/reference/deleteexternalidentity-1.md): You can unlink an external identity from the account by calling this endpoint.
+- [Get account notification preferences](https://docs.strivacity.com/reference/getnotificationpreferences.md): You can get the notification preferences of the authenticated account by calling this endpoint.  To use this endpoint, the "Allow customers to manage their own notifications" option must be turned on in the Self-service policy settings.
+- [Update account notification preferences](https://docs.strivacity.com/reference/updatenotificationpreferences.md): You can update the notification preferences of the authenticated account by calling this endpoint.  To use this endpoint, the "Allow customers to manage their own notifications" option must be turned on in the Self-service policy settings.
+- [List descriptors for notification preferences](https://docs.strivacity.com/reference/getnotificationpreferencesdescriptor-2.md): You can list the possible descriptors for notification preferences by calling this endpoint.  To use this endpoint, the "Allow customers to manage their own notifications" option must be turned on in the Self-service policy settings.
+
+## Changelog
+- [Philadelphia](https://docs.strivacity.com/changelog/philadelphia.md)
+- [Seoul](https://docs.strivacity.com/changelog/seoul.md)
+- [Geneva](https://docs.strivacity.com/changelog/geneva.md)
+- [Lyon](https://docs.strivacity.com/changelog/lyon.md)
+- [Madrid](https://docs.strivacity.com/changelog/madrid.md)
+- [Manchester](https://docs.strivacity.com/changelog/manchester.md)
+- [Veszprém](https://docs.strivacity.com/changelog/veszprém.md)
+- [Buffalo](https://docs.strivacity.com/changelog/buffalo.md)
+- [Boston](https://docs.strivacity.com/changelog/boston.md)
+- [Sydney](https://docs.strivacity.com/changelog/sydney.md)

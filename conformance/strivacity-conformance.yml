@@ -1,0 +1,133 @@
+generated: '2026-08-29'
+method: searched
+source: >-
+  openapi/_original/*.json ,
+  https://docs.strivacity.com/docs/our-security-and-privacy-commitment ,
+  https://security.strivacity.com/ ,
+  https://docs.strivacity.com/docs/integrating-an-mcp-server-with-strivacity ,
+  https://docs.strivacity.com/docs/oauth-security-best-practices
+standards:
+- id: oauth2
+  conforms: true
+  evidence: >-
+    Client-credentials and authorization-code flows documented at
+    https://docs.strivacity.com/reference/getting-started-with-the-admin-api ; Strivacity is itself an
+    OAuth 2.0/2.1 authorization server product.
+- id: oidc
+  conforms: true
+  evidence: >-
+    OIDC Discovery published per tenant at /.well-known/openid-configuration; the whole product is an
+    OpenID Provider. https://docs.strivacity.com/docs/oidc-support
+- id: rfc8414-oauth-authorization-server-metadata
+  conforms: false
+  evidence: >-
+    Explicitly NOT published — Strivacity states the RFC 8414 well-known path is absent and that clients
+    are expected to fall back to OIDC Discovery.
+    https://docs.strivacity.com/docs/integrating-an-mcp-server-with-strivacity
+- id: rfc8707-resource-indicators
+  conforms: true
+  evidence: >-
+    The `resource` parameter is required on both the authorization and token request for protected
+    resources; Strivacity matches it exactly and makes it the token audience.
+- id: rfc9728-oauth-protected-resource-metadata
+  conforms: partial
+  evidence: >-
+    Strivacity requires the customer's own MCP/resource server to publish RFC 9728 metadata naming the
+    Strivacity issuer, and documents the 401 WWW-Authenticate resource_metadata challenge. Strivacity
+    does not itself serve a protected-resource metadata document.
+- id: rfc9700-oauth-security-bcp
+  conforms: true
+  evidence: A dedicated guidance page — https://docs.strivacity.com/docs/oauth-security-best-practices
+- id: pkce
+  conforms: true
+  evidence: Mandatory for authorization-code flows; code_challenge_methods_supported advertised in discovery metadata.
+- id: saml2
+  conforms: true
+  evidence: >-
+    SAML2 clients, external SAML2 identity providers, SAML logout, and a
+    getSAML2MetadataDescriptor operation in the Admin API.
+- id: fido2-webauthn
+  conforms: true
+  evidence: >-
+    Passkeys and platform biometrics as primary and secondary factors, including native app support
+    through the Journey Flow API. FIDO Certification is listed as a document on the Trust Center.
+- id: rfc7807-problem-details
+  conforms: true
+  partial: true
+  evidence: >-
+    The ProblemJson schema documents itself as "Based on RFC 7807" and is served as
+    application/problem+json on 834 of 1,460 error responses across the published specs. Flavored — it
+    omits the `type` member and adds errorKey/entityName/fieldErrors.
+- id: rfc9457-problem-details
+  conforms: false
+  evidence: >-
+    The spec cites RFC 7807, the obsoleted predecessor, not RFC 9457. No problem-type URIs are minted,
+    which is the part RFC 9457 leans on.
+- id: pagination
+  conforms: true
+  evidence: page/size/sort query parameters on Admin and Admin Management list operations.
+- id: idempotency
+  conforms: false
+  evidence: >-
+    No Idempotency-Key header in any of the six published specs; the string "idempoten" does not appear
+    anywhere in https://docs.strivacity.com/llms.txt
+- id: rfc8594-sunset-header
+  conforms: false
+  evidence: No Sunset or Deprecation response header declared or documented.
+- id: rfc9116-security-txt
+  conforms: false
+  evidence: >-
+    A responsible-disclosure policy is published at
+    https://www.strivacity.com/report-a-security-issue but no /.well-known/security.txt is served on any
+    Strivacity host (probed 2026-08-29, all 404).
+- id: rfc9727-api-catalog
+  conforms: true
+  evidence: >-
+    https://docs.strivacity.com/.well-known/api-catalog returns 200 application/linkset+json enumerating
+    all six OpenAPI documents with service-desc and service-doc links.
+- id: openapi-3
+  conforms: true
+  evidence: Four documents at OpenAPI 3.0.1, two at 3.1.0, all published and downloadable.
+- id: scim
+  conforms: false
+  evidence: >-
+    No SCIM 2.0 surface. Searched the full documentation index and all six specs for
+    urn:ietf:params:scim, /scim/v2 paths and SCIM resource shapes — none present. Provisioning is done
+    with Strivacity's own Outbound Provision and Inbound Connection surfaces plus bulk import, not SCIM.
+    This is the notable domain-standard gap for a CIAM vendor.
+- id: mcp-authorization
+  conforms: true
+  evidence: >-
+    Strivacity implements the authorization portions of the Model Context Protocol specification as an
+    OAuth 2.1 authorization server for a customer's MCP servers, including the resource parameter,
+    audience-restricted tokens, scope challenges for step-up, and Client ID Metadata Documents for
+    dynamic client identification.
+    https://docs.strivacity.com/docs/integrating-an-mcp-server-with-strivacity
+- id: a2a-agent-card
+  conforms: false
+  evidence: >-
+    /.well-known/agent-card.json and /.well-known/agent.json probed on www, docs, static and identity
+    hosts on 2026-08-29 — all 404.
+- id: graphql
+  conforms: false
+  evidence: No GraphQL surface found on any host or in any documentation.
+- id: grpc
+  conforms: false
+- id: soap-wsdl
+  conforms: false
+  evidence: No ?wsdl or ?singleWsdl surface; no SOAP contract in the docs or GitHub org.
+domain_standards:
+  market: customer identity and access management (CIAM) / identity provider
+  note: >-
+    The identity market's domain standards ARE the protocol standards, and Strivacity implements them as
+    product: OIDC, OAuth 2.0/2.1, SAML 2.0, FIDO2/WebAuthn, plus the newer agent-delegation set (RFC 8707
+    resource indicators, token exchange, CIBA, DPoP, PAR, RAR). The one recognised CIAM domain standard
+    it does NOT speak is SCIM 2.0 — which for an identity vendor is the standard a buyer with an existing
+    IGA or HR-driven provisioning stack will ask about first.
+compliance_program:
+  published: true
+  url: https://security.strivacity.com
+  detail: security/strivacity-trust-center.yml
+  certifications: [SOC 2 Type II, SOC 3, PCI DSS, GDPR, CCPA, FIPS 140-2, VPAT, FIDO Certification]
+  standards_guidance: [ISO 27001, ISO 27002, ISO 27005, NIST 800-63B]
+  assessor: Schellman & Co.

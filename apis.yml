@@ -1,18 +1,127 @@
 aid: strivacity
 name: Strivacity
-description: 'Strivacity is a company surfaced via the API Evangelist harvest backlog (source: secondary-market)
-  and added to the network as a stub for full-pipeline profiling.'
+description: >-
+  Strivacity is a customer identity and access management (CIAM) vendor that runs a single-tenant,
+  dedicated-cloud identity platform for consumer, partner, B2B and — since its Agentic AI release —
+  AI-agent identities. The product covers registration and self-service, adaptive multi-factor
+  authentication, passkeys and FIDO2, social and enterprise federation, consent management, identity
+  verification, fraud detection, delegated administration and identity orchestration, and it exposes
+  all of it through published REST APIs: an Admin API for configuring and operating an instance, an
+  Admin Management API for the admin plane itself, a MyAccount API for end-customer self-service, a
+  Journey Flow (Native Journey) API for rendering login and registration natively, and a Simple
+  Authentication API. Strivacity also acts as the OAuth 2.1 authorization server in front of a
+  customer's own MCP servers and APIs, issuing audience-restricted, consent-gated tokens to AI agents.
 url: https://raw.githubusercontent.com/api-evangelist/strivacity/refs/heads/main/apis.yml
+image: https://cdn.prod.website-files.com/64259842d8e30c2ec61617ab/642b123a6f2bf0db754b0ab3_webclip.png
 x-type: company
 x-source: harvest:secondary-market
-x-tier: stub
-x-tier-reason: harvest
 specificationVersion: '0.20'
 created: '2026-08-29'
 modified: '2026-08-29'
 tags:
-- Company
-apis: []
+- Identity
+- Customer Identity and Access Management
+- CIAM
+- Authentication
+- Authorization
+- OAuth
+- OpenID Connect
+- Consent Management
+- Multi-Factor Authentication
+- Identity Verification
+- Fraud Detection
+- Agentic Identity
+- Security
+tags_raw:
+- identity
+- customer-identity-and-access-management
+- ciam
+- authentication
+- authorization
+- oauth
+- openid-connect
+- consent-management
+- multi-factor-authentication
+- identity-verification
+- fraud-detection
+- agentic-identity
+- security
+apis:
+- name: Strivacity Admin API
+  description: >-
+    The administrative REST API for a Strivacity instance — accounts and identity stores, applications
+    and clients, adaptive access and MFA policies, journeys, branding, consents, claims and dialects,
+    groups and roles, organizations, notification and password policies, identity verification, lifecycle
+    event hooks, outbound provisioning, event streaming, bulk operations, translations, audit entries and
+    account events. 322 operations across 63 tag groups. Authorized with an OAuth 2.0 client-credentials
+    bearer token scoped by an API Access policy.
+  humanURL: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  baseURL: https://{tenant}.strivacity.com/admin/api/v1
+  tags:
+  - Identity
+  - CIAM
+  - Administration
+  - Authentication
+  - Authorization
+  properties:
+  - type: OpenAPI
+    url: openapi/strivacity-admin-portal-openapi.yml
+  - type: OpenAPI
+    url: openapi/strivacity-admin-management-openapi.yml
+  - type: OpenAPI
+    url: openapi/strivacity-admin-console-getting-started-openapi.yml
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/apis-and-sdks
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  - type: GettingStarted
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: Overlay
+    url: overlays/strivacity-admin-portal-overlay.yaml
+  - type: Overlay
+    url: overlays/strivacity-admin-management-overlay.yaml
+- name: Strivacity MyAccount API
+  description: >-
+    The end-customer self-service REST API behind the Strivacity My Account portal — authenticator
+    (MFA) management, consent opt-in and opt-out, personal-data export and account deletion, and
+    self-management of profile attributes. 18 operations, bearer-token authorized on the customer's
+    own session.
+  humanURL: https://docs.strivacity.com/reference/getting-started-1
+  baseURL: https://{tenant}.strivacity.com/myaccount/api/v1
+  tags:
+  - Identity
+  - Self Service
+  - Consent Management
+  properties:
+  - type: OpenAPI
+    url: openapi/strivacity-myaccount-portal-openapi.yml
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: Overlay
+    url: overlays/strivacity-myaccount-portal-overlay.yaml
+- name: Strivacity Journey Flow API
+  description: >-
+    The Native Journey (Journey Flow) API used by native and single-page applications to render
+    Strivacity login, registration, MFA, passkey, password-reset and account-activation journeys in
+    their own UI instead of redirecting to hosted no-code components, plus the Simple Authentication
+    API for identifier-and-password authentication.
+  humanURL: https://docs.strivacity.com/docs/oidc-client-using-the-journey-flow-api
+  baseURL: https://{tenant}.strivacity.com/flow/api
+  tags:
+  - Identity
+  - Authentication
+  - Journeys
+  properties:
+  - type: OpenAPI
+    url: openapi/strivacity-native-journey-openapi.yml
+  - type: OpenAPI
+    url: openapi/strivacity-simple-authentication-openapi.yml
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/oidc-client-using-the-journey-flow-api
+  - type: Overlay
+    url: overlays/strivacity-native-journey-overlay.yaml
+  - type: Overlay
+    url: overlays/strivacity-simple-authentication-overlay.yaml
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
@@ -20,4 +129,83 @@ maintainers:
   email: info@apis.io
 common:
 - type: Website
-  url: https://www.nasdaqprivatemarket.com/
+  url: https://www.strivacity.com/
+- type: DeveloperPortal
+  url: https://developers.strivacity.com/
+- type: Documentation
+  url: https://docs.strivacity.com/docs/overview
+- type: APIReference
+  url: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+- type: GettingStarted
+  url: https://docs.strivacity.com/reference/getting-started-1
+- type: Support
+  url: https://support.strivacity.com/
+- type: Blog
+  url: https://www.strivacity.com/learn-support/blog
+- type: GitHubOrganization
+  url: https://github.com/strivacity
+- type: Pricing
+  url: https://www.strivacity.com/products/pricing
+- type: SignUp
+  url: https://www.strivacity.com/free-trial
+- type: TermsOfService
+  url: https://www.strivacity.com/terms-and-conditions
+- type: PrivacyPolicy
+  url: https://www.strivacity.com/privacy-policy
+- type: StatusPage
+  url: https://status.strivacity.com/
+- type: Deprecation
+  url: https://docs.strivacity.com/docs/release-support-matrix
+- type: Security
+  url: https://www.strivacity.com/report-a-security-issue
+- type: Compliance
+  url: https://security.strivacity.com
+- type: TrustCenter
+  url: security/strivacity-trust-center.yml
+- type: ChangeLog
+  url: changelog/strivacity-changelog.yml
+- type: LLMsTxt
+  url: llms/strivacity-llms.txt
+- type: WellKnown
+  url: well-known/strivacity-well-known.yml
+- type: APICatalog
+  url: https://docs.strivacity.com/.well-known/api-catalog
+- type: Packages
+  url: packages/strivacity-packages.yml
+- type: SDKs
+  url: packages/strivacity-packages.yml
+- type: Authentication
+  url: authentication/strivacity-authentication.yml
+- type: OAuthScopes
+  url: scopes/strivacity-scopes.yml
+- type: Conventions
+  url: conventions/strivacity-conventions.yml
+- type: ErrorCatalog
+  url: errors/strivacity-problem-types.yml
+- type: Lifecycle
+  url: lifecycle/strivacity-lifecycle.yml
+- type: DataModel
+  url: data-model/strivacity-data-model.yml
+- type: Conformance
+  url: conformance/strivacity-conformance.yml
+- type: DomainSecurity
+  url: security/strivacity-domain-security.yml
+- type: VulnerabilityDisclosure
+  url: security/strivacity-vulnerability-disclosure.yml
+- type: Sandbox
+  url: sandbox/strivacity-sandbox.yml
+- type: Components
+  url: components/strivacity-components.yml
+- type: Webhooks
+  url: asyncapi/strivacity-events.yml
+- type: AgentSkill
+  url: skills/_index.yml
+- type: RateLimits
+  url: rate-limits/strivacity-rate-limits.yml
+- type: Plans
+  url: plans/strivacity-plans-pricing.yml
+x-enrichment:
+  date: '2026-08-29'
+  status: enriched
+  artifacts_added: 47
+  pass: local-v1

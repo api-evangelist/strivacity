@@ -1,0 +1,31 @@
+generated: '2026-08-29'
+method: searched
+source: https://docs.strivacity.com/llms.txt
+files:
+- file: strivacity-llms.txt
+  url: https://docs.strivacity.com/llms.txt
+  http_status: 200
+  bytes: 157294
+  sections: [Guides, API Reference, Changelog]
+  note: >-
+    The developer llms.txt. Indexes every documentation page, every API reference operation and every
+    changelog entry. Crucially, each API-reference line carries the operation's own "REQUIRED API
+    PERMISSION" scope table inline — which is where the 106-scope catalogue in
+    scopes/strivacity-scopes.yml was harvested from.
+- file: strivacity-www-llms.txt
+  url: https://www.strivacity.com/llms.txt
+  http_status: 200
+  bytes: 12291
+  note: The marketing-site llms.txt — product, capabilities, company and resource pages.
+markdown_twin:
+  supported: true
+  convention: append .md to any documentation page URL
+  example: https://docs.strivacity.com/docs/rate-limiting.md
+  note: >-
+    Every page on docs.strivacity.com is retrievable as clean markdown, and the llms.txt files say so in
+    their own preamble. Combined with the RFC 9727 api-catalog and six downloadable OpenAPI documents,
+    this is an unusually complete machine-readable docs surface for a CIAM vendor.
+llms_full:
+  url: https://docs.strivacity.com/llms-full.txt
+  http_status: 429
+  note: Rate-limited on probe; not fetched, not saved, and never committed (gitignored).

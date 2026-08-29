@@ -1,0 +1,97 @@
+generated: '2026-08-29'
+method: searched
+source: >-
+  https://docs.strivacity.com/reference/getting-started-with-the-admin-api ,
+  https://docs.strivacity.com/docs/rest-api-access-policies ,
+  https://docs.strivacity.com/docs/api-sec-policy ,
+  plus derived from openapi/_original/*.json securitySchemes
+docs: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+summary:
+  types:
+  - http
+  - oauth2
+  primary: OAuth 2.0 client credentials -> opaque or JWT bearer access token
+model: >-
+  Every Strivacity REST API is bearer-token protected. Tokens are minted by the tenant's own OAuth 2.0
+  token endpoint using the client-credentials grant, with BOTH a scope set and an audience. Authorization
+  is two-sided: the token must carry the scope, and an API Access policy inside the instance must have
+  granted that scope to that client. Requesting a scope the policy does not grant fails — possession of
+  valid client credentials is not by itself access.
+schemes:
+- name: securityScheme
+  type: http
+  scheme: bearer
+  applies_to:
+  - openapi/strivacity-admin-portal-openapi.yml
+  - openapi/strivacity-admin-management-openapi.yml
+  - openapi/strivacity-myaccount-portal-openapi.yml
+  - openapi/strivacity-native-journey-openapi.yml
+  header: 'Authorization: Bearer <access_token>'
+- name: basicAuth
+  type: http
+  scheme: basic
+  applies_to:
+  - openapi/strivacity-admin-console-getting-started-openapi.yml
+  note: >-
+    HTTP Basic here is the client-credentials presentation at the token endpoint — client_id as username,
+    client_secret as password — not a Basic-auth data API.
+oauth2:
+  declared_in_spec: false
+  spec_gap: >-
+    The published OpenAPI documents describe the bearer token but never declare an oauth2 securityScheme
+    with its token URL and scopes, so a generated client cannot obtain a token from the spec alone. The
+    flow is fully documented in prose instead. This is the single largest machine-readability gap in an
+    otherwise complete contract set.
+  grant_types:
+  - client_credentials
+  - authorization_code
+  token_endpoint: https://{tenant}.strivacity.com/oauth2/token
+  token_endpoint_auth: client_secret_basic (client_id as username, client_secret as password)
+  audience_parameter: required
+  resource_parameter:
+    supported: true
+    rfc: RFC 8707
+    note: >-
+      Agents and OAuth clients name the target protected resource (an MCP server or API registered in
+      Strivacity) in the `resource` parameter on both the authorization and token request. Strivacity
+      matches it exactly against the resources assigned to the client and makes it the token audience.
+  pkce: required for authorization-code flows
+  token_format: opaque by default; JWT selectable per client so resource servers can validate locally
+  token_lifetime_example: 3599 seconds
+  scopes_artifact: scopes/strivacity-scopes.yml
+  scope_count: 106
+oidc:
+  discovery: https://{tenant}.strivacity.com/.well-known/openid-configuration
+  rfc8414_oauth_authorization_server: false
+  rfc8414_note: >-
+    Strivacity states explicitly that the RFC 8414 /.well-known/oauth-authorization-server path is not
+    published, and that conforming MCP clients are expected to fall back to OIDC Discovery.
+  jwks: published in the OIDC discovery metadata
+  client_id_metadata_document: >-
+    When enabled, discovery advertises client_id_metadata_document_supported: true, letting external AI
+    agents self-identify as dynamic clients without pre-registration.
+end_user_authentication:
+  note: >-
+    Distinct from API authentication. Strivacity is itself the customer-facing authentication product —
+    passwords, magic links, SMS/email/voice passcodes, soft tokens, FIDO2 / WebAuthn passkeys, platform
+    biometrics, social and enterprise federation (OIDC + SAML2), plus adaptive step-up driven by risk
+    policy.
+  standards:
+  - OpenID Connect
+  - OAuth 2.0 / 2.1
+  - SAML 2.0
+  - FIDO2 / WebAuthn
+  - RFC 9700 OAuth 2.0 Security Best Current Practice
+  - RFC 8707 Resource Indicators
+  - Token Exchange
+  - CIBA
+  - DPoP
+  - PAR
+  - RAR
+policy_layer:
+  name: API Access policy (API security policy)
+  docs: https://docs.strivacity.com/docs/api-sec-policy
+  note: >-
+    Scopes are attached to clients through an API Access policy assignment. Only clients created as
+    "OIDC using no-code components" can be assigned one; other client types will not appear in the
+    assignment dropdown.

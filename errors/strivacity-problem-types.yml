@@ -1,0 +1,248 @@
+generated: '2026-08-29'
+method: derived
+source: openapi/_original/*.json (5 published Strivacity OpenAPI documents), enriched from https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+format: rfc7807
+format_note: 'The ProblemJson schema in the Admin API spec documents itself as "Based on RFC 7807". It is served as application/problem+json
+  on 4xx responses across the Admin, Admin Management and MyAccount APIs. It is a FLAVORED problem document, not a strict
+  one: it carries the RFC 7807 members title, detail and status but omits `type` (no problem-type URI is minted), and adds
+  vendor members errorKey, entityName, message, params, path and fieldErrors[].'
+media_type: application/problem+json
+problem_responses_with_problem_json: 834
+error_responses_total: 1460
+envelope:
+  schema: ProblemJson
+  members:
+  - name: status
+    type: integer
+    source: rfc7807
+    description: HTTP status code
+  - name: title
+    type: string
+    source: rfc7807
+  - name: detail
+    type: string
+    source: rfc7807
+  - name: type
+    present: false
+    source: rfc7807
+    description: NOT emitted — Strivacity mints no problem-type URIs, so errors cannot be dereferenced or matched on a stable
+      URI.
+  - name: errorKey
+    type: string
+    source: vendor
+    description: A unique identifier of the error — the stable machine-matchable key, in place of RFC 7807 `type`.
+  - name: message
+    type: string
+    source: vendor
+    description: A unique identifier in the format 'error.{errorKey}'
+  - name: entityName
+    type: string
+    source: vendor
+    description: The name of the entity the error occurred within
+  - name: params
+    type: array
+    source: vendor
+    description: Further information related to the error
+  - name: path
+    type: string
+    source: vendor
+    description: Request URI
+  - name: fieldErrors
+    type: array
+    source: vendor
+    description: 'Field constraint violations: {objectName, field, message}'
+agent_guidance: 'Match on errorKey, not on title or detail — errorKey is the documented stable identifier and title/detail
+  are human strings. Treat 403 as a policy problem, not a credential problem: the token is valid and retrying it will never
+  succeed until an admin grants the scope through an API Access policy.'
+status_code_counts:
+  '400': 176
+  '401': 441
+  '403': 440
+  '404': 275
+  '409': 122
+  '429': 4
+  '500': 2
+problems:
+- status: 400
+  title: Bad request — request body or query parameters failed validation. The ProblemJson body carries fieldErrors[] naming
+    each violating field.
+  occurrences: 176
+  media_type: application/problem+json
+  schema: ProblemJson
+  source_operations:
+  - operationId: createApiAccessPolicy
+    method: POST
+    path: /admin/api/v1/accessPolicies
+    spec: openapi/strivacity-admin-portal-openapi.yml
+    description: Bad Request
+    media_types:
+    - '*/*'
+  - operationId: updateApiAccessPolicy
+    method: PUT
+    path: /admin/api/v1/accessPolicies/{policyId}
+    spec: openapi/strivacity-admin-portal-openapi.yml
+    description: Bad Request
+    media_types:
+    - '*/*'
+  - operationId: createApplicationAssignment
+    method: POST
+    path: /admin/api/v1/accessPolicies/{policyId}/assignments
+    spec: openapi/strivacity-admin-portal-openapi.yml
+    description: Bad Request
+    media_types:
+    - '*/*'
+- status: 401
+  title: Unauthorized — the bearer token is missing, expired or not valid for this instance.
+  occurrences: 441
+  media_type: application/problem+json
+  schema: ProblemJson
+  source_operations:
+  - operationId: listApiAccessPolicies
+    method: GET
+    path: /admin/api/v1/accessPolicies
+    spec: openapi/strivacity-admin-portal-openapi.yml
+    description: Unauthorized
+    media_types:
+    - application/problem+json
+  - operationId: createApiAccessPolicy
+    method: POST
+    path: /admin/api/v1/accessPolicies
+    spec: openapi/strivacity-admin-portal-openapi.yml
+    description: Unauthorized
+    media_types:
+    - application/problem+json
+  - operationId: deleteApiAccessPolicy
+    method: DELETE
+    path: /admin/api/v1/accessPolicies/{policyId}
+    spec: openapi/strivacity-admin-portal-openapi.yml
+    description: Unauthorized
+    media_types:
+    - application/problem+json
+- status: 403
+  title: Forbidden — the token is valid but the client was not granted the required scope by an API Access policy.
+  occurrences: 440
+  media_type: application/problem+json
+  schema: ProblemJson
+  source_operations:
+  - operationId: listApiAccessPolicies
+    method: GET
+    path: /admin/api/v1/accessPolicies
+    spec: openapi/strivacity-admin-portal-openapi.yml
+    description: Forbidden
+    media_types:
+    - application/problem+json
+  - operationId: createApiAccessPolicy
+    method: POST
+    path: /admin/api/v1/accessPolicies
+    spec: openapi/strivacity-admin-portal-openapi.yml
+    description: Forbidden
+    media_types:
+    - application/problem+json
+  - operationId: deleteApiAccessPolicy
+    method: DELETE
+    path: /admin/api/v1/accessPolicies/{policyId}
+    spec: openapi/strivacity-admin-portal-openapi.yml
+    description: Forbidden
+    media_types:
+    - application/problem+json
+- status: 404
+  title: Not found — the named entity does not exist in this instance or identity store.
+  occurrences: 275
+  media_type: application/problem+json
+  schema: ProblemJson
+  source_operations:
+  - operationId: getApiAccessPolicy
+    method: GET
+    path: /admin/api/v1/accessPolicies/{policyId}
+    spec: openapi/strivacity-admin-portal-openapi.yml
+    description: Not Found
+    media_types:
+    - '*/*'
+  - operationId: updateApiAccessPolicy
+    method: PUT
+    path: /admin/api/v1/accessPolicies/{policyId}
+    spec: openapi/strivacity-admin-portal-openapi.yml
+    description: Not Found
+    media_types:
+    - '*/*'
+  - operationId: createApplicationAssignment
+    method: POST
+    path: /admin/api/v1/accessPolicies/{policyId}/assignments
+    spec: openapi/strivacity-admin-portal-openapi.yml
+    description: Not Found
+    media_types:
+    - '*/*'
+- status: 409
+  title: Conflict — the write would violate a uniqueness or state constraint (for example a duplicate name, or deleting an
+    assigned entity).
+  occurrences: 122
+  media_type: application/problem+json
+  schema: ProblemJson
+  source_operations:
+  - operationId: createApiAccessPolicy
+    method: POST
+    path: /admin/api/v1/accessPolicies
+    spec: openapi/strivacity-admin-portal-openapi.yml
+    description: Conflict
+    media_types:
+    - '*/*'
+  - operationId: deleteApiAccessPolicy
+    method: DELETE
+    path: /admin/api/v1/accessPolicies/{policyId}
+    spec: openapi/strivacity-admin-portal-openapi.yml
+    description: API security policy has assigned clients
+    media_types:
+    - '*/*'
+  - operationId: updateApiAccessPolicy
+    method: PUT
+    path: /admin/api/v1/accessPolicies/{policyId}
+    spec: openapi/strivacity-admin-portal-openapi.yml
+    description: Conflict
+    media_types:
+    - '*/*'
+- status: 429
+  title: Too many requests — a rate-limit bucket is exhausted. See rate-limits/strivacity-rate-limits.yml for the buckets
+    and headers.
+  occurrences: 4
+  media_type: application/problem+json
+  schema: ProblemJson
+  source_operations:
+  - operationId: createJob
+    method: POST
+    path: /admin/api/v1/bulk
+    spec: openapi/strivacity-admin-portal-openapi.yml
+    description: There is a bulk operation running already.
+    media_types:
+    - '*/*'
+  - operationId: addAuthenticatorRequest
+    method: POST
+    path: /myaccount/api/v1/authenticators
+    spec: openapi/strivacity-myaccount-portal-openapi.yml
+    description: Too many requests - rate limit exceeded or progressive delay enforcement triggered
+    media_types: []
+  - operationId: removeAuthenticatorRequest
+    method: DELETE
+    path: /myaccount/api/v1/authenticators/{authenticatorId}
+    spec: openapi/strivacity-myaccount-portal-openapi.yml
+    description: Too many requests - rate limit exceeded or progressive delay enforcement triggered
+    media_types: []
+- status: 500
+  title: Internal server error.
+  occurrences: 2
+  media_type: application/problem+json
+  schema: ProblemJson
+  source_operations:
+  - operationId: authenticate-with-identifier-and-password
+    method: POST
+    path: /simplelogin/api/v1/authenticate
+    spec: openapi/strivacity-simple-authentication-openapi.yml
+    description: '500'
+    media_types:
+    - text/plain
+  - operationId: token-1
+    method: POST
+    path: /simplelogin/api/v1/token
+    spec: openapi/strivacity-simple-authentication-openapi.yml
+    description: '500'
+    media_types:
+    - text/plain

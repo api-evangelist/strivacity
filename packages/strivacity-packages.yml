@@ -1,0 +1,165 @@
+generated: '2026-08-29'
+method: searched
+source: >-
+  https://www.npmjs.com/org/strivacity, https://github.com/strivacity,
+  https://search.maven.org, https://pub.dev/packages/strivacity_flutter,
+  https://docs.strivacity.com/docs/mobile-sdk-overview
+note: >-
+  All eight @strivacity/* npm packages are published from the single Strivacity/sdk-js monorepo and
+  released in lockstep (3.0.3, 2026-08-03). The mobile SDKs split into two generations: the redirect-based
+  "sdk-mobile-*" line and the newer Journey-Flow-API "sdk-mobile-*-native" line. React Native / Expo and
+  the Kotlin/Swift native SDKs are distributed from GitHub tags only — they have no registry entry, so
+  version is read from the GitHub release tag and marked registry: github.
+packages:
+- language: javascript
+  registry: npm
+  name: '@strivacity/sdk-core'
+  url: https://www.npmjs.com/package/@strivacity/sdk-core
+  install: npm install @strivacity/sdk-core
+  version: 3.0.3
+  published: '2026-08-03'
+  official: true
+  source_code: https://github.com/Strivacity/sdk-js
+- language: javascript
+  registry: npm
+  name: '@strivacity/sdk-angular'
+  url: https://www.npmjs.com/package/@strivacity/sdk-angular
+  install: npm install @strivacity/sdk-angular
+  version: 3.0.3
+  published: '2026-08-03'
+  official: true
+  source_code: https://github.com/Strivacity/sdk-js
+- language: javascript
+  registry: npm
+  name: '@strivacity/sdk-react'
+  url: https://www.npmjs.com/package/@strivacity/sdk-react
+  install: npm install @strivacity/sdk-react
+  version: 3.0.3
+  published: '2026-08-03'
+  official: true
+  source_code: https://github.com/Strivacity/sdk-js
+- language: javascript
+  registry: npm
+  name: '@strivacity/sdk-next'
+  url: https://www.npmjs.com/package/@strivacity/sdk-next
+  install: npm install @strivacity/sdk-next
+  version: 3.0.3
+  published: '2026-08-03'
+  official: true
+  source_code: https://github.com/Strivacity/sdk-js
+- language: javascript
+  registry: npm
+  name: '@strivacity/sdk-nuxt'
+  url: https://www.npmjs.com/package/@strivacity/sdk-nuxt
+  install: npm install @strivacity/sdk-nuxt
+  version: 3.0.3
+  published: '2026-08-03'
+  official: true
+  source_code: https://github.com/Strivacity/sdk-js
+- language: javascript
+  registry: npm
+  name: '@strivacity/sdk-remix'
+  url: https://www.npmjs.com/package/@strivacity/sdk-remix
+  install: npm install @strivacity/sdk-remix
+  version: 3.0.3
+  published: '2026-08-03'
+  official: true
+  source_code: https://github.com/Strivacity/sdk-js
+- language: javascript
+  registry: npm
+  name: '@strivacity/sdk-svelte'
+  url: https://www.npmjs.com/package/@strivacity/sdk-svelte
+  install: npm install @strivacity/sdk-svelte
+  version: 3.0.3
+  published: '2026-08-03'
+  official: true
+  source_code: https://github.com/Strivacity/sdk-js
+- language: javascript
+  registry: npm
+  name: '@strivacity/sdk-vue'
+  url: https://www.npmjs.com/package/@strivacity/sdk-vue
+  install: npm install @strivacity/sdk-vue
+  version: 3.0.3
+  published: '2026-08-03'
+  official: true
+  source_code: https://github.com/Strivacity/sdk-js
+- language: java
+  registry: maven
+  name: com.strivacity.android:sdk
+  url: https://central.sonatype.com/artifact/com.strivacity.android/sdk
+  install: implementation 'com.strivacity.android:sdk:2.3.0'
+  version: 2.3.0
+  published: '2025-02-21'
+  official: true
+  source_code: https://github.com/Strivacity/sdk-mobile-android
+  note: >-
+    Redirect-based Android SDK. Last Maven Central release 2025-02-21 — 18 months behind the JS line and
+    behind the newer Kotlin native SDK, which is where Android work has moved.
+- language: kotlin
+  registry: github
+  name: Strivacity/sdk-mobile-kotlin-native
+  url: https://github.com/Strivacity/sdk-mobile-kotlin-native
+  version: v4.1.0
+  published: '2026-07-30'
+  official: true
+  note: >-
+    Journey-Flow-API native Android SDK. Distributed from GitHub release tags; no Maven Central artifact
+    was found under com.strivacity* for this line.
+- language: swift
+  registry: github
+  name: Strivacity/sdk-mobile-ios
+  url: https://github.com/Strivacity/sdk-mobile-ios
+  version: v3.0.0
+  published: '2026-07-27'
+  official: true
+  note: Redirect-based Apple SDK, consumed via Swift Package Manager from the GitHub tag.
+- language: swift
+  registry: github
+  name: Strivacity/sdk-mobile-ios-native
+  url: https://github.com/Strivacity/sdk-mobile-ios-native
+  version: v5.0.0
+  published: '2026-07-24'
+  official: true
+  note: Journey-Flow-API native Apple SDK, consumed via Swift Package Manager from the GitHub tag.
+- language: java
+  registry: github
+  name: Strivacity/sdk-mobile-android-native
+  url: https://github.com/Strivacity/sdk-mobile-android-native
+  version: v2.1.0
+  published: '2026-04-14'
+  official: true
+- language: dart
+  registry: pub.dev
+  name: strivacity_flutter
+  url: https://pub.dev/packages/strivacity_flutter
+  install: flutter pub add strivacity_flutter
+  version: 1.3.0
+  published: '2025-11-20'
+  official: true
+  source_code: https://github.com/Strivacity/sdk-flutter
+- language: javascript
+  registry: github
+  name: Strivacity/sdk-react-native
+  url: https://github.com/Strivacity/sdk-react-native
+  version: null
+  published: null
+  official: true
+  note: >-
+    React Native / Expo SDK. Checked npm for @strivacity/sdk-react-native and @strivacity/sdk-native —
+    neither exists — and the repository has no GitHub releases, so there is no published version to record.
+    Last push to the default branch was 2025-12-08. A consumer pinning this SDK can only pin a commit.
+registries_checked:
+- registry: npm
+  result: 8 official packages under the @strivacity scope
+- registry: maven-central
+  result: com.strivacity.android:sdk 2.3.0; a stale com.strivacity:sdk 1.0 from 2022-04-21
+- registry: pub.dev
+  result: strivacity_flutter 1.3.0
+- registry: pypi
+  result: none (https://pypi.org/pypi/strivacity/json -> 404)
+- registry: nuget
+  result: none found
+- registry: rubygems
+  result: none found
+- registry: crates.io
+  result: none found

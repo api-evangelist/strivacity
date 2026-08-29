@@ -1,0 +1,67 @@
+generated: '2026-08-29'
+method: searched
+source: https://docs.strivacity.com/reference/developer-tools , https://www.strivacity.com/free-trial
+note: >-
+  Strivacity publishes no test-key / live-key split and no fixture or test-data catalogue — every
+  instance is a dedicated single-tenant deployment, and the documented pattern is a low (development)
+  environment alongside a high (production) environment, both provisioned per brand. What it does
+  publish is a free trial instance and a public, unauthenticated protocol sandbox suite (Decoder Ring)
+  that Strivacity builds and gives away.
+test_live_key_split: false
+test_credentials_published: false
+time_simulation: false
+environments:
+- name: Low environment
+  purpose: development
+  note: >-
+    Runs concurrently with the high (production) environment across three AWS availability zones in the
+    same region. Documented at https://docs.strivacity.com/docs/architecture
+- name: High environment
+  purpose: production
+hosted_playgrounds:
+- name: Decoder Ring
+  url: https://decoder-ring.io/
+  http_status: 200
+  official: true
+  authentication: none
+  description: >-
+    A suite of free developer tools published by Strivacity for inspecting, validating and
+    troubleshooting identity and security artifacts. Documented at
+    https://docs.strivacity.com/reference/developer-tools
+  tools:
+  - name: OIDC Sandbox
+    url: https://decoder-ring.io/oidc/sandbox
+    description: Test and explore OpenID Connect flows in an interactive sandbox environment.
+  - name: OIDC PKCE walkthrough
+    url: https://decoder-ring.io/oidc/pkce
+    description: Step through a full PKCE authorization code flow and inspect each exchange.
+  - name: SAML Decoder/Encoder
+    url: https://decoder-ring.io/saml
+  - name: JWT Decoder/Encoder
+    url: https://decoder-ring.io/jwt
+  - name: Base64 Decoder/Encoder
+    url: https://decoder-ring.io/base64
+  - name: URL Decoder/Encoder
+    url: https://decoder-ring.io/web/url
+  - name: Timestamp Decoder
+    url: https://decoder-ring.io/timestamp
+  - name: Timezone Converter
+    url: https://decoder-ring.io/timestamp/timezone
+  - name: JSON/XML Beautifier/Minimizer
+    url: https://decoder-ring.io/beautify
+trial:
+  url: https://www.strivacity.com/free-trial
+  http_status: 200
+  self_serve: true
+in_product_tooling:
+- name: Lifecycle Event Hook Tryout
+  kind: api
+  note: >-
+    The Admin API carries a "Lifecycle Event Hook Tryout" tag group, letting a brand execute an event
+    hook against sample input before deploying it. Derived from
+    openapi/strivacity-admin-portal-openapi.yml
+- name: Event streaming test
+  kind: api
+  operation: sendTestEvent
+  path: POST /admin/api/v1/instance/eventStreaming/{id}/test
+  note: Sends a synthetic event through a configured streaming integration to verify it end to end.

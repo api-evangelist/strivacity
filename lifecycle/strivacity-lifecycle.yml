@@ -1,0 +1,73 @@
+generated: '2026-08-29'
+method: searched
+source: >-
+  https://docs.strivacity.com/docs/release-support-matrix ,
+  https://docs.strivacity.com/changelog ,
+  https://status.strivacity.com/ ,
+  https://docs.strivacity.com/docs/our-security-and-privacy-commitment
+versioning:
+  scheme: named product releases (city names), with path-versioned APIs (v1, selective v2)
+  current_release: Philadelphia
+  current_release_date: '2026-07-09'
+  cadence: roughly quarterly
+  policy_url: https://docs.strivacity.com/docs/release-support-matrix
+deprecation_policy:
+  published: true
+  url: https://docs.strivacity.com/docs/release-support-matrix
+  model: N / N-1 / N-2 major-version support window
+  tiers:
+  - version: N (current)
+    support: Full Support
+    detail: Active development, new features, enhancements, security patches, full technical support.
+  - version: N-1 (prior major)
+    support: Full Support
+    detail: Same coverage as N; all applicable fixes and security updates. Feature backports at Strivacity's discretion.
+  - version: N-2
+    support: Maintenance / Limited Support
+    detail: Critical and security fixes only. No new feature enhancements.
+  - version: N-3 and older
+    support: End-of-Life
+    detail: No support, patches or updates. Continued use is at the customer's own risk.
+  sunset_header: false
+  deprecation_header: false
+  rfc8594: false
+  header_note: >-
+    No RFC 8594 Sunset or Deprecation response header is declared in any published OpenAPI document or
+    documented in the API reference. The support window is a product-lifecycle policy stated in prose,
+    not a runtime signal an agent can read off a response.
+  breaking_change_communication: >-
+    Breaking changes are called out at the top of the release note for the affected release and the
+    reader is told to check with their Customer Success representative before upgrading. The Geneva and
+    Madrid releases both carry such a banner.
+deprecated_operations:
+  count: 0
+  note: >-
+    Not one of the 452 operations across the six published OpenAPI documents carries `deprecated: true`.
+    Given the release notes DO record breaking changes (Madrid retired legacy hook log endpoints), the
+    specs are not being used to signal deprecation.
+status_page:
+  url: https://status.strivacity.com/
+  http_status: 200
+  platform: Atlassian Statuspage
+  subscribe: true
+  granularity: >-
+    Per-service and per-region. Components are broken out as Admin Console Services, Analytics and
+    Dashboard Services and further service groups, each reported independently across 15 AWS regions
+    (us-east-1, us-east-2, us-west-2, ca-central-1, sa-east-1, eu-west-1, eu-west-2, eu-central-1,
+    eu-central-2, af-south-1, me-south-1, ap-east-1, ap-southeast-1, ap-southeast-2, ap-northeast-2).
+  observed_state: All Systems Operational, 0 incidents in the last 30 days (2026-08-29)
+sla:
+  published: false
+  note: >-
+    No public uptime SLA percentage is published. What is published is an RTO and RPO of 2 hours each,
+    stated on both the Trust Center risk profile and the security and privacy commitment page.
+  rto: 2 hours
+  rpo: 2 hours
+data_retention:
+  application_and_network_logs: 35 days
+  backups: hourly for Kubernetes production data, daily for RDS
+  account_data: destroyed on decommissioning of a customer environment or on request
+  source: https://docs.strivacity.com/docs/our-security-and-privacy-commitment
+changelog:
+  url: https://docs.strivacity.com/changelog
+  artifact: changelog/strivacity-changelog.yml

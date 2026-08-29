@@ -1,0 +1,202 @@
+generated: '2026-08-29'
+method: derived
+source: >-
+  openapi/_original/strivacity-admin-portal-openapi-original.json (322 operations, 872 schemas),
+  openapi/_original/strivacity-admin-management-openapi-original.json (86 operations, 218 schemas),
+  openapi/_original/strivacity-myaccount-portal-openapi-original.json (18 operations, 36 schemas)
+note: >-
+  Derived from the URL hierarchy and the id-reference fields in the published schemas. Strivacity's model
+  is strongly hierarchical: almost every customer-facing entity is reached through an Identity Store, and
+  almost every configuration entity is reached through an Application. There is no id-prefix convention
+  (no acct_ / app_ style prefixes) — identifiers are opaque and the entity type is carried by the path,
+  not the value.
+root_scoping:
+  instance: >-
+    One dedicated Strivacity instance per brand. Instance-level configuration lives under
+    /admin/api/v1/instance and is not further scoped.
+  identity_store: >-
+    The container for customer accounts. Most account-plane paths are
+    /admin/api/v1/identityStores/{identityStoreName}/... — the identity store name, not an id, is the
+    path segment.
+  application: >-
+    The container for clients, journeys, policies and branding. Most configuration paths are
+    /admin/api/v1/applications/{applicationId}/... with some at v2.
+  admin_plane: >-
+    The Admin Management API mirrors much of the account plane for ADMIN accounts, under
+    /admin/api/v1/admin/... — a parallel identity store for brand administrators.
+entities:
+- name: Account
+  description: A customer identity record inside an identity store.
+  path: /admin/api/v1/identityStores/{identityStoreName}/accounts/{accountId}
+  relationships:
+  - kind: belongs_to
+    target: IdentityStore
+    via: identityStoreName (path)
+  - kind: has_many
+    target: AccountIdentity
+    via: accountId
+    description: linked external (social/enterprise) identities
+  - kind: has_many
+    target: Authenticator
+    via: accountId
+    description: MFA authenticators enrolled on the account
+  - kind: has_many
+    target: AccountEvent
+    via: accountId
+  - kind: has_many
+    target: DeviceSession
+    via: accountId
+  - kind: has_many
+    target: Role
+    via: accountId
+    description: organization role assignments
+  - kind: has_many
+    target: Group
+    via: accountId
+  - kind: has_many
+    target: AccountProofing
+    via: accountId
+    description: identity verification attempts
+  - kind: has_many
+    target: Consent
+    via: accountId
+    description: consent grants and receipts, versioned
+- name: IdentityStore
+  description: The store that holds accounts, their attributes and the password policy applied to them.
+  relationships:
+  - kind: has_many
+    target: Account
+  - kind: has_many
+    target: AccountAttribute
+  - kind: has_many
+    target: OutboundProvision
+  - kind: has_many
+    target: InboundConnection
+  - kind: has_one
+    target: PasswordQualityPolicy
+- name: Application
+  description: The unit a client, a journey and a policy set attach to.
+  path: /admin/api/v1/applications/{applicationId}
+  relationships:
+  - kind: has_many
+    target: ApplicationClient
+    via: applicationId
+  - kind: has_many
+    target: ApplicationVariant
+    via: applicationId
+    description: A/B test variants
+  - kind: has_many
+    target: BridgePolicy
+    via: clientId
+  - kind: has_one
+    target: BrandingPolicy
+  - kind: has_one
+    target: SelfServicePolicy
+  - kind: has_one
+    target: NotificationPolicy
+  - kind: has_many
+    target: LifecycleEventHook
+    description: hooks assigned to the application
+- name: ApplicationClient
+  description: >-
+    An OAuth2/OIDC or SAML2 client. The AI agent client subtype makes the client an agent identity;
+    dynamic client templates let external agents self-register via a Client ID Metadata Document.
+  relationships:
+  - kind: belongs_to
+    target: Application
+    via: applicationId
+  - kind: has_many
+    target: BridgePolicy
+    via: clientId
+  - kind: has_one
+    target: APISecurityPolicyAssignment
+    via: clientId
+- name: ProtectedResource
+  description: >-
+    An MCP server or API that Strivacity mints audience-restricted tokens for. Carries a canonical
+    resource URL, display name, logo and a scope catalogue with plain-language descriptions.
+  relationships:
+  - kind: has_many
+    target: Scope
+  - kind: belongs_to
+    target: ApplicationClient
+    via: assignment
+    description: assigned to the clients (including AI agents) permitted to request it
+  source: https://docs.strivacity.com/docs/protected-resources
+- name: APISecurityPolicy
+  description: Grants a set of scopes to a client, gating what the client-credentials token may carry.
+  relationships:
+  - kind: has_many
+    target: APISecurityPolicyScope
+  - kind: has_many
+    target: GroupAPISecurityPolicyAssignment
+- name: Organization
+  description: A B2B tenant inside a brand instance; base organizations scope clients and agents.
+  relationships:
+  - kind: has_many
+    target: Account
+  - kind: has_one
+    target: OrganizationPolicy
+  - kind: has_many
+    target: Group
+- name: Consent
+  description: A versioned consent definition; opting in or out produces a receipt on the account.
+  relationships:
+  - kind: belongs_to
+    target: Application
+  - kind: has_many
+    target: ConsentReceipt
+    via: accountId
+- name: Claim
+  description: A native or mapped claim; dialects group claims for token emission.
+  relationships:
+  - kind: belongs_to
+    target: Dialect
+  - kind: has_many
+    target: ClaimMapping
+    description: per social or enterprise login provider
+- name: LifecycleEventHook
+  description: A brand-authored JavaScript snippet executed at a named point in the customer lifecycle.
+  relationships:
+  - kind: has_many
+    target: LifecycleEventHookLog
+  - kind: has_many
+    target: NPMDependency
+  - kind: belongs_to
+    target: Application
+    description: via assignment; an assigned hook cannot be deleted
+- name: AccountEvent
+  description: >-
+    An immutable record of a customer or administrative flow, carrying a subject, an actor, labels and a
+    timeline. When an AI agent acts, subject is the account and actor is the agent's client.
+  relationships:
+  - kind: belongs_to
+    target: Account
+    via: accountId
+  - kind: belongs_to
+    target: Application
+- name: EventStreamingConfiguration
+  description: An outbound integration that forwards audit logs and account events to Splunk or Elasticsearch.
+  path: /admin/api/v1/instance/eventStreaming/{id}
+- name: OutboundProvision
+  description: Pushes account state from an identity store to an external system, with logs and full-resync.
+- name: InboundConnection
+  description: >-
+    Pulls accounts into an identity store from an external relational database on a schedule or on
+    demand, with attribute mapping, change detection and correlation identifiers. Added in Philadelphia
+    and still marked [beta] in the spec's tag list.
+- name: IdentityVerificationPolicy
+  relationships:
+  - kind: has_many
+    target: IdentityVerificationStep
+  - kind: has_many
+    target: AccountProofing
+identifier_convention:
+  prefixes: false
+  note: >-
+    Strivacity does not use typed id prefixes. Two path segments are names rather than ids —
+    {identityStoreName} and {languageCode} — which is worth knowing before building a generic resolver.
+tag_groups:
+  admin_api: 63
+  admin_management_api: 17
+  myaccount_api: 4

@@ -1,0 +1,43 @@
+generated: '2026-08-29'
+method: generated
+source: >-
+  openapi/strivacity-admin-portal-openapi.yml , openapi/strivacity-myaccount-portal-openapi.yml ,
+  openapi/strivacity-admin-console-getting-started-openapi.yml , plus
+  https://docs.strivacity.com/reference/getting-started-with-the-admin-api and the docs pages named in
+  each skill. Every operationId in every skill was grepped out of the published specs — none invented.
+provider_published_skills: false
+provider_published_skills_note: >-
+  Searched github.com/strivacity and the documentation index for a skills/ directory or an AGENTS.md —
+  neither exists. These are API Evangelist-authored operating instructions grounded in Strivacity's own
+  contracts.
+skills:
+- name: strivacity-admin-api-access-token
+  file: strivacity-admin-api-access-token.md
+  api: Strivacity Admin API
+  operations: 1
+  summary: Mint a scoped, audience-bound client-credentials token and read a 403 correctly.
+- name: strivacity-provision-customer-account
+  file: strivacity-provision-customer-account.md
+  api: Strivacity Admin API
+  operations: 12
+  summary: Create, group, role-assign, disable and delete a customer account — and which of those are reversible.
+- name: strivacity-customer-self-service
+  file: strivacity-customer-self-service.md
+  api: Strivacity MyAccount API
+  operations: 14
+  summary: Act as the signed-in customer — profile, MFA authenticators, password, linked identities, notification preferences.
+- name: strivacity-consent-and-personal-data
+  file: strivacity-consent-and-personal-data.md
+  api: Strivacity MyAccount API + Admin API
+  operations: 4
+  summary: Grant and revoke consent, and export personal data, for a privacy or DSAR request.
+- name: strivacity-account-events-and-streaming
+  file: strivacity-account-events-and-streaming.md
+  api: Strivacity Admin API
+  operations: 11
+  summary: Read account events and audit entries, and configure outbound streaming to Splunk or Elasticsearch.
+- name: strivacity-lifecycle-event-hook
+  file: strivacity-lifecycle-event-hook.md
+  api: Strivacity Admin API
+  operations: 17
+  summary: Author, try out, deploy and troubleshoot a sandboxed lifecycle event hook.

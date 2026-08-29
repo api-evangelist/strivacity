@@ -1,0 +1,72 @@
+generated: '2026-08-29'
+method: searched
+source: >-
+  https://docs.strivacity.com/docs/no-code-components ,
+  https://docs.strivacity.com/docs/mobile-sdk-overview ,
+  https://docs.strivacity.com/docs/apis-and-sdks ,
+  https://github.com/strivacity/sdk-js
+note: >-
+  Strivacity's client-side surface splits three ways, and the split is the product decision a buyer is
+  actually making: hosted no-code components (Strivacity renders the UI), framework SDKs that embed a
+  redirect or popup flow, or the Journey Flow API where the brand renders every pixel itself.
+families:
+- name: No-code components
+  kind: hosted UI
+  docs: https://docs.strivacity.com/docs/no-code-components
+  hosting: Strivacity-hosted, branded through the Customer Experience Canvas and branding policies
+  components:
+  - Login, registration and in-line self-service journeys
+  - Brand admin portal
+  - Organization admin portal
+  - My Account portal
+  note: >-
+    Chosen at client-creation time — a client is created as "OIDC using no-code components" or "OIDC
+    using the Journey Flow API". Only the no-code type can be assigned an API Access policy, so the
+    choice has an authorization consequence, not only a UI one.
+- name: Web and framework SDKs
+  kind: embedded client libraries
+  repo: https://github.com/strivacity/sdk-js
+  packages: packages/strivacity-packages.yml
+  loader: npm, all published at 3.0.3 on 2026-08-03
+  members:
+  - '@strivacity/sdk-core'
+  - '@strivacity/sdk-angular'
+  - '@strivacity/sdk-react'
+  - '@strivacity/sdk-next'
+  - '@strivacity/sdk-nuxt'
+  - '@strivacity/sdk-remix'
+  - '@strivacity/sdk-svelte'
+  - '@strivacity/sdk-vue'
+  capabilities:
+  - redirect-based OIDC login
+  - popup-window OIDC login
+  - RP-initiated and back-channel logout
+  - native journey rendering against the Journey Flow API
+- name: Mobile SDKs
+  kind: native client libraries
+  docs: https://docs.strivacity.com/docs/mobile-sdk-overview
+  generations:
+  - name: redirect-based
+    members:
+    - Strivacity/sdk-mobile-android (com.strivacity.android:sdk 2.3.0)
+    - Strivacity/sdk-mobile-ios (v3.0.0)
+  - name: Journey-Flow-API native
+    members:
+    - Strivacity/sdk-mobile-kotlin-native (v4.1.0)
+    - Strivacity/sdk-mobile-ios-native (v5.0.0)
+    - Strivacity/sdk-mobile-android-native (v2.1.0)
+  cross_platform:
+  - Strivacity/sdk-flutter (strivacity_flutter 1.3.0 on pub.dev)
+  - Strivacity/sdk-react-native (React Native and Expo; GitHub only, no release tag)
+  capabilities:
+  - login, registration, MFA
+  - identity proofing and affirmation
+  - password reset and username reminder
+  - Android biometric auth, Apple Face ID / Touch ID
+  - WebAuthn and passkeys through the Journey Flow API (added in the Lyon release)
+  - native invitation redemption, password reset and account activation (Lyon)
+embedded_dashboards:
+  present: false
+  note: >-
+    Dashboards and analytics are inside the Admin Console; no embeddable analytics component is
+    published. Instance data can be exported through event streaming instead.

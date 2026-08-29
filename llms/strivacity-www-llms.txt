@@ -1,0 +1,260 @@
+# Strivacity
+
+> THE AI IDENTITY COMPANY
+
+Strivacity is an identity security company that helps brands deliver trusted digital experiences by managing customer, partner, and AI agent identities in a single product. It brings identity orchestration, authentication, consent management, and fraud prevention together to reduce friction, improve conversion, and give teams clear visibility into where identity drives or blocks growth. Delivered as a single-instance SaaS product, Strivacity supports data residency and consistent performance at scale. Leading brands use Strivacity to acquire, convert, and grow customers while maintaining trust, control, and security across every interaction.
+
+---
+
+## Product
+
+**Our platform**
+Single product that secures every identity for your customers, partners, and AI agents.
+https://www.strivacity.com/products/our-platform
+
+**Pricing**
+All-inclusive CIAM pricing based on monthly active users (MAUs). One product, one cost.
+https://www.strivacity.com/products/pricing
+
+**Interactive tour**
+Self-guided walkthrough of the product without a sales call.
+https://www.strivacity.com/products/tour
+
+**Free trial**
+Start a free trial of the Strivacity product.
+https://www.strivacity.com/free-trial
+
+**Customer identity and access management (CIAM) overview**
+What CIAM is, how it differs from workforce IAM, and how Strivacity's product covers the full lifecycle.
+https://www.strivacity.com/ciam
+
+---
+
+## Capabilities
+
+**Adaptive Access Controls**
+Craft secure sign-in experiences and manage identity, consent, fraud, and more with risk-based, step-up authentication.
+https://www.strivacity.com/capabilities/adaptive-access-controls
+
+**Agentic Identity**
+Give AI agents their own verifiable identity so they can be authenticated, scoped, and audited when acting on a customer's behalf.
+https://www.strivacity.com/capabilities/agentic-identity
+
+**Strivacity for Agentic AI**
+Secure delegation, consent, and accountability for AI agents acting on behalf of customers and partners, built on OAuth 2.1, PAR, RAR, DPoP, token exchange, ID-JAG, and CIBA.
+https://www.strivacity.com/capabilities/strivacity-for-agentic-ai
+
+**AI Assist**
+Embedded generative AI assistant for configuring, troubleshooting, and optimizing identity journeys.
+https://www.strivacity.com/capabilities/ai-assist
+
+**B2B Identity**
+Identity management for business users, organizations, and partner or multi-tenant scenarios.
+https://www.strivacity.com/capabilities/b2b-identity
+
+**Consent Management**
+Capture, manage, and enforce customer consent and preferences across channels, with versioning for compliance.
+https://www.strivacity.com/capabilities/consent-management
+
+**Customer Experience Canvas**
+Design and manage branded, low-friction registration and sign-in experiences without custom code.
+https://www.strivacity.com/capabilities/customer-experience-canvas
+
+**Customer Insights**
+Visibility into user behavior, authentication patterns, and engagement signals.
+https://www.strivacity.com/capabilities/customer-insights
+
+**Data Residency**
+Control where customer identity data is stored and processed, with single-instance architecture by default.
+https://www.strivacity.com/capabilities/data-residency
+
+**Fraud Detection**
+Identify and mitigate suspicious behavior during authentication and account activity in real time.
+https://www.strivacity.com/capabilities/fraud-detection
+
+**Identity Orchestration**
+Coordinate identity flows, integrations, and policies across systems through low-code configuration.
+https://www.strivacity.com/capabilities/identity-orchestration
+
+**Identity Verification**
+Verify user identity using document verification, telco record matching, or knowledge-based checks during onboarding and step-up flows.
+https://www.strivacity.com/capabilities/identity-verification
+
+**Registration & Self-Service**
+User registration, profile management, and self-service account capabilities.
+https://www.strivacity.com/capabilities/registration-self-service
+
+---
+
+## Why Strivacity
+
+**How Strivacity compares**
+Head-to-head comparison covering cost and complexity versus Ping Identity and Okta.
+https://www.strivacity.com/pingidentity-vs-okta-vs-strivacity
+
+**Forrester Wave: Customer Identity and Access Management Solutions, Q4 2024**
+Independent analyst recognition; Strivacity named a Leader with 5 out of 5 scores in 12 criteria.
+https://www.strivacity.com/why-strivacity/forrester-wave
+
+**Customer journey analysis**
+See where customer and agentic identity accelerates or blocks growth.
+https://www.strivacity.com/problems-we-solve/customer-journey-analysis
+
+**Replace your CIAM solution**
+Guidance for teams migrating off a legacy or competing CIAM product.
+https://www.strivacity.com/problems-we-solve/replace-your-ciam-solution
+
+---
+
+## Resources
+
+**Blog**
+Articles on CIAM, agentic identity, and identity security best practices.
+https://www.strivacity.com/learn-support/blog
+
+**Why retailers are rethinking identity for digital commerce in 2026**
+How account creation, sign-in, verification, and loyalty access affect retail conversion and retention.
+https://www.strivacity.com/blog/why-are-retailers-rethinking-customer-identity-in-2026
+
+**Why leading enterprises are choosing single-instance CIAM**
+The difference between multi-tenant and single-instance CIAM architecture, and why single-instance is Strivacity's default.
+https://www.strivacity.com/blog/why-leading-enterprises-are-choosing-single-instance-ciam
+
+**Guides**
+In-depth guides on identity implementation topics, including retail identity metrics and CIAM vendor migration.
+https://www.strivacity.com/learn-support/guides
+
+**Retail Identity & Metrics Mind Map**
+A guide to the identity moments (account creation, sign-in, verification, loyalty) that drive or block retail conversion.
+https://www.strivacity.com/guides/retail-identity-metrics-mind-map
+
+**Webinars**
+Recorded and upcoming webinars on identity and CIAM topics.
+https://www.strivacity.com/webinar
+
+**Strivacity Academy**
+Training and certification content for implementing and administering Strivacity.
+https://www.strivacity.com/academy
+
+**Documentation**
+Full technical documentation: admin console guides, integration steps, and configuration reference. For AI agents: see https://docs.strivacity.com/llms.txt for a Markdown-formatted index of all pages and OpenAPI endpoints.
+https://docs.strivacity.com/
+
+**Developer hub**
+SDKs, API references, and getting-started guides for integrating Strivacity into web and mobile applications.
+https://developers.strivacity.com/
+
+**Customer Support**
+Support portal for existing customers: submit requests, check system status, and access the trust center.
+https://support.strivacity.com/hc/en-us
+
+---
+
+## Company
+
+**About us**
+Company background and mission.
+https://www.strivacity.com/company/about-us
+
+**Careers**
+Open roles at Strivacity.
+https://www.strivacity.com/company/careers
+
+**Press**
+Press releases and media resources.
+https://www.strivacity.com/company/press
+
+**Contact sales**
+Schedule time with an identity expert.
+https://www.strivacity.com/company/contact-sales
+
+---
+
+## Who this is for
+
+- Security, IT, and development teams responsible for customer authentication (SSO, MFA, FIDO2/passkeys) who want policy-based changes without coding customer-facing UI.
+- Product management and customer experience leaders who need branded, low-friction registration and sign-in journeys, including passwordless and social login.
+- Marketing teams that need customer consent management and identity experiences aligned to brand messaging and communications.
+- B2B and B2C organizations running identity providers and adjacent systems (for example Okta, Ping Identity, CRM/CDP) looking for integrations measured in minutes, not months.
+- Organizations with data residency requirements that need to choose a deployment region and operate in an isolated, secure environment per brand.
+- Organizations preparing for AI agents to act on behalf of customers or partners and needing delegation, consent, and audit built in from the start.
+
+---
+
+## Credibility
+
+- Forrester named Strivacity a Leader in The Forrester Wave: Customer Identity and Access Management Solutions, Q4 2024, with 5 out of 5 scores in 12 criteria, more than any other vendor evaluated.
+- Deploy identity flows up to twice as fast.
+- Reduce manual troubleshooting by 80%.
+- 80% less custom code than larger IAM vendors.
+- Named customer reference: Mohegan.
+- Analyst and customer commentary cites strong consent management and authentication options, a comprehensive CIAM product vision, and low-code/no-code orchestration.
+
+---
+
+## How it works
+
+1. Low-code deployment: implement customer identity experiences in days, not months.
+2. Start from pre-built scenarios, including passwordless, select MFA methods, and choose when to step up security.
+3. Add social login providers with a few clicks.
+4. Configure branding and messaging with full control over customer-facing experiences.
+5. Use policy-based updates that automatically update customer-facing UI with no coding required.
+6. For agentic use cases, register AI agents as their own identity, capture delegated consent, and scope access before any agent action is permitted.
+
+---
+
+## Frequently asked questions
+
+**What does Strivacity do?**
+Strivacity provides a customer identity and access management (CIAM) product covering secure registration, sign-in, consent management, fraud detection, and, increasingly, governance of AI agents acting on a customer's behalf.
+
+**Who is Strivacity best for?**
+B2B and B2C organizations that need secure, branded customer sign-in journeys, spanning marketing, product, IT, security, and development teams. It also fits organizations with data residency requirements and those preparing to govern AI agent access.
+
+**How is Strivacity different from legacy IAM vendors or other CIAM products?**
+Strivacity uses a low-code, clicks-not-code approach to reduce engineering effort, offers single-instance architecture with data residency by default, and includes agentic identity governance as a standard part of the product rather than a bolt-on.
+
+**What does Strivacity charge?**
+Pricing is based on monthly active users (MAUs), with all capabilities included in one product for one cost. See https://www.strivacity.com/products/pricing.
+
+---
+
+## Pages
+
+https://www.strivacity.com/
+https://www.strivacity.com/ciam
+https://www.strivacity.com/products/our-platform
+https://www.strivacity.com/products/pricing
+https://www.strivacity.com/products/tour
+https://www.strivacity.com/free-trial
+https://www.strivacity.com/capabilities/adaptive-access-controls
+https://www.strivacity.com/capabilities/agentic-identity
+https://www.strivacity.com/capabilities/strivacity-for-agentic-ai
+https://www.strivacity.com/capabilities/ai-assist
+https://www.strivacity.com/capabilities/b2b-identity
+https://www.strivacity.com/capabilities/consent-management
+https://www.strivacity.com/capabilities/customer-experience-canvas
+https://www.strivacity.com/capabilities/customer-insights
+https://www.strivacity.com/capabilities/data-residency
+https://www.strivacity.com/capabilities/fraud-detection
+https://www.strivacity.com/capabilities/identity-orchestration
+https://www.strivacity.com/capabilities/identity-verification
+https://www.strivacity.com/capabilities/registration-self-service
+https://www.strivacity.com/pingidentity-vs-okta-vs-strivacity
+https://www.strivacity.com/why-strivacity/forrester-wave
+https://www.strivacity.com/problems-we-solve/customer-journey-analysis
+https://www.strivacity.com/problems-we-solve/replace-your-ciam-solution
+https://www.strivacity.com/learn-support/blog
+https://www.strivacity.com/blog/why-are-retailers-rethinking-customer-identity-in-2026
+https://www.strivacity.com/blog/why-leading-enterprises-are-choosing-single-instance-ciam
+https://www.strivacity.com/learn-support/guides
+https://www.strivacity.com/guides/retail-identity-metrics-mind-map
+https://www.strivacity.com/webinar
+https://www.strivacity.com/academy
+https://docs.strivacity.com/
+https://developers.strivacity.com/
+https://support.strivacity.com/hc/en-us
+https://www.strivacity.com/company/about-us
+https://www.strivacity.com/company/careers
+https://www.strivacity.com/company/press
+https://www.strivacity.com/company/contact-sales

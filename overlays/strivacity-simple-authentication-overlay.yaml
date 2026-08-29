@@ -1,0 +1,32 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for Strivacity Simple Authentication API
+  version: 1.0.0
+extends: openapi/strivacity-simple-authentication-openapi.yml
+actions:
+- target: $.info
+  update:
+    x-apievangelist-provider: strivacity
+    x-apievangelist-generated: '2026-08-29'
+    x-apievangelist-source: https://docs.strivacity.com/.well-known/api-catalog
+    x-apievangelist-harvest-url: https://docs.strivacity.com/openapi/simple-authentication-api.json
+- target: $.info
+  update:
+    x-rate-limits: rate-limits/strivacity-rate-limits.yml
+    x-error-catalog: errors/strivacity-problem-types.yml
+    x-conventions: conventions/strivacity-conventions.yml
+    x-authentication: authentication/strivacity-authentication.yml
+    x-oauth-scopes: scopes/strivacity-scopes.yml
+    x-lifecycle: lifecycle/strivacity-lifecycle.yml
+- target: $.components.securitySchemes.securityScheme
+  update:
+    description: 'OAuth 2.0 client-credentials bearer token minted at https://{tenant}.strivacity.com/oauth2/token
+      with both a scope set and an audience. The scope must ALSO be granted to the client by an in-instance API
+      Access policy; a 403 means the policy, not the token, is the blocker. Scope catalogue: scopes/strivacity-scopes.yml'
+    x-token-endpoint: https://{tenant}.strivacity.com/oauth2/token
+    x-audience-required: true
+    x-scope-catalog: scopes/strivacity-scopes.yml
+- target: $.servers[0]
+  update:
+    x-tenant-model: Every Strivacity deployment is a dedicated single-tenant instance. The {tenant} variable is
+      the full brand host, e.g. brand.strivacity.com — there is no shared API host.

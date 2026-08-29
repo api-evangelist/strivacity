@@ -1,0 +1,52 @@
+generated: '2026-08-29'
+method: searched
+source: https://www.strivacity.com/products/pricing
+docs: https://www.strivacity.com/products/pricing
+http_status: 200
+model: monthly active users (MAU)
+currency: USD
+plan_count: 1
+note: >-
+  Strivacity publishes a single all-inclusive plan rather than a tier ladder — "one product, one cost".
+  The only published number is the annual floor. Actual price is quoted against a licensed MAU band, so
+  everything above the floor is sales-quoted. Several capabilities are called out on the same page as
+  transaction-priced add-ons on top of the MAU license; their unit prices are not published.
+plans:
+- name: Strivacity (all-inclusive CIAM)
+  price: 17000
+  price_qualifier: starts at
+  currency: USD
+  billing_period: year
+  quota_unit: monthly active users
+  quota: null
+  quota_note: >-
+    Priced by licensed MAU band; the band size is not published. An MAU is a unique user account that
+    logs in at least once in a calendar month.
+  overage: >-
+    Auto-scaling absorbs short bursts at no charge. If average MAUs exceed the license for three
+    consecutive months, the customer must increase the license.
+  included:
+  - Dedicated cloud instance
+  - Unlimited organizations and integrations
+  - Unlimited B2B and partner use cases (B2C, B2B, B2B2x, B2P on one instance)
+  - Registration, self-service account management, progressive profiling, account recovery
+  - Consent management with versioning and consent receipts
+  - Delegated administration / RBAC
+  - Adaptive MFA (SMS, email, magic link, voice, soft token, FIDO2 biometrics)
+  - Single sign-on, social login, account linking
+  - Passwordless sign-in and passkeys
+  - Adaptive access controls (geolocation, improbable travel, anonymous proxy, breached password)
+  - API security (access tokens for customer-facing REST APIs)
+  - Bot detection, behavior analytics, known device detection, credential stuffing prevention
+  - Lifecycle event orchestration, persona-specific journeys, plug-in library
+  - Customer experience canvas, no-code UI, analytics and insights
+  transaction_priced_addons:
+  - Phone number fraud detection
+  - Identity fraud detection
+  - Physical document verification
+  - Knowledge-based verification
+free_tier: false
+trial:
+  available: true
+  url: https://www.strivacity.com/free-trial
+  http_status: 200

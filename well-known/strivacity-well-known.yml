@@ -1,0 +1,88 @@
+generated: '2026-08-29'
+method: probed
+source: probed each Strivacity-controlled host directly on 2026-08-29
+note: >-
+  docs.strivacity.com serves a real RFC 9727 API catalog (application/linkset+json) that enumerates all
+  six published OpenAPI documents. No other /.well-known/ document was found on any Strivacity-controlled
+  host. Strivacity DOES publish OIDC discovery (/.well-known/openid-configuration) — but only from a
+  customer's own tenant instance (https://BRAND_DOMAIN.strivacity.com), which is provisioned per brand and
+  has no public, Strivacity-operated instance to probe. Their own docs state plainly that the RFC 8414
+  /.well-known/oauth-authorization-server path is intentionally NOT published, and that MCP clients are
+  expected to fall back to OIDC Discovery.
+  Source for that statement: https://docs.strivacity.com/docs/integrating-an-mcp-server-with-strivacity
+hit_count: 1
+hosts:
+- host: https://docs.strivacity.com
+  documents:
+  - path: /.well-known/api-catalog
+    status: 200
+    content_type: application/linkset+json
+    file: strivacity-api-catalog.json
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+- host: https://www.strivacity.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+- host: https://static.strivacity.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+- host: https://identity.strivacity.com
+  documents:
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/oauth-protected-resource
+    status: 404
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+tenant_discovery:
+  note: >-
+    Per-tenant OIDC discovery is documented but not publicly probeable — every Strivacity instance is a
+    dedicated single-tenant deployment at https://BRAND_DOMAIN.strivacity.com. The documented discovery
+    endpoint is https://BRAND_DOMAIN.strivacity.com/.well-known/openid-configuration.
+  documented_at: https://docs.strivacity.com/docs/integrating-an-mcp-server-with-strivacity
+  probed: false
+  reason: no public Strivacity-operated tenant instance exists to probe

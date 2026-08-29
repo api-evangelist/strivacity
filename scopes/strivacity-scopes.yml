@@ -1,0 +1,813 @@
+generated: '2026-08-29'
+method: searched
+source: https://docs.strivacity.com/reference/getting-started-with-the-admin-api and the per-operation "REQUIRED
+  API PERMISSION" tables published across https://docs.strivacity.com/llms.txt
+docs: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+flow: client_credentials
+token_endpoint: https://{tenant}.strivacity.com/oauth2/token
+audience_required: true
+audience_example: https://{tenant}.strivacity.com
+scope_grammar: OPTION:ENTITY where OPTION is one of read, write, delete and ENTITY names the configuration or data
+  entity, e.g. read:adaptive_mfa
+note: 'Strivacity does not declare oauth2 securitySchemes in its published OpenAPI documents — every spec declares
+  only http/bearer — so no scope list is derivable from the specs. The scope catalogue below is harvested from the
+  "REQUIRED API PERMISSION" table Strivacity prints on each operation page of its own API reference. Scopes are
+  not granted by the token request alone: an API Access policy must first grant the client the scope, and the client
+  must be of the "OIDC using no-code components" type.'
+scope_count: 106
+scopes:
+- name: delete:account
+  action: delete
+  entity: account
+  example_operations:
+  - Delete an account
+  operation_count: 1
+- name: delete:account_authenticator
+  action: delete
+  entity: account_authenticator
+  example_operations:
+  - Delete authenticator for an account
+  operation_count: 1
+- name: delete:account_identity
+  action: delete
+  entity: account_identity
+  example_operations:
+  - Unlink an external identity from an account
+  operation_count: 1
+- name: delete:account_proofing
+  action: delete
+  entity: account_proofing
+  example_operations:
+  - Delete attempts for an identity verification
+  operation_count: 1
+- name: delete:admin_account
+  action: delete
+  entity: admin_account
+  example_operations:
+  - Delete an admin account
+  operation_count: 1
+- name: delete:admin_account_authenticator
+  action: delete
+  entity: admin_account_authenticator
+  example_operations:
+  - Delete authenticator for an admin account
+  operation_count: 1
+- name: delete:config_adaptive_mfa
+  action: delete
+  entity: config_adaptive_mfa
+  example_operations:
+  - Delete an adaptive access policy
+  operation_count: 1
+- name: delete:config_admin_api_access
+  action: delete
+  entity: config_admin_api_access
+  example_operations:
+  - Delete a client assignment
+  operation_count: 1
+- name: delete:config_admin_email_service_provider
+  action: delete
+  entity: config_admin_email_service_provider
+  example_operations:
+  - Delete email service provider
+  operation_count: 1
+- name: delete:config_admin_login_provider
+  action: delete
+  entity: config_admin_login_provider
+  example_operations:
+  - Delete an admin external login provider
+  - Delete claim mapping
+  operation_count: 2
+- name: delete:config_admin_policy_tag
+  action: delete
+  entity: config_admin_policy_tag
+  example_operations:
+  - Delete a policy tag
+  operation_count: 1
+- name: delete:config_admin_telephony_service_provider
+  action: delete
+  entity: config_admin_telephony_service_provider
+  example_operations:
+  - Deactivate telephony service provider by type
+  - Delete telephony service provider
+  operation_count: 2
+- name: delete:config_admin_variable
+  action: delete
+  entity: config_admin_variable
+  example_operations:
+  - Delete a variable
+  operation_count: 1
+- name: delete:config_api_access
+  action: delete
+  entity: config_api_access
+  example_operations:
+  - Delete an API security policy
+  operation_count: 1
+- name: delete:config_application
+  action: delete
+  entity: config_application
+  example_operations:
+  - Delete an application
+  - Delete an application config A/B testing variant
+  operation_count: 2
+- name: delete:config_brand
+  action: delete
+  entity: config_brand
+  example_operations:
+  - Delete a branding policy
+  operation_count: 1
+- name: delete:config_claim
+  action: delete
+  entity: config_claim
+  example_operations:
+  - Delete a claim
+  - Delete a dialect
+  - Delete a native claim
+  operation_count: 3
+- name: delete:config_custom_mfa
+  action: delete
+  entity: config_custom_mfa
+  example_operations:
+  - Delete a custom mfa
+  operation_count: 1
+- name: delete:config_event_hook
+  action: delete
+  entity: config_event_hook
+  example_operations:
+  - Delete a lifecycle event hook
+  - Delete a tryout function resource
+  operation_count: 2
+- name: delete:config_identity_proofing
+  action: delete
+  entity: config_identity_proofing
+  example_operations:
+  - Delete an identity verification policy
+  operation_count: 1
+- name: delete:config_identity_store
+  action: delete
+  entity: config_identity_store
+  example_operations:
+  - Delete an identity store
+  operation_count: 1
+- name: delete:config_inbound_connection
+  action: delete
+  entity: config_inbound_connection
+  example_operations:
+  - Delete an inbound connection
+  operation_count: 1
+- name: delete:config_instance_webanalytics
+  action: delete
+  entity: config_instance_webanalytics
+  example_operations:
+  - Delete a web analytics integration
+  operation_count: 1
+- name: delete:config_login_provider
+  action: delete
+  entity: config_login_provider
+  example_operations:
+  - Delete a social login provider
+  - Delete an enterprise login provider
+  - Delete claim mapping
+  operation_count: 3
+- name: delete:config_notification_policy
+  action: delete
+  entity: config_notification_policy
+  example_operations:
+  - Delete a notification policy
+  operation_count: 1
+- name: delete:config_password_policy
+  action: delete
+  entity: config_password_policy
+  example_operations:
+  - Delete a password quality policy
+  operation_count: 1
+- name: delete:config_self_service_policy
+  action: delete
+  entity: config_self_service_policy
+  example_operations:
+  - Delete a self-service policy
+  operation_count: 1
+- name: read:account
+  action: read
+  entity: account
+  example_operations:
+  - Get an account
+  - Get an account invitation
+  - List account invitations
+  - List accounts
+  operation_count: 8
+- name: read:account_download
+  action: read
+  entity: account_download
+  example_operations:
+  - Download account information
+  operation_count: 1
+- name: read:account_identity
+  action: read
+  entity: account_identity
+  example_operations:
+  - List identities for an account
+  operation_count: 1
+- name: read:account_proofing
+  action: read
+  entity: account_proofing
+  example_operations:
+  - List identity verifications
+  operation_count: 1
+- name: read:admin_account
+  action: read
+  entity: admin_account
+  example_operations:
+  - Get an admin account
+  - Get an admin account invitation
+  - List admin account invitations
+  - List admin accounts
+  operation_count: 7
+- name: read:admin_account_download
+  action: read
+  entity: admin_account_download
+  example_operations:
+  - Download admin account information
+  operation_count: 1
+- name: read:admin_account_identity
+  action: read
+  entity: admin_account_identity
+  example_operations:
+  - List admin external login providers
+  - List identities for an admin account
+  operation_count: 2
+- name: read:admin_bulk_operation
+  action: read
+  entity: admin_bulk_operation
+  example_operations:
+  - Get errors for a job
+  - Get status of a job
+  - Query if there is a running bulk operation
+  operation_count: 3
+- name: read:admin_event_account
+  action: read
+  entity: admin_event_account
+  example_operations:
+  - Get an admin account event
+  - Get an admin notification event
+  - List admin account events
+  - List admin notification events
+  operation_count: 5
+- name: read:admin_event_audit
+  action: read
+  entity: admin_event_audit
+  example_operations:
+  - Get an audit log
+  - List audit logs
+  operation_count: 2
+- name: read:config_adaptive_mfa
+  action: read
+  entity: config_adaptive_mfa
+  example_operations:
+  - Filter for locations
+  - Get an adaptive access policy
+  - List adaptive access policies
+  - List custom mfas
+  operation_count: 4
+- name: read:config_admin_adaptive_mfa
+  action: read
+  entity: config_admin_adaptive_mfa
+  example_operations:
+  - Filter for locations
+  - Get the admin adaptive access policy
+  - List custom mfas
+  operation_count: 3
+- name: read:config_admin_api_access
+  action: read
+  entity: config_admin_api_access
+  example_operations:
+  - Get a client assignment
+  - Get admin API security policy
+  operation_count: 2
+- name: read:config_admin_brand
+  action: read
+  entity: config_admin_brand
+  example_operations:
+  - Get admin branding policy
+  operation_count: 1
+- name: read:config_admin_email_service_provider
+  action: read
+  entity: config_admin_email_service_provider
+  example_operations:
+  - Get active email service provider
+  - Get email service provider
+  - List email service providers
+  operation_count: 3
+- name: read:config_admin_identity_store
+  action: read
+  entity: config_admin_identity_store
+  example_operations:
+  - Assign an admin account to a role
+  - Get a tag based permission entry
+  - Get an admin role
+  - List admin account attributes
+  operation_count: 11
+- name: read:config_admin_login_provider
+  action: read
+  entity: config_admin_login_provider
+  example_operations:
+  - Get a claim mapping
+  - Get an admin external login provider
+  - List admin external login providers
+  - List available native claims
+  operation_count: 5
+- name: read:config_admin_notification_policy
+  action: read
+  entity: config_admin_notification_policy
+  example_operations:
+  - Get admin notification policy
+  - Get an admin notification template
+  - List admin notification templates
+  operation_count: 3
+- name: read:config_admin_policy_tag
+  action: read
+  entity: config_admin_policy_tag
+  example_operations:
+  - Get a policy tag
+  - List policy tags
+  operation_count: 2
+- name: read:config_admin_telephony_service_provider
+  action: read
+  entity: config_admin_telephony_service_provider
+  example_operations:
+  - Get active telephony service provider
+  - Get telephony service provider
+  - List active telephony service providers
+  - List telephony service providers
+  operation_count: 4
+- name: read:config_admin_translation
+  action: read
+  entity: config_admin_translation
+  example_operations:
+  - Export a translation
+  - List translations
+  operation_count: 2
+- name: read:config_admin_variable
+  action: read
+  entity: config_admin_variable
+  example_operations:
+  - Get a variable
+  - List variables
+  operation_count: 2
+- name: read:config_api_access
+  action: read
+  entity: config_api_access
+  example_operations:
+  - Get a scope for an API security policy
+  - Get an API security policy
+  - Get an API security policy assignment
+  - List API security policies
+  operation_count: 4
+- name: read:config_application
+  action: read
+  entity: config_application
+  example_operations:
+  - Get SAML2 metadata for an application client
+  - Get a bridge policy
+  - Get a bridge policy resource
+  - Get an application
+  operation_count: 18
+- name: read:config_brand
+  action: read
+  entity: config_brand
+  example_operations:
+  - Get a branding policy
+  - List branding policies
+  operation_count: 2
+- name: read:config_claim
+  action: read
+  entity: config_claim
+  example_operations:
+  - Get a claim
+  - Get a dialect
+  - Get a native claim
+  - List claims
+  operation_count: 5
+- name: read:config_consent
+  action: read
+  entity: config_consent
+  example_operations:
+  - Get a consent
+  - List consents
+  operation_count: 2
+- name: read:config_custom_mfa
+  action: read
+  entity: config_custom_mfa
+  example_operations:
+  - Filter for NPM dependency suggestions for a lifecycle event hook
+  - Get a custom mfa
+  - List NPM dependency versions
+  - List custom mfas
+  operation_count: 4
+- name: read:config_event_hook
+  action: read
+  entity: config_event_hook
+  example_operations:
+  - Filter for NPM dependency suggestions for a lifecycle event hook
+  - Get a lifecycle event hook
+  - Get an integration for lifecycle event hook
+  - Get categories for plugin library
+  operation_count: 11
+- name: read:config_identity_proofing
+  action: read
+  entity: config_identity_proofing
+  example_operations:
+  - Get an identity verification policy
+  - Get an identity verification step
+  - List identity verification policies
+  - List identity verification steps
+  operation_count: 4
+- name: read:config_identity_store
+  action: read
+  entity: config_identity_store
+  example_operations:
+  - Add member to a group
+  - Assign an admin account to a role
+  - Assign groups to an account
+  - Assign multiple roles to an organization for an account
+  operation_count: 31
+- name: read:config_inbound_connection
+  action: read
+  entity: config_inbound_connection
+  example_operations:
+  - Get an inbound connection
+  - List inbound connections
+  operation_count: 2
+- name: read:config_instance
+  action: read
+  entity: config_instance
+  example_operations:
+  - Get an event streaming configuration
+  - Get instance address
+  - Get instance config
+  - List event streaming configurations
+  operation_count: 4
+- name: read:config_instance_webanalytics
+  action: read
+  entity: config_instance_webanalytics
+  example_operations:
+  - Get a web analytics integration
+  - List web analytics integrations
+  operation_count: 2
+- name: read:config_journey
+  action: read
+  entity: config_journey
+  example_operations:
+  - Filter for NPM dependency suggestions for a lifecycle event hook
+  - Get an integration for journey
+  - Get categories for plugin library
+  - Get plugin library for journeys
+  operation_count: 5
+- name: read:config_login_provider
+  action: read
+  entity: config_login_provider
+  example_operations:
+  - Get a claim mapping
+  - Get a social login provider
+  - Get an enterprise login provider
+  - List available native claims
+  operation_count: 7
+- name: read:config_notification_policy
+  action: read
+  entity: config_notification_policy
+  example_operations:
+  - Get a notification policy
+  - Get a notification template
+  - List notification policies
+  - List notification templates
+  operation_count: 4
+- name: read:config_password_policy
+  action: read
+  entity: config_password_policy
+  example_operations:
+  - Export a password restriction
+  - Get a password quality policy
+  - Get a password word restriction
+  - Get total size in MB
+  operation_count: 6
+- name: read:config_self_service_policy
+  action: read
+  entity: config_self_service_policy
+  example_operations:
+  - Get a self-service policy
+  - List self-service policies
+  operation_count: 2
+- name: read:event_account
+  action: read
+  entity: event_account
+  example_operations:
+  - Get a notification event
+  - Get an account event
+  - List account events
+  - List descriptors for account events
+  operation_count: 5
+- name: read:event_hook_log
+  action: read
+  entity: event_hook_log
+  example_operations:
+  - Get an event hook log
+  - List event hook logs
+  operation_count: 2
+- name: read:statistic
+  action: read
+  entity: statistic
+  example_operations:
+  - Query active account statistics
+  - Query connector uptime statistics
+  - Query consent acceptance statistics
+  - Query statistics
+  operation_count: 4
+- name: write:account
+  action: write
+  entity: account
+  example_operations:
+  - Add member to a group
+  - Assign groups to an account
+  - Assign multiple roles to an organization for an account
+  - Clear sessions for an account
+  operation_count: 20
+- name: write:account_authenticator
+  action: write
+  entity: account_authenticator
+  example_operations:
+  - Change password for an account
+  - Create authenticator for an account
+  - Request password reset for an account
+  operation_count: 3
+- name: write:account_identity
+  action: write
+  entity: account_identity
+  example_operations:
+  - Force sync a connector identity for an account
+  - Update identifier for an account
+  operation_count: 2
+- name: write:account_impersonation
+  action: write
+  entity: account_impersonation
+  example_operations:
+  - Request impersonation of an account
+  operation_count: 1
+- name: write:account_proofing
+  action: write
+  entity: account_proofing
+  example_operations:
+  - Create an identity verification
+  - Invalidate an identity verification
+  operation_count: 2
+- name: write:admin_account
+  action: write
+  entity: admin_account
+  example_operations:
+  - Assign an admin account to a role
+  - Assign multiple roles to an account
+  - Clear sessions for an admin account
+  - Create an admin account
+  operation_count: 15
+- name: write:admin_account_authenticator
+  action: write
+  entity: admin_account_authenticator
+  example_operations:
+  - Change password for an admin account
+  - Create authenticator for an admin account
+  - Request password reset for an admin account
+  operation_count: 3
+- name: write:admin_account_identity
+  action: write
+  entity: admin_account_identity
+  example_operations:
+  - Update identifier for an admin account
+  operation_count: 1
+- name: write:admin_bulk_operation
+  action: write
+  entity: admin_bulk_operation
+  example_operations:
+  - Create a bulk operation job
+  operation_count: 1
+- name: write:config_adaptive_mfa
+  action: write
+  entity: config_adaptive_mfa
+  example_operations:
+  - Create an adaptive access policy
+  - Update an adaptive access policy
+  operation_count: 2
+- name: write:config_admin_adaptive_mfa
+  action: write
+  entity: config_admin_adaptive_mfa
+  example_operations:
+  - Update the admin adaptive access policy
+  operation_count: 1
+- name: write:config_admin_api_access
+  action: write
+  entity: config_admin_api_access
+  example_operations:
+  - Create a client assignment
+  - Update a client assignment
+  operation_count: 2
+- name: write:config_admin_brand
+  action: write
+  entity: config_admin_brand
+  example_operations:
+  - Update admin branding policy
+  operation_count: 1
+- name: write:config_admin_email_service_provider
+  action: write
+  entity: config_admin_email_service_provider
+  example_operations:
+  - Create email service provider
+  - Set active email service provider
+  - Update email service provider
+  operation_count: 3
+- name: write:config_admin_identity_store
+  action: write
+  entity: config_admin_identity_store
+  example_operations:
+  - Create an admin role
+  - Create tag based permissions for an admin role
+  - Delete a tag based permission entry
+  - Delete an admin role
+  operation_count: 6
+- name: write:config_admin_login_provider
+  action: write
+  entity: config_admin_login_provider
+  example_operations:
+  - Create a claim mapping
+  - Create an admin external login provider
+  - Update an admin external login provider
+  - Update claim mapping
+  operation_count: 4
+- name: write:config_admin_notification_policy
+  action: write
+  entity: config_admin_notification_policy
+  example_operations:
+  - Update admin notification policy
+  - Update an admin notification template (SMS)
+  - Update an admin notification template (email)
+  operation_count: 3
+- name: write:config_admin_policy_tag
+  action: write
+  entity: config_admin_policy_tag
+  example_operations:
+  - Create a policy tag
+  - Update a policy tag
+  operation_count: 2
+- name: write:config_admin_telephony_service_provider
+  action: write
+  entity: config_admin_telephony_service_provider
+  example_operations:
+  - Activate telephony service provider
+  - Create telephony service provider
+  - Update telephony service provider
+  operation_count: 3
+- name: write:config_admin_translation
+  action: write
+  entity: config_admin_translation
+  example_operations:
+  - Disable a translation
+  - Enable a translation
+  - Import a translation
+  - Reset a translation
+  operation_count: 4
+- name: write:config_admin_variable
+  action: write
+  entity: config_admin_variable
+  example_operations:
+  - Create a variable
+  - Update a variable
+  operation_count: 2
+- name: write:config_api_access
+  action: write
+  entity: config_api_access
+  example_operations:
+  - Assign a client to an API security policy
+  - Create a scope for an API security policy
+  - Create an API security policy
+  - Delete a scope for an API security policy
+  operation_count: 8
+- name: write:config_application
+  action: write
+  entity: config_application
+  example_operations:
+  - Create a bridge policy
+  - Create a bridge policy resource
+  - Create an application
+  - Create an application client
+  operation_count: 18
+- name: write:config_brand
+  action: write
+  entity: config_brand
+  example_operations:
+  - Create a branding policy
+  - Update a branding policy
+  operation_count: 2
+- name: write:config_claim
+  action: write
+  entity: config_claim
+  example_operations:
+  - Create a claim
+  - Create a dialect
+  - Create a native claim
+  - Update a claim
+  operation_count: 6
+- name: write:config_consent
+  action: write
+  entity: config_consent
+  example_operations:
+  - Create a consent
+  - Update a consent
+  operation_count: 2
+- name: write:config_custom_mfa
+  action: write
+  entity: config_custom_mfa
+  example_operations:
+  - Create a custom mfa policy
+  - Update a custom mfa
+  operation_count: 2
+- name: write:config_event_hook
+  action: write
+  entity: config_event_hook
+  example_operations:
+  - Call a tryout function resource
+  - Create a lifecycle event hook
+  - Create a tryout function resource
+  - Deploy a lifecycle event hook
+  operation_count: 5
+- name: write:config_identity_proofing
+  action: write
+  entity: config_identity_proofing
+  example_operations:
+  - Create an identity verification policy
+  - Create an identity verification step
+  - Delete an identity verification step
+  - Reorder verification steps
+  operation_count: 6
+- name: write:config_identity_store
+  action: write
+  entity: config_identity_store
+  example_operations:
+  - Assign API security policy to a group
+  - Create a child attribute
+  - Create a group
+  - Create a role
+  operation_count: 26
+- name: write:config_inbound_connection
+  action: write
+  entity: config_inbound_connection
+  example_operations:
+  - Create an inbound connection
+  - Forces a sync for inbound connection
+  - Update an inbound connection
+  operation_count: 3
+- name: write:config_instance
+  action: write
+  entity: config_instance
+  example_operations:
+  - Create an event streaming configuration
+  - Delete an event streaming configuration
+  - Test an event streaming configuration
+  - Update an event streaming configuration
+  operation_count: 5
+- name: write:config_instance_webanalytics
+  action: write
+  entity: config_instance_webanalytics
+  example_operations:
+  - Create a web analytics integration
+  - Update a web analytics integration
+  operation_count: 2
+- name: write:config_login_provider
+  action: write
+  entity: config_login_provider
+  example_operations:
+  - Create a claim mapping
+  - Create a social login provider
+  - Create an enterprise login provider
+  - Update a social login provider
+  operation_count: 6
+- name: write:config_notification_policy
+  action: write
+  entity: config_notification_policy
+  example_operations:
+  - Create a notification policy
+  - Update a notification policy
+  - Update a notification template (SMS)
+  - Update a notification template (email)
+  operation_count: 4
+- name: write:config_password_policy
+  action: write
+  entity: config_password_policy
+  example_operations:
+  - Create a password quality policy
+  - Create a password word restriction
+  - Delete a password word restriction
+  - Update a password quality policy
+  operation_count: 5
+- name: write:config_self_service_policy
+  action: write
+  entity: config_self_service_policy
+  example_operations:
+  - Create a self-service policy
+  - Update a self-service policy
+  operation_count: 2

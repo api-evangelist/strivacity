@@ -1,0 +1,93 @@
+generated: '2026-08-29'
+method: searched
+source: https://docs.strivacity.com/docs/rate-limiting
+docs: https://docs.strivacity.com/docs/rate-limiting
+docs_updated: '2026-03-04'
+limit_count: 9
+exhaustion_status: 429
+retry_after_header: false
+scope_model: >-
+  Limits are applied per Strivacity instance AND per single source IP, independently per API path
+  family. Every listed path family carries its own quota; usage on one path does not consume another's.
+response_headers:
+- name: X-Ratelimit-Limit
+  description: >-
+    Configured quota for a bucket, in the form "<limit>, <limit>;w=<window-seconds>". Emitted once per
+    bucket, so a single response carries several of these headers.
+  example: 'X-Ratelimit-Limit: 10000, 10000;w=60'
+- name: X-Ratelimit-Remaining
+  description: Requests still available in the corresponding bucket, positionally matched to the limit headers.
+  example: 'X-Ratelimit-Remaining: 9999'
+- name: X-Ratelimit-Reset
+  description: Seconds until the corresponding bucket resets, positionally matched to the limit headers.
+  example: 'X-Ratelimit-Reset: 22'
+header_semantics: >-
+  The three header families repeat once per simultaneously-applied bucket (instance/second,
+  instance/minute, IP/second, IP/minute). They are positionally correlated — the first Limit pairs with
+  the first Remaining and the first Reset. All buckets apply at once and exceeding any one returns 429.
+  Clients should track the bucket closest to exhaustion and pause for that bucket's Reset value.
+limits:
+- name: Administrative APIs
+  path: /admin/api/v1/...
+  instance_per_second: 50
+  instance_per_minute: 500
+  ip_per_second: 10
+  ip_per_minute: 100
+- name: Authentication APIs
+  path: /login/... , /provider/... , /.well-known/...
+  instance_per_second: 300
+  instance_per_minute: 10000
+  ip_per_second: 10
+  ip_per_minute: 100
+- name: OAuth2 / userinfo
+  path: /oauth2/... , /userinfo/...
+  instance_per_second: 300
+  instance_per_minute: 10000
+  ip_per_second: 150
+  ip_per_minute: 6000
+  daily_capacity_note: >-
+    Up to 14,400,000 requests per instance over a 24-hour period, and up to 8,640,000 per single IP over
+    the same window, for /oauth2/token and /userinfo.
+- name: Credential recovery and registration
+  path: /login/api/v2/forgottenPasswordEmail , /login/api/v2/forgottenPasswordPhone , /login/api/v2/registration
+  instance_per_second: 300
+  instance_per_minute: 10000
+  ip_per_second: 5
+  ip_per_minute: 50
+- name: MFA method
+  path: /login/api/v2/mfaMethod
+  instance_per_second: 300
+  instance_per_minute: 10000
+  ip_per_second: null
+  ip_per_minute: 10
+- name: Forgotten username / account activation
+  path: /login/api/v2/forgottenUsername , /login/api/v2/sendAccountActivation
+  instance_per_second: 300
+  instance_per_minute: 10000
+  ip_per_second: null
+  ip_per_minute: 1
+- name: Flow API
+  path: /flow/api/...
+  instance_per_second: 300
+  instance_per_minute: 10000
+  ip_per_second: 10
+  ip_per_minute: 100
+- name: Miscellaneous landings (errors, Magic Link)
+  path: /landing
+  instance_per_second: 300
+  instance_per_minute: 10000
+  ip_per_second: 10
+  ip_per_minute: 100
+- name: Self-service APIs
+  path: /myaccount/... , /go/...
+  instance_per_second: 300
+  instance_per_minute: 10000
+  ip_per_second: 5
+  ip_per_minute: 50
+increase_path:
+  method: contact support
+  contact: support@strivacity.com
+spec_evidence:
+  note: >-
+    429 is declared as a response in the published OpenAPI as well — once in the Admin API spec and on
+    three MyAccount operations — so the exhaustion status is machine-readable, not only prose.

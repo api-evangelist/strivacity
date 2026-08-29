@@ -1,0 +1,157 @@
+generated: '2026-08-29'
+method: searched
+source: >-
+  https://docs.strivacity.com/docs/lifecycle-event-hooks ,
+  https://docs.strivacity.com/docs/event-streaming ,
+  https://docs.strivacity.com/docs/account-events ,
+  derived from openapi/_original/strivacity-admin-portal-openapi-original.json
+asyncapi_spec_published: false
+asyncapi_note: >-
+  Strivacity publishes no AsyncAPI document. Probed /asyncapi.yaml and /asyncapi.json on the docs and
+  marketing hosts and searched the GitHub org — nothing. The event surface below is real and documented,
+  it is simply described in prose and in the Admin API rather than in an event contract.
+mechanism_warning: >-
+  READ THIS BEFORE TREATING THIS AS A WEBHOOK CATALOGUE. Strivacity does NOT offer HTTP webhook
+  subscriptions in the usual sense — there is no endpoint where an integrator registers a callback URL
+  and receives signed POSTs per event type. It offers two different outbound mechanisms, and the
+  distinction matters to anyone planning an integration.
+surfaces:
+- name: Lifecycle Event Hooks
+  kind: in-process extensibility hook
+  docs: https://docs.strivacity.com/docs/lifecycle-event-hooks
+  delivery: >-
+    Brand-authored JavaScript executed inside a sandboxed serverless environment on the Strivacity
+    platform at a named point in the customer lifecycle. The hook itself calls out to the brand's CRM,
+    marketing hub or SIEM. Synchronous hooks can alter or block the flow; asynchronous hooks run
+    fire-and-forget alongside it.
+  signed: not applicable (no outbound HTTP contract from Strivacity)
+  retry: not applicable
+  managed_via_api: true
+  api_operations:
+  - getAllEventHookFunctions
+  - createEventHookFunction
+  - updateEventHookFunction
+  - deployEventHookFunction
+  - deleteEventHookFunction
+  - getEventHookFunctionStatusById
+  - getEventHookLogs
+  - getEventHookLogById
+  - getAllEventHooks
+  events:
+  - id: at-failed-authentication
+    mode: synchronous
+    description: Customer authentication or registration failed; the hook receives the reason and can customize the error, show a custom page, or redirect.
+  - id: at-failed-identification
+    mode: synchronous
+    description: Identification against the identity store failed (account disabled, unactivated, group-restricted, not found); the hook can re-identify, continue to registration, or redirect.
+  - id: after-self-service-login
+    mode: asynchronous
+    description: Successful login.
+  - id: after-consent-update
+    mode: asynchronous
+    description: A customer opted into or out of a consent at registration, self-service or progressive profiling.
+  - id: after-identity-verification
+    mode: synchronous
+    description: The identity verification workflow finished; results can be persisted to the account.
+  - id: after-customer-identification
+    mode: synchronous
+    description: The customer supplied an identifier and before any authentication factor is requested; used to step the flow up or down.
+  - id: after-mfa-change
+    mode: asynchronous
+    description: A customer enrolled or removed an MFA factor.
+  - id: after-registration
+    mode: synchronous
+    description: Account registration completed.
+  - id: after-external-login
+    mode: synchronous
+    description: A customer registered or logged in with a social login provider.
+  - id: after-token-refresh
+    mode: synchronous
+    description: A token refresh succeeded; the response can be inspected before it returns to the client.
+  - id: after-account-update
+    mode: asynchronous
+    description: An account was updated; used to sync to an external identity store.
+  - id: after-account-deletion
+    mode: asynchronous
+    description: An account was deleted; used to sync deletion to an external identity store.
+  - id: before-identity-verification
+    mode: synchronous
+  - id: before-contact-update
+    mode: synchronous
+    description: An email address or phone number is about to be persisted; the hook can validate or block the change.
+  - id: before-external-registration
+    mode: synchronous
+  - id: before-id-token-generation
+    mode: synchronous
+    description: Inject custom claims, or add and remove scopes, before the ID or access token is created.
+  - id: before-saml2-assertion-generation
+    mode: synchronous
+  - id: before-progressive-profiling
+    mode: synchronous
+  - id: before-registration
+    mode: synchronous
+  - id: before-password-validation
+    mode: synchronous
+    description: Used to validate against, or migrate a password from, an external identity store.
+  - id: before-password-reset
+    mode: synchronous
+  - id: before-multi-stage-registration
+    mode: synchronous
+  - id: before-authenticator-enrollment
+    mode: synchronous
+  - id: before-password-persist
+    mode: synchronous
+- name: Event streaming
+  kind: outbound push to a data platform
+  docs: https://docs.strivacity.com/docs/event-streaming
+  delivery: >-
+    Strivacity pushes events to a configured destination over HTTP. Supported destinations are Splunk
+    and Elasticsearch — the destination is chosen from a vendor list, not an arbitrary callback URL.
+  event_classes:
+  - id: audit-log
+    description: Administrative and system actions inside the instance.
+    docs: https://docs.strivacity.com/docs/audit-logs
+  - id: account-event
+    description: >-
+      Customer activity — login attempts, password changes, MFA codes, and other identity actions.
+      Optionally extended with detailed account event actions (session preferences, authenticator
+      attempts, adaptive risk decisions, external IdP usage, verification failures, invitation and
+      login-hint details).
+    docs: https://docs.strivacity.com/docs/account-events
+  payload_customization: named native claims can be included in the event payload
+  retry:
+    supported: true
+    window: >-
+      Failed events are retried for up to 60 seconds by default; retries resume only after five events
+      have delivered successfully. Configurable per instance via environment variables.
+  managed_via_api: true
+  api_operations:
+  - list_4
+  - create_6
+  - getById
+  - update_5
+  - delete_7
+  - sendTestEvent
+  test_affordance: POST /admin/api/v1/instance/eventStreaming/{id}/test sends a synthetic event end to end
+- name: Account event query API
+  kind: pull
+  delivery: Poll the Admin API rather than receive a push.
+  api_operations:
+  - getAccountEvents
+  - getAccountEventById
+  - getDescriptor
+  - getNotificationEvents
+  - getNotificationEventById
+  note: >-
+    getDescriptor returns the machine-readable catalogue of account event types for the instance — the
+    closest thing Strivacity has to a published event schema, and the right place for an agent to
+    discover event types at runtime.
+agent_note: >-
+  For an AI-agent integration the account event stream is the accountability record: when an agent acts
+  on a customer's account, the event's subject is the account and the actor is the agent's client id, so
+  agent-driven activity is separable from customer-driven activity in both the streamed events and the
+  My Account portal.
+gap: >-
+  A brand that wants a plain signed HTTP webhook has to write a Lifecycle Event Hook that POSTs to its
+  own endpoint. An AsyncAPI document covering the 24 lifecycle events plus the account-event and
+  audit-log payloads would make this surface machine-readable without changing a line of the product.

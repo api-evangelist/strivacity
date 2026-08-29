@@ -1,0 +1,220 @@
+openapi: 3.1.0
+info:
+  title: Simple Authentication API
+  version: 4.11.0
+servers:
+- url: https://{tenant}
+  variables:
+    tenant:
+      default: example.strivacity.com
+      description: Your strivacity tenant
+components:
+  securitySchemes: {}
+security:
+- {}
+paths:
+  /simplelogin/api/v1/authenticate:
+    post:
+      summary: Authenticate with identifier and password
+      description: ''
+      operationId: authenticate-with-identifier-and-password
+      parameters:
+      - name: Cookie
+        in: header
+        description: The special "__Secure-SimpleLogin" cookie you obtained during the authorize call
+        schema:
+          type: string
+      - name: Host
+        in: header
+        description: Your hostname
+        schema:
+          type: string
+      - name: Content-Type
+        in: header
+        description: application/json
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - identifier
+              properties:
+                identifier:
+                  type: string
+                  description: The identifier of the account you wish to authenticate
+                password:
+                  type: string
+                  description: The password of the account you wish to authenticate
+                organization:
+                  type: object
+                  description: Organization selection for the account to be authenticated
+                  required:
+                  - route
+                  properties:
+                    route:
+                      type: string
+                      description: Organization selection
+            examples:
+              Request Example:
+                value:
+                  identifier: test@example.com
+                  password: p4assw0rd!
+                  organization:
+                    route: org
+      responses:
+        '303':
+          description: '303'
+          content:
+            text/plain:
+              examples:
+                Result:
+                  value: ''
+        '400':
+          description: '400'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: '{}'
+              schema:
+                type: object
+                properties: {}
+        '401':
+          description: '401'
+          content:
+            text/plain:
+              examples:
+                Result:
+                  value: ''
+        '500':
+          description: '500'
+          content:
+            text/plain:
+              examples:
+                Result:
+                  value: ''
+      deprecated: false
+  /simplelogin/api/v1/token:
+    post:
+      summary: Simple token request
+      description: ''
+      operationId: token-1
+      parameters:
+      - name: Authorization
+        in: header
+        description: Basic Auth header with Base64 encoded `CLIENT_ID:CLIENT_SECRET`
+        required: true
+        schema:
+          type: string
+      - name: Host
+        in: header
+        description: Your hostname
+        schema:
+          type: string
+      - name: Content-Type
+        in: header
+        description: application/json
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - response_type
+              - scope
+              - identifier
+              properties:
+                response_type:
+                  type: string
+                  description: Requested `token` and/or `id_token`
+                scope:
+                  type: string
+                  description: List of scopes
+                identifier:
+                  type: string
+                  description: The identifier of the account you wish to authenticate
+                password:
+                  type: string
+                  description: The password of the account you wish to authenticate
+                organization:
+                  type: object
+                  description: Organization selection for the account to be authenticated
+                  required:
+                  - route
+                  properties:
+                    route:
+                      type: string
+                      description: Organization selection
+            examples:
+              Request Example:
+                value:
+                  response_type: token id_token
+                  scope: openid offline family_name given_name
+                  identifier: test@example.com
+                  password: passw0rd!
+                  organization:
+                    route: org
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n  \"access_token\": \"<access_token>\",\n  \"token_type\": \"bearer\",\n  \"expires_in\": 3600,\n  \"refresh_token\": \"<refresh_token>\",\n  \"id_token\": \"<id_token>\",\n\
+                    \  \"userinfo\": {}\n}"
+              schema:
+                type: object
+                properties:
+                  access_token:
+                    type: string
+                    example: <access_token>
+                  token_type:
+                    type: string
+                    example: bearer
+                  expires_in:
+                    type: integer
+                    example: 3600
+                    default: 0
+                  refresh_token:
+                    type: string
+                    example: <refresh_token>
+                  id_token:
+                    type: string
+                    example: <id_token>
+                  userinfo:
+                    type: object
+                    properties: {}
+        '400':
+          description: '400'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n    \"error_description\": \"Invalid credentials\",\n    \"error\": \"access_denied\"\n}"
+              schema:
+                type: object
+                properties:
+                  error_description:
+                    type: string
+                    example: Invalid credentials
+                  error:
+                    type: string
+                    example: access_denied
+        '500':
+          description: '500'
+          content:
+            text/plain:
+              examples:
+                Result:
+                  value: ''
+      deprecated: false
+x-readme:
+  headers: []
+  explorer-enabled: false
+  proxy-enabled: true

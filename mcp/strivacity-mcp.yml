@@ -1,0 +1,70 @@
+generated: '2026-08-29'
+method: searched
+status: none
+source: >-
+  https://docs.strivacity.com/docs/agentic-ai ,
+  https://docs.strivacity.com/docs/integrating-an-mcp-server-with-strivacity ,
+  https://docs.strivacity.com/docs/protected-resources ,
+  https://docs.strivacity.com/docs/ai-agents , https://www.npmjs.com (scope search), https://github.com/strivacity
+deployment:
+  mode: none
+  endpoint: null
+  install: null
+  package: null
+  auth: unknown
+  verified: searched
+finding: >-
+  Strivacity ships NO MCP server of its own. This is a deliberate product position, not an omission, and
+  it is worth stating precisely because Strivacity's marketing is heavily agentic and could easily be
+  misread as "they have an MCP server."
+  Strivacity's role in MCP is the OTHER side of the connection: it is the OAuth 2.1 AUTHORIZATION SERVER
+  in front of the CUSTOMER'S MCP server. The customer registers their MCP server as a Protected Resource
+  with a canonical resource URL and a scope catalogue; an AI agent is registered (or self-registers via a
+  Client ID Metadata Document) as an OAuth2/OIDC client with the AI agent subtype; Strivacity
+  authenticates the end customer, shows a plain-language consent screen, and mints an audience-restricted
+  token naming that resource. Strivacity implements the authorization portions of the MCP specification;
+  the MCP server itself is the customer's to run.
+searched:
+- surface: npm scope @strivacity
+  result: 8 packages, all Journey/SDK client libraries; no MCP server package
+- surface: github.com/strivacity
+  result: 17 repositories — JS/mobile SDKs, demos, an import validator; no MCP server repository
+- surface: docs.strivacity.com full documentation index (llms.txt)
+  result: >-
+    MCP appears only in the authorization-server role — "Integrating an MCP server with Strivacity",
+    "Protected resources", "AI agents", "Dynamic clients", "Agentic AI"
+- surface: /.well-known/agent-card.json and /.well-known/agent.json on www, docs, static, identity
+  result: 404 on every host
+what_strivacity_provides_to_mcp:
+  role: authorization server
+  spec: Model Context Protocol authorization
+  discovery: >-
+    OIDC Discovery at https://{tenant}.strivacity.com/.well-known/openid-configuration. RFC 8414
+    oauth-authorization-server is deliberately not served; MCP clients are expected to fall back.
+  resource_parameter: RFC 8707, required on both authorization and token requests, matched exactly
+  token_audience: the registered canonical resource URL of the MCP server
+  token_format: JWT selectable per client so the MCP server can validate locally against the published JWKS
+  step_up: >-
+    Scope challenges — the MCP server answers 403 with
+    WWW-Authenticate: Bearer error="insufficient_scope", scope="..." and Strivacity re-runs consent for
+    the additional scopes.
+  discovery_challenge: >-
+    The MCP server answers 401 with
+    WWW-Authenticate: Bearer resource_metadata="https://.../.well-known/oauth-protected-resource/mcp"
+  dynamic_clients: >-
+    With Client ID Metadata Documents enabled, discovery advertises
+    client_id_metadata_document_supported: true so external agents can self-identify without
+    pre-registration.
+  consent: >-
+    Per-scope authorization consent captured from the end customer at login, revocable by them in the
+    My Account portal, and recorded in account events with the agent's client id as the actor.
+candidate_tools:
+  emitted: false
+  reason: >-
+    A candidate tool list derived from 452 Admin API operations would read as an agent surface Strivacity
+    does not offer, on an API whose operations are brand-instance administration rather than end-customer
+    actions. No candidate list is written and no MCPServer pointer is wired into apis.yml — the honest
+    record is that Strivacity does not publish an MCP server.
+pointer_note: >-
+  No `type: MCPServer` pointer is emitted in apis.yml. Per STEP 2 of the enrichment contract, a pointer
+  is only emitted when the underlying thing is genuinely present.

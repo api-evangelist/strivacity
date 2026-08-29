@@ -1,0 +1,182 @@
+generated: '2026-08-29'
+method: searched
+source: >-
+  https://docs.strivacity.com/reference/getting-started-with-the-admin-api ,
+  https://docs.strivacity.com/docs/rate-limiting ,
+  https://docs.strivacity.com/docs/release-support-matrix ,
+  derived from openapi/_original/*.json
+auth:
+  style: OAuth 2.0 client credentials -> bearer token, scoped by an in-instance API Access policy
+  header: 'Authorization: Bearer <access_token>'
+  detail: authentication/strivacity-authentication.yml
+base_url:
+  form: https://{tenant}.strivacity.com
+  note: >-
+    Every Strivacity deployment is a dedicated single-tenant instance; the host IS the tenant. The
+    published OpenAPI servers[] block is templated as https://{tenant} with the variable defaulting to
+    example.strivacity.com. There is no shared multi-tenant API host.
+  path_prefixes:
+    admin: /admin/api/v1 (with a small number of /admin/api/v2 resources)
+    myaccount: /myaccount/api/v1
+    journey_flow: /flow/api
+    oauth: /oauth2
+versioning:
+  style: path
+  current: v1 with selective v2 resources (bridge policies, application clients)
+  product_releases: named city releases (Sydney -> Boston -> Buffalo -> Veszprem -> Manchester -> Madrid -> Lyon -> Geneva -> Seoul -> Philadelphia)
+  spec_info_version: v0.0.1 on four of the six documents
+  spec_version_note: >-
+    The OpenAPI info.version fields are effectively unmaintained — four of the six documents report
+    v0.0.1 while the product itself is on named quarterly releases and the Simple Authentication API
+    reports 4.11.0. A consumer cannot tell which product release a downloaded spec corresponds to.
+  support_policy: lifecycle/strivacity-lifecycle.yml
+pagination:
+  style: page-number
+  params:
+  - name: page
+    description: zero-or-one-based page index (declared on 36 Admin API list operations)
+  - name: size
+    description: page size
+  - name: sort
+    description: sort expression
+  note: >-
+    Derived from the published parameter sets: page/size/sort appear together on the list endpoints of
+    both the Admin and Admin Management APIs. Cursor pagination is not used.
+filtering:
+  documented: true
+  docs: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  semantics: >-
+    Multiple different query parameters combine with AND. Multiple values inside one repeatable
+    parameter combine with OR. Exceptions are documented per endpoint.
+  common_filters: [name, policyTags, startDate, endDate, organization, identityStores, accountIds]
+idempotency:
+  supported: false
+  header: null
+  evidence: >-
+    No Idempotency-Key (or any equivalent) header appears anywhere in the six published OpenAPI
+    documents, and the string "idempoten" does not appear anywhere in the full documentation index at
+    https://docs.strivacity.com/llms.txt. Retrying a failed POST against a create endpoint is not safe;
+    the API answers 409 on the duplicate rather than replaying the first result.
+  impact: >-
+    An agent retrying a create after a timeout has no way to tell a duplicate from a first attempt, and
+    must reconcile by listing and matching on a natural key.
+request_tracing:
+  correlation_header: null
+  evidence: >-
+    No request-id or correlation-id header is declared in any published spec or documented in the API
+    reference. Server-side, an Event ID identifies each account event and event hook execution, and
+    event hook logs are retrievable through the Admin API, but there is no client-supplied or
+    server-returned per-request identifier to quote in a support ticket.
+custom_headers:
+- name: X-Notification-By-Application
+  spec: openapi/strivacity-admin-portal-openapi.yml
+  purpose: attributes an admin-initiated notification to a specific application
+- name: X-Skip-Email-Verification
+  spec: openapi/strivacity-admin-portal-openapi.yml
+  purpose: suppresses the email verification step on an admin-side account write
+- name: X-Skip-Phone-Verification
+  spec: openapi/strivacity-admin-portal-openapi.yml
+  purpose: suppresses the phone verification step on an admin-side account write
+- name: X-Challenge
+  spec: openapi/strivacity-myaccount-portal-openapi.yml
+  purpose: carries a step-up challenge on a self-service operation
+error_envelope:
+  media_type: application/problem+json
+  schema: ProblemJson
+  format: rfc7807 (flavored — no `type` URI; adds errorKey/entityName/fieldErrors)
+  detail: errors/strivacity-problem-types.yml
+rate_limits:
+  signalled: true
+  headers: [X-Ratelimit-Limit, X-Ratelimit-Remaining, X-Ratelimit-Reset]
+  exhaustion_status: 429
+  retry_after: false
+  detail: rate-limits/strivacity-rate-limits.yml
+field_expansion:
+  supported: false
+  note: No expand / fields / include parameter is declared in any published spec.
+metadata:
+  supported: true
+  mechanism: >-
+    Extensibility is through identity-store attributes (including simple-list and complex-list types
+    added in the Seoul release) and claim dialects, not a generic key/value metadata bag on each object.
+dry_run_mode:
+  supported: partial
+  evidence:
+  - operation: sendTestEvent
+    path: POST /admin/api/v1/instance/eventStreaming/{id}/test
+    note: sends a synthetic event through a configured streaming integration without waiting for a real one
+  - surface: Lifecycle Event Hook Tryout
+    note: a dedicated Admin API tag group for executing an event hook against sample input before deploying it
+  note: >-
+    Both are configuration-validation affordances. There is no general dry-run / preview mode on the
+    account, application or policy write endpoints.
+reversibility:
+  grade: documented
+  applicable: true
+  note: >-
+    The Admin and MyAccount APIs carry real write surfaces, and several destructive actions have an
+    explicit counterpart operation. What is NOT published anywhere is a window: Strivacity documents no
+    undo period, no soft-delete retention, and no restore path for a deleted account. Nothing in the docs
+    states how long a deleted account or a revoked invitation can be recovered, so no window is asserted
+    here. Grade is `documented`, not `verified`, for exactly that reason.
+  reversible:
+  - action: Disable an account
+    operation: disableAccount
+    path: POST /admin/api/v1/identityStores/{identityStoreName}/accounts/{accountId}/disable
+    reversal: enableAccount
+    reversal_path: POST /admin/api/v1/identityStores/{identityStoreName}/accounts/{accountId}/enable
+    window: null
+    window_source: null
+    note: >-
+      Fully symmetric pair; disable is the reversible alternative to delete. The same operationIds exist in
+      the Admin Management API for admin accounts, at /admin/api/v1/admin/identityStore/accounts/{accountId}.
+  - action: Disable a translation
+    operation: disableLanguage
+    path: POST /admin/api/v1/translations/{languageCode}/disable
+    reversal: enableLanguage
+    reversal_path: POST /admin/api/v1/translations/{languageCode}/enable
+    window: null
+  - action: Reset a translation
+    operation: reset
+    path: DELETE /admin/api/v1/translations/{languageCode}
+    reversal: importTranslation
+    reversal_path: POST /admin/api/v1/translations/{languageCode}
+    window: null
+    note: >-
+      Reset clears previously imported translations for a language; recovery is a re-import from the
+      brand's own source file, not a platform-side undo.
+  - action: Opt in to a consent
+    operation: optInConsent
+    path: POST /myaccount/api/v1/consents/{consentId}/optIn
+    reversal: optOutConsent
+    reversal_path: POST /myaccount/api/v1/consents/{consentId}/optOut
+    window: null
+    note: >-
+      Consent is versioned and receipts are retained, so an opt-out is recorded as a new state rather
+      than erasing the prior grant.
+  irreversible:
+  - action: Delete an account
+    operation: deleteAccountById
+    path: DELETE /admin/api/v1/identityStores/{identityStoreName}/accounts/{accountId}
+    note: No restore operation exists and no retention window is published.
+  - action: Revoke an account invitation
+    operation: deleteAccountInvitation
+    path: DELETE /admin/api/v1/identityStores/{identityStoreName}/invite/{invitationId}
+    note: Reversal is issuing a new invitation, not restoring the revoked one.
+  - action: Delete an event streaming configuration
+    operation: delete_7
+    path: DELETE /admin/api/v1/instance/eventStreaming/{id}
+  - action: Delete a lifecycle event hook
+    operation: deleteEventHookFunction
+    path: DELETE /admin/api/v1/eventHooks/function/{id}
+    note: A hook that is assigned to an application cannot be deleted at all — assignment is the guard.
+  gap: >-
+    The single highest-value reversibility improvement available to Strivacity is stating a retention
+    window for deleted accounts. Every other primitive is already there.
+cross_links:
+  errors: errors/strivacity-problem-types.yml
+  lifecycle: lifecycle/strivacity-lifecycle.yml
+  authentication: authentication/strivacity-authentication.yml
+  scopes: scopes/strivacity-scopes.yml
+  rate_limits: rate-limits/strivacity-rate-limits.yml
+  data_model: data-model/strivacity-data-model.yml

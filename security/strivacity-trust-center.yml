@@ -1,0 +1,60 @@
+generated: '2026-08-29'
+method: searched
+probe: true
+source: https://security.strivacity.com/
+url: https://security.strivacity.com/
+http_status: 200
+platform: SafeBase
+access: public landing page; sensitive reports require a gated access request
+certifications:
+- SOC 2 Type II
+- SOC 3
+- PCI DSS
+- GDPR
+- CCPA
+- FIPS 140-2
+- VPAT
+- FIDO Certification
+standards_guidance:
+- ISO 27001
+- ISO 27002
+- ISO 27005
+- NIST 800-63B
+auditors_and_assessors:
+- name: Schellman & Co.
+  scope: SOC 2 Type II and SOC 3, audited annually
+- name: Level Access
+  scope: accessibility / VPAT
+- name: MegaplanIT
+  scope: PCI
+- name: Rapid7
+  scope: security testing
+- name: FIDO Alliance
+  scope: FIDO certification
+documents_listed:
+- FIDO Certification
+- PCI DSS
+- PCI Vulnerability Scanning and Attestation
+- Penetration Testing
+- SOC 2 Report
+- SOC 3 Report
+- VPAT
+- Business Associate Agreement (BAA)
+- Cyber Insurance Policy
+- Data Transfer Impact Assessment (TIA)
+- Subprocessors
+risk_profile:
+  data_access_level: Restricted
+  impact_level: Severe
+  recovery_time_objective: 2 hours
+  recovery_point_objective: 2 hours
+evidence:
+- source: https://security.strivacity.com/
+  http_status: 200
+- source: https://docs.strivacity.com/docs/our-security-and-privacy-commitment
+  http_status: 200
+  note: names Schellman & Co. as the SOC 2 Type II / SOC 3 assessor and states ISO 27001/27002/27005 and NIST FIPS-140
+    / 800-63B alignment
+liveness_note: 'Probed 2026-08-29: returns 200 with a plain client and 403 to a browser User-Agent. The SafeBase
+  edge turns away automated browser-shaped requests; the page demonstrably exists and its full content was fetched.
+  Treat as live, not dead.'

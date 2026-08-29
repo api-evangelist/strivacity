@@ -1,0 +1,1183 @@
+openapi: 3.0.1
+info:
+  description: API documentation of Native Journey API
+  title: Native Journey API
+  version: v0.0.1
+servers:
+- url: https://{tenant}
+  variables:
+    tenant:
+      default: example.strivacity.com
+      description: Your strivacity tenant
+paths:
+  /flow/api/v1/form/additionalActions/{id}:
+    post:
+      description: 'A request made to perform additional actions, eg.: forgotten password, forgotten username action. This endpoint can be called to post the values the customer entered in the form which
+        has the id of `additionalActions`'
+      operationId: additionalActions
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Screen'
+          description: OK
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+      summary: Perform additional actions
+      tags:
+      - Native Journey API
+  /flow/api/v1/form/customerInput:
+    post:
+      description: A request made to store collected data during customer input step in a journey. This endpoint can be called to post the values the customer entered in the form which has the id of `customerInput`
+      operationId: customerInput
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomerInputRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Screen'
+          description: OK
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+      summary: Authenticate account using password
+      tags:
+      - Native Journey API
+  /flow/api/v1/form/externalLoginProvider/{id}:
+    post:
+      operationId: externalLoginProvider
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MappingJacksonValue'
+          description: OK
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+      tags:
+      - Native Journey API
+  /flow/api/v1/form/forgottenPasswordEmail:
+    post:
+      description: A request made to send a forgotten password email. This endpoint can be called to post to form which has the id of `forgottenPasswordEmail`
+      operationId: forgottenPasswordEmail
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ForgottenPasswordEmailRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Screen'
+          description: OK
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+      summary: Send forgotten password email
+      tags:
+      - Native Journey API
+  /flow/api/v1/form/forgottenPasswordPhone:
+    post:
+      description: A request made to start a password recovery flow using a phone as verification method. This endpoint can be called to post to form which has the id of `forgottenPasswordPhone`
+      operationId: forgottenPasswordPhone
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ForgottenPasswordPhoneRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Screen'
+          description: OK
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+      summary: Start a password recovery flow using a phone as verification method
+      tags:
+      - Native Journey API
+  /flow/api/v1/form/forgottenUsername:
+    post:
+      description: A request made to send a username reminder. This endpoint can be called to post the values the customer entered in the form which has the id of `forgottenUsername`
+      operationId: forgottenUsername
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ForgottenUsernameRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Screen'
+          description: OK
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+      summary: Send forgotten username reminder
+      tags:
+      - Native Journey API
+  /flow/api/v1/form/genericAction/{id}:
+    post:
+      operationId: genericAction
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MappingJacksonValue'
+          description: OK
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+      tags:
+      - Native Journey API
+  /flow/api/v1/form/genericResult:
+    post:
+      description: A request made to continue flow. This endpoint can be called to post to form which has the id of `genericResult`
+      operationId: genericResult
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GenericResultRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Screen'
+          description: OK
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+      summary: Generic result point of flow
+      tags:
+      - Native Journey API
+  /flow/api/v1/form/identifier:
+    post:
+      description: A request made to identify an account. This endpoint can be called to post the values the customer entered in the form which has the id of `identifier`
+      operationId: identifier
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IdentificationRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Screen'
+          description: OK
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+      summary: Identify account
+      tags:
+      - Native Journey API
+  /flow/api/v1/form/mfaEnrollChallenge:
+    post:
+      description: A request made to give the challenge.This endpoint can be called to passcode the customer entered in the form which has the id of `mfaEnrollChallenge`
+      operationId: mfaEnrollChallenge
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MfaEnrollChallengeRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Screen'
+          description: OK
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+      summary: Challenge point of the MFA enrollment
+      tags:
+      - Native Journey API
+  /flow/api/v1/form/mfaEnrollStart:
+    post:
+      description: A request made to start MFA enrollment. This endpoint can be called to post the authenticator types the customer entered in the form which has the id of `mfaEnrollStart`
+      operationId: mfaEnrollStart
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MfaEnrollStartRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Screen'
+          description: OK
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+      summary: Starting point of the MFA enrollment
+      tags:
+      - Native Journey API
+  /flow/api/v1/form/mfaEnrollTargetSelect:
+    post:
+      description: A request made to select target of MFA to enroll. This endpoint can be called to post the target and method the customer entered in the form which has the id of `mfaEnrollTargetSelect`
+      operationId: mfaEnrollTargetSelect
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MfaEnrollTargetSelectRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Screen'
+          description: OK
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+      summary: Target select point of the MFA enrollment
+      tags:
+      - Native Journey API
+  /flow/api/v1/form/mfaMethod:
+    post:
+      description: A request made to select an MFA method for two-factor authentication. This endpoint can be called to post the values the customer entered in the form which has the id of `mfaMethod`
+      operationId: mfaMethod
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MfaMethodSelectionRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Screen'
+          description: OK
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+      summary: Select MFA method
+      tags:
+      - Native Journey API
+  /flow/api/v1/form/mfaPasscode:
+    post:
+      description: A request made to authenticate an account using MFA passcode. This endpoint can be called to post the values the customer entered in the form which has the id of `mfaPasscode`
+      operationId: mfaPasscode
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MfaPasscodeAuthenticationRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Screen'
+          description: OK
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+      summary: Authenticate account using MFA passcode
+      tags:
+      - Native Journey API
+  /flow/api/v1/form/password:
+    post:
+      description: A request made to authenticate an account using password. This endpoint can be called to post the values the customer entered in the form which has the id of `password`
+      operationId: password
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PasswordAuthenticationRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Screen'
+          description: OK
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+      summary: Authenticate account using password
+      tags:
+      - Native Journey API
+  /flow/api/v1/form/passwordEnroll:
+    post:
+      operationId: passwordEnroll
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PasswordEnrollRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MappingJacksonValue'
+          description: OK
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+      tags:
+      - Native Journey API
+  /flow/api/v1/form/passwordReset:
+    post:
+      description: A request made to change the password of a customer. This endpoint can be called to post the values the customer entered in the form which has the id of `passwordReset`
+      operationId: passwordReset
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PasswordResetRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Screen'
+          description: OK
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+      summary: Reset password
+      tags:
+      - Native Journey API
+  /flow/api/v1/form/progressiveProfiling:
+    post:
+      description: A request made to store collected data during progressive profiling. This endpoint can be called to post the values the customer entered in the form which has the id of `progressiveProfiling`
+      operationId: progressiveProfiling
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProgressiveProfilingRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Screen'
+          description: OK
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+      summary: Progressive profiling
+      tags:
+      - Native Journey API
+  /flow/api/v1/form/proofingData:
+    post:
+      description: A request made to temporarily store data collected in an identity verification flow. This endpoint can be called to post the values the customer entered in the form which has the id of
+        `proofingData`
+      operationId: proofingData
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProofingDataRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Screen'
+          description: OK
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+      summary: Authenticate account using password
+      tags:
+      - Native Journey API
+  /flow/api/v1/form/registration:
+    post:
+      description: A request made to store collected data during a registration flow. This endpoint can be called to post the values the customer entered in the form which has the id of `registration`
+      operationId: registration
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegistrationRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MappingJacksonValue'
+          description: OK
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+      summary: Registration request
+      tags:
+      - Native Journey API
+  /flow/api/v1/form/reset:
+    post:
+      description: Reset the flow to it's initial state
+      operationId: reset
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Screen'
+          description: OK
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+      summary: Reset the flow
+      tags:
+      - Native Journey API
+  /flow/api/v1/form/sendAccountActivation:
+    post:
+      operationId: sendAccountActivation
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MappingJacksonValue'
+          description: OK
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+      tags:
+      - Native Journey API
+  /flow/api/v1/init:
+    post:
+      description: Request to fetch the data required to render the initial screen
+      operationId: init
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Screen'
+          description: OK
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+      summary: Initialize a native flow
+      tags:
+      - Native Journey API
+components:
+  schemas:
+    Branding:
+      type: object
+      properties:
+        copyright:
+          type: string
+        logoUrl:
+          type: string
+        privacyPolicyUrl:
+          type: string
+        siteTermUrl:
+          type: string
+        styling:
+          type: object
+          additionalProperties:
+            type: string
+      description: Contains branding data, describes the styling of the screen
+    CheckboxWidget:
+      type: object
+      properties:
+        id:
+          type: string
+        label:
+          type: string
+        readonly:
+          type: boolean
+        render:
+          $ref: '#/components/schemas/CheckboxWidgetRender'
+        type:
+          type: string
+        validator:
+          $ref: '#/components/schemas/CheckboxWidgetValidator'
+        value:
+          type: boolean
+      description: A widget which is used for customer data input and can be either `true` or `false`
+    CheckboxWidgetRender:
+      type: object
+      properties:
+        labelType:
+          type: string
+          enum:
+          - text
+          - html
+        type:
+          type: string
+          enum:
+          - checkboxHidden
+          - checkboxShown
+    CheckboxWidgetValidator:
+      type: object
+      properties:
+        required:
+          type: boolean
+    CustomerInputRequest:
+      type: object
+      properties:
+        attributes:
+          type: object
+          additionalProperties:
+            type: object
+        local:
+          type: object
+          additionalProperties:
+            type: object
+    DateWidget:
+      type: object
+      properties:
+        id:
+          type: string
+        label:
+          type: string
+        readonly:
+          type: boolean
+        render:
+          $ref: '#/components/schemas/DateWidgetRender'
+        type:
+          type: string
+        validator:
+          $ref: '#/components/schemas/DateWidgetValidator'
+        value:
+          type: string
+      description: A widget which is used for date input
+    DateWidgetRender:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - native
+          - fieldSet
+    DateWidgetValidator:
+      type: object
+      properties:
+        notAfter:
+          type: string
+        notBefore:
+          type: string
+        required:
+          type: boolean
+    FilterProvider:
+      type: object
+    ForgottenPasswordEmailRequest:
+      type: object
+    ForgottenPasswordPhoneRequest:
+      type: object
+      properties:
+        voice:
+          type: boolean
+    ForgottenUsernameRequest:
+      required:
+      - recipient
+      type: object
+      properties:
+        recipient:
+          type: string
+    FormWidget:
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+        widgets:
+          type: array
+          items:
+            $ref: '#/components/schemas/GenericWidget'
+      description: A form widget containing multiple widgets
+    GenericLayout:
+      type: object
+      description: Describes the layout of the screen
+      oneOf:
+      - $ref: '#/components/schemas/WidgetLayout'
+      - $ref: '#/components/schemas/HorizontalLayout'
+      - $ref: '#/components/schemas/VerticalLayout'
+      - $ref: '#/components/schemas/GridLayout'
+    GenericResultRequest:
+      type: object
+    GenericWidget:
+      type: object
+      oneOf:
+      - $ref: '#/components/schemas/FormWidget'
+      - $ref: '#/components/schemas/SubmitWidget'
+      - $ref: '#/components/schemas/StaticWidget'
+      - $ref: '#/components/schemas/InputWidget'
+      - $ref: '#/components/schemas/CheckboxWidget'
+      - $ref: '#/components/schemas/PasswordWidget'
+      - $ref: '#/components/schemas/DateWidget'
+      - $ref: '#/components/schemas/PhoneWidget'
+      - $ref: '#/components/schemas/SelectWidget'
+      - $ref: '#/components/schemas/MultiSelectWidget'
+    GridLayout:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - widget
+          - horizontal
+          - vertical
+          - grid
+      description: A layout which displays items in multiple rows and columns
+    Hint:
+      type: object
+      properties:
+        icon:
+          type: string
+        variant:
+          type: string
+    HorizontalLayout:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/GenericLayout'
+        type:
+          type: string
+          enum:
+          - widget
+          - horizontal
+          - vertical
+          - grid
+      description: A layout which displays items in multiple columns
+    IdentificationRequest:
+      required:
+      - identifier
+      type: object
+      properties:
+        identifier:
+          type: string
+        rememberAccount:
+          type: boolean
+    InputWidget:
+      type: object
+      properties:
+        autocomplete:
+          type: string
+        id:
+          type: string
+        inputmode:
+          type: string
+          enum:
+          - email
+        label:
+          type: string
+        readonly:
+          type: boolean
+        type:
+          type: string
+        validator:
+          $ref: '#/components/schemas/InputWidgetValidator'
+        value:
+          type: string
+      description: A widget which is used for customer data input
+    InputWidgetValidator:
+      type: object
+      properties:
+        maxLength:
+          type: integer
+          format: int32
+        minLength:
+          type: integer
+          format: int32
+        regex:
+          type: string
+        required:
+          type: boolean
+    MappingJacksonValue:
+      type: object
+      properties:
+        filters:
+          $ref: '#/components/schemas/FilterProvider'
+        value:
+          type: object
+    Message:
+      type: object
+      properties:
+        text:
+          type: string
+        type:
+          type: string
+    Messages:
+      type: object
+      properties:
+        global:
+          $ref: '#/components/schemas/Message'
+      description: Contains error messages during the flow
+    MfaEnrollChallengeRequest:
+      required:
+      - passcode
+      type: object
+      properties:
+        passcode:
+          type: string
+        rememberDevice:
+          type: boolean
+    MfaEnrollStartRequest:
+      type: object
+      properties:
+        mandatory:
+          type: array
+          items:
+            type: string
+            enum:
+            - password
+            - phone
+            - email
+            - softToken
+            - webAuthnSecurityKey
+            - webAuthnDeviceBiometrics
+            - passkey
+            - custom
+        optional:
+          type: array
+          items:
+            type: string
+            enum:
+            - password
+            - phone
+            - email
+            - softToken
+            - webAuthnSecurityKey
+            - webAuthnDeviceBiometrics
+            - passkey
+            - custom
+        rememberDevice:
+          type: boolean
+    MfaEnrollTargetSelectRequest:
+      required:
+      - method
+      - target
+      type: object
+      properties:
+        method:
+          pattern: ^(passcode|voice|magicLink)$
+          type: string
+        target:
+          type: string
+    MfaMethodSelectionRequest:
+      required:
+      - id
+      type: object
+      properties:
+        id:
+          pattern: '[0-9a-fA-F-]{36}/(passcode|magicLink|voice|publicKey)'
+          type: string
+        rememberDevice:
+          type: boolean
+    MfaPasscodeAuthenticationRequest:
+      required:
+      - passcode
+      type: object
+      properties:
+        passcode:
+          type: string
+        rememberDevice:
+          type: boolean
+    MultiSelectWidget:
+      type: object
+      properties:
+        id:
+          type: string
+        label:
+          type: string
+        options:
+          type: array
+          description: Contains the items in the multi select widget with additional groupings
+          items:
+            $ref: '#/components/schemas/Options'
+        readonly:
+          type: boolean
+        type:
+          type: string
+        validator:
+          $ref: '#/components/schemas/MultiSelectWidgetValidator'
+        value:
+          type: array
+          items:
+            type: string
+      description: A widget which is used to receive inputs from a predefined set of values
+    MultiSelectWidgetValidator:
+      type: object
+      properties:
+        maxSelectable:
+          type: integer
+          format: int32
+        minSelectable:
+          type: integer
+          format: int32
+    Options:
+      type: object
+      properties:
+        label:
+          type: string
+        options:
+          type: array
+          items:
+            $ref: '#/components/schemas/Options'
+        type:
+          type: string
+          enum:
+          - group
+          - item
+        value:
+          type: string
+    PasswordAuthenticationRequest:
+      required:
+      - password
+      type: object
+      properties:
+        keepMeLoggedIn:
+          type: boolean
+        password:
+          maxLength: 256
+          minLength: 1
+          type: string
+    PasswordEnrollRequest:
+      required:
+      - password
+      type: object
+      properties:
+        keepMeLoggedIn:
+          type: boolean
+        password:
+          maxLength: 256
+          minLength: 1
+          type: string
+        passwordConfirmation:
+          type: string
+    PasswordResetRequest:
+      required:
+      - password
+      type: object
+      properties:
+        password:
+          maxLength: 256
+          minLength: 1
+          type: string
+        passwordConfirmation:
+          type: string
+    PasswordWidget:
+      type: object
+      properties:
+        id:
+          type: string
+        label:
+          type: string
+        qualityIndicator:
+          type: boolean
+        type:
+          type: string
+        validator:
+          $ref: '#/components/schemas/PasswordWidgetValidator'
+      description: A widget which is used for password input
+    PasswordWidgetValidator:
+      type: object
+      properties:
+        maxLength:
+          type: integer
+          format: int32
+        maxNumericCharacterSequences:
+          type: integer
+          format: int32
+        maxRepeatedCharacters:
+          type: integer
+          format: int32
+        minLength:
+          type: integer
+          format: int32
+        mustContain:
+          type: array
+          items:
+            type: string
+            enum:
+            - UPPERCASE
+            - LOWERCASE
+            - NUMERIC
+            - SPECIAL
+        restrictedCharacters:
+          type: string
+    PhoneWidget:
+      type: object
+      properties:
+        id:
+          type: string
+        label:
+          type: string
+        readonly:
+          type: boolean
+        type:
+          type: string
+        validator:
+          $ref: '#/components/schemas/PhoneWidgetValidator'
+        value:
+          type: string
+      description: A widget which is used for phone input
+    PhoneWidgetValidator:
+      type: object
+      properties:
+        required:
+          type: boolean
+    ProgressiveProfilingRequest:
+      type: object
+      properties:
+        attributes:
+          type: object
+          additionalProperties:
+            type: object
+        consents:
+          type: object
+          additionalProperties:
+            type: boolean
+    ProofingDataRequest:
+      type: object
+      properties:
+        attributes:
+          type: object
+          additionalProperties:
+            type: object
+    RegistrationRequest:
+      type: object
+      properties:
+        attributes:
+          type: object
+          additionalProperties:
+            type: object
+        consents:
+          type: object
+          additionalProperties:
+            type: boolean
+        email:
+          type: string
+        keepMeLoggedIn:
+          type: boolean
+        password:
+          maxLength: 256
+          minLength: 1
+          type: string
+        passwordConfirmation:
+          type: string
+        phone:
+          type: string
+        userName:
+          type: string
+    Screen:
+      type: object
+      properties:
+        branding:
+          $ref: '#/components/schemas/Branding'
+        finalizeUrl:
+          type: string
+          description: URL to redirect to at the end of the flow
+        forms:
+          type: array
+          description: Contains the widgets appearing on the screen
+          items:
+            $ref: '#/components/schemas/FormWidget'
+        hostedUrl:
+          type: string
+          description: Fallback URL to continue the flow in case of an unknown widget cannot be rendered natively
+        layout:
+          $ref: '#/components/schemas/GenericLayout'
+        messages:
+          $ref: '#/components/schemas/Messages'
+        screen:
+          type: string
+          description: Name of the screen
+    SelectWidget:
+      type: object
+      properties:
+        id:
+          type: string
+        label:
+          type: string
+        options:
+          type: array
+          description: Contains the items in the select widget with additional groupings
+          items:
+            $ref: '#/components/schemas/Options'
+        readonly:
+          type: boolean
+        render:
+          $ref: '#/components/schemas/SelectWidgetRender'
+        type:
+          type: string
+        validator:
+          $ref: '#/components/schemas/SelectWidgetValidator'
+        value:
+          type: string
+      description: A widget which is used to receive input from a predefined set of values
+    SelectWidgetRender:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - dropdown
+          - radio
+    SelectWidgetValidator:
+      type: object
+      properties:
+        required:
+          type: boolean
+    StaticWidget:
+      type: object
+      properties:
+        id:
+          type: string
+        render:
+          $ref: '#/components/schemas/StaticWidgetRender'
+        type:
+          type: string
+        value:
+          type: string
+      description: A widget which contains static text to display on the form
+    StaticWidgetRender:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - text
+          - html
+    SubmitWidget:
+      type: object
+      properties:
+        id:
+          type: string
+        label:
+          type: string
+        render:
+          $ref: '#/components/schemas/SubmitWidgetRender'
+        type:
+          type: string
+      description: A widget which is used to submit a form
+    SubmitWidgetRender:
+      type: object
+      properties:
+        bgColor:
+          type: string
+        hint:
+          $ref: '#/components/schemas/Hint'
+        textColor:
+          type: string
+        type:
+          type: string
+          enum:
+          - button
+          - link
+    VerticalLayout:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - widget
+          - horizontal
+          - vertical
+          - grid
+      description: A layout which displays items in multiple rows
+    WidgetLayout:
+      type: object
+      properties:
+        formId:
+          type: string
+        type:
+          type: string
+          enum:
+          - widget
+          - horizontal
+          - vertical
+          - grid
+        widgetId:
+          type: string
+      description: A layout which refers to a widget within a form
+  securitySchemes:
+    securityScheme:
+      scheme: bearer
+      type: http
+x-readme:
+  explorer-enabled: true
+  proxy-enabled: true

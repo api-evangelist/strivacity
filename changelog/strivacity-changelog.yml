@@ -1,0 +1,79 @@
+generated: '2026-08-29'
+method: searched
+source: https://docs.strivacity.com/changelog
+url: https://docs.strivacity.com/changelog
+http_status: 200
+scheme: named releases (city names), dated, roughly quarterly
+current_version: Philadelphia
+current_version_date: '2026-07-09'
+machine_readable: >-
+  Each entry is retrievable as markdown by appending .md to its URL, e.g.
+  https://docs.strivacity.com/changelog/philadelphia.md — the whole documentation site does this, and it
+  is the single best agent-readability property Strivacity has.
+entries:
+- version: Philadelphia
+  date: '2026-07-09'
+  url: https://docs.strivacity.com/changelog/philadelphia
+  breaking: true
+  breaking_note: Carries an "Important notes" section flagging changes that may impact a deployment.
+  highlights:
+  - Inbound connections — scheduled and on-demand account synchronization from external relational databases, with configurable attribute mappings, change detection and correlation identifiers
+  - Account lifecycle management rules
+  - Improved token exchange visibility
+  - Customer self-service improvements
+- version: Seoul
+  date: '2026-04-14'
+  url: https://docs.strivacity.com/changelog/seoul
+  breaking: true
+  highlights:
+  - AI Assist reaches general availability — LLM-backed chat assistance in the Admin Console, trained on Strivacity documentation and APIs, with no customer data used in training or query processing
+  - Complex attributes — simple-list and complex-list attribute types in identity stores
+  - Extensibility and operational-visibility improvements
+- version: Geneva
+  date: '2026-01-05'
+  url: https://docs.strivacity.com/changelog/geneva
+  breaking: true
+  breaking_note: >-
+    Auto-verification of email/phone identifiers changes when activation emails are sent; MFA
+    authenticators are now treated as both kept and remembered under "Keep me logged in".
+  highlights:
+  - Absolute refresh timeout for tokens
+  - 'Seamless SSO without Keep me logged in'
+  - 'Keep me logged in for passwordless flows'
+- version: Lyon
+  date: '2025-11-10'
+  url: https://docs.strivacity.com/changelog/lyon
+  breaking: false
+  highlights:
+  - Invitations, password reset and account activation redeemable directly inside native apps
+  - Native SDK support for WebAuthn and passkeys through the Journey Flow API
+  - Minimized Journey API responses — optional rendering assets can be excluded
+- version: Madrid
+  date: '2025-08-19'
+  url: https://docs.strivacity.com/changelog/madrid
+  breaking: true
+  breaking_note: >-
+    Affects consent translations, Adaptive Access policy configuration, legacy hook log endpoints, and
+    social/external login provider claim updating behavior.
+  highlights:
+  - Dashboard click-throughs to account events
+  - New pre-built dashboard templates (A/B testing, consent acceptance, on-premises components)
+- version: Manchester
+  date: '2025-07-10'
+  url: https://docs.strivacity.com/changelog/manchester
+- version: Veszprém
+  date: '2025-03-31'
+  url: https://docs.strivacity.com/changelog/veszprém
+- version: Buffalo
+  date: '2025-02-10'
+  url: https://docs.strivacity.com/changelog/buffalo
+- version: Boston
+  date: '2024-11-22'
+  url: https://docs.strivacity.com/changelog/boston
+- version: Sydney
+  date: '2024-08-05'
+  url: https://docs.strivacity.com/changelog/sydney
+note: >-
+  The changelog index paginates; the ten entries above are page 1 of 2. Release names are not ordered
+  and carry no version number, so a consumer must read the date to sequence them — and the OpenAPI
+  info.version fields do not track them at all.
