@@ -20,17 +20,16 @@ created: '2026-08-29'
 modified: '2026-08-29'
 tags:
 - Identity
-- Customer Identity and Access Management
-- CIAM
+- customer-identity-and-access-management
+- ciam
 - Authentication
 - Authorization
-- OAuth
-- OpenID Connect
-- Consent Management
-- Multi-Factor Authentication
+- openid-connect
+- consent-management
+- multi-factor-authentication
 - Identity Verification
-- Fraud Detection
-- Agentic Identity
+- fraud-detection
+- agentic-identity
 - Security
 tags_raw:
 - identity
@@ -89,6 +88,10 @@ apis:
   humanURL: https://docs.strivacity.com/reference/getting-started-1
   baseURL: https://{tenant}.strivacity.com/myaccount/api/v1
   tags:
+  - Identity
+  - Self-Service
+  - Consent Management
+  tags_raw:
   - Identity
   - Self Service
   - Consent Management
