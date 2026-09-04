@@ -12,6 +12,23 @@ description: >-
   Authentication API. Strivacity also acts as the OAuth 2.1 authorization server in front of a
   customer's own MCP servers and APIs, issuing audience-restricted, consent-gated tokens to AI agents.
 url: https://raw.githubusercontent.com/api-evangelist/strivacity/refs/heads/main/apis.yml
+accessModel:
+  pricing: paid
+  onboarding: self-serve
+  trial: false
+  try_now: false
+  public: false
+  label: Paid · Self-serve signup
+  confidence: high
+  source:
+  - plans
+  - authentication
+  - scopes
+  - rate-limits
+  - security
+  - sandbox
+  generated: '2026-09-02'
+  method: derived
 image: https://cdn.prod.website-files.com/64259842d8e30c2ec61617ab/642b123a6f2bf0db754b0ab3_webclip.png
 x-type: company
 x-source: harvest:secondary-market
