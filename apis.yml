@@ -63,91 +63,1699 @@ tags_raw:
 - agentic-identity
 - security
 apis:
-- name: Strivacity Admin API
-  description: >-
-    The administrative REST API for a Strivacity instance — accounts and identity stores, applications
-    and clients, adaptive access and MFA policies, journeys, branding, consents, claims and dialects,
-    groups and roles, organizations, notification and password policies, identity verification, lifecycle
-    event hooks, outbound provisioning, event streaming, bulk operations, translations, audit entries and
-    account events. 322 operations across 63 tag groups. Authorized with an OAuth 2.0 client-credentials
-    bearer token scoped by an API Access policy.
+- aid: strivacity:strivacity-account-api
+  name: Strivacity Account API
+  description: The Account API from Strivacity — 23 operation(s) for account.
   humanURL: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
   baseURL: https://{tenant}.strivacity.com/admin/api/v1
   tags:
-  - Identity
-  - CIAM
-  - Administration
-  - Authentication
-  - Authorization
+  - Account
   properties:
   - type: OpenAPI
-    url: openapi/strivacity-admin-portal-openapi.yml
-  - type: OpenAPI
-    url: openapi/strivacity-admin-management-openapi.yml
-  - type: OpenAPI
-    url: openapi/strivacity-admin-console-getting-started-openapi.yml
+    url: openapi/strivacity-account-api-openapi.yml
   - type: Documentation
     url: https://docs.strivacity.com/docs/apis-and-sdks
   - type: APIReference
     url: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
   - type: GettingStarted
     url: https://docs.strivacity.com/reference/getting-started-1
-  - type: Overlay
-    url: overlays/strivacity-admin-portal-overlay.yaml
-  - type: Overlay
-    url: overlays/strivacity-admin-management-overlay.yaml
-- name: Strivacity MyAccount API
-  description: >-
-    The end-customer self-service REST API behind the Strivacity My Account portal — authenticator
-    (MFA) management, consent opt-in and opt-out, personal-data export and account deletion, and
-    self-management of profile attributes. 18 operations, bearer-token authorized on the customer's
-    own session.
-  humanURL: https://docs.strivacity.com/reference/getting-started-1
-  baseURL: https://{tenant}.strivacity.com/myaccount/api/v1
-  tags:
-  - Identity
-  - Self-Service
-  - Consent Management
-  tags_raw:
-  - Identity
-  - Self Service
-  - Consent Management
-  properties:
-  - type: OpenAPI
-    url: openapi/strivacity-myaccount-portal-openapi.yml
   - type: APIReference
     url: https://docs.strivacity.com/reference/getting-started-1
-  - type: Overlay
-    url: overlays/strivacity-myaccount-portal-overlay.yaml
-- name: Strivacity Journey Flow API
-  description: >-
-    The Native Journey (Journey Flow) API used by native and single-page applications to render
-    Strivacity login, registration, MFA, passkey, password-reset and account-activation journeys in
-    their own UI instead of redirecting to hosted no-code components, plus the Simple Authentication
-    API for identifier-and-password authentication.
-  humanURL: https://docs.strivacity.com/docs/oidc-client-using-the-journey-flow-api
-  baseURL: https://{tenant}.strivacity.com/flow/api
-  tags:
-  - Identity
-  - Authentication
-  - Journeys
-  properties:
-  - type: OpenAPI
-    url: openapi/strivacity-native-journey-openapi.yml
-  - type: OpenAPI
-    url: openapi/strivacity-simple-authentication-openapi.yml
   - type: Documentation
     url: https://docs.strivacity.com/docs/oidc-client-using-the-journey-flow-api
-  - type: Overlay
-    url: overlays/strivacity-native-journey-overlay.yaml
-  - type: Overlay
-    url: overlays/strivacity-simple-authentication-overlay.yaml
+- aid: strivacity:strivacity-account-attribute-api
+  name: Strivacity Account Attribute API
+  description: The Account Attribute API from Strivacity — 2 operation(s) for account attribute.
+  humanURL: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  baseURL: https://{tenant}.strivacity.com/admin/api/v1
+  tags:
+  - Account Attribute
+  properties:
+  - type: OpenAPI
+    url: openapi/strivacity-account-attribute-api-openapi.yml
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/apis-and-sdks
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  - type: GettingStarted
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/oidc-client-using-the-journey-flow-api
+- aid: strivacity:strivacity-account-child-attribute-api
+  name: Strivacity Account Child Attribute API
+  description: >-
+    The Account Child Attribute API from Strivacity — 2 operation(s) for account child attribute.
+  humanURL: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  baseURL: https://{tenant}.strivacity.com/admin/api/v1
+  tags:
+  - Account Child Attribute
+  properties:
+  - type: OpenAPI
+    url: openapi/strivacity-account-child-attribute-api-openapi.yml
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/apis-and-sdks
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  - type: GettingStarted
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/oidc-client-using-the-journey-flow-api
+- aid: strivacity:strivacity-account-event-api
+  name: Strivacity Account Event API
+  description: The Account Event API from Strivacity — 5 operation(s) for account event.
+  humanURL: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  baseURL: https://{tenant}.strivacity.com/admin/api/v1
+  tags:
+  - Account Event
+  properties:
+  - type: OpenAPI
+    url: openapi/strivacity-account-event-api-openapi.yml
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/apis-and-sdks
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  - type: GettingStarted
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/oidc-client-using-the-journey-flow-api
+- aid: strivacity:strivacity-account-event-ttl-api
+  name: Strivacity Account Event TTL API
+  description: The Account Event TTL API from Strivacity — 1 operation(s) for account event ttl.
+  humanURL: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  baseURL: https://{tenant}.strivacity.com/admin/api/v1
+  tags:
+  - Account Event TTL
+  properties:
+  - type: OpenAPI
+    url: openapi/strivacity-account-event-ttl-api-openapi.yml
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/apis-and-sdks
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  - type: GettingStarted
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/oidc-client-using-the-journey-flow-api
+- aid: strivacity:strivacity-account-identity-api
+  name: Strivacity Account Identity API
+  description: The Account Identity API from Strivacity — 3 operation(s) for account identity.
+  humanURL: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  baseURL: https://{tenant}.strivacity.com/admin/api/v1
+  tags:
+  - Account Identity
+  properties:
+  - type: OpenAPI
+    url: openapi/strivacity-account-identity-api-openapi.yml
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/apis-and-sdks
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  - type: GettingStarted
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/oidc-client-using-the-journey-flow-api
+- aid: strivacity:strivacity-account-invitation-api
+  name: Strivacity Account Invitation API
+  description: The Account Invitation API from Strivacity — 3 operation(s) for account invitation.
+  humanURL: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  baseURL: https://{tenant}.strivacity.com/admin/api/v1
+  tags:
+  - Account Invitation
+  properties:
+  - type: OpenAPI
+    url: openapi/strivacity-account-invitation-api-openapi.yml
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/apis-and-sdks
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  - type: GettingStarted
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/oidc-client-using-the-journey-flow-api
+- aid: strivacity:strivacity-account-lifecycle-rule-api
+  name: Strivacity Account Lifecycle Rule API
+  description: >-
+    The Account Lifecycle Rule API from Strivacity — 2 operation(s) for account lifecycle rule.
+  humanURL: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  baseURL: https://{tenant}.strivacity.com/admin/api/v1
+  tags:
+  - Account Lifecycle Rule
+  properties:
+  - type: OpenAPI
+    url: openapi/strivacity-account-lifecycle-rule-api-openapi.yml
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/apis-and-sdks
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  - type: GettingStarted
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/oidc-client-using-the-journey-flow-api
+- aid: strivacity:strivacity-active-telephony-provider-configuration-api
+  name: Strivacity Active Telephony Provider Configuration API
+  description: >-
+    The Active Telephony Provider Configuration API from Strivacity — 2 operation(s) for active telephony
+    provider configuration.
+  humanURL: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  baseURL: https://{tenant}.strivacity.com/admin/api/v1
+  tags:
+  - Active Telephony Provider Configuration
+  properties:
+  - type: OpenAPI
+    url: openapi/strivacity-active-telephony-provider-configuration-api-openapi.yml
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/apis-and-sdks
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  - type: GettingStarted
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/oidc-client-using-the-journey-flow-api
+- aid: strivacity:strivacity-adaptive-access-policy-adaptive-mfa-api
+  name: Strivacity Adaptive Access Policy (Adaptive MFA) API
+  description: >-
+    The Adaptive Access Policy (Adaptive MFA) API from Strivacity — 5 operation(s) for adaptive access
+    policy (adaptive mfa).
+  humanURL: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  baseURL: https://{tenant}.strivacity.com/admin/api/v1
+  tags:
+  - Adaptive Access Policy (Adaptive MFA)
+  properties:
+  - type: OpenAPI
+    url: openapi/strivacity-adaptive-access-policy-adaptive-mfa-api-openapi.yml
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/apis-and-sdks
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  - type: GettingStarted
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/oidc-client-using-the-journey-flow-api
+- aid: strivacity:strivacity-admin-account-api
+  name: Strivacity Admin Account API
+  description: The Admin Account API from Strivacity — 18 operation(s) for admin account.
+  humanURL: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  baseURL: https://{tenant}.strivacity.com/admin/api/v1
+  tags:
+  - Admin Account
+  properties:
+  - type: OpenAPI
+    url: openapi/strivacity-admin-account-api-openapi.yml
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/apis-and-sdks
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  - type: GettingStarted
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/oidc-client-using-the-journey-flow-api
+- aid: strivacity:strivacity-admin-account-attribute-api
+  name: Strivacity Admin Account Attribute API
+  description: >-
+    The Admin Account Attribute API from Strivacity — 1 operation(s) for admin account attribute.
+  humanURL: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  baseURL: https://{tenant}.strivacity.com/admin/api/v1
+  tags:
+  - Admin Account Attribute
+  properties:
+  - type: OpenAPI
+    url: openapi/strivacity-admin-account-attribute-api-openapi.yml
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/apis-and-sdks
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  - type: GettingStarted
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/oidc-client-using-the-journey-flow-api
+- aid: strivacity:strivacity-admin-account-event-api
+  name: Strivacity Admin Account Event API
+  description: The Admin Account Event API from Strivacity — 5 operation(s) for admin account event.
+  humanURL: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  baseURL: https://{tenant}.strivacity.com/admin/api/v1
+  tags:
+  - Admin Account Event
+  properties:
+  - type: OpenAPI
+    url: openapi/strivacity-admin-account-event-api-openapi.yml
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/apis-and-sdks
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  - type: GettingStarted
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/oidc-client-using-the-journey-flow-api
+- aid: strivacity:strivacity-admin-account-invitation-api
+  name: Strivacity Admin Account Invitation API
+  description: >-
+    The Admin Account Invitation API from Strivacity — 3 operation(s) for admin account invitation.
+  humanURL: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  baseURL: https://{tenant}.strivacity.com/admin/api/v1
+  tags:
+  - Admin Account Invitation
+  properties:
+  - type: OpenAPI
+    url: openapi/strivacity-admin-account-invitation-api-openapi.yml
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/apis-and-sdks
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  - type: GettingStarted
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/oidc-client-using-the-journey-flow-api
+- aid: strivacity:strivacity-admin-api-security-policy-api
+  name: Strivacity Admin API Security Policy API
+  description: >-
+    The Admin API Security Policy API from Strivacity — 3 operation(s) for admin api security policy.
+  humanURL: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  baseURL: https://{tenant}.strivacity.com/admin/api/v1
+  tags:
+  - Admin API Security Policy
+  properties:
+  - type: OpenAPI
+    url: openapi/strivacity-admin-api-security-policy-api-openapi.yml
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/apis-and-sdks
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  - type: GettingStarted
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/oidc-client-using-the-journey-flow-api
+- aid: strivacity:strivacity-admin-claim-api
+  name: Strivacity Admin Claim API
+  description: The Admin Claim API from Strivacity — 2 operation(s) for admin claim.
+  humanURL: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  baseURL: https://{tenant}.strivacity.com/admin/api/v1
+  tags:
+  - Admin Claim
+  properties:
+  - type: OpenAPI
+    url: openapi/strivacity-admin-claim-api-openapi.yml
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/apis-and-sdks
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  - type: GettingStarted
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/oidc-client-using-the-journey-flow-api
+- aid: strivacity:strivacity-admin-external-login-mapping-api
+  name: Strivacity Admin External Login Mapping API
+  description: >-
+    The Admin External Login Mapping API from Strivacity — 3 operation(s) for admin external login mapping.
+  humanURL: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  baseURL: https://{tenant}.strivacity.com/admin/api/v1
+  tags:
+  - Admin External Login Mapping
+  properties:
+  - type: OpenAPI
+    url: openapi/strivacity-admin-external-login-mapping-api-openapi.yml
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/apis-and-sdks
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  - type: GettingStarted
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/oidc-client-using-the-journey-flow-api
+- aid: strivacity:strivacity-admin-external-login-provider-api
+  name: Strivacity Admin External Login Provider API
+  description: >-
+    The Admin External Login Provider API from Strivacity — 2 operation(s) for admin external login provider.
+  humanURL: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  baseURL: https://{tenant}.strivacity.com/admin/api/v1
+  tags:
+  - Admin External Login Provider
+  properties:
+  - type: OpenAPI
+    url: openapi/strivacity-admin-external-login-provider-api-openapi.yml
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/apis-and-sdks
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  - type: GettingStarted
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/oidc-client-using-the-journey-flow-api
+- aid: strivacity:strivacity-admin-notification-preference-descriptor-api
+  name: Strivacity Admin Notification Preference Descriptor API
+  description: >-
+    The Admin Notification Preference Descriptor API from Strivacity — 1 operation(s) for admin notification
+    preference descriptor.
+  humanURL: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  baseURL: https://{tenant}.strivacity.com/admin/api/v1
+  tags:
+  - Admin Notification Preference Descriptor
+  properties:
+  - type: OpenAPI
+    url: openapi/strivacity-admin-notification-preference-descriptor-api-openapi.yml
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/apis-and-sdks
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  - type: GettingStarted
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/oidc-client-using-the-journey-flow-api
+- aid: strivacity:strivacity-admin-principal-api
+  name: Strivacity Admin Principal API
+  description: The Admin Principal API from Strivacity — 1 operation(s) for admin principal.
+  humanURL: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  baseURL: https://{tenant}.strivacity.com/admin/api/v1
+  tags:
+  - Admin Principal
+  properties:
+  - type: OpenAPI
+    url: openapi/strivacity-admin-principal-api-openapi.yml
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/apis-and-sdks
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  - type: GettingStarted
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/oidc-client-using-the-journey-flow-api
+- aid: strivacity:strivacity-admin-role-api
+  name: Strivacity Admin Role API
+  description: The Admin Role API from Strivacity — 3 operation(s) for admin role.
+  humanURL: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  baseURL: https://{tenant}.strivacity.com/admin/api/v1
+  tags:
+  - Admin Role
+  properties:
+  - type: OpenAPI
+    url: openapi/strivacity-admin-role-api-openapi.yml
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/apis-and-sdks
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  - type: GettingStarted
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/oidc-client-using-the-journey-flow-api
+- aid: strivacity:strivacity-admin-role-assignee-api
+  name: Strivacity Admin Role Assignee API
+  description: The Admin Role Assignee API from Strivacity — 2 operation(s) for admin role assignee.
+  humanURL: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  baseURL: https://{tenant}.strivacity.com/admin/api/v1
+  tags:
+  - Admin Role Assignee
+  properties:
+  - type: OpenAPI
+    url: openapi/strivacity-admin-role-assignee-api-openapi.yml
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/apis-and-sdks
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  - type: GettingStarted
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/oidc-client-using-the-journey-flow-api
+- aid: strivacity:strivacity-api-security-policy-api
+  name: Strivacity API Security Policy API
+  description: The API Security Policy API from Strivacity — 4 operation(s) for api security policy.
+  humanURL: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  baseURL: https://{tenant}.strivacity.com/admin/api/v1
+  tags:
+  - API Security Policy
+  properties:
+  - type: OpenAPI
+    url: openapi/strivacity-api-security-policy-api-openapi.yml
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/apis-and-sdks
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  - type: GettingStarted
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/oidc-client-using-the-journey-flow-api
+- aid: strivacity:strivacity-api-security-policy-scope-api
+  name: Strivacity API Security Policy Scope API
+  description: >-
+    The API Security Policy Scope API from Strivacity — 2 operation(s) for api security policy scope.
+  humanURL: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  baseURL: https://{tenant}.strivacity.com/admin/api/v1
+  tags:
+  - API Security Policy Scope
+  properties:
+  - type: OpenAPI
+    url: openapi/strivacity-api-security-policy-scope-api-openapi.yml
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/apis-and-sdks
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  - type: GettingStarted
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/oidc-client-using-the-journey-flow-api
+- aid: strivacity:strivacity-application-api
+  name: Strivacity Application API
+  description: The Application API from Strivacity — 2 operation(s) for application.
+  humanURL: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  baseURL: https://{tenant}.strivacity.com/admin/api/v1
+  tags:
+  - Application
+  properties:
+  - type: OpenAPI
+    url: openapi/strivacity-application-api-openapi.yml
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/apis-and-sdks
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  - type: GettingStarted
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/oidc-client-using-the-journey-flow-api
+- aid: strivacity:strivacity-application-client-api
+  name: Strivacity Application Client API
+  description: The Application Client API from Strivacity — 6 operation(s) for application client.
+  humanURL: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  baseURL: https://{tenant}.strivacity.com/admin/api/v1
+  tags:
+  - Application Client
+  properties:
+  - type: OpenAPI
+    url: openapi/strivacity-application-client-api-openapi.yml
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/apis-and-sdks
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  - type: GettingStarted
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/oidc-client-using-the-journey-flow-api
+- aid: strivacity:strivacity-application-variant-api
+  name: Strivacity Application Variant API
+  description: The Application Variant API from Strivacity — 3 operation(s) for application variant.
+  humanURL: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  baseURL: https://{tenant}.strivacity.com/admin/api/v1
+  tags:
+  - Application Variant
+  properties:
+  - type: OpenAPI
+    url: openapi/strivacity-application-variant-api-openapi.yml
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/apis-and-sdks
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  - type: GettingStarted
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/oidc-client-using-the-journey-flow-api
+- aid: strivacity:strivacity-audit-entry-api
+  name: Strivacity Audit entry API
+  description: The Audit entry API from Strivacity — 2 operation(s) for audit entry.
+  humanURL: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  baseURL: https://{tenant}.strivacity.com/admin/api/v1
+  tags:
+  - Audit entry
+  properties:
+  - type: OpenAPI
+    url: openapi/strivacity-audit-entry-api-openapi.yml
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/apis-and-sdks
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  - type: GettingStarted
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/oidc-client-using-the-journey-flow-api
+- aid: strivacity:strivacity-authenticating-to-the-api-api
+  name: Strivacity Authenticating to the API
+  description: >-
+    The Authenticating to the API API from Strivacity — 1 operation(s) for authenticating to the api.
+  humanURL: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  baseURL: https://{tenant}.strivacity.com/admin/api/v1
+  tags:
+  - Authenticating to the API
+  properties:
+  - type: OpenAPI
+    url: openapi/strivacity-authenticating-to-the-api-api-openapi.yml
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/apis-and-sdks
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  - type: GettingStarted
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/oidc-client-using-the-journey-flow-api
+- aid: strivacity:strivacity-authenticator-management-api
+  name: Strivacity Authenticator management API
+  description: >-
+    The Authenticator management API from Strivacity — 2 operation(s) for authenticator management.
+  humanURL: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  baseURL: https://{tenant}.strivacity.com/admin/api/v1
+  tags:
+  - Authenticator management
+  properties:
+  - type: OpenAPI
+    url: openapi/strivacity-authenticator-management-api-openapi.yml
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/apis-and-sdks
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  - type: GettingStarted
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/oidc-client-using-the-journey-flow-api
+- aid: strivacity:strivacity-available-role-scope-api
+  name: Strivacity Available Role Scope API
+  description: The Available Role Scope API from Strivacity — 1 operation(s) for available role scope.
+  humanURL: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  baseURL: https://{tenant}.strivacity.com/admin/api/v1
+  tags:
+  - Available Role Scope
+  properties:
+  - type: OpenAPI
+    url: openapi/strivacity-available-role-scope-api-openapi.yml
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/apis-and-sdks
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  - type: GettingStarted
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/oidc-client-using-the-journey-flow-api
+- aid: strivacity:strivacity-branding-policy-api
+  name: Strivacity Branding Policy API
+  description: The Branding Policy API from Strivacity — 3 operation(s) for branding policy.
+  humanURL: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  baseURL: https://{tenant}.strivacity.com/admin/api/v1
+  tags:
+  - Branding Policy
+  properties:
+  - type: OpenAPI
+    url: openapi/strivacity-branding-policy-api-openapi.yml
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/apis-and-sdks
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  - type: GettingStarted
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/oidc-client-using-the-journey-flow-api
+- aid: strivacity:strivacity-bridge-policy-api
+  name: Strivacity Bridge Policy API
+  description: The Bridge Policy API from Strivacity — 2 operation(s) for bridge policy.
+  humanURL: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  baseURL: https://{tenant}.strivacity.com/admin/api/v1
+  tags:
+  - Bridge Policy
+  properties:
+  - type: OpenAPI
+    url: openapi/strivacity-bridge-policy-api-openapi.yml
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/apis-and-sdks
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  - type: GettingStarted
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/oidc-client-using-the-journey-flow-api
+- aid: strivacity:strivacity-bridge-policy-resource-api
+  name: Strivacity Bridge Policy Resource API
+  description: >-
+    The Bridge Policy Resource API from Strivacity — 2 operation(s) for bridge policy resource.
+  humanURL: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  baseURL: https://{tenant}.strivacity.com/admin/api/v1
+  tags:
+  - Bridge Policy Resource
+  properties:
+  - type: OpenAPI
+    url: openapi/strivacity-bridge-policy-resource-api-openapi.yml
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/apis-and-sdks
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  - type: GettingStarted
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/oidc-client-using-the-journey-flow-api
+- aid: strivacity:strivacity-bulk-operation-api
+  name: Strivacity Bulk Operation API
+  description: The Bulk Operation API from Strivacity — 3 operation(s) for bulk operation.
+  humanURL: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  baseURL: https://{tenant}.strivacity.com/admin/api/v1
+  tags:
+  - Bulk Operation
+  properties:
+  - type: OpenAPI
+    url: openapi/strivacity-bulk-operation-api-openapi.yml
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/apis-and-sdks
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  - type: GettingStarted
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/oidc-client-using-the-journey-flow-api
+- aid: strivacity:strivacity-claim-api
+  name: Strivacity Claim API
+  description: The Claim API from Strivacity — 2 operation(s) for claim.
+  humanURL: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  baseURL: https://{tenant}.strivacity.com/admin/api/v1
+  tags:
+  - Claim
+  properties:
+  - type: OpenAPI
+    url: openapi/strivacity-claim-api-openapi.yml
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/apis-and-sdks
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  - type: GettingStarted
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/oidc-client-using-the-journey-flow-api
+- aid: strivacity:strivacity-consent-api
+  name: Strivacity Consent API
+  description: The Consent API from Strivacity — 5 operation(s) for consent.
+  humanURL: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  baseURL: https://{tenant}.strivacity.com/admin/api/v1
+  tags:
+  - Consent
+  properties:
+  - type: OpenAPI
+    url: openapi/strivacity-consent-api-openapi.yml
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/apis-and-sdks
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  - type: GettingStarted
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/oidc-client-using-the-journey-flow-api
+- aid: strivacity:strivacity-custom-adaptive-mfa-api
+  name: Strivacity Custom Adaptive MFA API
+  description: The Custom Adaptive MFA API from Strivacity — 2 operation(s) for custom adaptive mfa.
+  humanURL: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  baseURL: https://{tenant}.strivacity.com/admin/api/v1
+  tags:
+  - Custom Adaptive MFA
+  properties:
+  - type: OpenAPI
+    url: openapi/strivacity-custom-adaptive-mfa-api-openapi.yml
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/apis-and-sdks
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  - type: GettingStarted
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/oidc-client-using-the-journey-flow-api
+- aid: strivacity:strivacity-dialect-api
+  name: Strivacity Dialect API
+  description: The Dialect API from Strivacity — 2 operation(s) for dialect.
+  humanURL: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  baseURL: https://{tenant}.strivacity.com/admin/api/v1
+  tags:
+  - Dialect
+  properties:
+  - type: OpenAPI
+    url: openapi/strivacity-dialect-api-openapi.yml
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/apis-and-sdks
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  - type: GettingStarted
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/oidc-client-using-the-journey-flow-api
+- aid: strivacity:strivacity-email-provider-configuration-api
+  name: Strivacity Email Provider Configuration API
+  description: >-
+    The Email Provider Configuration API from Strivacity — 3 operation(s) for email provider configuration.
+  humanURL: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  baseURL: https://{tenant}.strivacity.com/admin/api/v1
+  tags:
+  - Email Provider Configuration
+  properties:
+  - type: OpenAPI
+    url: openapi/strivacity-email-provider-configuration-api-openapi.yml
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/apis-and-sdks
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  - type: GettingStarted
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/oidc-client-using-the-journey-flow-api
+- aid: strivacity:strivacity-enterprise-login-claim-mapping-api
+  name: Strivacity Enterprise Login Claim Mapping API
+  description: >-
+    The Enterprise Login Claim Mapping API from Strivacity — 3 operation(s) for enterprise login claim
+    mapping.
+  humanURL: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  baseURL: https://{tenant}.strivacity.com/admin/api/v1
+  tags:
+  - Enterprise Login Claim Mapping
+  properties:
+  - type: OpenAPI
+    url: openapi/strivacity-enterprise-login-claim-mapping-api-openapi.yml
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/apis-and-sdks
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  - type: GettingStarted
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/oidc-client-using-the-journey-flow-api
+- aid: strivacity:strivacity-enterprise-login-provider-api
+  name: Strivacity Enterprise Login Provider API
+  description: >-
+    The Enterprise Login Provider API from Strivacity — 2 operation(s) for enterprise login provider.
+  humanURL: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  baseURL: https://{tenant}.strivacity.com/admin/api/v1
+  tags:
+  - Enterprise Login Provider
+  properties:
+  - type: OpenAPI
+    url: openapi/strivacity-enterprise-login-provider-api-openapi.yml
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/apis-and-sdks
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  - type: GettingStarted
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/oidc-client-using-the-journey-flow-api
+- aid: strivacity:strivacity-event-streaming-api
+  name: Strivacity Event Streaming API
+  description: The Event Streaming API from Strivacity — 3 operation(s) for event streaming.
+  humanURL: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  baseURL: https://{tenant}.strivacity.com/admin/api/v1
+  tags:
+  - Event Streaming
+  properties:
+  - type: OpenAPI
+    url: openapi/strivacity-event-streaming-api-openapi.yml
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/apis-and-sdks
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  - type: GettingStarted
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/oidc-client-using-the-journey-flow-api
+- aid: strivacity:strivacity-group-api
+  name: Strivacity Group API
+  description: The Group API from Strivacity — 2 operation(s) for group.
+  humanURL: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  baseURL: https://{tenant}.strivacity.com/admin/api/v1
+  tags:
+  - Group
+  properties:
+  - type: OpenAPI
+    url: openapi/strivacity-group-api-openapi.yml
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/apis-and-sdks
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  - type: GettingStarted
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/oidc-client-using-the-journey-flow-api
+- aid: strivacity:strivacity-group-api-security-policy-assignment-api
+  name: Strivacity Group API Security Policy Assignment API
+  description: >-
+    The Group API Security Policy Assignment API from Strivacity — 2 operation(s) for group api security
+    policy assignment.
+  humanURL: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  baseURL: https://{tenant}.strivacity.com/admin/api/v1
+  tags:
+  - Group API Security Policy Assignment
+  properties:
+  - type: OpenAPI
+    url: openapi/strivacity-group-api-security-policy-assignment-api-openapi.yml
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/apis-and-sdks
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  - type: GettingStarted
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/oidc-client-using-the-journey-flow-api
+- aid: strivacity:strivacity-group-member-api
+  name: Strivacity Group Member API
+  description: The Group Member API from Strivacity — 2 operation(s) for group member.
+  humanURL: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  baseURL: https://{tenant}.strivacity.com/admin/api/v1
+  tags:
+  - Group Member
+  properties:
+  - type: OpenAPI
+    url: openapi/strivacity-group-member-api-openapi.yml
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/apis-and-sdks
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  - type: GettingStarted
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/oidc-client-using-the-journey-flow-api
+- aid: strivacity:strivacity-identity-store-api
+  name: Strivacity Identity Store API
+  description: The Identity Store API from Strivacity — 4 operation(s) for identity store.
+  humanURL: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  baseURL: https://{tenant}.strivacity.com/admin/api/v1
+  tags:
+  - Identity Store
+  properties:
+  - type: OpenAPI
+    url: openapi/strivacity-identity-store-api-openapi.yml
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/apis-and-sdks
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  - type: GettingStarted
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/oidc-client-using-the-journey-flow-api
+- aid: strivacity:strivacity-identity-verification-api
+  name: Strivacity Identity Verification API
+  description: >-
+    The Identity Verification API from Strivacity — 3 operation(s) for identity verification.
+  humanURL: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  baseURL: https://{tenant}.strivacity.com/admin/api/v1
+  tags:
+  - Identity Verification
+  properties:
+  - type: OpenAPI
+    url: openapi/strivacity-identity-verification-api-openapi.yml
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/apis-and-sdks
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  - type: GettingStarted
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/oidc-client-using-the-journey-flow-api
+- aid: strivacity:strivacity-identity-verification-policy-api
+  name: Strivacity Identity Verification Policy API
+  description: >-
+    The Identity Verification Policy API from Strivacity — 2 operation(s) for identity verification policy.
+  humanURL: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  baseURL: https://{tenant}.strivacity.com/admin/api/v1
+  tags:
+  - Identity Verification Policy
+  properties:
+  - type: OpenAPI
+    url: openapi/strivacity-identity-verification-policy-api-openapi.yml
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/apis-and-sdks
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  - type: GettingStarted
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/oidc-client-using-the-journey-flow-api
+- aid: strivacity:strivacity-identity-verification-step-api
+  name: Strivacity Identity Verification Step API
+  description: >-
+    The Identity Verification Step API from Strivacity — 2 operation(s) for identity verification step.
+  humanURL: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  baseURL: https://{tenant}.strivacity.com/admin/api/v1
+  tags:
+  - Identity Verification Step
+  properties:
+  - type: OpenAPI
+    url: openapi/strivacity-identity-verification-step-api-openapi.yml
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/apis-and-sdks
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  - type: GettingStarted
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/oidc-client-using-the-journey-flow-api
+- aid: strivacity:strivacity-inbound-connection-beta-api
+  name: Strivacity Inbound Connection [beta] API
+  description: These endpoints are subject to change
+  humanURL: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  baseURL: https://{tenant}.strivacity.com/admin/api/v1
+  tags:
+  - Inbound Connection [beta]
+  properties:
+  - type: OpenAPI
+    url: openapi/strivacity-inbound-connection-beta-api-openapi.yml
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/apis-and-sdks
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  - type: GettingStarted
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/oidc-client-using-the-journey-flow-api
+- aid: strivacity:strivacity-instance-config-api
+  name: Strivacity Instance Config API
+  description: The Instance Config API from Strivacity — 2 operation(s) for instance config.
+  humanURL: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  baseURL: https://{tenant}.strivacity.com/admin/api/v1
+  tags:
+  - Instance Config
+  properties:
+  - type: OpenAPI
+    url: openapi/strivacity-instance-config-api-openapi.yml
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/apis-and-sdks
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  - type: GettingStarted
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/oidc-client-using-the-journey-flow-api
+- aid: strivacity:strivacity-lifecycle-event-hook-api
+  name: Strivacity Lifecycle Event Hook API
+  description: The Lifecycle Event Hook API from Strivacity — 4 operation(s) for lifecycle event hook.
+  humanURL: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  baseURL: https://{tenant}.strivacity.com/admin/api/v1
+  tags:
+  - Lifecycle Event Hook
+  properties:
+  - type: OpenAPI
+    url: openapi/strivacity-lifecycle-event-hook-api-openapi.yml
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/apis-and-sdks
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  - type: GettingStarted
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/oidc-client-using-the-journey-flow-api
+- aid: strivacity:strivacity-lifecycle-event-hook-descriptor-api
+  name: Strivacity Lifecycle Event Hook Descriptor API
+  description: >-
+    The Lifecycle Event Hook Descriptor API from Strivacity — 1 operation(s) for lifecycle event hook
+    descriptor.
+  humanURL: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  baseURL: https://{tenant}.strivacity.com/admin/api/v1
+  tags:
+  - Lifecycle Event Hook Descriptor
+  properties:
+  - type: OpenAPI
+    url: openapi/strivacity-lifecycle-event-hook-descriptor-api-openapi.yml
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/apis-and-sdks
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  - type: GettingStarted
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/oidc-client-using-the-journey-flow-api
+- aid: strivacity:strivacity-lifecycle-event-hook-log-api
+  name: Strivacity Lifecycle Event Hook Log API
+  description: >-
+    The Lifecycle Event Hook Log API from Strivacity — 2 operation(s) for lifecycle event hook log.
+  humanURL: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  baseURL: https://{tenant}.strivacity.com/admin/api/v1
+  tags:
+  - Lifecycle Event Hook Log
+  properties:
+  - type: OpenAPI
+    url: openapi/strivacity-lifecycle-event-hook-log-api-openapi.yml
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/apis-and-sdks
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  - type: GettingStarted
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/oidc-client-using-the-journey-flow-api
+- aid: strivacity:strivacity-lifecycle-event-hook-tryout-api
+  name: Strivacity Lifecycle Event Hook Tryout API
+  description: >-
+    The Lifecycle Event Hook Tryout API from Strivacity — 3 operation(s) for lifecycle event hook tryout.
+  humanURL: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  baseURL: https://{tenant}.strivacity.com/admin/api/v1
+  tags:
+  - Lifecycle Event Hook Tryout
+  properties:
+  - type: OpenAPI
+    url: openapi/strivacity-lifecycle-event-hook-tryout-api-openapi.yml
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/apis-and-sdks
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  - type: GettingStarted
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/oidc-client-using-the-journey-flow-api
+- aid: strivacity:strivacity-native-claim-api
+  name: Strivacity Native Claim API
+  description: The Native Claim API from Strivacity — 2 operation(s) for native claim.
+  humanURL: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  baseURL: https://{tenant}.strivacity.com/admin/api/v1
+  tags:
+  - Native Claim
+  properties:
+  - type: OpenAPI
+    url: openapi/strivacity-native-claim-api-openapi.yml
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/apis-and-sdks
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  - type: GettingStarted
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/oidc-client-using-the-journey-flow-api
+- aid: strivacity:strivacity-native-journey-api-api
+  name: Strivacity Native Journey API
+  description: The Native Journey API API from Strivacity — 23 operation(s) for native journey api.
+  humanURL: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  baseURL: https://{tenant}.strivacity.com/admin/api/v1
+  tags:
+  - Native Journey API
+  properties:
+  - type: OpenAPI
+    url: openapi/strivacity-native-journey-api-api-openapi.yml
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/apis-and-sdks
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  - type: GettingStarted
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/oidc-client-using-the-journey-flow-api
+- aid: strivacity:strivacity-notification-policy-api
+  name: Strivacity Notification Policy API
+  description: The Notification Policy API from Strivacity — 3 operation(s) for notification policy.
+  humanURL: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  baseURL: https://{tenant}.strivacity.com/admin/api/v1
+  tags:
+  - Notification Policy
+  properties:
+  - type: OpenAPI
+    url: openapi/strivacity-notification-policy-api-openapi.yml
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/apis-and-sdks
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  - type: GettingStarted
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/oidc-client-using-the-journey-flow-api
+- aid: strivacity:strivacity-notification-preference-descriptor-api
+  name: Strivacity Notification Preference Descriptor API
+  description: >-
+    The Notification Preference Descriptor API from Strivacity — 1 operation(s) for notification preference
+    descriptor.
+  humanURL: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  baseURL: https://{tenant}.strivacity.com/admin/api/v1
+  tags:
+  - Notification Preference Descriptor
+  properties:
+  - type: OpenAPI
+    url: openapi/strivacity-notification-preference-descriptor-api-openapi.yml
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/apis-and-sdks
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  - type: GettingStarted
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/oidc-client-using-the-journey-flow-api
+- aid: strivacity:strivacity-notification-template-api
+  name: Strivacity Notification Template API
+  description: >-
+    The Notification Template API from Strivacity — 8 operation(s) for notification template.
+  humanURL: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  baseURL: https://{tenant}.strivacity.com/admin/api/v1
+  tags:
+  - Notification Template
+  properties:
+  - type: OpenAPI
+    url: openapi/strivacity-notification-template-api-openapi.yml
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/apis-and-sdks
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  - type: GettingStarted
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/oidc-client-using-the-journey-flow-api
+- aid: strivacity:strivacity-npm-dependency-api
+  name: Strivacity NPM Dependency API
+  description: The NPM Dependency API from Strivacity — 2 operation(s) for npm dependency.
+  humanURL: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  baseURL: https://{tenant}.strivacity.com/admin/api/v1
+  tags:
+  - NPM Dependency
+  properties:
+  - type: OpenAPI
+    url: openapi/strivacity-npm-dependency-api-openapi.yml
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/apis-and-sdks
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  - type: GettingStarted
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/oidc-client-using-the-journey-flow-api
+- aid: strivacity:strivacity-organization-api
+  name: Strivacity Organization API
+  description: The Organization API from Strivacity — 2 operation(s) for organization.
+  humanURL: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  baseURL: https://{tenant}.strivacity.com/admin/api/v1
+  tags:
+  - Organization
+  properties:
+  - type: OpenAPI
+    url: openapi/strivacity-organization-api-openapi.yml
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/apis-and-sdks
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  - type: GettingStarted
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/oidc-client-using-the-journey-flow-api
+- aid: strivacity:strivacity-organization-policy-api
+  name: Strivacity Organization Policy API
+  description: The Organization Policy API from Strivacity — 2 operation(s) for organization policy.
+  humanURL: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  baseURL: https://{tenant}.strivacity.com/admin/api/v1
+  tags:
+  - Organization Policy
+  properties:
+  - type: OpenAPI
+    url: openapi/strivacity-organization-policy-api-openapi.yml
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/apis-and-sdks
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  - type: GettingStarted
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/oidc-client-using-the-journey-flow-api
+- aid: strivacity:strivacity-outbound-provision-api
+  name: Strivacity Outbound Provision API
+  description: The Outbound Provision API from Strivacity — 6 operation(s) for outbound provision.
+  humanURL: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  baseURL: https://{tenant}.strivacity.com/admin/api/v1
+  tags:
+  - Outbound Provision
+  properties:
+  - type: OpenAPI
+    url: openapi/strivacity-outbound-provision-api-openapi.yml
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/apis-and-sdks
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  - type: GettingStarted
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/oidc-client-using-the-journey-flow-api
+- aid: strivacity:strivacity-password-quality-policy-api
+  name: Strivacity Password Quality Policy API
+  description: >-
+    The Password Quality Policy API from Strivacity — 2 operation(s) for password quality policy.
+  humanURL: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  baseURL: https://{tenant}.strivacity.com/admin/api/v1
+  tags:
+  - Password Quality Policy
+  properties:
+  - type: OpenAPI
+    url: openapi/strivacity-password-quality-policy-api-openapi.yml
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/apis-and-sdks
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  - type: GettingStarted
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/oidc-client-using-the-journey-flow-api
+- aid: strivacity:strivacity-personal-data-api
+  name: Strivacity Personal Data API
+  description: The Personal Data API from Strivacity — 2 operation(s) for personal data.
+  humanURL: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  baseURL: https://{tenant}.strivacity.com/admin/api/v1
+  tags:
+  - Personal Data
+  properties:
+  - type: OpenAPI
+    url: openapi/strivacity-personal-data-api-openapi.yml
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/apis-and-sdks
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  - type: GettingStarted
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/oidc-client-using-the-journey-flow-api
+- aid: strivacity:strivacity-plugin-library-api
+  name: Strivacity Plugin Library API
+  description: The Plugin Library API from Strivacity — 7 operation(s) for plugin library.
+  humanURL: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  baseURL: https://{tenant}.strivacity.com/admin/api/v1
+  tags:
+  - Plugin Library
+  properties:
+  - type: OpenAPI
+    url: openapi/strivacity-plugin-library-api-openapi.yml
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/apis-and-sdks
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  - type: GettingStarted
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/oidc-client-using-the-journey-flow-api
+- aid: strivacity:strivacity-policy-tag-api
+  name: Strivacity Policy Tag API
+  description: The Policy Tag API from Strivacity — 2 operation(s) for policy tag.
+  humanURL: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  baseURL: https://{tenant}.strivacity.com/admin/api/v1
+  tags:
+  - Policy Tag
+  properties:
+  - type: OpenAPI
+    url: openapi/strivacity-policy-tag-api-openapi.yml
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/apis-and-sdks
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  - type: GettingStarted
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/oidc-client-using-the-journey-flow-api
+- aid: strivacity:strivacity-restricted-password-api
+  name: Strivacity Restricted Password API
+  description: The Restricted Password API from Strivacity — 4 operation(s) for restricted password.
+  humanURL: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  baseURL: https://{tenant}.strivacity.com/admin/api/v1
+  tags:
+  - Restricted Password
+  properties:
+  - type: OpenAPI
+    url: openapi/strivacity-restricted-password-api-openapi.yml
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/apis-and-sdks
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  - type: GettingStarted
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/oidc-client-using-the-journey-flow-api
+- aid: strivacity:strivacity-role-api
+  name: Strivacity Role API
+  description: The Role API from Strivacity — 2 operation(s) for role.
+  humanURL: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  baseURL: https://{tenant}.strivacity.com/admin/api/v1
+  tags:
+  - Role
+  properties:
+  - type: OpenAPI
+    url: openapi/strivacity-role-api-openapi.yml
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/apis-and-sdks
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  - type: GettingStarted
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/oidc-client-using-the-journey-flow-api
+- aid: strivacity:strivacity-self-management-api
+  name: Strivacity Self Management API
+  description: The Self Management API from Strivacity — 9 operation(s) for self management.
+  humanURL: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  baseURL: https://{tenant}.strivacity.com/admin/api/v1
+  tags:
+  - Self Management
+  properties:
+  - type: OpenAPI
+    url: openapi/strivacity-self-management-api-openapi.yml
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/apis-and-sdks
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  - type: GettingStarted
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/oidc-client-using-the-journey-flow-api
+- aid: strivacity:strivacity-self-service-policy-api
+  name: Strivacity Self Service Policy API
+  description: The Self Service Policy API from Strivacity — 2 operation(s) for self service policy.
+  humanURL: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  baseURL: https://{tenant}.strivacity.com/admin/api/v1
+  tags:
+  - Self Service Policy
+  properties:
+  - type: OpenAPI
+    url: openapi/strivacity-self-service-policy-api-openapi.yml
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/apis-and-sdks
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  - type: GettingStarted
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/oidc-client-using-the-journey-flow-api
+- aid: strivacity:strivacity-simplelogin-api
+  name: Strivacity Simplelogin API
+  description: The Simplelogin API from Strivacity — 2 operation(s) for simplelogin.
+  humanURL: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  baseURL: https://{tenant}.strivacity.com/admin/api/v1
+  tags:
+  - Simplelogin
+  properties:
+  - type: OpenAPI
+    url: openapi/strivacity-simplelogin-api-openapi.yml
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/apis-and-sdks
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  - type: GettingStarted
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/oidc-client-using-the-journey-flow-api
+- aid: strivacity:strivacity-social-login-claim-mapping-api
+  name: Strivacity Social Login Claim Mapping API
+  description: >-
+    The Social Login Claim Mapping API from Strivacity — 3 operation(s) for social login claim mapping.
+  humanURL: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  baseURL: https://{tenant}.strivacity.com/admin/api/v1
+  tags:
+  - Social Login Claim Mapping
+  properties:
+  - type: OpenAPI
+    url: openapi/strivacity-social-login-claim-mapping-api-openapi.yml
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/apis-and-sdks
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  - type: GettingStarted
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/oidc-client-using-the-journey-flow-api
+- aid: strivacity:strivacity-social-login-provider-api
+  name: Strivacity Social Login Provider API
+  description: >-
+    The Social Login Provider API from Strivacity — 2 operation(s) for social login provider.
+  humanURL: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  baseURL: https://{tenant}.strivacity.com/admin/api/v1
+  tags:
+  - Social Login Provider
+  properties:
+  - type: OpenAPI
+    url: openapi/strivacity-social-login-provider-api-openapi.yml
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/apis-and-sdks
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  - type: GettingStarted
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/oidc-client-using-the-journey-flow-api
+- aid: strivacity:strivacity-statistics-api
+  name: Strivacity Statistics API
+  description: The Statistics API from Strivacity — 5 operation(s) for statistics.
+  humanURL: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  baseURL: https://{tenant}.strivacity.com/admin/api/v1
+  tags:
+  - Statistics
+  properties:
+  - type: OpenAPI
+    url: openapi/strivacity-statistics-api-openapi.yml
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/apis-and-sdks
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  - type: GettingStarted
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/oidc-client-using-the-journey-flow-api
+- aid: strivacity:strivacity-tag-based-permission-api
+  name: Strivacity Tag Based Permission API
+  description: The Tag Based Permission API from Strivacity — 2 operation(s) for tag based permission.
+  humanURL: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  baseURL: https://{tenant}.strivacity.com/admin/api/v1
+  tags:
+  - Tag Based Permission
+  properties:
+  - type: OpenAPI
+    url: openapi/strivacity-tag-based-permission-api-openapi.yml
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/apis-and-sdks
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  - type: GettingStarted
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/oidc-client-using-the-journey-flow-api
+- aid: strivacity:strivacity-telephony-provider-configuration-api
+  name: Strivacity Telephony Provider Configuration API
+  description: >-
+    The Telephony Provider Configuration API from Strivacity — 2 operation(s) for telephony provider configuration.
+  humanURL: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  baseURL: https://{tenant}.strivacity.com/admin/api/v1
+  tags:
+  - Telephony Provider Configuration
+  properties:
+  - type: OpenAPI
+    url: openapi/strivacity-telephony-provider-configuration-api-openapi.yml
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/apis-and-sdks
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  - type: GettingStarted
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/oidc-client-using-the-journey-flow-api
+- aid: strivacity:strivacity-translation-api
+  name: Strivacity Translation API
+  description: The Translation API from Strivacity — 4 operation(s) for translation.
+  humanURL: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  baseURL: https://{tenant}.strivacity.com/admin/api/v1
+  tags:
+  - Translation
+  properties:
+  - type: OpenAPI
+    url: openapi/strivacity-translation-api-openapi.yml
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/apis-and-sdks
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  - type: GettingStarted
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/oidc-client-using-the-journey-flow-api
+- aid: strivacity:strivacity-variables-api
+  name: Strivacity Variables API
+  description: The Variables API from Strivacity — 2 operation(s) for variables.
+  humanURL: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  baseURL: https://{tenant}.strivacity.com/admin/api/v1
+  tags:
+  - Variables
+  properties:
+  - type: OpenAPI
+    url: openapi/strivacity-variables-api-openapi.yml
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/apis-and-sdks
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  - type: GettingStarted
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/oidc-client-using-the-journey-flow-api
+- aid: strivacity:strivacity-web-analytics-api
+  name: Strivacity Web Analytics API
+  description: The Web Analytics API from Strivacity — 2 operation(s) for web analytics.
+  humanURL: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  baseURL: https://{tenant}.strivacity.com/admin/api/v1
+  tags:
+  - Web Analytics
+  properties:
+  - type: OpenAPI
+    url: openapi/strivacity-web-analytics-api-openapi.yml
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/apis-and-sdks
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-with-the-admin-api
+  - type: GettingStarted
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: APIReference
+    url: https://docs.strivacity.com/reference/getting-started-1
+  - type: Documentation
+    url: https://docs.strivacity.com/docs/oidc-client-using-the-journey-flow-api
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
 - FN: APIs.json
   email: info@apis.io
 common:
+- type: Overlay
+  url: overlays/strivacity-admin-portal-overlay.yaml
+- type: Overlay
+  url: overlays/strivacity-admin-management-overlay.yaml
+- type: Overlay
+  url: overlays/strivacity-myaccount-portal-overlay.yaml
+- type: Overlay
+  url: overlays/strivacity-native-journey-overlay.yaml
+- type: Overlay
+  url: overlays/strivacity-simple-authentication-overlay.yaml
 - type: Website
   url: https://www.strivacity.com/
 - type: DeveloperPortal
