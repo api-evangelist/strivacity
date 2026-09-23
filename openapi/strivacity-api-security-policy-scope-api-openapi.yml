@@ -1,0 +1,334 @@
+openapi: 3.2.0
+info:
+  description: API documentation of Admin Portal
+  title: Admin Portal API Security Policy Scope API
+  version: v0.0.1
+servers:
+- url: https://{tenant}
+  variables:
+    tenant:
+      default: example.strivacity.com
+      description: Your Strivacity tenant
+tags:
+- name: API Security Policy Scope
+paths:
+  /admin/api/v1/accessPolicies/{policyId}/scopes:
+    post:
+      description: 'You can create a scope for an API security policy by calling this endpoint.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | write:config_api_access |'
+      operationId: createScope
+      parameters:
+      - in: path
+        name: policyId
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Scope_InsertRequest'
+        required: true
+      responses:
+        '201':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ScopeResponse_ApiAccessPolicy'
+          description: Created
+        '400':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Bad Request
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+        '404':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Not Found
+        '409':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Conflict
+      security:
+      - securityScheme:
+        - write:config_api_access
+      summary: Create a scope for an API security policy
+      tags:
+      - API Security Policy Scope
+  /admin/api/v1/accessPolicies/{policyId}/scopes/{scopeId}:
+    delete:
+      description: 'You can delete a scope for an API security policy by calling this endpoint.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | write:config_api_access |'
+      operationId: deleteScope
+      parameters:
+      - in: path
+        name: policyId
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: scopeId
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: No Content
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+        '409':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: API security policy scope has assigned clients
+      security:
+      - securityScheme:
+        - write:config_api_access
+      summary: Delete a scope for an API security policy
+      tags:
+      - API Security Policy Scope
+    get:
+      description: 'You can get a scope for an API security policy by calling this endpoint.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | read:config_api_access |'
+      operationId: getScope
+      parameters:
+      - in: path
+        name: policyId
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: scopeId
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ScopeResponse_ApiAccessPolicy'
+          description: OK
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+        '404':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Not Found
+      security:
+      - securityScheme:
+        - read:config_api_access
+      summary: Get a scope for an API security policy
+      tags:
+      - API Security Policy Scope
+    put:
+      description: 'You can update a scope for an API security policy by calling this endpoint.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | write:config_api_access |'
+      operationId: updateScope
+      parameters:
+      - in: path
+        name: policyId
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: scopeId
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ScopeUpsertRequest_ApiAccessPolicy'
+        required: true
+      responses:
+        '200':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ScopeResponse_ApiAccessPolicy'
+          description: OK
+        '400':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Bad Request
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+        '404':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Not Found
+        '409':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Conflict
+      security:
+      - securityScheme:
+        - write:config_api_access
+      summary: Update a scope for an API security policy
+      tags:
+      - API Security Policy Scope
+components:
+  schemas:
+    ProblemJson:
+      type: object
+      properties:
+        detail:
+          type: string
+        entityName:
+          type: string
+          description: The name of the entity within the error has occurred
+        errorKey:
+          type: string
+          description: A unique identifier of the error
+        fieldErrors:
+          type: array
+          description: Field constraint violation errors
+          items:
+            $ref: '#/components/schemas/FieldError'
+        message:
+          type: string
+          description: A unique identifier in format of 'error.{errorKey}'
+        params:
+          type: array
+          description: Further information related to the actual error
+          items:
+            type: object
+            additionalProperties:
+              type: object
+        path:
+          type: string
+          description: Request URI
+        status:
+          type: integer
+          description: Status code
+          format: int32
+        title:
+          type: string
+      description: Based on [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807)
+    FieldError:
+      type: object
+      properties:
+        field:
+          type: string
+        message:
+          type: string
+        objectName:
+          type: string
+    ScopeUpsertRequest_ApiAccessPolicy:
+      required:
+      - id
+      - name
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          maxLength: 256
+          minLength: 1
+          pattern: ^[a-zA-Z0-9_!#$&'()*+,/:;=?@\[\].]*$
+          type: string
+    Scope_InsertRequest:
+      required:
+      - name
+      type: object
+      properties:
+        name:
+          maxLength: 256
+          minLength: 1
+          pattern: ^[a-zA-Z0-9_!#$&'()*+,/:;=?@\[\].]*$
+          type: string
+    ScopeResponse_ApiAccessPolicy:
+      type: object
+      properties:
+        displayName:
+          type: string
+        id:
+          type: string
+        name:
+          type: string
+  securitySchemes:
+    securityScheme:
+      scheme: bearer
+      type: http

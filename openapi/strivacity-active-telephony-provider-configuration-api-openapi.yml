@@ -1,0 +1,269 @@
+openapi: 3.2.0
+info:
+  description: API documentation of Admin Portal
+  title: Admin Portal Active Telephony Provider Configuration API
+  version: v0.0.1
+servers:
+- url: https://{tenant}
+  variables:
+    tenant:
+      default: example.strivacity.com
+      description: Your Strivacity tenant
+tags:
+- name: Active Telephony Provider Configuration
+paths:
+  /admin/api/v1/instance/telephony/activeProviders:
+    get:
+      description: 'You can list active telephony service providers by calling this endpoint.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | read:config_admin_telephony_service_provider |'
+      operationId: readActiveTelephonyProviders
+      responses:
+        '200':
+          content:
+            '*/*':
+              schema:
+                uniqueItems: true
+                type: array
+                items:
+                  $ref: '#/components/schemas/ActiveTelephonyProviderResponse'
+          description: OK
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+      security:
+      - securityScheme:
+        - read:config_admin_telephony_service_provider
+      summary: List active telephony service providers
+      tags:
+      - Active Telephony Provider Configuration
+  /admin/api/v1/instance/telephony/activeProviders/{activeProviderChannel}:
+    delete:
+      description: 'You can deactivate existing telephony service provider.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | delete:config_admin_telephony_service_provider |'
+      operationId: deactivate
+      parameters:
+      - in: path
+        name: activeProviderChannel
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: No Content
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+        '404':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Not Found
+      security:
+      - securityScheme:
+        - delete:config_admin_telephony_service_provider
+      summary: Deactivate telephony service provider by type
+      tags:
+      - Active Telephony Provider Configuration
+    get:
+      description: 'You can get active telephony service provider by calling this endpoint.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | read:config_admin_telephony_service_provider |'
+      operationId: readActiveTelephonyProvider
+      parameters:
+      - in: path
+        name: activeProviderChannel
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ActiveTelephonyProviderResponse'
+          description: OK
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+        '404':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Not Found
+      security:
+      - securityScheme:
+        - read:config_admin_telephony_service_provider
+      summary: Get active telephony service provider
+      tags:
+      - Active Telephony Provider Configuration
+    post:
+      description: 'You can activate existing telephony service provider.
+
+        Previously activated telephony service provider will be deactivated.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | write:config_admin_telephony_service_provider |'
+      operationId: activate
+      parameters:
+      - in: path
+        name: activeProviderChannel
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TelephonyProvider_IdReference_InsertRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ActiveTelephonyProviderResponse'
+          description: OK
+        '400':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Bad Request
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+        '404':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Not Found
+      security:
+      - securityScheme:
+        - write:config_admin_telephony_service_provider
+      summary: Activate telephony service provider
+      tags:
+      - Active Telephony Provider Configuration
+components:
+  schemas:
+    ProblemJson:
+      type: object
+      properties:
+        detail:
+          type: string
+        entityName:
+          type: string
+          description: The name of the entity within the error has occurred
+        errorKey:
+          type: string
+          description: A unique identifier of the error
+        fieldErrors:
+          type: array
+          description: Field constraint violation errors
+          items:
+            $ref: '#/components/schemas/FieldError'
+        message:
+          type: string
+          description: A unique identifier in format of 'error.{errorKey}'
+        params:
+          type: array
+          description: Further information related to the actual error
+          items:
+            type: object
+            additionalProperties:
+              type: object
+        path:
+          type: string
+          description: Request URI
+        status:
+          type: integer
+          description: Status code
+          format: int32
+        title:
+          type: string
+      description: Based on [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807)
+    ActiveTelephonyProviderResponse:
+      type: object
+      properties:
+        channel:
+          type: string
+          enum:
+          - sms
+          - voice
+        id:
+          type: string
+    FieldError:
+      type: object
+      properties:
+        field:
+          type: string
+        message:
+          type: string
+        objectName:
+          type: string
+    TelephonyProvider_IdReference_InsertRequest:
+      type: object
+      properties: {}
+  securitySchemes:
+    securityScheme:
+      scheme: bearer
+      type: http

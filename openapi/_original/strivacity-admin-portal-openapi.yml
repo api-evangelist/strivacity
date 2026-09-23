@@ -1,3 +1,5 @@
+# x-archived-from: strivacity-admin-portal-openapi.yml
+# x-archived-on: 2026-09-16
 openapi: 3.0.1
 info:
   description: API documentation of Admin Portal

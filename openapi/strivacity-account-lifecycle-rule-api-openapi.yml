@@ -1,0 +1,642 @@
+openapi: 3.2.0
+info:
+  description: API documentation of Admin Portal
+  title: Admin Portal Account Lifecycle Rule API
+  version: v0.0.1
+servers:
+- url: https://{tenant}
+  variables:
+    tenant:
+      default: example.strivacity.com
+      description: Your Strivacity tenant
+tags:
+- name: Account Lifecycle Rule
+paths:
+  /admin/api/v1/identityStores/{identityStoreName}/lifecycleRules:
+    get:
+      description: 'You can list the existing lifecycle rules of an identity store by calling this endpoint.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | read:config_identity_store |'
+      operationId: listLifecycleRules
+      parameters:
+      - in: path
+        name: identityStoreName
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/LifecycleRuleListResponse'
+          description: OK
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+        '404':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Not Found
+      security:
+      - securityScheme:
+        - read:config_identity_store
+      summary: List account lifecycle rules
+      tags:
+      - Account Lifecycle Rule
+    post:
+      description: 'You can create a lifecycle rule by calling this endpoint.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | write:config_identity_store |'
+      operationId: createLifecycleRule
+      parameters:
+      - in: path
+        name: identityStoreName
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LifecycleRuleInsertRequest'
+        required: true
+      responses:
+        '201':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/LifecycleRuleResponse'
+          description: Created
+        '400':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Bad Request
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+        '404':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Not Found
+        '409':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Conflict
+      security:
+      - securityScheme:
+        - write:config_identity_store
+      summary: Create an account lifecycle rule
+      tags:
+      - Account Lifecycle Rule
+  /admin/api/v1/identityStores/{identityStoreName}/lifecycleRules/{lifecycleRuleId}:
+    delete:
+      description: 'You can delete a lifecycle rule by calling this endpoint
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | write:config_identity_store |'
+      operationId: deleteLifecycleRule
+      parameters:
+      - in: path
+        name: identityStoreName
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: lifecycleRuleId
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: No Content
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+        '404':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Not Found
+      security:
+      - securityScheme:
+        - write:config_identity_store
+      summary: Delete an account lifecycle rule
+      tags:
+      - Account Lifecycle Rule
+    get:
+      description: 'You can get a lifecycle rule by calling this endpoint.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | read:config_identity_store |'
+      operationId: getLifecycleRule
+      parameters:
+      - in: path
+        name: identityStoreName
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: lifecycleRuleId
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/LifecycleRuleResponse'
+          description: OK
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+        '404':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Not Found
+      security:
+      - securityScheme:
+        - read:config_identity_store
+      summary: Get an account lifecycle rule
+      tags:
+      - Account Lifecycle Rule
+    put:
+      description: 'You can update a lifecycle rule by calling this endpoint.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | write:config_identity_store |'
+      operationId: updateLifecycleRule
+      parameters:
+      - in: path
+        name: identityStoreName
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: lifecycleRuleId
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LifecycleRuleUpdateRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/LifecycleRuleResponse'
+          description: OK
+        '400':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Bad Request
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+        '404':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Not Found
+        '409':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Conflict
+      security:
+      - securityScheme:
+        - write:config_identity_store
+      summary: Update an account lifecycle rule
+      tags:
+      - Account Lifecycle Rule
+components:
+  schemas:
+    ProblemJson:
+      type: object
+      properties:
+        detail:
+          type: string
+        entityName:
+          type: string
+          description: The name of the entity within the error has occurred
+        errorKey:
+          type: string
+          description: A unique identifier of the error
+        fieldErrors:
+          type: array
+          description: Field constraint violation errors
+          items:
+            $ref: '#/components/schemas/FieldError'
+        message:
+          type: string
+          description: A unique identifier in format of 'error.{errorKey}'
+        params:
+          type: array
+          description: Further information related to the actual error
+          items:
+            type: object
+            additionalProperties:
+              type: object
+        path:
+          type: string
+          description: Request URI
+        status:
+          type: integer
+          description: Status code
+          format: int32
+        title:
+          type: string
+      description: Based on [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807)
+    LifecycleActionWithRoleTargetRequest:
+      required:
+      - action
+      - organization
+      - role
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/LifecycleActionRequest'
+      - type: object
+        properties:
+          organization:
+            minLength: 1
+            type: string
+          role:
+            minLength: 1
+            type: string
+    LifecycleRuleResponse:
+      type: object
+      properties:
+        actions:
+          type: array
+          items:
+            oneOf:
+            - $ref: '#/components/schemas/LifecycleAction'
+            - $ref: '#/components/schemas/LifecycleActionWithGroupTarget'
+            - $ref: '#/components/schemas/LifecycleActionWithRoleTarget'
+        description:
+          type: string
+        enabled:
+          type: boolean
+        filter:
+          $ref: '#/components/schemas/Filter'
+        id:
+          type: string
+        lastExecution:
+          $ref: '#/components/schemas/ExecutionStatus'
+        name:
+          type: string
+    FilterRequest:
+      type: object
+      properties:
+        createdAtEndDate:
+          type: string
+        createdAtStartDate:
+          type: string
+        disabledAtEndDate:
+          type: string
+        disabledAtStartDate:
+          type: string
+        enabled:
+          type: boolean
+        groups:
+          type: string
+        groupsFilter:
+          type: string
+          enum:
+          - include
+          - exclude
+        lastAuthenticationActivityAtEndDate:
+          type: string
+        lastAuthenticationActivityAtStartDate:
+          type: string
+        lastLoginAtEndDate:
+          type: string
+        lastLoginAtStartDate:
+          type: string
+        neverLoggedIn:
+          type: boolean
+        organization:
+          type: string
+        roles:
+          type: string
+        rolesFilter:
+          type: string
+          enum:
+          - include
+          - exclude
+        updatedAtEndDate:
+          type: string
+        updatedAtStartDate:
+          type: string
+      description: Represents a filter that targets accounts affected by this rule
+    FieldError:
+      type: object
+      properties:
+        field:
+          type: string
+        message:
+          type: string
+        objectName:
+          type: string
+    LifecycleRuleUpdateRequest:
+      required:
+      - actions
+      - filter
+      - id
+      - name
+      type: object
+      properties:
+        actions:
+          maxItems: 1
+          minItems: 0
+          type: array
+          items:
+            oneOf:
+            - $ref: '#/components/schemas/LifecycleActionRequest'
+            - $ref: '#/components/schemas/LifecycleActionWithGroupTargetRequest'
+            - $ref: '#/components/schemas/LifecycleActionWithRoleTargetRequest'
+        description:
+          maxLength: 1024
+          minLength: 0
+          type: string
+        enabled:
+          type: boolean
+          default: false
+        filter:
+          $ref: '#/components/schemas/FilterRequest'
+        id:
+          pattern: ^[a-zA-Z0-9-]{1,36}$
+          type: string
+        name:
+          maxLength: 64
+          minLength: 1
+          pattern: ^$|^[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°]([\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*° ]*[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°])?$
+          type: string
+    ExecutionStatus:
+      type: object
+      properties:
+        affectedAccount:
+          type: integer
+          format: int32
+        end:
+          type: string
+          format: date-time
+        error:
+          type: string
+        start:
+          type: string
+          format: date-time
+        status:
+          type: string
+    LifecycleActionWithRoleTarget:
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/LifecycleAction'
+      - type: object
+        properties:
+          organization:
+            type: string
+          role:
+            type: string
+    LifecycleAction:
+      type: object
+      properties:
+        action:
+          type: string
+          enum:
+          - deleteAccount
+          - disableAccount
+          - assignGroup
+          - removeGroup
+          - assignOrganizationRole
+          - deleteOrganizationRole
+      discriminator:
+        propertyName: action
+    Filter:
+      type: object
+      properties:
+        attributes:
+          type: object
+          additionalProperties:
+            type: string
+        createdAtEndDate:
+          type: string
+        createdAtStartDate:
+          type: string
+        disabledAtEndDate:
+          type: string
+        disabledAtStartDate:
+          type: string
+        enabled:
+          type: boolean
+        groups:
+          type: string
+        groupsFilter:
+          type: string
+          enum:
+          - include
+          - exclude
+        lastAuthenticationActivityAtEndDate:
+          type: string
+        lastAuthenticationActivityAtStartDate:
+          type: string
+        lastLoginAtEndDate:
+          type: string
+        lastLoginAtStartDate:
+          type: string
+        neverLoggedIn:
+          type: boolean
+        organization:
+          type: string
+        roles:
+          type: string
+        rolesFilter:
+          type: string
+          enum:
+          - include
+          - exclude
+        updatedAtEndDate:
+          type: string
+        updatedAtStartDate:
+          type: string
+    LifecycleActionRequest:
+      required:
+      - action
+      type: object
+      properties:
+        action:
+          type: string
+          enum:
+          - deleteAccount
+          - disableAccount
+          - assignGroup
+          - removeGroup
+          - assignOrganizationRole
+          - deleteOrganizationRole
+      discriminator:
+        propertyName: action
+    LifecycleRuleInsertRequest:
+      required:
+      - actions
+      - filter
+      - name
+      type: object
+      properties:
+        actions:
+          maxItems: 1
+          minItems: 0
+          type: array
+          items:
+            oneOf:
+            - $ref: '#/components/schemas/LifecycleActionRequest'
+            - $ref: '#/components/schemas/LifecycleActionWithGroupTargetRequest'
+            - $ref: '#/components/schemas/LifecycleActionWithRoleTargetRequest'
+        description:
+          maxLength: 1024
+          minLength: 0
+          type: string
+        enabled:
+          type: boolean
+          default: false
+        filter:
+          $ref: '#/components/schemas/FilterRequest'
+        name:
+          maxLength: 64
+          minLength: 1
+          pattern: ^$|^[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°]([\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*° ]*[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°])?$
+          type: string
+    LifecycleActionWithGroupTarget:
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/LifecycleAction'
+      - type: object
+        properties:
+          group:
+            type: string
+    LifecycleRuleListResponse:
+      type: object
+      properties:
+        actions:
+          type: array
+          items:
+            oneOf:
+            - $ref: '#/components/schemas/LifecycleAction'
+            - $ref: '#/components/schemas/LifecycleActionWithGroupTarget'
+            - $ref: '#/components/schemas/LifecycleActionWithRoleTarget'
+        description:
+          type: string
+        enabled:
+          type: boolean
+        filter:
+          $ref: '#/components/schemas/Filter'
+        id:
+          type: string
+        lastExecution:
+          $ref: '#/components/schemas/ExecutionStatus'
+        name:
+          type: string
+    LifecycleActionWithGroupTargetRequest:
+      required:
+      - action
+      - group
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/LifecycleActionRequest'
+      - type: object
+        properties:
+          group:
+            minLength: 1
+            type: string
+  securitySchemes:
+    securityScheme:
+      scheme: bearer
+      type: http

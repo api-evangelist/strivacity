@@ -1,0 +1,353 @@
+openapi: 3.2.0
+info:
+  description: API documentation of Admin Portal
+  title: Admin Portal Bulk Operation API
+  version: v0.0.1
+servers:
+- url: https://{tenant}
+  variables:
+    tenant:
+      default: example.strivacity.com
+      description: Your Strivacity tenant
+tags:
+- name: Bulk Operation
+paths:
+  /admin/api/v1/bulk:
+    head:
+      description: '| REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | read:admin_bulk_operation |'
+      operationId: isRunning
+      responses:
+        '204':
+          description: No Content
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+        '429':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: There is a bulk operation running already.
+      security:
+      - securityScheme:
+        - read:admin_bulk_operation
+      summary: Query if there is a running bulk operation
+      tags:
+      - Bulk Operation
+    post:
+      description: 'By calling this endpoint you can create a bulk operation job, the endpoint responds with the id of the created job.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | write:admin_bulk_operation |'
+      operationId: createJob
+      requestBody:
+        content:
+          application/x-ndjson:
+            schema:
+              oneOf:
+              - $ref: '#/components/schemas/EnableAccountOperationRequest'
+              - $ref: '#/components/schemas/DisableAccountOperationRequest'
+              - $ref: '#/components/schemas/UpdatePersonalDataOperationRequest'
+        description: 'JSON objects separated by new lines. The structure of the objects is specified below. Example:
+
+          ````
+
+          {"operation": "enableAccount", "identityStore": "[STORE_NAME]", "accountId": "[ACCOUNT_ID]"}
+
+          {"operation": "disableAccount", "identityStore": "[STORE_NAME]", "accountId": "[ACCOUNT_ID]"}
+
+          {"operation": "updatePersonalData", "identityStore": "[STORE_NAME]", "accountId": "[ACCOUNT_ID]", "value": {"name": {"givenName": "example name"}}}
+
+          ````'
+      responses:
+        '200':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/JobIdReferenceResponse'
+          description: OK
+        '400':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Bad Request
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+        '429':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: There is a bulk operation running already.
+      security:
+      - securityScheme:
+        - write:admin_bulk_operation
+      summary: Create a bulk operation job
+      tags:
+      - Bulk Operation
+  /admin/api/v1/bulk/{jobId}:
+    get:
+      description: 'By calling this endpoint you can get the status of a job.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | read:admin_bulk_operation |'
+      operationId: getJobStatus
+      parameters:
+      - in: path
+        name: jobId
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/BulkStatus'
+          description: OK
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+        '404':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Not Found
+      security:
+      - securityScheme:
+        - read:admin_bulk_operation
+      summary: Get status of a job
+      tags:
+      - Bulk Operation
+  /admin/api/v1/bulk/{jobId}/errors:
+    get:
+      description: 'By calling this endpoint you can get a list of errors for a given job.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | read:admin_bulk_operation |'
+      operationId: errors
+      parameters:
+      - in: path
+        name: jobId
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BulkOperationErrorEntry'
+          description: OK
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+      security:
+      - securityScheme:
+        - read:admin_bulk_operation
+      summary: Get errors for a job
+      tags:
+      - Bulk Operation
+components:
+  schemas:
+    DisableAccountOperationRequest:
+      required:
+      - accountId
+      - identityStore
+      - operation
+      type: object
+      properties:
+        accountId:
+          type: string
+        identityStore:
+          type: string
+        operation:
+          type: string
+          enum:
+          - disableAccount
+    ProblemJson:
+      type: object
+      properties:
+        detail:
+          type: string
+        entityName:
+          type: string
+          description: The name of the entity within the error has occurred
+        errorKey:
+          type: string
+          description: A unique identifier of the error
+        fieldErrors:
+          type: array
+          description: Field constraint violation errors
+          items:
+            $ref: '#/components/schemas/FieldError'
+        message:
+          type: string
+          description: A unique identifier in format of 'error.{errorKey}'
+        params:
+          type: array
+          description: Further information related to the actual error
+          items:
+            type: object
+            additionalProperties:
+              type: object
+        path:
+          type: string
+          description: Request URI
+        status:
+          type: integer
+          description: Status code
+          format: int32
+        title:
+          type: string
+      description: Based on [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807)
+    EnableAccountOperationRequest:
+      required:
+      - accountId
+      - identityStore
+      - operation
+      type: object
+      properties:
+        accountId:
+          type: string
+        identityStore:
+          type: string
+        operation:
+          type: string
+          enum:
+          - enableAccount
+    UpdatePersonalDataOperationRequest:
+      required:
+      - accountId
+      - identityStore
+      - operation
+      - value
+      type: object
+      properties:
+        accountId:
+          type: string
+        identityStore:
+          type: string
+        operation:
+          type: string
+          enum:
+          - updatePersonalData
+        value:
+          type: object
+          additionalProperties:
+            type: object
+    FieldError:
+      type: object
+      properties:
+        field:
+          type: string
+        message:
+          type: string
+        objectName:
+          type: string
+    BulkStatus:
+      type: object
+      properties:
+        endDate:
+          type: string
+        id:
+          type: string
+        result:
+          $ref: '#/components/schemas/Result'
+        startDate:
+          type: string
+        status:
+          type: string
+    BulkOperationErrorEntry:
+      type: object
+      properties:
+        error:
+          type: object
+          additionalProperties:
+            type: object
+        line:
+          type: integer
+          format: int32
+        request:
+          type: object
+          additionalProperties:
+            type: object
+    JobIdReferenceResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID of the represented entity
+    Result:
+      type: object
+      properties:
+        failure:
+          type: integer
+          format: int32
+        success:
+          type: integer
+          format: int32
+        total:
+          type: integer
+          format: int32
+  securitySchemes:
+    securityScheme:
+      scheme: bearer
+      type: http

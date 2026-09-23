@@ -1,0 +1,464 @@
+openapi: 3.2.0
+info:
+  description: API documentation of Admin Portal
+  title: Admin Portal Group API
+  version: v0.0.1
+servers:
+- url: https://{tenant}
+  variables:
+    tenant:
+      default: example.strivacity.com
+      description: Your Strivacity tenant
+tags:
+- name: Group
+paths:
+  /admin/api/v1/identityStores/{identityStoreName}/groups:
+    get:
+      description: 'You can list the existing groups by calling this endpoint.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | read:config_identity_store |'
+      operationId: getGroups
+      parameters:
+      - in: path
+        name: identityStoreName
+        required: true
+        schema:
+          type: string
+      - description: Account IDs to be included
+        in: query
+        name: ids
+        required: false
+        schema:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+      - description: Account IDs to be excluded
+        in: query
+        name: nids
+        required: false
+        schema:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+      - description: Name used for filtering
+        in: query
+        name: name
+        required: false
+        schema:
+          type: string
+      - description: Zero-based page index (0..N)
+        in: query
+        name: page
+        schema:
+          type: integer
+          format: int64
+          default: 0
+      - description: The size of the page to be returned
+        in: query
+        name: size
+        schema:
+          type: integer
+          format: int64
+          default: 20
+      - description: 'Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported.'
+        in: query
+        name: sort
+        schema:
+          type: array
+          items:
+            type: string
+      responses:
+        '200':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/PagedModelGroupResponse'
+          description: OK
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+        '404':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Not Found
+      security:
+      - securityScheme:
+        - read:config_identity_store
+      summary: List groups
+      tags:
+      - Group
+    post:
+      description: 'You can create a group by calling this endpoint.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | write:config_identity_store |'
+      operationId: createGroup
+      parameters:
+      - in: path
+        name: identityStoreName
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GroupInsertRequest'
+        required: true
+      responses:
+        '201':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/GroupResponse'
+          description: Created
+        '400':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Bad Request
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+        '404':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Not Found
+        '409':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Conflict
+      security:
+      - securityScheme:
+        - write:config_identity_store
+      summary: Create a group
+      tags:
+      - Group
+  /admin/api/v1/identityStores/{identityStoreName}/groups/{id}:
+    delete:
+      description: 'You can delete a group by calling this endpoint. Groups that have members cannot be deleted.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | write:config_identity_store |'
+      operationId: deleteGroup
+      parameters:
+      - in: path
+        name: identityStoreName
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: No Content
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+        '404':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Not Found
+        '409':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: This group still has members and cannot be deleted
+      security:
+      - securityScheme:
+        - write:config_identity_store
+      summary: Delete a group
+      tags:
+      - Group
+    get:
+      description: 'You can get a group by calling this endpoint.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | read:config_identity_store |'
+      operationId: getGroup
+      parameters:
+      - in: path
+        name: identityStoreName
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/GroupResponse'
+          description: OK
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+        '404':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Not Found
+      security:
+      - securityScheme:
+        - read:config_identity_store
+      summary: Get a group
+      tags:
+      - Group
+    put:
+      description: 'You can update a group by calling this endpoint.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | write:config_identity_store |'
+      operationId: updateGroup
+      parameters:
+      - in: path
+        name: identityStoreName
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GroupUpdateRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/GroupResponse'
+          description: OK
+        '400':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Bad Request
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+        '404':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Not Found
+        '409':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Conflict
+      security:
+      - securityScheme:
+        - write:config_identity_store
+      summary: Update a group
+      tags:
+      - Group
+components:
+  schemas:
+    ProblemJson:
+      type: object
+      properties:
+        detail:
+          type: string
+        entityName:
+          type: string
+          description: The name of the entity within the error has occurred
+        errorKey:
+          type: string
+          description: A unique identifier of the error
+        fieldErrors:
+          type: array
+          description: Field constraint violation errors
+          items:
+            $ref: '#/components/schemas/FieldError'
+        message:
+          type: string
+          description: A unique identifier in format of 'error.{errorKey}'
+        params:
+          type: array
+          description: Further information related to the actual error
+          items:
+            type: object
+            additionalProperties:
+              type: object
+        path:
+          type: string
+          description: Request URI
+        status:
+          type: integer
+          description: Status code
+          format: int32
+        title:
+          type: string
+      description: Based on [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807)
+    GroupInsertRequest:
+      required:
+      - name
+      type: object
+      properties:
+        description:
+          maxLength: 1024
+          minLength: 0
+          type: string
+        name:
+          maxLength: 64
+          minLength: 3
+          pattern: ^$|^[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°]([\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*° ]*[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°])?$
+          type: string
+    PageMetadata:
+      type: object
+      properties:
+        number:
+          type: integer
+          format: int64
+        size:
+          type: integer
+          format: int64
+        totalElements:
+          type: integer
+          format: int64
+        totalPages:
+          type: integer
+          format: int64
+    FieldError:
+      type: object
+      properties:
+        field:
+          type: string
+        message:
+          type: string
+        objectName:
+          type: string
+    PagedModelGroupResponse:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/GroupResponse'
+        page:
+          $ref: '#/components/schemas/PageMetadata'
+    GroupResponse:
+      type: object
+      properties:
+        description:
+          type: string
+        id:
+          type: string
+        name:
+          type: string
+    GroupUpdateRequest:
+      required:
+      - id
+      - name
+      type: object
+      properties:
+        description:
+          maxLength: 1024
+          minLength: 0
+          type: string
+        id:
+          type: string
+        name:
+          maxLength: 64
+          minLength: 3
+          pattern: ^$|^[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°]([\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*° ]*[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°])?$
+          type: string
+  securitySchemes:
+    securityScheme:
+      scheme: bearer
+      type: http

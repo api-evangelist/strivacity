@@ -1,0 +1,852 @@
+openapi: 3.2.0
+info:
+  description: API documentation of Admin Portal
+  title: Admin Portal Social Login Provider API
+  version: v0.0.1
+servers:
+- url: https://{tenant}
+  variables:
+    tenant:
+      default: example.strivacity.com
+      description: Your Strivacity tenant
+tags:
+- name: Social Login Provider
+paths:
+  /admin/api/v1/loginProviders/social:
+    get:
+      description: 'You can list the existing social login providers by calling this endpoint.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | read:config_login_provider |'
+      operationId: getLoginProviders
+      parameters:
+      - description: Tags used for filtering must exactly match the tag name
+        in: query
+        name: policyTags
+        required: false
+        schema:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+      - description: Name used for filtering
+        in: query
+        name: name
+        required: false
+        schema:
+          type: string
+      - description: Zero-based page index (0..N)
+        in: query
+        name: page
+        schema:
+          type: integer
+          format: int64
+          default: 0
+      - description: The size of the page to be returned
+        in: query
+        name: size
+        schema:
+          type: integer
+          format: int64
+          default: 20
+      - description: 'Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported.'
+        in: query
+        name: sort
+        schema:
+          type: array
+          items:
+            type: string
+      responses:
+        '200':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/PagedModelExternalLoginProviderResponse'
+          description: OK
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+      security:
+      - securityScheme:
+        - read:config_login_provider
+      summary: List social login providers
+      tags:
+      - Social Login Provider
+    post:
+      description: 'You can create a social login provider by calling this endpoint.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | write:config_login_provider |'
+      operationId: createLoginProvider
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Generic_SocialLoginProvider_InsertRequest'
+        required: true
+      responses:
+        '201':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/GenericSocialLoginProviderResponse'
+          description: Created
+        '400':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Bad Request
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+        '409':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Conflict
+      security:
+      - securityScheme:
+        - write:config_login_provider
+      summary: Create a social login provider
+      tags:
+      - Social Login Provider
+  /admin/api/v1/loginProviders/social/{id}:
+    delete:
+      description: 'You can delete a social login provider by calling this endpoint. Social login providers assigned to applications or organization assignments cannot be deleted.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | delete:config_login_provider |'
+      operationId: deleteLoginProvider
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: No Content
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+        '409':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: The Login provider is assigned to an application or organization assignment and couldn't be deleted
+      security:
+      - securityScheme:
+        - delete:config_login_provider
+      summary: Delete a social login provider
+      tags:
+      - Social Login Provider
+    get:
+      description: 'You can get a social login provider by calling this endpoint.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | read:config_login_provider |'
+      operationId: getLoginProvider
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/GenericSocialLoginProviderResponse'
+          description: OK
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+        '404':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Not Found
+      security:
+      - securityScheme:
+        - read:config_login_provider
+      summary: Get a social login provider
+      tags:
+      - Social Login Provider
+    put:
+      description: 'You can update a social login provider by calling this endpoint.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | write:config_login_provider |'
+      operationId: updateLoginProvider
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GenericSocialLoginProviderRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/GenericSocialLoginProviderResponse'
+          description: OK
+        '400':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Bad Request
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+        '404':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Not Found
+      security:
+      - securityScheme:
+        - write:config_login_provider
+      summary: Update a social login provider
+      tags:
+      - Social Login Provider
+components:
+  schemas:
+    ProblemJson:
+      type: object
+      properties:
+        detail:
+          type: string
+        entityName:
+          type: string
+          description: The name of the entity within the error has occurred
+        errorKey:
+          type: string
+          description: A unique identifier of the error
+        fieldErrors:
+          type: array
+          description: Field constraint violation errors
+          items:
+            $ref: '#/components/schemas/FieldError'
+        message:
+          type: string
+          description: A unique identifier in format of 'error.{errorKey}'
+        params:
+          type: array
+          description: Further information related to the actual error
+          items:
+            type: object
+            additionalProperties:
+              type: object
+        path:
+          type: string
+          description: Request URI
+        status:
+          type: integer
+          description: Status code
+          format: int32
+        title:
+          type: string
+      description: Based on [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807)
+    GenericSocialLoginProviderResponse:
+      type: object
+      description: Represents a social login provider.
+      oneOf:
+      - $ref: '#/components/schemas/AppleLoginProviderResponse'
+      - $ref: '#/components/schemas/SocialLoginProviderResponse'
+    PageMetadata:
+      type: object
+      properties:
+        number:
+          type: integer
+          format: int64
+        size:
+          type: integer
+          format: int64
+        totalElements:
+          type: integer
+          format: int64
+        totalPages:
+          type: integer
+          format: int64
+    SocialLoginProvider_InsertRequest:
+      required:
+      - configuration
+      - name
+      - type
+      type: object
+      properties:
+        configuration:
+          $ref: '#/components/schemas/SocialLoginProviderRequestConfiguration'
+        description:
+          maxLength: 1024
+          minLength: 0
+          type: string
+        languageOverride:
+          $ref: '#/components/schemas/LanguageOverride'
+        loginButtonText:
+          maxLength: 32
+          minLength: 1
+          pattern: ^((?![<>]).)*$
+          type: string
+        name:
+          maxLength: 64
+          minLength: 2
+          pattern: '[a-zA-Z0-9]+'
+          type: string
+          description: This field cannot be altered
+        onlyStoreMappedValues:
+          type: boolean
+          default: false
+        policyTag:
+          pattern: ^[a-z0-9_]{2,32}$
+          type: string
+          description: Must be an existing policy tag name
+        type:
+          type: string
+          description: This field cannot be altered
+          enum:
+          - oidc
+          - okta
+          - azure
+          - hypr
+          - saml2
+          - github
+          - microsoft
+          - google
+          - facebook
+          - twitter
+          - linkedin
+          - amazon
+          - apple
+        updateAccountInfoOnLogin:
+          type: boolean
+          default: false
+    ExternalLoginProviderResponse:
+      type: object
+      properties:
+        description:
+          type: string
+        enabled:
+          type: boolean
+        id:
+          type: string
+        languageOverride:
+          $ref: '#/components/schemas/LanguageOverrideResponse'
+        loginButtonText:
+          type: string
+        name:
+          type: string
+        onlyStoreMappedValues:
+          type: boolean
+        policyTag:
+          type: string
+        type:
+          type: string
+          enum:
+          - oidc
+          - okta
+          - azure
+          - hypr
+          - saml2
+          - github
+          - microsoft
+          - google
+          - facebook
+          - twitter
+          - linkedin
+          - amazon
+          - apple
+        updateAccountInfoOnLogin:
+          type: boolean
+    AdditionalAuthRequestParamUpsertRequest:
+      required:
+      - key
+      - value
+      type: object
+      properties:
+        key:
+          maxLength: 128
+          minLength: 1
+          pattern: ^\p{ASCII}*$
+          type: string
+        value:
+          maxLength: 1024
+          minLength: 1
+          pattern: ^\p{ASCII}*$
+          type: string
+    SocialLoginProviderResponse:
+      type: object
+      properties:
+        configuration:
+          $ref: '#/components/schemas/SocialLoginProviderConfiguration'
+        description:
+          type: string
+        id:
+          type: string
+        languageOverride:
+          $ref: '#/components/schemas/LanguageOverrideResponse'
+        loginButtonText:
+          type: string
+        name:
+          type: string
+        onlyStoreMappedValues:
+          type: boolean
+        policyTag:
+          type: string
+        type:
+          type: string
+          enum:
+          - oidc
+          - okta
+          - azure
+          - hypr
+          - saml2
+          - github
+          - microsoft
+          - google
+          - facebook
+          - twitter
+          - linkedin
+          - amazon
+          - apple
+        updateAccountInfoOnLogin:
+          type: boolean
+    LanguageOverride:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+          default: false
+        regex:
+          type: string
+        sourcePath:
+          maxLength: 256
+          minLength: 0
+          type: string
+    SocialLoginProviderRequestConfiguration:
+      required:
+      - claims
+      - clientId
+      - clientSecret
+      type: object
+      properties:
+        additionalAuthRequestParams:
+          maxItems: 8
+          minItems: 0
+          type: array
+          items:
+            $ref: '#/components/schemas/AdditionalAuthRequestParamUpsertRequest'
+        claims:
+          type: array
+          items:
+            minLength: 1
+            type: string
+        clientId:
+          maxLength: 128
+          minLength: 1
+          type: string
+        clientSecret:
+          maxLength: 1024
+          minLength: 1
+          type: string
+    AppleLoginProviderRequestConfiguration:
+      required:
+      - claims
+      - clientId
+      - keyId
+      - signingKey
+      - teamId
+      type: object
+      properties:
+        additionalAuthRequestParams:
+          maxItems: 8
+          minItems: 0
+          type: array
+          items:
+            $ref: '#/components/schemas/AdditionalAuthRequestParamUpsertRequest'
+        claims:
+          type: array
+          items:
+            minLength: 1
+            type: string
+        clientId:
+          maxLength: 128
+          minLength: 1
+          type: string
+        keyId:
+          maxLength: 256
+          minLength: 1
+          type: string
+        signingKey:
+          maxLength: 2048
+          minLength: 50
+          type: string
+        teamId:
+          maxLength: 256
+          minLength: 1
+          type: string
+    AppleLoginProviderConfiguration:
+      type: object
+      properties:
+        additionalAuthRequestParams:
+          type: array
+          items:
+            $ref: '#/components/schemas/AdditionalAuthRequestParam'
+        claims:
+          type: array
+          items:
+            type: string
+        clientId:
+          type: string
+        keyId:
+          type: string
+        signingKey:
+          type: string
+        teamId:
+          type: string
+    GenericSocialLoginProviderRequest:
+      type: object
+      description: Represents a social login provider.
+      oneOf:
+      - $ref: '#/components/schemas/AppleLoginProviderUpsertRequest'
+      - $ref: '#/components/schemas/SocialLoginProviderUpsertRequest'
+    AppleLoginProviderUpsertRequest:
+      required:
+      - configuration
+      - id
+      - name
+      - type
+      type: object
+      properties:
+        configuration:
+          $ref: '#/components/schemas/AppleLoginProviderRequestConfiguration'
+        description:
+          maxLength: 1024
+          minLength: 0
+          type: string
+        id:
+          type: string
+        languageOverride:
+          $ref: '#/components/schemas/LanguageOverride'
+        loginButtonText:
+          maxLength: 32
+          minLength: 1
+          pattern: ^((?![<>]).)*$
+          type: string
+        name:
+          maxLength: 64
+          minLength: 2
+          pattern: '[a-zA-Z0-9]+'
+          type: string
+          description: This field cannot be altered
+        onlyStoreMappedValues:
+          type: boolean
+          default: false
+        policyTag:
+          pattern: ^[a-z0-9_]{2,32}$
+          type: string
+          description: Must be an existing policy tag name
+        type:
+          type: string
+          description: This field cannot be altered
+          enum:
+          - oidc
+          - okta
+          - azure
+          - hypr
+          - saml2
+          - github
+          - microsoft
+          - google
+          - facebook
+          - twitter
+          - linkedin
+          - amazon
+          - apple
+        updateAccountInfoOnLogin:
+          type: boolean
+          default: false
+    AdditionalAuthRequestParam:
+      type: object
+      properties:
+        key:
+          type: string
+        value:
+          type: string
+    FieldError:
+      type: object
+      properties:
+        field:
+          type: string
+        message:
+          type: string
+        objectName:
+          type: string
+    SocialLoginProviderConfiguration:
+      type: object
+      properties:
+        additionalAuthRequestParams:
+          type: array
+          items:
+            $ref: '#/components/schemas/AdditionalAuthRequestParam'
+        claims:
+          type: array
+          items:
+            type: string
+        clientId:
+          type: string
+        clientSecret:
+          type: string
+    Apple_LoginProvider_InsertRequest:
+      required:
+      - configuration
+      - name
+      - type
+      type: object
+      properties:
+        configuration:
+          $ref: '#/components/schemas/AppleLoginProviderRequestConfiguration'
+        description:
+          maxLength: 1024
+          minLength: 0
+          type: string
+        languageOverride:
+          $ref: '#/components/schemas/LanguageOverride'
+        loginButtonText:
+          maxLength: 32
+          minLength: 1
+          pattern: ^((?![<>]).)*$
+          type: string
+        name:
+          maxLength: 64
+          minLength: 2
+          pattern: '[a-zA-Z0-9]+'
+          type: string
+          description: This field cannot be altered
+        onlyStoreMappedValues:
+          type: boolean
+          default: false
+        policyTag:
+          pattern: ^[a-z0-9_]{2,32}$
+          type: string
+          description: Must be an existing policy tag name
+        type:
+          type: string
+          description: This field cannot be altered
+          enum:
+          - oidc
+          - okta
+          - azure
+          - hypr
+          - saml2
+          - github
+          - microsoft
+          - google
+          - facebook
+          - twitter
+          - linkedin
+          - amazon
+          - apple
+        updateAccountInfoOnLogin:
+          type: boolean
+          default: false
+    AppleLoginProviderResponse:
+      type: object
+      properties:
+        configuration:
+          $ref: '#/components/schemas/AppleLoginProviderConfiguration'
+        description:
+          type: string
+        id:
+          type: string
+        languageOverride:
+          $ref: '#/components/schemas/LanguageOverrideResponse'
+        loginButtonText:
+          type: string
+        name:
+          type: string
+        onlyStoreMappedValues:
+          type: boolean
+        policyTag:
+          type: string
+        type:
+          type: string
+          enum:
+          - oidc
+          - okta
+          - azure
+          - hypr
+          - saml2
+          - github
+          - microsoft
+          - google
+          - facebook
+          - twitter
+          - linkedin
+          - amazon
+          - apple
+        updateAccountInfoOnLogin:
+          type: boolean
+    LanguageOverrideResponse:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+        regex:
+          type: string
+        sourcePath:
+          type: string
+    Generic_SocialLoginProvider_InsertRequest:
+      type: object
+      description: Represents a social login provider.
+      oneOf:
+      - $ref: '#/components/schemas/Apple_LoginProvider_InsertRequest'
+      - $ref: '#/components/schemas/SocialLoginProvider_InsertRequest'
+    SocialLoginProviderUpsertRequest:
+      required:
+      - configuration
+      - id
+      - name
+      - type
+      type: object
+      properties:
+        configuration:
+          $ref: '#/components/schemas/SocialLoginProviderRequestConfiguration'
+        description:
+          maxLength: 1024
+          minLength: 0
+          type: string
+        id:
+          type: string
+        languageOverride:
+          $ref: '#/components/schemas/LanguageOverride'
+        loginButtonText:
+          maxLength: 32
+          minLength: 1
+          pattern: ^((?![<>]).)*$
+          type: string
+        name:
+          maxLength: 64
+          minLength: 2
+          pattern: '[a-zA-Z0-9]+'
+          type: string
+          description: This field cannot be altered
+        onlyStoreMappedValues:
+          type: boolean
+          default: false
+        policyTag:
+          pattern: ^[a-z0-9_]{2,32}$
+          type: string
+          description: Must be an existing policy tag name
+        type:
+          type: string
+          description: This field cannot be altered
+          enum:
+          - oidc
+          - okta
+          - azure
+          - hypr
+          - saml2
+          - github
+          - microsoft
+          - google
+          - facebook
+          - twitter
+          - linkedin
+          - amazon
+          - apple
+        updateAccountInfoOnLogin:
+          type: boolean
+          default: false
+    PagedModelExternalLoginProviderResponse:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExternalLoginProviderResponse'
+        page:
+          $ref: '#/components/schemas/PageMetadata'
+  securitySchemes:
+    securityScheme:
+      scheme: bearer
+      type: http

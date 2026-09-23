@@ -1,0 +1,550 @@
+openapi: 3.2.0
+info:
+  description: API documentation of Admin Portal
+  title: Admin Portal Bridge Policy Resource API
+  version: v0.0.1
+servers:
+- url: https://{tenant}
+  variables:
+    tenant:
+      default: example.strivacity.com
+      description: Your Strivacity tenant
+tags:
+- name: Bridge Policy Resource
+paths:
+  /admin/api/v2/applications/{applicationId}/clients/{clientId}/bridgePolicies/{apiAccessPolicyId}/resources:
+    get:
+      description: 'You can list bridge policy resources by calling this endpoint.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | read:config_application |'
+      operationId: list
+      parameters:
+      - in: path
+        name: applicationId
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: clientId
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: apiAccessPolicyId
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BridgePolicyResourceResponse_ApplicationConfig'
+          description: OK
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+        '404':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Not Found
+      security:
+      - securityScheme:
+        - read:config_application
+      summary: List a bridge policy resources
+      tags:
+      - Bridge Policy Resource
+    post:
+      description: 'You can create a bridge policy resource by calling this endpoint.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | write:config_application |'
+      operationId: create
+      parameters:
+      - in: path
+        name: applicationId
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: clientId
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: apiAccessPolicyId
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BridgePolicyResourceInsertRequest_ApplicationConfig'
+        required: true
+      responses:
+        '201':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/BridgePolicyResourceResponse_ApplicationConfig'
+          description: Created
+        '400':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Bad Request
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+        '404':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Not Found
+      security:
+      - securityScheme:
+        - write:config_application
+      summary: Create a bridge policy resource
+      tags:
+      - Bridge Policy Resource
+    put:
+      description: 'You can reorder resources by calling this endpoint. Request body should contain the existing resource IDs in the desired order.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | write:config_application |'
+      operationId: reOrder
+      parameters:
+      - in: path
+        name: applicationId
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: clientId
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: apiAccessPolicyId
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/IdReferenceRequest_ApplicationConfig'
+        required: true
+      responses:
+        '204':
+          description: No Content
+        '400':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Bad Request
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+        '404':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Not Found
+      security:
+      - securityScheme:
+        - write:config_application
+      summary: Update the order of bridge policy resources
+      tags:
+      - Bridge Policy Resource
+  /admin/api/v2/applications/{applicationId}/clients/{clientId}/bridgePolicies/{apiAccessPolicyId}/resources/{resourceId}:
+    delete:
+      description: 'You can delete a bridge resource policy by calling this endpoint.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | write:config_application |'
+      operationId: delete_1
+      parameters:
+      - in: path
+        name: applicationId
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: clientId
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: apiAccessPolicyId
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: resourceId
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: No Content
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+        '404':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Not Found
+      security:
+      - securityScheme:
+        - write:config_application
+      summary: Delete a bridge policy resource
+      tags:
+      - Bridge Policy Resource
+    get:
+      description: 'You can get a bridge policy resource by calling this endpoint.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | read:config_application |'
+      operationId: get_1
+      parameters:
+      - in: path
+        name: applicationId
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: clientId
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: apiAccessPolicyId
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: resourceId
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/BridgePolicyResourceResponse_ApplicationConfig'
+          description: OK
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+        '404':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Not Found
+      security:
+      - securityScheme:
+        - read:config_application
+      summary: Get a bridge policy resource
+      tags:
+      - Bridge Policy Resource
+    put:
+      description: 'You can update a bridge policy resource by calling this endpoint.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | write:config_application |'
+      operationId: update_1
+      parameters:
+      - in: path
+        name: applicationId
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: clientId
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: apiAccessPolicyId
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: resourceId
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BridgePolicyResourceUpdateRequest_ApplicationConfig'
+        required: true
+      responses:
+        '200':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/BridgePolicyResourceResponse_ApplicationConfig'
+          description: OK
+        '400':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Bad Request
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+        '404':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Not Found
+      security:
+      - securityScheme:
+        - write:config_application
+      summary: Update a bridge policy resource
+      tags:
+      - Bridge Policy Resource
+components:
+  schemas:
+    ProblemJson:
+      type: object
+      properties:
+        detail:
+          type: string
+        entityName:
+          type: string
+          description: The name of the entity within the error has occurred
+        errorKey:
+          type: string
+          description: A unique identifier of the error
+        fieldErrors:
+          type: array
+          description: Field constraint violation errors
+          items:
+            $ref: '#/components/schemas/FieldError'
+        message:
+          type: string
+          description: A unique identifier in format of 'error.{errorKey}'
+        params:
+          type: array
+          description: Further information related to the actual error
+          items:
+            type: object
+            additionalProperties:
+              type: object
+        path:
+          type: string
+          description: Request URI
+        status:
+          type: integer
+          description: Status code
+          format: int32
+        title:
+          type: string
+      description: Based on [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807)
+    IdReferenceRequest_ApplicationConfig:
+      required:
+      - id
+      type: object
+      properties:
+        id:
+          pattern: ^[a-zA-Z0-9-]{1,36}$
+          type: string
+          description: ID of the represented entity
+    FieldError:
+      type: object
+      properties:
+        field:
+          type: string
+        message:
+          type: string
+        objectName:
+          type: string
+    BridgePolicyResourceRequest.Authentication_ApplicationConfig:
+      required:
+      - authorizationScopes
+      type: object
+      properties:
+        authorizationScopes:
+          type: array
+          items:
+            $ref: '#/components/schemas/IdReferenceRequest_ApplicationConfig'
+        required:
+          type: boolean
+          default: true
+    IdReferenceResponse_ApplicationConfig:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID of the represented entity
+    BridgePolicyResourceResponse.Authentication_ApplicationConfig:
+      type: object
+      properties:
+        authorizationScopes:
+          uniqueItems: true
+          type: array
+          items:
+            $ref: '#/components/schemas/IdReferenceResponse_ApplicationConfig'
+        required:
+          type: boolean
+    BridgePolicyResourceInsertRequest_ApplicationConfig:
+      required:
+      - authentication
+      - methods
+      - pathPattern
+      type: object
+      properties:
+        authentication:
+          $ref: '#/components/schemas/BridgePolicyResourceRequest.Authentication_ApplicationConfig'
+        methods:
+          maxItems: 2147483647
+          minItems: 1
+          type: array
+          items:
+            pattern: ^(GET|HEAD|POST|PUT|DELETE|CONNECT|OPTIONS|TRACE|PATCH)$
+            type: string
+        pathPattern:
+          maxLength: 1024
+          minLength: 0
+          type: string
+    BridgePolicyResourceUpdateRequest_ApplicationConfig:
+      required:
+      - authentication
+      - id
+      - methods
+      - pathPattern
+      type: object
+      properties:
+        authentication:
+          $ref: '#/components/schemas/BridgePolicyResourceRequest.Authentication_ApplicationConfig'
+        id:
+          type: string
+        methods:
+          maxItems: 2147483647
+          minItems: 1
+          type: array
+          items:
+            pattern: ^(GET|HEAD|POST|PUT|DELETE|CONNECT|OPTIONS|TRACE|PATCH)$
+            type: string
+        pathPattern:
+          maxLength: 1024
+          minLength: 0
+          type: string
+    BridgePolicyResourceResponse_ApplicationConfig:
+      type: object
+      properties:
+        authentication:
+          $ref: '#/components/schemas/BridgePolicyResourceResponse.Authentication_ApplicationConfig'
+        id:
+          type: string
+        methods:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+        pathPattern:
+          type: string
+  securitySchemes:
+    securityScheme:
+      scheme: bearer
+      type: http

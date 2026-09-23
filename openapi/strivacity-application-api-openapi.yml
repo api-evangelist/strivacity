@@ -1,0 +1,1106 @@
+openapi: 3.2.0
+info:
+  description: API documentation of Admin Portal
+  title: Admin Portal Application API
+  version: v0.0.1
+servers:
+- url: https://{tenant}
+  variables:
+    tenant:
+      default: example.strivacity.com
+      description: Your Strivacity tenant
+tags:
+- name: Application
+paths:
+  /admin/api/v2/applications:
+    get:
+      description: 'You can list the existing applications by calling this endpoint.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | read:config_application |'
+      operationId: getAllApplicationConfigs
+      parameters:
+      - description: Oauth2/OIDC Client ID used for filtering
+        in: query
+        name: oauth2ClientId
+        required: false
+        schema:
+          type: string
+      - description: Tags used for filtering must exactly match the tag name
+        in: query
+        name: policyTags
+        required: false
+        schema:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+      - description: Name used for filtering
+        in: query
+        name: name
+        required: false
+        schema:
+          type: string
+      - description: Zero-based page index (0..N)
+        in: query
+        name: page
+        schema:
+          type: integer
+          format: int64
+          default: 0
+      - description: The size of the page to be returned
+        in: query
+        name: size
+        schema:
+          type: integer
+          format: int64
+          default: 20
+      - description: 'Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported.'
+        in: query
+        name: sort
+        schema:
+          type: array
+          items:
+            type: string
+      responses:
+        '200':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/PagedModelApplicationConfigListResponse'
+          description: OK
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+      security:
+      - securityScheme:
+        - read:config_application
+      summary: List applications
+      tags:
+      - Application
+    post:
+      description: 'You can create an application by calling this endpoint. Inactivity timeout is calculated by `inactivityTimeoutHours` * 60 + `inactivityTimeoutMinutes`
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | write:config_application |'
+      operationId: createApplicationConfig
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApplicationConfig_InsertRequest'
+        required: true
+      responses:
+        '201':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApplicationConfigResponse_ApplicationConfig'
+          description: Created
+        '400':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Bad Request
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+        '409':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Conflict
+      security:
+      - securityScheme:
+        - write:config_application
+      summary: Create an application
+      tags:
+      - Application
+  /admin/api/v2/applications/{id}:
+    delete:
+      description: 'You can delete an application by calling this endpoint.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | delete:config_application |'
+      operationId: deleteApplicationConfig
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          pattern: ^[a-zA-Z0-9-]{1,36}$
+          type: string
+      responses:
+        '204':
+          description: No Content
+        '400':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Bad Request
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+        '409':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Application that has API access policy assigned to any of its clients cannot be deleted
+      security:
+      - securityScheme:
+        - delete:config_application
+      summary: Delete an application
+      tags:
+      - Application
+    get:
+      description: 'You can get an application by calling this endpoint.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | read:config_application |'
+      operationId: getApplicationConfig
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          pattern: ^[a-zA-Z0-9-]{1,36}$
+          type: string
+      responses:
+        '200':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApplicationConfigResponse_ApplicationConfig'
+          description: OK
+        '400':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Bad Request
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+        '404':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Not Found
+      security:
+      - securityScheme:
+        - read:config_application
+      summary: Get an application
+      tags:
+      - Application
+    put:
+      description: 'You can update an application by calling this endpoint. The application type cannot be altered.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | write:config_application |'
+      operationId: updateApplicationConfig
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          pattern: ^[a-zA-Z0-9-]{1,36}$
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApplicationConfigUpsertRequest_ApplicationConfig'
+        required: true
+      responses:
+        '200':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApplicationConfigResponse_ApplicationConfig'
+          description: OK
+        '400':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Bad Request
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+        '404':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Not Found
+        '409':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Conflict
+      security:
+      - securityScheme:
+        - write:config_application
+      summary: Update an application
+      tags:
+      - Application
+components:
+  schemas:
+    VariableOverrideUpsertRequest_ApplicationConfig:
+      required:
+      - name
+      - type
+      type: object
+      properties:
+        name:
+          type: string
+        type:
+          type: string
+          enum:
+          - noValue
+          - variableReference
+          - staticVariable
+          - staticSecret
+      discriminator:
+        propertyName: type
+    VariableReferenceRequest_ApplicationConfig:
+      required:
+      - name
+      - type
+      - value
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/VariableOverrideUpsertRequest_ApplicationConfig'
+      - type: object
+        properties:
+          value:
+            maxLength: 36
+            minLength: 0
+            type: string
+    ProblemJson:
+      type: object
+      properties:
+        detail:
+          type: string
+        entityName:
+          type: string
+          description: The name of the entity within the error has occurred
+        errorKey:
+          type: string
+          description: A unique identifier of the error
+        fieldErrors:
+          type: array
+          description: Field constraint violation errors
+          items:
+            $ref: '#/components/schemas/FieldError'
+        message:
+          type: string
+          description: A unique identifier in format of 'error.{errorKey}'
+        params:
+          type: array
+          description: Further information related to the actual error
+          items:
+            type: object
+            additionalProperties:
+              type: object
+        path:
+          type: string
+          description: Request URI
+        status:
+          type: integer
+          description: Status code
+          format: int32
+        title:
+          type: string
+      description: Based on [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807)
+    LoginProvidersResponse_ApplicationConfig:
+      type: object
+      properties:
+        enterpriseLoginProviders:
+          type: array
+          items:
+            $ref: '#/components/schemas/IdReferenceResponse_ApplicationConfig'
+        forwardToExternalProviderEnabled:
+          type: boolean
+        localLoginProviderEnabled:
+          type: boolean
+        socialLoginProviders:
+          type: array
+          items:
+            $ref: '#/components/schemas/IdReferenceResponse_ApplicationConfig'
+      description: Login provider assignments for an application
+    PageMetadata:
+      type: object
+      properties:
+        number:
+          type: integer
+          format: int64
+        size:
+          type: integer
+          format: int64
+        totalElements:
+          type: integer
+          format: int64
+        totalPages:
+          type: integer
+          format: int64
+    NameReferenceResponse:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Name of the represented entity
+          example: Entity name
+    ApplicationConfigResponse_ApplicationConfig:
+      type: object
+      properties:
+        allowRememberAuthenticatorWithoutIdentifier:
+          type: boolean
+        clients:
+          type: array
+          description: Clients within an application config
+          items:
+            $ref: '#/components/schemas/ApplicationClientNameAndLoginURLsResponse_ApplicationConfig'
+        consents:
+          uniqueItems: true
+          type: array
+          description: Consents assigned to the application
+          items:
+            $ref: '#/components/schemas/ApplicationConfigConsentResponse_ApplicationConfig'
+        description:
+          type: string
+        eventHookFunctions:
+          uniqueItems: true
+          type: array
+          description: Event hook functions assigned to the application
+          items:
+            $ref: '#/components/schemas/AssignedEventHookFunctionResponse_ApplicationConfig'
+        groups:
+          uniqueItems: true
+          type: array
+          description: Groups assigned to the application
+          items:
+            $ref: '#/components/schemas/NameAndIdResponse_ApplicationConfig'
+        id:
+          type: string
+        identityStore:
+          $ref: '#/components/schemas/NameReferenceResponse_ApplicationConfig'
+        inactivityTimeoutHours:
+          type: integer
+          format: int32
+        inactivityTimeoutMinutes:
+          type: integer
+          format: int32
+        keepMeLoggedIn:
+          type: string
+          enum:
+          - always
+          - never
+          - optionalDefaultOn
+          - optionalDefaultOff
+        keepMeLoggedInEnabled:
+          type: boolean
+          deprecated: true
+        loginProviders:
+          $ref: '#/components/schemas/LoginProvidersResponse_ApplicationConfig'
+        loginSessionMaxAgeMinutes:
+          type: integer
+          format: int32
+        name:
+          type: string
+        policies:
+          $ref: '#/components/schemas/PoliciesResponse_ApplicationConfig'
+        policyTag:
+          type: string
+        rememberAccount:
+          type: string
+          enum:
+          - always
+          - never
+          - optionalDefaultOn
+          - optionalDefaultOff
+        rememberDeviceWithoutIdentifier:
+          type: boolean
+          deprecated: true
+        sessionExpirable:
+          type: boolean
+        sessionMaxAgeMinutes:
+          type: integer
+          format: int32
+        type:
+          type: string
+          enum:
+          - ssp
+          - oauth2
+          - saml2
+          - orgPortal
+    NameReferenceResponse_ApplicationConfig:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Name of the represented entity
+          example: Entity name
+    StaticVariableRequest_ApplicationConfig:
+      required:
+      - name
+      - type
+      - value
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/VariableOverrideUpsertRequest_ApplicationConfig'
+      - type: object
+        properties:
+          value:
+            maxLength: 8192
+            minLength: 0
+            type: string
+    NameAndId_ApplicationConfig:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID of the represented entity
+        name:
+          type: string
+          description: Name of the represented entity
+          example: Entity name
+    ApplicationClientNameAndLoginURLsResponse:
+      type: object
+      properties:
+        applicationDomain:
+          type: string
+        id:
+          type: string
+        loginUrl:
+          type: string
+        loginUrlShortcut:
+          type: string
+        name:
+          type: string
+    ApplicationConfigListResponse:
+      type: object
+      properties:
+        allowRememberAuthenticatorWithoutIdentifier:
+          type: boolean
+        clients:
+          type: array
+          description: Clients within an application config
+          items:
+            $ref: '#/components/schemas/ApplicationClientNameAndLoginURLsResponse'
+        description:
+          type: string
+        id:
+          type: string
+        identityStore:
+          $ref: '#/components/schemas/NameReferenceResponse'
+        inactivityTimeoutHours:
+          type: integer
+          format: int32
+        inactivityTimeoutMinutes:
+          type: integer
+          format: int32
+        keepMeLoggedIn:
+          type: string
+          enum:
+          - always
+          - never
+          - optionalDefaultOn
+          - optionalDefaultOff
+        keepMeLoggedInEnabled:
+          type: boolean
+          deprecated: true
+        loginSessionMaxAgeMinutes:
+          type: integer
+          format: int32
+        name:
+          type: string
+        policyTag:
+          type: string
+        rememberAccount:
+          type: string
+          enum:
+          - always
+          - never
+          - optionalDefaultOn
+          - optionalDefaultOff
+        rememberDeviceWithoutIdentifier:
+          type: boolean
+          deprecated: true
+        sessionExpirable:
+          type: boolean
+        sessionMaxAgeMinutes:
+          type: integer
+          format: int32
+        type:
+          type: string
+          enum:
+          - ssp
+          - oauth2
+          - saml2
+          - orgPortal
+    ApplicationConfig_InsertRequest:
+      required:
+      - identityStore
+      - loginProviders
+      - name
+      - policies
+      - type
+      type: object
+      properties:
+        allowRememberAuthenticatorWithoutIdentifier:
+          type: boolean
+          default: false
+        consents:
+          uniqueItems: true
+          type: array
+          items:
+            $ref: '#/components/schemas/ApplicationConfigConsentRequest_ApplicationConfig'
+        description:
+          maxLength: 1024
+          minLength: 0
+          type: string
+        eventHookFunctions:
+          uniqueItems: true
+          type: array
+          description: Event hook functions to be assigned to the application
+          items:
+            $ref: '#/components/schemas/EventHookAssignmentUpsertRequest_ApplicationConfig'
+          default: []
+        groups:
+          uniqueItems: true
+          type: array
+          description: Group IDs (within the specified identity store) to be used for the application
+          items:
+            $ref: '#/components/schemas/IdReferenceRequest_ApplicationConfig'
+          default: []
+        identityStore:
+          $ref: '#/components/schemas/NameReferenceRequest_ApplicationConfig'
+        inactivityTimeoutHours:
+          maximum: 9000
+          minimum: 0
+          type: integer
+          format: int32
+          default: 168
+        inactivityTimeoutMinutes:
+          maximum: 540000
+          minimum: 0
+          type: integer
+          format: int32
+          default: 0
+        keepMeLoggedIn:
+          type: string
+          enum:
+          - always
+          - never
+          - optionalDefaultOn
+          - optionalDefaultOff
+          default: optionalDefaultOff
+        keepMeLoggedInEnabled:
+          type: boolean
+          writeOnly: true
+          deprecated: true
+        loginProviders:
+          $ref: '#/components/schemas/LoginProvidersRequest_ApplicationConfig'
+        loginSessionMaxAgeMinutes:
+          maximum: 30
+          minimum: 5
+          type: integer
+          format: int32
+          default: 5
+        name:
+          maxLength: 255
+          minLength: 1
+          pattern: ^$|^[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°]([\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*° ]*[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°])?$
+          type: string
+        policies:
+          $ref: '#/components/schemas/PoliciesRequest_ApplicationConfig'
+        policyTag:
+          pattern: ^[a-z0-9_]{2,32}$
+          type: string
+          description: Must be an existing policy tag name
+        rememberAccount:
+          type: string
+          enum:
+          - always
+          - never
+          - optionalDefaultOn
+          - optionalDefaultOff
+          default: always
+        rememberDeviceWithoutIdentifier:
+          type: boolean
+          writeOnly: true
+          deprecated: true
+        sessionExpirable:
+          type: boolean
+          default: false
+        sessionMaxAgeMinutes:
+          maximum: 540000
+          minimum: 60
+          type: integer
+          format: int32
+          default: 43200
+        type:
+          type: string
+          enum:
+          - personal
+          - organizational
+          - hybrid
+          default: personal
+    ApplicationConfigNotificationPolicyResponse_ApplicationConfig:
+      type: object
+      properties:
+        id:
+          type: string
+    NoValueRequest_ApplicationConfig:
+      required:
+      - name
+      - type
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/VariableOverrideUpsertRequest_ApplicationConfig'
+    PoliciesRequest_ApplicationConfig:
+      required:
+      - adaptiveMFA
+      - brand
+      - notificationPolicy
+      - selfServicePolicy
+      type: object
+      properties:
+        adaptiveMFA:
+          $ref: '#/components/schemas/IdReferenceRequest_ApplicationConfig'
+        brand:
+          $ref: '#/components/schemas/IdReferenceRequest_ApplicationConfig'
+        identityProofing:
+          $ref: '#/components/schemas/IdReferenceRequest_ApplicationConfig'
+        notificationPolicy:
+          $ref: '#/components/schemas/IdReferenceRequest_ApplicationConfig'
+        selfServicePolicy:
+          $ref: '#/components/schemas/IdReferenceRequest_ApplicationConfig'
+      description: Policy assignments for an application
+    VariableOverrideResponse_ApplicationConfig:
+      type: object
+      properties:
+        name:
+          type: string
+        type:
+          type: string
+          enum:
+          - noValue
+          - variableReference
+          - staticVariable
+          - staticSecret
+        value:
+          type: string
+    PagedModelApplicationConfigListResponse:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/ApplicationConfigListResponse'
+        page:
+          $ref: '#/components/schemas/PageMetadata'
+    ApplicationClientNameAndLoginURLsResponse_ApplicationConfig:
+      type: object
+      properties:
+        applicationDomain:
+          type: string
+        id:
+          type: string
+        loginUrl:
+          type: string
+        loginUrlShortcut:
+          type: string
+        name:
+          type: string
+    ApplicationConfigConsentResponse_ApplicationConfig:
+      type: object
+      properties:
+        consent:
+          $ref: '#/components/schemas/NameAndId_ApplicationConfig'
+        order:
+          type: integer
+          format: int32
+        type:
+          type: string
+          enum:
+          - optional
+          - mandatory
+          - mandatoryHidden
+    FieldError:
+      type: object
+      properties:
+        field:
+          type: string
+        message:
+          type: string
+        objectName:
+          type: string
+    IdReferenceResponse_ApplicationConfig:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID of the represented entity
+    LoginProvidersRequest_ApplicationConfig:
+      type: object
+      properties:
+        enterpriseLoginProviders:
+          type: array
+          description: Enterprise login providers to be assigned to the application
+          items:
+            $ref: '#/components/schemas/IdReferenceRequest_ApplicationConfig'
+          default: []
+        forwardToExternalProviderEnabled:
+          type: boolean
+          default: false
+        localLoginProviderEnabled:
+          type: boolean
+          default: true
+        socialLoginProviders:
+          type: array
+          description: Social login providers to be assigned to the application
+          items:
+            $ref: '#/components/schemas/IdReferenceRequest_ApplicationConfig'
+          default: []
+      description: Login provider assignments for an application
+    ApplicationConfigConsentRequest_ApplicationConfig:
+      type: object
+      properties:
+        consent:
+          $ref: '#/components/schemas/IdReferenceRequest_ApplicationConfig'
+        order:
+          type: integer
+          format: int32
+        type:
+          type: string
+          enum:
+          - optional
+          - mandatory
+          - mandatoryHidden
+      description: Consent assignment for an application
+    NameAndIdResponse_ApplicationConfig:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID of the represented entity
+    IdReferenceRequest_ApplicationConfig:
+      required:
+      - id
+      type: object
+      properties:
+        id:
+          pattern: ^[a-zA-Z0-9-]{1,36}$
+          type: string
+          description: ID of the represented entity
+    AssignedEventHookFunctionResponse_ApplicationConfig:
+      type: object
+      properties:
+        hook:
+          type: string
+          description: Type of the lifecycle event hook
+          enum:
+          - DENY_AUTHENTICATION
+          - UNIDENTIFIED_USER
+          - POST_ACCOUNT_LOGIN
+          - POST_CONSENT_UPDATE
+          - POST_ID_PROOFING
+          - POST_IDENTIFICATION
+          - POST_MFA_FACTOR_CHANGE
+          - POST_REGISTRATION
+          - POST_EXTERNAL_LOGIN
+          - POST_TOKEN_REFRESH
+          - PRE_ID_PROOFING
+          - PRE_ID_TOKEN_GENERATION
+          - PRE_SAML2_ASSERTION_GENERATION
+          - PRE_PROGRESSIVE_PROFILING
+          - PRE_REGISTRATION
+          - PRE_PASSWORD
+          - PRE_PASSWORD_RESET
+          - PRE_MULTI_STAGE_REGISTRATION
+          - PRE_EXTERNAL_REGISTRATION
+          - PRE_AUTHENTICATOR_ENROLLMENT
+          - PRE_PASSWORD_PERSIST
+          - PRE_CONTACT_UPDATE
+          - POST_ACCOUNT_DELETION
+          - POST_ACCOUNT_UPDATE
+        id:
+          type: string
+        variableOverrides:
+          uniqueItems: true
+          type: array
+          items:
+            $ref: '#/components/schemas/VariableOverrideResponse_ApplicationConfig'
+    ApplicationConfigUpsertRequest_ApplicationConfig:
+      required:
+      - id
+      - identityStore
+      - loginProviders
+      - name
+      - policies
+      - type
+      type: object
+      properties:
+        allowRememberAuthenticatorWithoutIdentifier:
+          type: boolean
+          default: false
+        consents:
+          uniqueItems: true
+          type: array
+          items:
+            $ref: '#/components/schemas/ApplicationConfigConsentRequest_ApplicationConfig'
+        description:
+          maxLength: 1024
+          minLength: 0
+          type: string
+        eventHookFunctions:
+          uniqueItems: true
+          type: array
+          description: Event hook functions to be assigned to the application
+          items:
+            $ref: '#/components/schemas/EventHookAssignmentUpsertRequest_ApplicationConfig'
+          default: []
+        groups:
+          uniqueItems: true
+          type: array
+          description: Group IDs (within the specified identity store) to be used for the application
+          items:
+            $ref: '#/components/schemas/IdReferenceRequest_ApplicationConfig'
+          default: []
+        id:
+          pattern: ^[a-zA-Z0-9-]{1,36}$
+          type: string
+        identityStore:
+          $ref: '#/components/schemas/NameReferenceRequest_ApplicationConfig'
+        inactivityTimeoutHours:
+          maximum: 9000
+          minimum: 0
+          type: integer
+          format: int32
+          default: 168
+        inactivityTimeoutMinutes:
+          maximum: 540000
+          minimum: 0
+          type: integer
+          format: int32
+          default: 0
+        keepMeLoggedIn:
+          type: string
+          enum:
+          - always
+          - never
+          - optionalDefaultOn
+          - optionalDefaultOff
+          default: optionalDefaultOff
+        keepMeLoggedInEnabled:
+          type: boolean
+          writeOnly: true
+          deprecated: true
+        loginProviders:
+          $ref: '#/components/schemas/LoginProvidersRequest_ApplicationConfig'
+        loginSessionMaxAgeMinutes:
+          maximum: 30
+          minimum: 5
+          type: integer
+          format: int32
+          default: 5
+        name:
+          maxLength: 255
+          minLength: 1
+          pattern: ^$|^[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°]([\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*° ]*[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°])?$
+          type: string
+        policies:
+          $ref: '#/components/schemas/PoliciesRequest_ApplicationConfig'
+        policyTag:
+          pattern: ^[a-z0-9_]{2,32}$
+          type: string
+          description: Must be an existing policy tag name
+        rememberAccount:
+          type: string
+          enum:
+          - always
+          - never
+          - optionalDefaultOn
+          - optionalDefaultOff
+          default: always
+        rememberDeviceWithoutIdentifier:
+          type: boolean
+          writeOnly: true
+          deprecated: true
+        sessionExpirable:
+          type: boolean
+          default: false
+        sessionMaxAgeMinutes:
+          maximum: 540000
+          minimum: 60
+          type: integer
+          format: int32
+          default: 43200
+        type:
+          type: string
+          enum:
+          - personal
+          - organizational
+          - hybrid
+          default: personal
+    EventHookAssignmentUpsertRequest_ApplicationConfig:
+      required:
+      - hook
+      - id
+      type: object
+      properties:
+        hook:
+          type: string
+          description: Type of the eventhook
+          enum:
+          - DENY_AUTHENTICATION
+          - UNIDENTIFIED_USER
+          - POST_ACCOUNT_LOGIN
+          - POST_CONSENT_UPDATE
+          - POST_ID_PROOFING
+          - POST_IDENTIFICATION
+          - POST_MFA_FACTOR_CHANGE
+          - POST_REGISTRATION
+          - POST_EXTERNAL_LOGIN
+          - POST_TOKEN_REFRESH
+          - PRE_ID_PROOFING
+          - PRE_ID_TOKEN_GENERATION
+          - PRE_SAML2_ASSERTION_GENERATION
+          - PRE_PROGRESSIVE_PROFILING
+          - PRE_REGISTRATION
+          - PRE_PASSWORD
+          - PRE_PASSWORD_RESET
+          - PRE_MULTI_STAGE_REGISTRATION
+          - PRE_EXTERNAL_REGISTRATION
+          - PRE_AUTHENTICATOR_ENROLLMENT
+          - PRE_PASSWORD_PERSIST
+          - PRE_CONTACT_UPDATE
+          - POST_ACCOUNT_DELETION
+          - POST_ACCOUNT_UPDATE
+        id:
+          pattern: ^[a-zA-Z0-9-]{1,36}$
+          type: string
+          description: ID of the represented entity
+        variableOverrides:
+          type: array
+          items:
+            oneOf:
+            - $ref: '#/components/schemas/VariableOverrideUpsertRequest_ApplicationConfig'
+            - $ref: '#/components/schemas/NoValueRequest_ApplicationConfig'
+            - $ref: '#/components/schemas/StaticSecretRequest_ApplicationConfig'
+            - $ref: '#/components/schemas/StaticVariableRequest_ApplicationConfig'
+            - $ref: '#/components/schemas/VariableReferenceRequest_ApplicationConfig'
+    PoliciesResponse_ApplicationConfig:
+      type: object
+      properties:
+        adaptiveMFA:
+          $ref: '#/components/schemas/NameAndId_ApplicationConfig'
+        brand:
+          $ref: '#/components/schemas/NameAndId_ApplicationConfig'
+        identityProofing:
+          $ref: '#/components/schemas/NameAndId_ApplicationConfig'
+        notificationPolicy:
+          $ref: '#/components/schemas/ApplicationConfigNotificationPolicyResponse_ApplicationConfig'
+        selfServicePolicy:
+          $ref: '#/components/schemas/NameAndId_ApplicationConfig'
+      description: Policy assignments for an application
+    NameReferenceRequest_ApplicationConfig:
+      required:
+      - name
+      type: object
+      properties:
+        name:
+          minLength: 1
+          type: string
+          description: Name of the represented entity
+          example: Entity name
+    StaticSecretRequest_ApplicationConfig:
+      required:
+      - name
+      - type
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/VariableOverrideUpsertRequest_ApplicationConfig'
+      - type: object
+        properties:
+          secretValue:
+            maxLength: 8192
+            minLength: 0
+            type: string
+  securitySchemes:
+    securityScheme:
+      scheme: bearer
+      type: http

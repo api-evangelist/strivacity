@@ -1,0 +1,647 @@
+openapi: 3.2.0
+info:
+  title: Strivacity Consent API
+  version: v0.0.1
+  description: 'Operations tagged Consent across 2 of this provider''s published API definitions: strivacity-admin-portal-openapi-original.json, strivacity-myaccount-portal-openapi-original.json. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://{tenant}
+  variables:
+    tenant:
+      default: example.strivacity.com
+      description: Your Strivacity tenant
+tags:
+- name: Consent
+paths:
+  /admin/api/v1/consents:
+    get:
+      description: 'You can list the existing consents by calling this endpoint.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | read:config_consent |'
+      operationId: getAllConsents
+      parameters:
+      - description: Tags used for filtering must exactly match the tag name
+        in: query
+        name: policyTags
+        required: false
+        schema:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+      - description: Name used for filtering
+        in: query
+        name: name
+        required: false
+        schema:
+          type: string
+      - description: Zero-based page index (0..N)
+        in: query
+        name: page
+        schema:
+          type: integer
+          format: int64
+          default: 0
+      - description: The size of the page to be returned
+        in: query
+        name: size
+        schema:
+          type: integer
+          format: int64
+          default: 20
+      - description: 'Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported.'
+        in: query
+        name: sort
+        schema:
+          type: array
+          items:
+            type: string
+      responses:
+        '200':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/PagedModelConsent'
+          description: OK
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+      security:
+      - securityScheme:
+        - read:config_consent
+      summary: List consents
+      tags:
+      - Consent
+    post:
+      description: 'You can create a consent by calling this endpoint. The version of the new consent must be 1.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | write:config_consent |'
+      operationId: createConsent
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Consent_InsertRequest'
+        required: true
+      responses:
+        '201':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Consent_Consent'
+          description: Created
+        '400':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Bad Request
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+        '409':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Conflict
+      security:
+      - securityScheme:
+        - write:config_consent
+      summary: Create a consent
+      tags:
+      - Consent
+    servers:
+    - url: https://{tenant}
+      variables:
+        tenant:
+          default: example.strivacity.com
+          description: Your Strivacity tenant
+  /admin/api/v1/consents/{id}:
+    get:
+      description: 'You can get a consent by calling this endpoint.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | read:config_consent |'
+      operationId: getConsentById
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Consent_Consent'
+          description: OK
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+        '404':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Not Found
+      security:
+      - securityScheme:
+        - read:config_consent
+      summary: Get a consent
+      tags:
+      - Consent
+    put:
+      description: 'You can update a consent by calling this endpoint. The consent version must be unchanged or incremented by one.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | write:config_consent |'
+      operationId: updateConsent
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ConsentUpsertRequest_Consent'
+        required: true
+      responses:
+        '200':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Consent_Consent'
+          description: OK
+        '400':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Bad Request
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+        '404':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Not Found
+        '409':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Conflict
+      security:
+      - securityScheme:
+        - write:config_consent
+      summary: Update a consent
+      tags:
+      - Consent
+    servers:
+    - url: https://{tenant}
+      variables:
+        tenant:
+          default: example.strivacity.com
+          description: Your Strivacity tenant
+  /myaccount/api/v1/consents:
+    get:
+      description: 'You can list the consents of the authenticated account by calling this endpoint.
+
+
+        To use this endpoint, the "Allow customers to manage their consents" option must be turned on in the Self-service policy settings.'
+      operationId: getConsents
+      responses:
+        '200':
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MyAccountConsentResponse_Consent'
+          description: OK
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+      security:
+      - securityScheme: []
+      summary: List consents
+      tags:
+      - Consent
+    servers:
+    - url: https://{tenant}
+      variables:
+        tenant:
+          default: example.strivacity.com
+          description: Your Strivacity tenant
+  /myaccount/api/v1/consents/{consentId}/optIn:
+    post:
+      description: 'You can accept a consent for the authenticated account by calling this endpoint.
+
+
+        To use this endpoint, the "Allow customers to manage their consents" option must be turned on in the Self-service policy settings.'
+      operationId: optInConsent
+      parameters:
+      - in: path
+        name: consentId
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/MyAccountConsentResponse_Consent'
+          description: OK
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+        '404':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Not Found
+        '409':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Consent is already opted in
+      security:
+      - securityScheme: []
+      summary: Accept a consent
+      tags:
+      - Consent
+    servers:
+    - url: https://{tenant}
+      variables:
+        tenant:
+          default: example.strivacity.com
+          description: Your Strivacity tenant
+  /myaccount/api/v1/consents/{consentId}/optOut:
+    post:
+      description: 'You can revoke a consent for the authenticated account by calling this endpoint.
+
+
+        To use this endpoint, the "Allow customers to manage their consents" option must be turned on in the Self-service policy settings.'
+      operationId: optOutConsent
+      parameters:
+      - in: path
+        name: consentId
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AccountConsentOptOutRequest_Consent'
+        required: true
+      responses:
+        '200':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/MyAccountConsentResponse_Consent'
+          description: OK
+        '400':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Bad Request
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+        '404':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Not Found
+      security:
+      - securityScheme: []
+      summary: Revoke a consent
+      tags:
+      - Consent
+    servers:
+    - url: https://{tenant}
+      variables:
+        tenant:
+          default: example.strivacity.com
+          description: Your Strivacity tenant
+components:
+  schemas:
+    ProblemJson:
+      type: object
+      properties:
+        detail:
+          type: string
+        entityName:
+          type: string
+          description: The name of the entity within the error has occurred
+        errorKey:
+          type: string
+          description: A unique identifier of the error
+        fieldErrors:
+          type: array
+          description: Field constraint violation errors
+          items:
+            $ref: '#/components/schemas/FieldError'
+        message:
+          type: string
+          description: A unique identifier in format of 'error.{errorKey}'
+        params:
+          type: array
+          description: Further information related to the actual error
+          items:
+            type: object
+            additionalProperties:
+              type: object
+        path:
+          type: string
+          description: Request URI
+        status:
+          type: integer
+          description: Status code
+          format: int32
+        title:
+          type: string
+      description: Based on [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807)
+    PageMetadata:
+      type: object
+      properties:
+        number:
+          type: integer
+          format: int64
+        size:
+          type: integer
+          format: int64
+        totalElements:
+          type: integer
+          format: int64
+        totalPages:
+          type: integer
+          format: int64
+    Consent_Consent:
+      required:
+      - id
+      type: object
+      properties:
+        description:
+          type: string
+        displayText:
+          type: string
+          description: Represents the consent statement
+        id:
+          type: string
+        name:
+          type: string
+        policyTag:
+          type: string
+        selfServiceDisplayText:
+          type: string
+          description: Represents the consent statement on the self-service page
+        version:
+          type: integer
+          format: int32
+          default: 1
+    FieldError:
+      type: object
+      properties:
+        field:
+          type: string
+        message:
+          type: string
+        objectName:
+          type: string
+    Consent:
+      required:
+      - id
+      type: object
+      properties:
+        description:
+          type: string
+        displayText:
+          type: string
+          description: Represents the consent statement
+        id:
+          type: string
+        name:
+          type: string
+        policyTag:
+          type: string
+        selfServiceDisplayText:
+          type: string
+          description: Represents the consent statement on the self-service page
+        version:
+          type: integer
+          format: int32
+          default: 1
+    ConsentUpsertRequest_Consent:
+      required:
+      - displayText
+      - name
+      type: object
+      properties:
+        description:
+          maxLength: 1024
+          minLength: 0
+          type: string
+        displayText:
+          maxLength: 2048
+          minLength: 0
+          pattern: ^((?![<>]).)*$
+          type: string
+          description: Represents the consent statement
+        id:
+          type: string
+        name:
+          maxLength: 64
+          minLength: 1
+          pattern: ^$|^[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°]([\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*° ]*[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°])?$
+          type: string
+        policyTag:
+          pattern: ^[a-z0-9_]{2,32}$
+          type: string
+          description: Must be an existing policy tag name
+        selfServiceDisplayText:
+          maxLength: 2048
+          minLength: 0
+          pattern: ^((?![<>]).)*$
+          type: string
+          description: Represents the consent statement on the self-service page
+        version:
+          type: integer
+          format: int32
+          default: 1
+    PagedModelConsent:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/Consent'
+        page:
+          $ref: '#/components/schemas/PageMetadata'
+    Consent_InsertRequest:
+      required:
+      - displayText
+      - name
+      type: object
+      properties:
+        description:
+          maxLength: 1024
+          minLength: 0
+          type: string
+        displayText:
+          maxLength: 2048
+          minLength: 0
+          pattern: ^((?![<>]).)*$
+          type: string
+          description: Represents the consent statement
+        name:
+          maxLength: 64
+          minLength: 1
+          pattern: ^$|^[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°]([\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*° ]*[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°])?$
+          type: string
+        policyTag:
+          pattern: ^[a-z0-9_]{2,32}$
+          type: string
+          description: Must be an existing policy tag name
+        selfServiceDisplayText:
+          maxLength: 2048
+          minLength: 0
+          pattern: ^((?![<>]).)*$
+          type: string
+          description: Represents the consent statement on the self-service page
+        version:
+          type: integer
+          format: int32
+          default: 1
+    AccountConsentOptOutRequest_Consent:
+      required:
+      - id
+      type: object
+      properties:
+        id:
+          minLength: 1
+          type: string
+          description: ID of the consent acceptance
+    MyAccountConsentResponse_Consent:
+      type: object
+      properties:
+        accepted:
+          type: boolean
+        consentId:
+          type: string
+        displayText:
+          type: string
+          description: Represents the consent statement
+        receiptId:
+          type: string
+          description: ID of the consent acceptance, `null` if the consent has been revoked or hasn't been accepted
+        type:
+          type: string
+          enum:
+          - optional
+          - mandatory
+          - mandatoryHidden
+  securitySchemes:
+    securityScheme:
+      scheme: bearer
+      type: http
+x-refined-from:
+- strivacity-admin-portal-openapi-original.json
+- strivacity-myaccount-portal-openapi-original.json
+x-readme:
+  explorer-enabled: true
+  proxy-enabled: true

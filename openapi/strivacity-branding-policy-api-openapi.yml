@@ -1,0 +1,929 @@
+openapi: 3.2.0
+info:
+  title: Strivacity Branding Policy API
+  version: v0.0.1
+  description: 'Operations tagged Branding Policy across 2 of this provider''s published API definitions: strivacity-admin-management-openapi-original.json, strivacity-admin-portal-openapi-original.json. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://{tenant}
+  variables:
+    tenant:
+      default: example.strivacity.com
+      description: Your Strivacity tenant
+tags:
+- name: Branding Policy
+paths:
+  /admin/api/v1/admin/brand:
+    get:
+      description: 'You can get the admin branding policy by calling this endpoint.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | read:config_admin_brand |'
+      operationId: getInternalBrand
+      responses:
+        '200':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AdminBranding_Brand'
+          description: OK
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+      security:
+      - securityScheme:
+        - read:config_admin_brand
+      summary: Get admin branding policy
+      tags:
+      - Branding Policy
+    put:
+      description: 'You can update the admin branding policy by calling this endpoint.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | write:config_admin_brand |'
+      operationId: updateInternalBrand
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminBranding_Brand'
+        required: true
+      responses:
+        '200':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AdminBranding_Brand'
+          description: OK
+        '400':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Bad Request
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+      security:
+      - securityScheme:
+        - write:config_admin_brand
+      summary: Update admin branding policy
+      tags:
+      - Branding Policy
+    servers:
+    - url: https://{tenant}
+      variables:
+        tenant:
+          default: example.strivacity.com
+          description: Your Strivacity tenant
+  /admin/api/v1/brands:
+    get:
+      description: 'You can list the existing branding policies by calling this endpoint.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | read:config_brand |'
+      operationId: getBrands
+      parameters:
+      - description: Tags used for filtering must exactly match the tag name
+        in: query
+        name: policyTags
+        required: false
+        schema:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+      - description: Name used for filtering
+        in: query
+        name: name
+        required: false
+        schema:
+          type: string
+      - description: Zero-based page index (0..N)
+        in: query
+        name: page
+        schema:
+          type: integer
+          format: int64
+          default: 0
+      - description: The size of the page to be returned
+        in: query
+        name: size
+        schema:
+          type: integer
+          format: int64
+          default: 20
+      - description: 'Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported.'
+        in: query
+        name: sort
+        schema:
+          type: array
+          items:
+            type: string
+      responses:
+        '200':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/PagedModelBrand'
+          description: OK
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+      security:
+      - securityScheme:
+        - read:config_brand
+      summary: List branding policies
+      tags:
+      - Branding Policy
+    post:
+      description: 'You can create a branding policy by calling this endpoint. Primary and background colors are valid colors in hexadecimal format. For the additional content, either the `html` or the `link` field should be provided.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | write:config_brand |'
+      operationId: createBrand
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Brand_InsertRequest'
+        required: true
+      responses:
+        '201':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Brand_Brand'
+          description: Created
+        '400':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Bad Request
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+        '409':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Conflict
+      security:
+      - securityScheme:
+        - write:config_brand
+      summary: Create a branding policy
+      tags:
+      - Branding Policy
+    servers:
+    - url: https://{tenant}
+      variables:
+        tenant:
+          default: example.strivacity.com
+          description: Your Strivacity tenant
+  /admin/api/v1/brands/{id}:
+    delete:
+      description: 'You can delete a branding policy by calling this endpoint.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | delete:config_brand |'
+      operationId: deleteBrandById
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: No Content
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+        '409':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Default branding policy and branding policies assigned to applications or organization assignments cannot be deleted
+      security:
+      - securityScheme:
+        - delete:config_brand
+      summary: Delete a branding policy
+      tags:
+      - Branding Policy
+    get:
+      description: 'You can get a branding policy by calling this endpoint.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | read:config_brand |'
+      operationId: getBrand
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Brand_Brand'
+          description: OK
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+        '404':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Not Found
+      security:
+      - securityScheme:
+        - read:config_brand
+      summary: Get a branding policy
+      tags:
+      - Branding Policy
+    put:
+      description: 'You can update a branding policy by calling this endpoint.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | write:config_brand |'
+      operationId: updateBrand
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BrandUpsertRequest_Brand'
+        required: true
+      responses:
+        '200':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Brand_Brand'
+          description: OK
+        '400':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Bad Request
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+        '404':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Not Found
+        '409':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Conflict
+      security:
+      - securityScheme:
+        - write:config_brand
+      summary: Update a branding policy
+      tags:
+      - Branding Policy
+    servers:
+    - url: https://{tenant}
+      variables:
+        tenant:
+          default: example.strivacity.com
+          description: Your Strivacity tenant
+components:
+  schemas:
+    ProblemJson:
+      type: object
+      properties:
+        detail:
+          type: string
+        entityName:
+          type: string
+          description: The name of the entity within the error has occurred
+        errorKey:
+          type: string
+          description: A unique identifier of the error
+        fieldErrors:
+          type: array
+          description: Field constraint violation errors
+          items:
+            $ref: '#/components/schemas/FieldError'
+        message:
+          type: string
+          description: A unique identifier in format of 'error.{errorKey}'
+        params:
+          type: array
+          description: Further information related to the actual error
+          items:
+            type: object
+            additionalProperties:
+              type: object
+        path:
+          type: string
+          description: Request URI
+        status:
+          type: integer
+          description: Status code
+          format: int32
+        title:
+          type: string
+      description: Based on [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807)
+    AdminBranding_Brand:
+      required:
+      - backgroundColor
+      - primaryColor
+      type: object
+      properties:
+        backgroundColor:
+          pattern: '#[0-9a-fA-F]{6}([0-9a-fA-F]{2})?'
+          type: string
+          description: Represented in a hexadecimal format, optionally extended with an alpha channel.
+        copyright:
+          type: string
+        css:
+          $ref: '#/components/schemas/AdminBrandingCustomCss_Brand'
+        faviconUrl:
+          type: string
+        logoUrl:
+          type: string
+        primaryColor:
+          pattern: '#[0-9a-fA-F]{6}([0-9a-fA-F]{2})?'
+          type: string
+          description: Represented in a hexadecimal format, optionally extended with an alpha channel.
+        privacyPolicyUrl:
+          maxLength: 1024
+          minLength: 10
+          type: string
+        siteTermsUrl:
+          maxLength: 1024
+          minLength: 10
+          type: string
+      description: Represents a branding for the admin portal
+    AdminBrandingCustomCss_Brand:
+      type: object
+      properties:
+        adminPortal:
+          maxLength: 131072
+          minLength: 1
+          type: string
+          description: CSS code for custom styling on admin portal
+        login:
+          maxLength: 131072
+          minLength: 1
+          type: string
+          description: CSS code for custom styling on login flow
+        myaccount:
+          maxLength: 131072
+          minLength: 1
+          type: string
+          description: CSS code for custom styling on myaccount
+    FieldError:
+      type: object
+      properties:
+        field:
+          type: string
+        message:
+          type: string
+        objectName:
+          type: string
+    BrandingCustomCss_Brand:
+      type: object
+      properties:
+        login:
+          type: string
+          description: CSS code for custom styling on login flow
+        myaccount:
+          type: string
+          description: CSS code for custom styling on myaccount
+        organizationPortal:
+          type: string
+          description: CSS code for custom styling on Organization Portal page
+    PagedModelBrand:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/Brand'
+        page:
+          $ref: '#/components/schemas/PageMetadata'
+    BrandUpsertRequest_Brand:
+      required:
+      - backgroundColor
+      - brandName
+      - id
+      - name
+      - primaryColor
+      type: object
+      properties:
+        additionalContents:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/BrandAdditionalContents_Brand'
+        additionalScripts:
+          $ref: '#/components/schemas/BrandAdditionalScripts_Brand'
+        additionalTexts:
+          type: object
+          additionalProperties:
+            type: string
+        backgroundColor:
+          pattern: '#[0-9a-fA-F]{6}([0-9a-fA-F]{2})?'
+          type: string
+          description: Represented in a hexadecimal format, optionally extended with an alpha channel.
+        brandName:
+          maxLength: 48
+          minLength: 2
+          pattern: ^[- a-zA-Z0-9@£$¥èéùìòÇØøÅåΔ_ΦΓΛΩΠΨΣΘΞÆæßÉ!"#¤%&'()*+,.\/:;<=>?¡ÄÖÑÜ§¿äöñüà]*$
+          type: string
+        copyright:
+          pattern: ^((?![<>]).)+$
+          type: string
+        css:
+          $ref: '#/components/schemas/BrandCustomCss_Brand'
+        description:
+          maxLength: 1024
+          minLength: 0
+          type: string
+        faviconUrl:
+          type: string
+        id:
+          type: string
+        logoInFooter:
+          type: boolean
+          default: false
+        logoUrl:
+          type: string
+        name:
+          maxLength: 64
+          minLength: 3
+          pattern: ^$|^[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°]([\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*° ]*[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°])?$
+          type: string
+        policyTag:
+          pattern: ^[a-z0-9_]{2,32}$
+          type: string
+          description: Must be an existing policy tag name
+        primaryColor:
+          pattern: '#[0-9a-fA-F]{6}([0-9a-fA-F]{2})?'
+          type: string
+          description: Represented in a hexadecimal format, optionally extended with an alpha channel.
+        privacyPolicyUrl:
+          maxLength: 1024
+          minLength: 10
+          type: string
+        siteTermsUrl:
+          maxLength: 1024
+          minLength: 10
+          type: string
+        supportText:
+          maxLength: 1024
+          minLength: 1
+          pattern: ^((?![<>]).)*$
+          type: string
+    AdditionalScripts_Brand:
+      type: object
+      properties:
+        login:
+          type: string
+          description: Additional JavaScript code that is executed on login flow initialization
+        myaccount:
+          type: string
+          description: Additional JavaScript code that is executed on My Account page load
+        organizationPortal:
+          type: string
+          description: Additional JavaScript code that is executed on Organization Portal page load
+    PageMetadata:
+      type: object
+      properties:
+        number:
+          type: integer
+          format: int64
+        size:
+          type: integer
+          format: int64
+        totalElements:
+          type: integer
+          format: int64
+        totalPages:
+          type: integer
+          format: int64
+    Brand_InsertRequest:
+      required:
+      - backgroundColor
+      - brandName
+      - name
+      - primaryColor
+      type: object
+      properties:
+        additionalContents:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/BrandAdditionalContents_Brand'
+        additionalScripts:
+          $ref: '#/components/schemas/BrandAdditionalScripts_Brand'
+        additionalTexts:
+          type: object
+          additionalProperties:
+            type: string
+        backgroundColor:
+          pattern: '#[0-9a-fA-F]{6}([0-9a-fA-F]{2})?'
+          type: string
+          description: Represented in a hexadecimal format, optionally extended with an alpha channel.
+        brandName:
+          maxLength: 48
+          minLength: 2
+          pattern: ^[- a-zA-Z0-9@£$¥èéùìòÇØøÅåΔ_ΦΓΛΩΠΨΣΘΞÆæßÉ!"#¤%&'()*+,.\/:;<=>?¡ÄÖÑÜ§¿äöñüà]*$
+          type: string
+        copyright:
+          pattern: ^((?![<>]).)+$
+          type: string
+        css:
+          $ref: '#/components/schemas/BrandCustomCss_Brand'
+        description:
+          maxLength: 1024
+          minLength: 0
+          type: string
+        faviconUrl:
+          type: string
+        logoInFooter:
+          type: boolean
+          default: false
+        logoUrl:
+          type: string
+        name:
+          maxLength: 64
+          minLength: 3
+          pattern: ^$|^[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°]([\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*° ]*[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°])?$
+          type: string
+        policyTag:
+          pattern: ^[a-z0-9_]{2,32}$
+          type: string
+          description: Must be an existing policy tag name
+        primaryColor:
+          pattern: '#[0-9a-fA-F]{6}([0-9a-fA-F]{2})?'
+          type: string
+          description: Represented in a hexadecimal format, optionally extended with an alpha channel.
+        privacyPolicyUrl:
+          maxLength: 1024
+          minLength: 10
+          type: string
+        siteTermsUrl:
+          maxLength: 1024
+          minLength: 10
+          type: string
+        supportText:
+          maxLength: 1024
+          minLength: 1
+          pattern: ^((?![<>]).)*$
+          type: string
+    BrandCustomCss_Brand:
+      type: object
+      properties:
+        login:
+          maxLength: 131072
+          minLength: 1
+          type: string
+          description: CSS code for custom styling on login flow
+        myaccount:
+          maxLength: 131072
+          minLength: 1
+          type: string
+          description: CSS code for custom styling on myaccount
+        organizationPortal:
+          maxLength: 131072
+          minLength: 1
+          type: string
+          description: CSS code for custom styling on Organization Portal page
+    Brand:
+      required:
+      - id
+      type: object
+      properties:
+        additionalContents:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/AdditionalContents'
+        additionalScripts:
+          $ref: '#/components/schemas/AdditionalScripts'
+        additionalTexts:
+          type: object
+          additionalProperties:
+            type: string
+        backgroundColor:
+          pattern: '#[0-9a-fA-F]{6}([0-9a-fA-F]{2})?'
+          type: string
+          description: Represented in a hexadecimal format, optionally extended with an alpha channel.
+        brandName:
+          type: string
+        copyright:
+          type: string
+        css:
+          $ref: '#/components/schemas/BrandingCustomCss'
+        default:
+          type: boolean
+        description:
+          type: string
+        faviconUrl:
+          type: string
+        id:
+          type: string
+        logoInFooter:
+          type: boolean
+          default: false
+        logoUrl:
+          type: string
+        name:
+          type: string
+        policyTag:
+          type: string
+        primaryColor:
+          pattern: '#[0-9a-fA-F]{6}([0-9a-fA-F]{2})?'
+          type: string
+          description: Represented in a hexadecimal format, optionally extended with an alpha channel.
+        privacyPolicyUrl:
+          type: string
+        siteTermsUrl:
+          type: string
+        supportText:
+          type: string
+    AdditionalScripts:
+      type: object
+      properties:
+        login:
+          type: string
+          description: Additional JavaScript code that is executed on login flow initialization
+        myaccount:
+          type: string
+          description: Additional JavaScript code that is executed on My Account page load
+        organizationPortal:
+          type: string
+          description: Additional JavaScript code that is executed on Organization Portal page load
+    Brand_Brand:
+      required:
+      - id
+      type: object
+      properties:
+        additionalContents:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/AdditionalContents_Brand'
+        additionalScripts:
+          $ref: '#/components/schemas/AdditionalScripts_Brand'
+        additionalTexts:
+          type: object
+          additionalProperties:
+            type: string
+        backgroundColor:
+          pattern: '#[0-9a-fA-F]{6}([0-9a-fA-F]{2})?'
+          type: string
+          description: Represented in a hexadecimal format, optionally extended with an alpha channel.
+        brandName:
+          type: string
+        copyright:
+          type: string
+        css:
+          $ref: '#/components/schemas/BrandingCustomCss_Brand'
+        default:
+          type: boolean
+        description:
+          type: string
+        faviconUrl:
+          type: string
+        id:
+          type: string
+        logoInFooter:
+          type: boolean
+          default: false
+        logoUrl:
+          type: string
+        name:
+          type: string
+        policyTag:
+          type: string
+        primaryColor:
+          pattern: '#[0-9a-fA-F]{6}([0-9a-fA-F]{2})?'
+          type: string
+          description: Represented in a hexadecimal format, optionally extended with an alpha channel.
+        privacyPolicyUrl:
+          type: string
+        siteTermsUrl:
+          type: string
+        supportText:
+          type: string
+    AdditionalContent_Brand:
+      type: object
+      properties:
+        html:
+          type:
+          - string
+          - 'null'
+        link:
+          type:
+          - string
+          - 'null'
+      description: Exactly one of its fields have a value other than null
+    BrandingCustomCss:
+      type: object
+      properties:
+        login:
+          type: string
+          description: CSS code for custom styling on login flow
+        myaccount:
+          type: string
+          description: CSS code for custom styling on myaccount
+        organizationPortal:
+          type: string
+          description: CSS code for custom styling on Organization Portal page
+    BrandAdditionalContents_Brand:
+      type: object
+      properties:
+        footer:
+          $ref: '#/components/schemas/BrandAdditionalContent_Brand'
+        header:
+          $ref: '#/components/schemas/BrandAdditionalContent_Brand'
+        left:
+          $ref: '#/components/schemas/BrandAdditionalContent_Brand'
+        right:
+          $ref: '#/components/schemas/BrandAdditionalContent_Brand'
+    BrandAdditionalScripts_Brand:
+      type: object
+      properties:
+        login:
+          maxLength: 131072
+          minLength: 1
+          type: string
+          description: Additional JavaScript code that is executed on login flow initialization
+        myaccount:
+          maxLength: 131072
+          minLength: 1
+          type: string
+          description: Additional JavaScript code that is executed on My Account page load
+        organizationPortal:
+          maxLength: 131072
+          minLength: 1
+          type: string
+          description: Additional JavaScript code that is executed on Organization Portal page load
+    AdditionalContents_Brand:
+      type: object
+      properties:
+        footer:
+          $ref: '#/components/schemas/AdditionalContent_Brand'
+        header:
+          $ref: '#/components/schemas/AdditionalContent_Brand'
+        left:
+          $ref: '#/components/schemas/AdditionalContent_Brand'
+        right:
+          $ref: '#/components/schemas/AdditionalContent_Brand'
+    AdditionalContent:
+      type: object
+      properties:
+        html:
+          type:
+          - string
+          - 'null'
+        link:
+          type:
+          - string
+          - 'null'
+      description: Exactly one of its fields have a value other than null
+    AdditionalContents:
+      type: object
+      properties:
+        footer:
+          $ref: '#/components/schemas/AdditionalContent'
+        header:
+          $ref: '#/components/schemas/AdditionalContent'
+        left:
+          $ref: '#/components/schemas/AdditionalContent'
+        right:
+          $ref: '#/components/schemas/AdditionalContent'
+    BrandAdditionalContent_Brand:
+      type: object
+      properties:
+        html:
+          maxLength: 65536
+          minLength: 1
+          type:
+          - string
+          - 'null'
+        link:
+          maxLength: 1024
+          minLength: 10
+          type:
+          - string
+          - 'null'
+      description: Exactly one of its fields have a value other than null
+  securitySchemes:
+    securityScheme:
+      scheme: bearer
+      type: http
+x-refined-from:
+- strivacity-admin-management-openapi-original.json
+- strivacity-admin-portal-openapi-original.json
+x-readme:
+  explorer-enabled: true
+  proxy-enabled: true

@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Admin Console Getting Started
+  title: Admin Console Getting Started Authenticating to the API
   version: 1.0.0
 servers:
 - description: Generated server url
@@ -9,20 +9,17 @@ servers:
     tenant:
       default: example.strivacity.com
       description: Your Strivacity tenant
-components:
-  securitySchemes:
-    basicAuth:
-      type: http
-      scheme: basic
 security:
 - basicAuth: []
+tags:
+- name: Authenticating to the API
 paths:
   /oauth2/token:
     post:
       summary: Exchange credentials for a token
       tags:
       - Authenticating to the API
-      description: Exchange credentials for a token.  Use your client_id as the username and client_secret as the password
+      description: Exchange credentials for a token. Use your client_id as the username and client_secret as the password
       operationId: tokenpost
       requestBody:
         description: get a token
@@ -56,6 +53,11 @@ paths:
                 expires_in: 3599
                 scope: list of allowed scopes
                 token_type: bearer
+components:
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
 x-readme:
   explorer-enabled: true
   proxy-enabled: true

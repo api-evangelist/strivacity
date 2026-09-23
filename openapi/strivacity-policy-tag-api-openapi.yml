@@ -1,0 +1,420 @@
+openapi: 3.2.0
+info:
+  description: API documentation of Admin Portal - Admin Management
+  title: Admin Portal - Admin Management Policy Tag API
+  version: v0.0.1
+servers:
+- url: https://{tenant}
+  variables:
+    tenant:
+      default: example.strivacity.com
+      description: Your Strivacity tenant
+tags:
+- name: Policy Tag
+paths:
+  /admin/api/v1/admin/policyTags:
+    get:
+      description: 'You can list the existing policy tags by calling this endpoint.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | read:config_admin_policy_tag |'
+      operationId: getAllTags
+      parameters:
+      - description: Name used for filtering
+        in: query
+        name: name
+        required: false
+        schema:
+          type: string
+      - description: Zero-based page index (0..N)
+        in: query
+        name: page
+        schema:
+          type: integer
+          format: int64
+          default: 0
+      - description: The size of the page to be returned
+        in: query
+        name: size
+        schema:
+          type: integer
+          format: int64
+          default: 20
+      - description: 'Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported.'
+        in: query
+        name: sort
+        schema:
+          type: array
+          items:
+            type: string
+      responses:
+        '200':
+          content:
+            '*/*':
+              schema:
+                oneOf:
+                - $ref: '#/components/schemas/PageOfPolicyTagResponse'
+                - $ref: '#/components/schemas/PageOfNameAndColorResponse'
+          description: '| TYPE | REQUESTED WITH SCOPE |
+
+            |:----------------- | ----------------|
+
+            | PageOfNameAndColorResponse | if no scope is defined |
+
+            | PageOfPolicyTagResponse | if `read:config_admin_policy_tag` scope is defined |'
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+      security:
+      - securityScheme:
+        - read:config_admin_policy_tag
+      summary: List policy tags
+      tags:
+      - Policy Tag
+    post:
+      description: 'You can create a policy tag by calling this endpoint.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | write:config_admin_policy_tag |'
+      operationId: createTag
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PolicyTagUpsertRequest'
+        required: true
+      responses:
+        '201':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/PolicyTagResponse'
+          description: Created
+        '400':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Bad Request
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+        '409':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Tag already exists with the same name
+      security:
+      - securityScheme:
+        - write:config_admin_policy_tag
+      summary: Create a policy tag
+      tags:
+      - Policy Tag
+  /admin/api/v1/admin/policyTags/{name}:
+    delete:
+      description: 'You can delete a policy tag by calling this endpoint. Assigned policy tags cannot be deleted.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | delete:config_admin_policy_tag |'
+      operationId: deleteTag
+      parameters:
+      - in: path
+        name: name
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: No Content
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+        '409':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: This policy tag still assigned and cannot be deleted
+      security:
+      - securityScheme:
+        - delete:config_admin_policy_tag
+      summary: Delete a policy tag
+      tags:
+      - Policy Tag
+    get:
+      description: 'You can get an existing policy tag by calling this endpoint.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | read:config_admin_policy_tag |'
+      operationId: getPolicyTag
+      parameters:
+      - in: path
+        name: name
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            '*/*':
+              schema:
+                oneOf:
+                - $ref: '#/components/schemas/PolicyTagResponse'
+                - $ref: '#/components/schemas/NameAndColorResponse'
+          description: '| TYPE | REQUESTED WITH SCOPE |
+
+            |:----------------- | ----------------|
+
+            | PageOfNameAndColorResponse | if no scope is defined |
+
+            | PageOfPolicyTagResponse | if `read:config_admin_policy_tag` scope is defined |'
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+        '404':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Not Found
+      security:
+      - securityScheme:
+        - read:config_admin_policy_tag
+      summary: Get a policy tag
+      tags:
+      - Policy Tag
+    put:
+      description: 'You can update a policy tag by calling this endpoint. The name of a policy tag cannot be altered.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | write:config_admin_policy_tag |'
+      operationId: updateTag
+      parameters:
+      - in: path
+        name: name
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PolicyTagUpsertRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/PolicyTagResponse'
+          description: OK
+        '400':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Bad Request
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+        '404':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Not Found
+      security:
+      - securityScheme:
+        - write:config_admin_policy_tag
+      summary: Update a policy tag
+      tags:
+      - Policy Tag
+components:
+  schemas:
+    ProblemJson:
+      type: object
+      properties:
+        detail:
+          type: string
+        entityName:
+          type: string
+          description: The name of the entity within the error has occurred
+        errorKey:
+          type: string
+          description: A unique identifier of the error
+        fieldErrors:
+          type: array
+          description: Field constraint violation errors
+          items:
+            $ref: '#/components/schemas/FieldError'
+        message:
+          type: string
+          description: A unique identifier in format of 'error.{errorKey}'
+        params:
+          type: array
+          description: Further information related to the actual error
+          items:
+            type: object
+            additionalProperties:
+              type: object
+        path:
+          type: string
+          description: Request URI
+        status:
+          type: integer
+          description: Status code
+          format: int32
+        title:
+          type: string
+      description: Based on [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807)
+    PageOfNameAndColorResponse:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/NameAndColorResponse'
+        page:
+          $ref: '#/components/schemas/PageMetadata'
+    PageMetadata:
+      type: object
+      properties:
+        number:
+          type: integer
+          format: int64
+        size:
+          type: integer
+          format: int64
+        totalElements:
+          type: integer
+          format: int64
+        totalPages:
+          type: integer
+          format: int64
+    PageOfPolicyTagResponse:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/PolicyTagResponse'
+        page:
+          $ref: '#/components/schemas/PageMetadata'
+    FieldError:
+      type: object
+      properties:
+        field:
+          type: string
+        message:
+          type: string
+        objectName:
+          type: string
+    NameAndColorResponse:
+      type: object
+      properties:
+        color:
+          type: string
+          description: Color in hexadecimal format
+        name:
+          type: string
+    PolicyTagUpsertRequest:
+      required:
+      - color
+      - name
+      type: object
+      properties:
+        color:
+          minLength: 1
+          pattern: '#[0-9a-fA-F]{6}'
+          type: string
+          description: Color in hexadecimal format
+          example: '#ffffff'
+        description:
+          maxLength: 1024
+          minLength: 0
+          type: string
+        name:
+          maxLength: 32
+          minLength: 2
+          pattern: ^[a-z0-9_]{2,32}$
+          type: string
+    PolicyTagResponse:
+      type: object
+      properties:
+        color:
+          type: string
+          description: Color in hexadecimal format
+        description:
+          type: string
+        name:
+          type: string
+  securitySchemes:
+    securityScheme:
+      scheme: bearer
+      type: http

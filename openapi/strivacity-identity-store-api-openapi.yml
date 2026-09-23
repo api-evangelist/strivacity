@@ -1,0 +1,881 @@
+openapi: 3.2.0
+info:
+  description: API documentation of Admin Portal
+  title: Admin Portal Identity Store API
+  version: v0.0.1
+servers:
+- url: https://{tenant}
+  variables:
+    tenant:
+      default: example.strivacity.com
+      description: Your Strivacity tenant
+tags:
+- name: Identity Store
+paths:
+  /admin/api/v1/identityStores:
+    get:
+      description: 'You can list the existing identity stores by calling this endpoint. Keep in mind that the `policyTags` query param is ignored when using this endpoint without the `read:config_identity_store` scope.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | read:config_identity_store |'
+      operationId: getIdentityStores
+      parameters:
+      - description: Tags used for filtering must exactly match the tag name
+        in: query
+        name: policyTags
+        required: false
+        schema:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+      - description: Name used for filtering
+        in: query
+        name: name
+        required: false
+        schema:
+          type: string
+      - description: Zero-based page index (0..N)
+        in: query
+        name: page
+        schema:
+          type: integer
+          format: int64
+          default: 0
+      - description: The size of the page to be returned
+        in: query
+        name: size
+        schema:
+          type: integer
+          format: int64
+          default: 20
+      - description: 'Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported.'
+        in: query
+        name: sort
+        schema:
+          type: array
+          items:
+            type: string
+      responses:
+        '200':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/PagedModelIdentityStoreListResponse'
+          description: OK
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+      security:
+      - securityScheme:
+        - read:config_identity_store
+      summary: List identity stores
+      tags:
+      - Identity Store
+    post:
+      description: 'You can create an identity store by calling this endpoint.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | write:config_identity_store |'
+      operationId: createIdentityStore
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IdentityStoreUpsertRequest_IdentityStore'
+        required: true
+      responses:
+        '201':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/IdentityStoreResponse_IdentityStore'
+          description: Created
+        '400':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Bad Request
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+        '409':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Conflict
+      security:
+      - securityScheme:
+        - write:config_identity_store
+      summary: Create an identity store
+      tags:
+      - Identity Store
+  /admin/api/v1/identityStores/{identityStoreName}:
+    delete:
+      description: 'You can delete an identity store by calling this endpoint. When you try to delete an identity store that''s still in use (assigned to an application, contains identities or pending invitations), this endpoint will return a 409 Conflict response.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | delete:config_identity_store |'
+      operationId: deleteIdentityStoreByName
+      parameters:
+      - in: path
+        name: identityStoreName
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: No Content
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+        '409':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Identity Store has assigned entities
+      security:
+      - securityScheme:
+        - delete:config_identity_store
+      summary: Delete an identity store
+      tags:
+      - Identity Store
+    get:
+      description: 'You can get an identity store by calling this endpoint.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | read:config_identity_store |'
+      operationId: getIdentityStore
+      parameters:
+      - in: path
+        name: identityStoreName
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/IdentityStoreResponse'
+          description: OK
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+        '404':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Not Found
+      security:
+      - securityScheme:
+        - read:config_identity_store
+      summary: Get an identity store
+      tags:
+      - Identity Store
+    put:
+      description: 'You can update an identity store by calling this endpoint. The request path and body should contain the same name for a successful update. The name of an identity store cannot be altered.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | write:config_identity_store |'
+      operationId: updateIdentityStore
+      parameters:
+      - in: path
+        name: identityStoreName
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IdentityStoreUpsertRequest_IdentityStore'
+        required: true
+      responses:
+        '200':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/IdentityStoreResponse_IdentityStore'
+          description: OK
+        '400':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Bad Request
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+        '404':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Not Found
+      security:
+      - securityScheme:
+        - write:config_identity_store
+      summary: Update an identity store
+      tags:
+      - Identity Store
+  /admin/api/v1/identityStores/{identityStoreName}/availableNativeClaims:
+    get:
+      description: 'You can list the available native claims of an identity store by calling this endpoint.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | read:config_identity_store |'
+      operationId: getAvailableNativeClaims
+      parameters:
+      - in: path
+        name: identityStoreName
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/NativeClaimResponse'
+          description: OK
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+      security:
+      - securityScheme:
+        - read:config_identity_store
+      summary: List available native claims
+      tags:
+      - Identity Store
+  /admin/api/v1/identityStores/{identityStoreName}/nativeClaimMappings:
+    get:
+      description: 'You can list the current native claim mappings of an identity store by calling this endpoint.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | read:config_identity_store |'
+      operationId: getNativeClaimMappings
+      parameters:
+      - in: path
+        name: identityStoreName
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            '*/*':
+              schema:
+                type: object
+                additionalProperties:
+                  type: string
+          description: OK
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+      security:
+      - securityScheme:
+        - read:config_identity_store
+      summary: List native claim mappings
+      tags:
+      - Identity Store
+components:
+  schemas:
+    ProblemJson:
+      type: object
+      properties:
+        detail:
+          type: string
+        entityName:
+          type: string
+          description: The name of the entity within the error has occurred
+        errorKey:
+          type: string
+          description: A unique identifier of the error
+        fieldErrors:
+          type: array
+          description: Field constraint violation errors
+          items:
+            $ref: '#/components/schemas/FieldError'
+        message:
+          type: string
+          description: A unique identifier in format of 'error.{errorKey}'
+        params:
+          type: array
+          description: Further information related to the actual error
+          items:
+            type: object
+            additionalProperties:
+              type: object
+        path:
+          type: string
+          description: Request URI
+        status:
+          type: integer
+          description: Status code
+          format: int32
+        title:
+          type: string
+      description: Based on [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807)
+    PageMetadata:
+      type: object
+      properties:
+        number:
+          type: integer
+          format: int64
+        size:
+          type: integer
+          format: int64
+        totalElements:
+          type: integer
+          format: int64
+        totalPages:
+          type: integer
+          format: int64
+    VariableOverrideUpsertRequest_IdentityStore:
+      required:
+      - name
+      - type
+      type: object
+      properties:
+        name:
+          type: string
+        type:
+          type: string
+          enum:
+          - noValue
+          - variableReference
+          - staticVariable
+          - staticSecret
+      discriminator:
+        propertyName: type
+    StaticVariableRequest_IdentityStore:
+      required:
+      - name
+      - type
+      - value
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/VariableOverrideUpsertRequest_IdentityStore'
+      - type: object
+        properties:
+          value:
+            maxLength: 8192
+            minLength: 0
+            type: string
+    IdReferenceRequest_IdentityStore:
+      required:
+      - id
+      type: object
+      properties:
+        id:
+          pattern: ^[a-zA-Z0-9-]{1,36}$
+          type: string
+          description: ID of the represented entity
+    NoValueRequest_IdentityStore:
+      required:
+      - name
+      - type
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/VariableOverrideUpsertRequest_IdentityStore'
+    IdentityStoreUpsertRequest_Connector_IdentityStore:
+      type: object
+      properties:
+        cachePassword:
+          type: boolean
+          default: true
+        enabled:
+          type: boolean
+          default: false
+        syncPasswordToRemote:
+          type: boolean
+          default: false
+    IdentityStoreListResponse:
+      type: object
+      properties:
+        accountEventTTL:
+          type: integer
+          format: int32
+        description:
+          type: string
+        name:
+          type: string
+          example: Default
+        organizationRegistrationEnabled:
+          type: boolean
+        passwordHashApiEnabled:
+          type: boolean
+        passwordPolicy:
+          $ref: '#/components/schemas/NameAndId'
+        policyTag:
+          type: string
+    NameAndId_IdentityStore:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID of the represented entity
+    PagedModelIdentityStoreListResponse:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/IdentityStoreListResponse'
+        page:
+          $ref: '#/components/schemas/PageMetadata'
+    NativeClaimResponse:
+      type: object
+      properties:
+        description:
+          type: string
+        dialectUri:
+          type: string
+        displayName:
+          type: string
+        id:
+          type: string
+        name:
+          type: string
+        readonly:
+          type: boolean
+        targetReadonly:
+          type: boolean
+    AssignedEventHookFunctionResponse:
+      type: object
+      properties:
+        hook:
+          type: string
+          description: Type of the lifecycle event hook
+          enum:
+          - DENY_AUTHENTICATION
+          - UNIDENTIFIED_USER
+          - POST_ACCOUNT_LOGIN
+          - POST_CONSENT_UPDATE
+          - POST_ID_PROOFING
+          - POST_IDENTIFICATION
+          - POST_MFA_FACTOR_CHANGE
+          - POST_REGISTRATION
+          - POST_EXTERNAL_LOGIN
+          - POST_TOKEN_REFRESH
+          - PRE_ID_PROOFING
+          - PRE_ID_TOKEN_GENERATION
+          - PRE_SAML2_ASSERTION_GENERATION
+          - PRE_PROGRESSIVE_PROFILING
+          - PRE_REGISTRATION
+          - PRE_PASSWORD
+          - PRE_PASSWORD_RESET
+          - PRE_MULTI_STAGE_REGISTRATION
+          - PRE_EXTERNAL_REGISTRATION
+          - PRE_AUTHENTICATOR_ENROLLMENT
+          - PRE_PASSWORD_PERSIST
+          - PRE_CONTACT_UPDATE
+          - POST_ACCOUNT_DELETION
+          - POST_ACCOUNT_UPDATE
+        id:
+          type: string
+        variableOverrides:
+          uniqueItems: true
+          type: array
+          items:
+            $ref: '#/components/schemas/VariableOverrideResponse'
+    Credentials:
+      type: object
+      properties:
+        clientId:
+          type: string
+        clientSecret:
+          type: string
+    IdentityStoreResponse_IdentityStore:
+      type: object
+      properties:
+        accountEventTTL:
+          type: integer
+          format: int32
+        connector:
+          $ref: '#/components/schemas/IdentityStoreResponse_Connector_IdentityStore'
+        description:
+          type: string
+        eventHookFunctions:
+          uniqueItems: true
+          type: array
+          description: Event hook functions assigned to the identity store
+          items:
+            $ref: '#/components/schemas/AssignedEventHookFunctionResponse_IdentityStore'
+        name:
+          type: string
+          example: Default
+        organizationRegistrationEnabled:
+          type: boolean
+        passwordHashApiEnabled:
+          type: boolean
+        passwordPolicy:
+          $ref: '#/components/schemas/NameAndId_IdentityStore'
+        policyTag:
+          type: string
+    FieldError:
+      type: object
+      properties:
+        field:
+          type: string
+        message:
+          type: string
+        objectName:
+          type: string
+    NameAndId:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID of the represented entity
+    IdentityStoreResponse_Connector_IdentityStore:
+      type: object
+      properties:
+        cachePassword:
+          type: boolean
+        credentials:
+          $ref: '#/components/schemas/Credentials_IdentityStore'
+        enabled:
+          type: boolean
+        syncPasswordToRemote:
+          type: boolean
+    Credentials_IdentityStore:
+      type: object
+      properties:
+        clientId:
+          type: string
+        clientSecret:
+          type: string
+    AssignedEventHookFunctionResponse_IdentityStore:
+      type: object
+      properties:
+        hook:
+          type: string
+          description: Type of the lifecycle event hook
+          enum:
+          - DENY_AUTHENTICATION
+          - UNIDENTIFIED_USER
+          - POST_ACCOUNT_LOGIN
+          - POST_CONSENT_UPDATE
+          - POST_ID_PROOFING
+          - POST_IDENTIFICATION
+          - POST_MFA_FACTOR_CHANGE
+          - POST_REGISTRATION
+          - POST_EXTERNAL_LOGIN
+          - POST_TOKEN_REFRESH
+          - PRE_ID_PROOFING
+          - PRE_ID_TOKEN_GENERATION
+          - PRE_SAML2_ASSERTION_GENERATION
+          - PRE_PROGRESSIVE_PROFILING
+          - PRE_REGISTRATION
+          - PRE_PASSWORD
+          - PRE_PASSWORD_RESET
+          - PRE_MULTI_STAGE_REGISTRATION
+          - PRE_EXTERNAL_REGISTRATION
+          - PRE_AUTHENTICATOR_ENROLLMENT
+          - PRE_PASSWORD_PERSIST
+          - PRE_CONTACT_UPDATE
+          - POST_ACCOUNT_DELETION
+          - POST_ACCOUNT_UPDATE
+        id:
+          type: string
+        variableOverrides:
+          uniqueItems: true
+          type: array
+          items:
+            $ref: '#/components/schemas/VariableOverrideResponse_IdentityStore'
+    IdentityStoreResponse_Connector:
+      type: object
+      properties:
+        cachePassword:
+          type: boolean
+        credentials:
+          $ref: '#/components/schemas/Credentials'
+        enabled:
+          type: boolean
+        syncPasswordToRemote:
+          type: boolean
+    VariableOverrideResponse:
+      type: object
+      properties:
+        name:
+          type: string
+        type:
+          type: string
+          enum:
+          - noValue
+          - variableReference
+          - staticVariable
+          - staticSecret
+        value:
+          type: string
+    StaticSecretRequest_IdentityStore:
+      required:
+      - name
+      - type
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/VariableOverrideUpsertRequest_IdentityStore'
+      - type: object
+        properties:
+          secretValue:
+            maxLength: 8192
+            minLength: 0
+            type: string
+    IdentityStoreResponse:
+      type: object
+      properties:
+        accountEventTTL:
+          type: integer
+          format: int32
+        connector:
+          $ref: '#/components/schemas/IdentityStoreResponse_Connector'
+        description:
+          type: string
+        eventHookFunctions:
+          uniqueItems: true
+          type: array
+          description: Event hook functions assigned to the identity store
+          items:
+            $ref: '#/components/schemas/AssignedEventHookFunctionResponse'
+        name:
+          type: string
+          example: Default
+        organizationRegistrationEnabled:
+          type: boolean
+        passwordHashApiEnabled:
+          type: boolean
+        passwordPolicy:
+          $ref: '#/components/schemas/NameAndId'
+        policyTag:
+          type: string
+    IdentityStoreUpsertRequest_IdentityStore:
+      required:
+      - eventHookFunctions
+      - name
+      - passwordPolicy
+      type: object
+      properties:
+        accountEventTTL:
+          type: integer
+          description: An account event TTL in days how long account events will be stored in a given identity store. Check /admin/api/v1/accountEventTTLs endpoint for valid values for your deployment. 0 means the account event will be stored permanently.
+          format: int32
+          enum:
+          - 0
+          - 30
+          - 60
+          - 90
+          - 180
+          - 365
+          default: 30
+        attributeCreationStrategy:
+          type: string
+          enum:
+          - emptyAttributes
+          - defaultAttributes
+          default: defaultAttributes
+        connector:
+          $ref: '#/components/schemas/IdentityStoreUpsertRequest_Connector_IdentityStore'
+        description:
+          maxLength: 1024
+          minLength: 0
+          type: string
+        eventHookFunctions:
+          type: array
+          description: Event hook functions to be assigned to the identity store
+          items:
+            $ref: '#/components/schemas/EventHookAssignmentUpsertRequest_IdentityStore'
+          default: []
+        name:
+          maxLength: 32
+          minLength: 2
+          pattern: '[a-zA-Z]+'
+          type: string
+          example: StoreName
+        organizationRegistrationEnabled:
+          type: boolean
+        passwordHashApiEnabled:
+          type: boolean
+        passwordPolicy:
+          $ref: '#/components/schemas/IdReferenceRequest_IdentityStore'
+        policyTag:
+          pattern: ^[a-z0-9_]{2,32}$
+          type: string
+          description: Must be an existing policy tag name
+    VariableOverrideResponse_IdentityStore:
+      type: object
+      properties:
+        name:
+          type: string
+        type:
+          type: string
+          enum:
+          - noValue
+          - variableReference
+          - staticVariable
+          - staticSecret
+        value:
+          type: string
+    EventHookAssignmentUpsertRequest_IdentityStore:
+      required:
+      - hook
+      - id
+      type: object
+      properties:
+        hook:
+          type: string
+          description: Type of the eventhook
+          enum:
+          - DENY_AUTHENTICATION
+          - UNIDENTIFIED_USER
+          - POST_ACCOUNT_LOGIN
+          - POST_CONSENT_UPDATE
+          - POST_ID_PROOFING
+          - POST_IDENTIFICATION
+          - POST_MFA_FACTOR_CHANGE
+          - POST_REGISTRATION
+          - POST_EXTERNAL_LOGIN
+          - POST_TOKEN_REFRESH
+          - PRE_ID_PROOFING
+          - PRE_ID_TOKEN_GENERATION
+          - PRE_SAML2_ASSERTION_GENERATION
+          - PRE_PROGRESSIVE_PROFILING
+          - PRE_REGISTRATION
+          - PRE_PASSWORD
+          - PRE_PASSWORD_RESET
+          - PRE_MULTI_STAGE_REGISTRATION
+          - PRE_EXTERNAL_REGISTRATION
+          - PRE_AUTHENTICATOR_ENROLLMENT
+          - PRE_PASSWORD_PERSIST
+          - PRE_CONTACT_UPDATE
+          - POST_ACCOUNT_DELETION
+          - POST_ACCOUNT_UPDATE
+        id:
+          pattern: ^[a-zA-Z0-9-]{1,36}$
+          type: string
+          description: ID of the represented entity
+        variableOverrides:
+          type: array
+          items:
+            oneOf:
+            - $ref: '#/components/schemas/VariableOverrideUpsertRequest_IdentityStore'
+            - $ref: '#/components/schemas/NoValueRequest_IdentityStore'
+            - $ref: '#/components/schemas/StaticSecretRequest_IdentityStore'
+            - $ref: '#/components/schemas/StaticVariableRequest_IdentityStore'
+            - $ref: '#/components/schemas/VariableReferenceRequest_IdentityStore'
+    VariableReferenceRequest_IdentityStore:
+      required:
+      - name
+      - type
+      - value
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/VariableOverrideUpsertRequest_IdentityStore'
+      - type: object
+        properties:
+          value:
+            maxLength: 36
+            minLength: 0
+            type: string
+  securitySchemes:
+    securityScheme:
+      scheme: bearer
+      type: http

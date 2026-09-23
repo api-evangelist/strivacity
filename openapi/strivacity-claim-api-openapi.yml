@@ -1,0 +1,478 @@
+openapi: 3.2.0
+info:
+  description: API documentation of Admin Portal
+  title: Admin Portal Claim API
+  version: v0.0.1
+servers:
+- url: https://{tenant}
+  variables:
+    tenant:
+      default: example.strivacity.com
+      description: Your Strivacity tenant
+tags:
+- name: Claim
+paths:
+  /admin/api/v1/claim/dialects/{dialectId}/claims:
+    get:
+      description: 'You can list the existing claims of a dialect by calling this endpoint.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | read:config_claim |'
+      operationId: getClaims
+      parameters:
+      - in: path
+        name: dialectId
+        required: true
+        schema:
+          type: string
+      - description: Name used for filtering
+        in: query
+        name: name
+        required: false
+        schema:
+          type: string
+      - description: Zero-based page index (0..N)
+        in: query
+        name: page
+        schema:
+          type: integer
+          format: int64
+          default: 0
+      - description: The size of the page to be returned
+        in: query
+        name: size
+        schema:
+          type: integer
+          format: int64
+          default: 20
+      - description: 'Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported.'
+        in: query
+        name: sort
+        schema:
+          type: array
+          items:
+            type: string
+      responses:
+        '200':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/PagedModelClaimResponse'
+          description: OK
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+        '404':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Not Found
+      security:
+      - securityScheme:
+        - read:config_claim
+      summary: List claims
+      tags:
+      - Claim
+    post:
+      description: 'You can create a claim for a dialect by calling this endpoint.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | write:config_claim |'
+      operationId: createClaim
+      parameters:
+      - in: path
+        name: dialectId
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ClaimInsertRequest_Claim'
+        required: true
+      responses:
+        '201':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ClaimResponse_Claim'
+          description: Created
+        '400':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Bad Request
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+        '404':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Not Found
+        '409':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Conflict
+      security:
+      - securityScheme:
+        - write:config_claim
+      summary: Create a claim
+      tags:
+      - Claim
+  /admin/api/v1/claim/dialects/{dialectId}/claims/{id}:
+    delete:
+      description: 'You can delete a claim for a dialect by calling this endpoint.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | delete:config_claim |'
+      operationId: deleteClaimById
+      parameters:
+      - in: path
+        name: dialectId
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: No Content
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+      security:
+      - securityScheme:
+        - delete:config_claim
+      summary: Delete a claim
+      tags:
+      - Claim
+    get:
+      description: 'You can get a claim of a dialect by calling this endpoint.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | read:config_claim |'
+      operationId: getClaim
+      parameters:
+      - in: path
+        name: dialectId
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ClaimResponse_Claim'
+          description: OK
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+        '404':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Not Found
+      security:
+      - securityScheme:
+        - read:config_claim
+      summary: Get a claim
+      tags:
+      - Claim
+    put:
+      description: 'You can update a claim for a dialect by calling this endpoint.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | write:config_claim |'
+      operationId: updateClaim
+      parameters:
+      - in: path
+        name: dialectId
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ClaimUpdateRequest_Claim'
+        required: true
+      responses:
+        '200':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ClaimResponse_Claim'
+          description: OK
+        '400':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Bad Request
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+        '404':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Not Found
+        '409':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Conflict
+      security:
+      - securityScheme:
+        - write:config_claim
+      summary: Update a claim
+      tags:
+      - Claim
+components:
+  schemas:
+    NameIdAndDisplayName_Claim:
+      type: object
+      properties:
+        displayName:
+          type: string
+          description: Display name of the represented entity
+        id:
+          type: string
+          description: ID of the represented entity
+        name:
+          type: string
+          description: Name of the represented entity
+    ProblemJson:
+      type: object
+      properties:
+        detail:
+          type: string
+        entityName:
+          type: string
+          description: The name of the entity within the error has occurred
+        errorKey:
+          type: string
+          description: A unique identifier of the error
+        fieldErrors:
+          type: array
+          description: Field constraint violation errors
+          items:
+            $ref: '#/components/schemas/FieldError'
+        message:
+          type: string
+          description: A unique identifier in format of 'error.{errorKey}'
+        params:
+          type: array
+          description: Further information related to the actual error
+          items:
+            type: object
+            additionalProperties:
+              type: object
+        path:
+          type: string
+          description: Request URI
+        status:
+          type: integer
+          description: Status code
+          format: int32
+        title:
+          type: string
+      description: Based on [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807)
+    PagedModelClaimResponse:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/ClaimResponse'
+        page:
+          $ref: '#/components/schemas/PageMetadata'
+    ClaimInsertRequest_Claim:
+      required:
+      - name
+      - nativeClaim
+      type: object
+      properties:
+        name:
+          maxLength: 256
+          minLength: 1
+          pattern: ^[a-zA-Z][a-zA-Z0-9_!#$&'()*+,\/:;=?@\[\].]*$
+          type: string
+        nativeClaim:
+          $ref: '#/components/schemas/IdReferenceRequest_Claim'
+    IdReferenceRequest_Claim:
+      required:
+      - id
+      type: object
+      properties:
+        id:
+          pattern: ^[a-zA-Z0-9-]{1,36}$
+          type: string
+          description: ID of the represented entity
+    PageMetadata:
+      type: object
+      properties:
+        number:
+          type: integer
+          format: int64
+        size:
+          type: integer
+          format: int64
+        totalElements:
+          type: integer
+          format: int64
+        totalPages:
+          type: integer
+          format: int64
+    FieldError:
+      type: object
+      properties:
+        field:
+          type: string
+        message:
+          type: string
+        objectName:
+          type: string
+    ClaimResponse_Claim:
+      type: object
+      properties:
+        dialectUri:
+          type: string
+        id:
+          type: string
+        name:
+          type: string
+        nativeClaim:
+          $ref: '#/components/schemas/NameIdAndDisplayName_Claim'
+    ClaimUpdateRequest_Claim:
+      required:
+      - id
+      - name
+      - nativeClaim
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          maxLength: 256
+          minLength: 1
+          pattern: ^[a-zA-Z][a-zA-Z0-9_!#$&'()*+,\/:;=?@\[\].]*$
+          type: string
+        nativeClaim:
+          $ref: '#/components/schemas/IdReferenceRequest_Claim'
+    NameIdAndDisplayName:
+      type: object
+      properties:
+        displayName:
+          type: string
+          description: Display name of the represented entity
+        id:
+          type: string
+          description: ID of the represented entity
+        name:
+          type: string
+          description: Name of the represented entity
+    ClaimResponse:
+      type: object
+      properties:
+        dialectUri:
+          type: string
+        id:
+          type: string
+        name:
+          type: string
+        nativeClaim:
+          $ref: '#/components/schemas/NameIdAndDisplayName'
+  securitySchemes:
+    securityScheme:
+      scheme: bearer
+      type: http

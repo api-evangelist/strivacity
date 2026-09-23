@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Simple Authentication API
+  title: Simple Authentication Simplelogin API
   version: 4.11.0
 servers:
 - url: https://{tenant}
@@ -8,10 +8,10 @@ servers:
     tenant:
       default: example.strivacity.com
       description: Your strivacity tenant
-components:
-  securitySchemes: {}
 security:
 - {}
+tags:
+- name: Simplelogin
 paths:
   /simplelogin/api/v1/authenticate:
     post:
@@ -97,6 +97,8 @@ paths:
                 Result:
                   value: ''
       deprecated: false
+      tags:
+      - Simplelogin
   /simplelogin/api/v1/token:
     post:
       summary: Simple token request
@@ -166,8 +168,7 @@ paths:
             application/json:
               examples:
                 Result:
-                  value: "{\n  \"access_token\": \"<access_token>\",\n  \"token_type\": \"bearer\",\n  \"expires_in\": 3600,\n  \"refresh_token\": \"<refresh_token>\",\n  \"id_token\": \"<id_token>\",\n\
-                    \  \"userinfo\": {}\n}"
+                  value: "{\n  \"access_token\": \"<access_token>\",\n  \"token_type\": \"bearer\",\n  \"expires_in\": 3600,\n  \"refresh_token\": \"<refresh_token>\",\n  \"id_token\": \"<id_token>\",\n  \"userinfo\": {}\n}"
               schema:
                 type: object
                 properties:
@@ -214,6 +215,8 @@ paths:
                 Result:
                   value: ''
       deprecated: false
+      tags:
+      - Simplelogin
 x-readme:
   headers: []
   explorer-enabled: false

@@ -1,0 +1,794 @@
+openapi: 3.2.0
+info:
+  description: API documentation of Admin Portal
+  title: Admin Portal Event Streaming API
+  version: v0.0.1
+servers:
+- url: https://{tenant}
+  variables:
+    tenant:
+      default: example.strivacity.com
+      description: Your Strivacity tenant
+tags:
+- name: Event Streaming
+paths:
+  /admin/api/v1/instance/eventStreaming:
+    get:
+      description: 'You can list the existing event streaming configurations by calling this endpoint.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | read:config_instance |'
+      operationId: list_4
+      parameters:
+      - description: Name used for filtering
+        in: query
+        name: name
+        required: false
+        schema:
+          type: string
+      - description: Zero-based page index (0..N)
+        in: query
+        name: page
+        schema:
+          type: integer
+          format: int64
+          default: 0
+      - description: The size of the page to be returned
+        in: query
+        name: size
+        schema:
+          type: integer
+          format: int64
+          default: 20
+      - description: 'Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported.'
+        in: query
+        name: sort
+        schema:
+          type: array
+          items:
+            type: string
+      responses:
+        '200':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/PagedModelEventStreamingResponse'
+          description: OK
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+      security:
+      - securityScheme:
+        - read:config_instance
+      summary: List event streaming configurations
+      tags:
+      - Event Streaming
+    post:
+      description: 'You can create an event streaming configuration by calling this endpoint.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | write:config_instance |'
+      operationId: create_6
+      requestBody:
+        content:
+          application/json:
+            schema:
+              oneOf:
+              - $ref: '#/components/schemas/ElasticsearchEventStreamingInsertRequest'
+              - $ref: '#/components/schemas/HttpsEventStreamingInsertRequest'
+              - $ref: '#/components/schemas/SplunkEventStreamingInsertRequest'
+        required: true
+      responses:
+        '201':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/EventStreamingResponse'
+          description: Created
+        '400':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Bad Request
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+        '409':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Conflict
+      security:
+      - securityScheme:
+        - write:config_instance
+      summary: Create an event streaming configuration
+      tags:
+      - Event Streaming
+  /admin/api/v1/instance/eventStreaming/{id}:
+    delete:
+      description: 'You can delete an event streaming configuration by calling this endpoint.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | write:config_instance |'
+      operationId: delete_7
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: No Content
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+      security:
+      - securityScheme:
+        - write:config_instance
+      summary: Delete an event streaming configuration
+      tags:
+      - Event Streaming
+    get:
+      description: 'You can get an event streaming configuration by calling this endpoint.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | read:config_instance |'
+      operationId: getById
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/EventStreamingResponse'
+          description: OK
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+        '404':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Not Found
+      security:
+      - securityScheme:
+        - read:config_instance
+      summary: Get an event streaming configuration
+      tags:
+      - Event Streaming
+    put:
+      description: 'You can update an event streaming configuration by calling this endpoint.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | write:config_instance |'
+      operationId: update_5
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              oneOf:
+              - $ref: '#/components/schemas/ElasticsearchEventStreamingUpdateRequest'
+              - $ref: '#/components/schemas/HttpsEventStreamingUpdateRequest'
+              - $ref: '#/components/schemas/SplunkEventStreamingUpdateRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/EventStreamingResponse'
+          description: OK
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+        '404':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Not Found
+        '409':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Conflict
+      security:
+      - securityScheme:
+        - write:config_instance
+      summary: Update an event streaming configuration
+      tags:
+      - Event Streaming
+  /admin/api/v1/instance/eventStreaming/{id}/test:
+    post:
+      description: 'You can test an event streaming configuration by calling this endpoint.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | write:config_instance |'
+      operationId: sendTestEvent
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/EventStreamingTestResponse'
+          description: OK
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+        '404':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Not Found
+      security:
+      - securityScheme:
+        - write:config_instance
+      summary: Test an event streaming configuration
+      tags:
+      - Event Streaming
+components:
+  schemas:
+    ProblemJson:
+      type: object
+      properties:
+        detail:
+          type: string
+        entityName:
+          type: string
+          description: The name of the entity within the error has occurred
+        errorKey:
+          type: string
+          description: A unique identifier of the error
+        fieldErrors:
+          type: array
+          description: Field constraint violation errors
+          items:
+            $ref: '#/components/schemas/FieldError'
+        message:
+          type: string
+          description: A unique identifier in format of 'error.{errorKey}'
+        params:
+          type: array
+          description: Further information related to the actual error
+          items:
+            type: object
+            additionalProperties:
+              type: object
+        path:
+          type: string
+          description: Request URI
+        status:
+          type: integer
+          description: Status code
+          format: int32
+        title:
+          type: string
+      description: Based on [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807)
+    HttpsEventStreamingUpdateRequest.Configuration:
+      required:
+      - headerName
+      - url
+      type: object
+      properties:
+        apiKey:
+          maxLength: 200
+          minLength: 0
+          type: string
+        headerName:
+          maxLength: 64
+          minLength: 0
+          type: string
+        url:
+          type: string
+    PageMetadata:
+      type: object
+      properties:
+        number:
+          type: integer
+          format: int64
+        size:
+          type: integer
+          format: int64
+        totalElements:
+          type: integer
+          format: int64
+        totalPages:
+          type: integer
+          format: int64
+    HttpsConfiguration:
+      type: object
+      properties:
+        headerName:
+          type: string
+        url:
+          type: string
+    SplunkEventStreamingInsertRequest:
+      required:
+      - accountEventStreaming
+      - auditLogStreaming
+      - configuration
+      - eventHookLogStreaming
+      - name
+      - type
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/EventStreamingInsertRequest'
+      - type: object
+        properties:
+          configuration:
+            $ref: '#/components/schemas/SplunkEventStreamingInsertRequest.Configuration'
+    PagedModelEventStreamingResponse:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/EventStreamingResponse'
+        page:
+          $ref: '#/components/schemas/PageMetadata'
+    OnlyIdResponse:
+      type: object
+      properties:
+        id:
+          type: string
+    IdReferenceRequest:
+      required:
+      - id
+      type: object
+      properties:
+        id:
+          pattern: ^[a-zA-Z0-9-]{1,36}$
+          type: string
+          description: ID of the represented entity
+    SplunkEventStreamingUpdateRequest.Configuration:
+      required:
+      - url
+      type: object
+      properties:
+        apiKey:
+          maxLength: 200
+          minLength: 0
+          type: string
+        index:
+          maxLength: 200
+          minLength: 1
+          type: string
+        sourceType:
+          maxLength: 200
+          minLength: 1
+          type: string
+        url:
+          type: string
+    ElasticsearchConfiguration:
+      type: object
+      properties:
+        index:
+          type: string
+        url:
+          type: string
+    ElasticsearchEventStreamingInsertRequest.Configuration:
+      required:
+      - apiKey
+      - url
+      type: object
+      properties:
+        apiKey:
+          maxLength: 200
+          minLength: 0
+          type: string
+        index:
+          maxLength: 200
+          minLength: 1
+          type: string
+        url:
+          type: string
+    EventStreamingUpdateRequest:
+      required:
+      - accountEventStreaming
+      - auditLogStreaming
+      - eventHookLogStreaming
+      - id
+      - name
+      - type
+      type: object
+      properties:
+        accountEventStreaming:
+          $ref: '#/components/schemas/EventStreamingInsertRequest.AccountEventStreaming'
+        auditLogStreaming:
+          $ref: '#/components/schemas/EventStreamingInsertRequest.AuditLogStreaming'
+        description:
+          maxLength: 1024
+          minLength: 0
+          type: string
+        enabled:
+          type: boolean
+        eventHookLogStreaming:
+          $ref: '#/components/schemas/EventStreamingInsertRequest.EventHookLogStreaming'
+        id:
+          minLength: 1
+          type: string
+        name:
+          maxLength: 64
+          minLength: 3
+          pattern: ^$|^[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°]([\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*° ]*[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°])?$
+          type: string
+        type:
+          minLength: 1
+          type: string
+      description: Represents an event streaming configuration
+      discriminator:
+        propertyName: type
+    EventStreamingResponse.AuditLogStreaming:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+    EventStreamingInsertRequest.EventHookLogStreaming:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+    EventStreamingInsertRequest.AuditLogStreaming:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+    HttpsEventStreamingUpdateRequest:
+      required:
+      - accountEventStreaming
+      - auditLogStreaming
+      - configuration
+      - eventHookLogStreaming
+      - id
+      - name
+      - type
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/EventStreamingUpdateRequest'
+      - type: object
+        properties:
+          configuration:
+            $ref: '#/components/schemas/HttpsEventStreamingUpdateRequest.Configuration'
+    EventStreamingResponse.AccountEventStreaming:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+        includeActions:
+          type: boolean
+        nativeClaims:
+          uniqueItems: true
+          type: array
+          items:
+            $ref: '#/components/schemas/OnlyIdResponse'
+    HttpsEventStreamingInsertRequest.Configuration:
+      required:
+      - apiKey
+      - headerName
+      - url
+      type: object
+      properties:
+        apiKey:
+          maxLength: 200
+          minLength: 0
+          type: string
+        headerName:
+          maxLength: 64
+          minLength: 0
+          type: string
+        url:
+          type: string
+    ElasticsearchEventStreamingInsertRequest:
+      required:
+      - accountEventStreaming
+      - auditLogStreaming
+      - configuration
+      - eventHookLogStreaming
+      - name
+      - type
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/EventStreamingInsertRequest'
+      - type: object
+        properties:
+          configuration:
+            $ref: '#/components/schemas/ElasticsearchEventStreamingInsertRequest.Configuration'
+    HttpsEventStreamingInsertRequest:
+      required:
+      - accountEventStreaming
+      - auditLogStreaming
+      - configuration
+      - eventHookLogStreaming
+      - name
+      - type
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/EventStreamingInsertRequest'
+      - type: object
+        properties:
+          configuration:
+            $ref: '#/components/schemas/HttpsEventStreamingInsertRequest.Configuration'
+    ElasticsearchEventStreamingUpdateRequest:
+      required:
+      - accountEventStreaming
+      - auditLogStreaming
+      - configuration
+      - eventHookLogStreaming
+      - id
+      - name
+      - type
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/EventStreamingUpdateRequest'
+      - type: object
+        properties:
+          configuration:
+            $ref: '#/components/schemas/ElasticsearchEventStreamingUpdateRequest.Configuration'
+    FieldError:
+      type: object
+      properties:
+        field:
+          type: string
+        message:
+          type: string
+        objectName:
+          type: string
+    EventStreamingResponse.EventHookLogStreaming:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+    ElasticsearchEventStreamingUpdateRequest.Configuration:
+      required:
+      - url
+      type: object
+      properties:
+        apiKey:
+          maxLength: 200
+          minLength: 0
+          type: string
+        index:
+          maxLength: 200
+          minLength: 1
+          type: string
+        url:
+          type: string
+    SplunkEventStreamingInsertRequest.Configuration:
+      required:
+      - apiKey
+      - url
+      type: object
+      properties:
+        apiKey:
+          maxLength: 200
+          minLength: 0
+          type: string
+        index:
+          maxLength: 200
+          minLength: 1
+          type: string
+        sourceType:
+          maxLength: 200
+          minLength: 1
+          type: string
+        url:
+          type: string
+    EventStreamingInsertRequest.AccountEventStreaming:
+      required:
+      - nativeClaims
+      type: object
+      properties:
+        enabled:
+          type: boolean
+        includeActions:
+          type: boolean
+        nativeClaims:
+          uniqueItems: true
+          type: array
+          items:
+            $ref: '#/components/schemas/IdReferenceRequest'
+    EventStreamingInsertRequest:
+      required:
+      - accountEventStreaming
+      - auditLogStreaming
+      - eventHookLogStreaming
+      - name
+      - type
+      type: object
+      properties:
+        accountEventStreaming:
+          $ref: '#/components/schemas/EventStreamingInsertRequest.AccountEventStreaming'
+        auditLogStreaming:
+          $ref: '#/components/schemas/EventStreamingInsertRequest.AuditLogStreaming'
+        description:
+          maxLength: 1024
+          minLength: 0
+          type: string
+        enabled:
+          type: boolean
+        eventHookLogStreaming:
+          $ref: '#/components/schemas/EventStreamingInsertRequest.EventHookLogStreaming'
+        name:
+          maxLength: 64
+          minLength: 3
+          pattern: ^$|^[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°]([\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*° ]*[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°])?$
+          type: string
+        type:
+          minLength: 1
+          type: string
+      description: Represents an event streaming configuration
+      discriminator:
+        propertyName: type
+    EventStreamingTestResponse:
+      type: object
+      properties:
+        body:
+          type: string
+        headers:
+          type: object
+          additionalProperties:
+            type: string
+        statusCode:
+          type: integer
+          format: int32
+      description: The response from the tested event streaming endpoint
+    SplunkEventStreamingUpdateRequest:
+      required:
+      - accountEventStreaming
+      - auditLogStreaming
+      - configuration
+      - eventHookLogStreaming
+      - id
+      - name
+      - type
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/EventStreamingUpdateRequest'
+      - type: object
+        properties:
+          configuration:
+            $ref: '#/components/schemas/SplunkEventStreamingUpdateRequest.Configuration'
+    EventStreamingResponse:
+      type: object
+      properties:
+        accountEventStreaming:
+          $ref: '#/components/schemas/EventStreamingResponse.AccountEventStreaming'
+        auditLogStreaming:
+          $ref: '#/components/schemas/EventStreamingResponse.AuditLogStreaming'
+        configuration:
+          type: object
+          oneOf:
+          - $ref: '#/components/schemas/SplunkConfiguration'
+          - $ref: '#/components/schemas/ElasticsearchConfiguration'
+          - $ref: '#/components/schemas/HttpsConfiguration'
+        description:
+          type: string
+        enabled:
+          type: boolean
+        eventHookLogStreaming:
+          $ref: '#/components/schemas/EventStreamingResponse.EventHookLogStreaming'
+        id:
+          type: string
+        name:
+          type: string
+        type:
+          type: string
+          enum:
+          - splunk
+          - elasticsearch
+          - https
+      description: Represents an event streaming configuration
+    SplunkConfiguration:
+      type: object
+      properties:
+        index:
+          type: string
+        sourceType:
+          type: string
+        url:
+          type: string
+  securitySchemes:
+    securityScheme:
+      scheme: bearer
+      type: http

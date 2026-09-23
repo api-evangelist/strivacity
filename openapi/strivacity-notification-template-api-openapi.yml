@@ -1,0 +1,721 @@
+openapi: 3.2.0
+info:
+  title: Strivacity Notification Template API
+  version: v0.0.1
+  description: 'Operations tagged Notification Template across 2 of this provider''s published API definitions: strivacity-admin-management-openapi-original.json, strivacity-admin-portal-openapi-original.json. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://{tenant}
+  variables:
+    tenant:
+      default: example.strivacity.com
+      description: Your Strivacity tenant
+tags:
+- name: Notification Template
+paths:
+  /admin/api/v1/admin/notificationPolicy/email/{id}:
+    put:
+      description: 'You can update an admin notification template for an email type and ID by calling this endpoint.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | write:config_admin_notification_policy |'
+      operationId: updateAdminNotificationTemplateEmail
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          pattern: ^[a-zA-Z0-9-_]+$
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NotificationTemplateEmailUpdateRequest_NotificationTemplate'
+        required: true
+      responses:
+        '200':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/NotificationTemplateDTO_NotificationTemplate'
+          description: OK
+        '400':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Bad Request
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+        '404':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Not Found
+      security:
+      - securityScheme:
+        - write:config_admin_notification_policy
+      summary: Update an admin notification template (email)
+      tags:
+      - Notification Template
+    servers:
+    - url: https://{tenant}
+      variables:
+        tenant:
+          default: example.strivacity.com
+          description: Your Strivacity tenant
+  /admin/api/v1/admin/notificationPolicy/sms/{id}:
+    put:
+      description: 'You can update an admin notification template for an SMS type and ID by calling this endpoint.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | write:config_admin_notification_policy |'
+      operationId: updateAdminNotificationTemplateSMS
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          pattern: ^[a-zA-Z0-9-_]+$
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NotificationTemplateSMSUpdateRequest_NotificationTemplate'
+        required: true
+      responses:
+        '200':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/NotificationTemplateDTO_NotificationTemplate'
+          description: OK
+        '400':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Bad Request
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+        '404':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Not Found
+      security:
+      - securityScheme:
+        - write:config_admin_notification_policy
+      summary: Update an admin notification template (SMS)
+      tags:
+      - Notification Template
+    servers:
+    - url: https://{tenant}
+      variables:
+        tenant:
+          default: example.strivacity.com
+          description: Your Strivacity tenant
+  /admin/api/v1/admin/notificationPolicy/{type}:
+    get:
+      description: 'You can list the existing admin notification templates by a notification type with this endpoint.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | read:config_admin_notification_policy |'
+      operationId: getAdminNotificationTemplateParameters
+      parameters:
+      - in: path
+        name: type
+        required: true
+        schema:
+          type: string
+          enum:
+          - sms
+          - email
+      responses:
+        '200':
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/NotificationTemplateResponse_NotificationTemplateMetainfo'
+          description: OK
+        '400':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Bad Request
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+      security:
+      - securityScheme:
+        - read:config_admin_notification_policy
+      summary: List admin notification templates
+      tags:
+      - Notification Template
+    servers:
+    - url: https://{tenant}
+      variables:
+        tenant:
+          default: example.strivacity.com
+          description: Your Strivacity tenant
+  /admin/api/v1/admin/notificationPolicy/{type}/{id}:
+    get:
+      description: 'You can get an admin notification template by a notification type and ID with this endpoint.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | read:config_admin_notification_policy |'
+      operationId: getAdminNotificationTemplate
+      parameters:
+      - in: path
+        name: type
+        required: true
+        schema:
+          type: string
+          enum:
+          - sms
+          - email
+      - in: path
+        name: id
+        required: true
+        schema:
+          pattern: ^[a-zA-Z0-9-_]+$
+          type: string
+      responses:
+        '200':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/NotificationTemplateDTO_NotificationTemplate'
+          description: OK
+        '400':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Bad Request
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+        '404':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Not Found
+      security:
+      - securityScheme:
+        - read:config_admin_notification_policy
+      summary: Get an admin notification template
+      tags:
+      - Notification Template
+    servers:
+    - url: https://{tenant}
+      variables:
+        tenant:
+          default: example.strivacity.com
+          description: Your Strivacity tenant
+  /admin/api/v1/notificationPolicies/{policyId}/email/{id}:
+    put:
+      description: 'You can update a notification template for an email type and ID by calling this endpoint.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | write:config_notification_policy |'
+      operationId: updateNotificationTemplateEmail
+      parameters:
+      - in: path
+        name: policyId
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: id
+        required: true
+        schema:
+          pattern: ^[a-zA-Z0-9-_]+$
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NotificationTemplateEmailUpdateRequest_NotificationTemplate'
+        required: true
+      responses:
+        '200':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/NotificationTemplateEmailUpdateRequest_NotificationTemplate'
+          description: OK
+        '400':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Bad Request
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+        '404':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Not Found
+      security:
+      - securityScheme:
+        - write:config_notification_policy
+      summary: Update a notification template (email)
+      tags:
+      - Notification Template
+    servers:
+    - url: https://{tenant}
+      variables:
+        tenant:
+          default: example.strivacity.com
+          description: Your Strivacity tenant
+  /admin/api/v1/notificationPolicies/{policyId}/sms/{id}:
+    put:
+      description: 'You can update a notification template for an SMS type and ID by calling this endpoint.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | write:config_notification_policy |'
+      operationId: updateNotificationTemplateSMS
+      parameters:
+      - in: path
+        name: policyId
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: id
+        required: true
+        schema:
+          pattern: ^[a-zA-Z0-9-_]+$
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NotificationTemplateSMSUpdateRequest_NotificationTemplate'
+        required: true
+      responses:
+        '200':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/NotificationTemplateSMSUpdateRequest_NotificationTemplate'
+          description: OK
+        '400':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Bad Request
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+        '404':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Not Found
+      security:
+      - securityScheme:
+        - write:config_notification_policy
+      summary: Update a notification template (SMS)
+      tags:
+      - Notification Template
+    servers:
+    - url: https://{tenant}
+      variables:
+        tenant:
+          default: example.strivacity.com
+          description: Your Strivacity tenant
+  /admin/api/v1/notificationPolicies/{policyId}/{type}:
+    get:
+      description: 'You can list the existing notification templates by a notification type with this endpoint.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | read:config_notification_policy |'
+      operationId: getNotificationTemplateParameters
+      parameters:
+      - in: path
+        name: policyId
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: type
+        required: true
+        schema:
+          type: string
+          enum:
+          - sms
+          - email
+      responses:
+        '200':
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/NotificationTemplateResponse_NotificationTemplateMetainfo'
+          description: OK
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+        '404':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Not Found
+      security:
+      - securityScheme:
+        - read:config_notification_policy
+      summary: List notification templates
+      tags:
+      - Notification Template
+    servers:
+    - url: https://{tenant}
+      variables:
+        tenant:
+          default: example.strivacity.com
+          description: Your Strivacity tenant
+  /admin/api/v1/notificationPolicies/{policyId}/{type}/{id}:
+    get:
+      description: 'You can get a notification template by a notification type and ID with this endpoint.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | read:config_notification_policy |'
+      operationId: getNotificationTemplate
+      parameters:
+      - in: path
+        name: policyId
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: type
+        required: true
+        schema:
+          type: string
+          enum:
+          - sms
+          - email
+      - in: path
+        name: id
+        required: true
+        schema:
+          pattern: ^[a-zA-Z0-9-_]+$
+          type: string
+      responses:
+        '200':
+          content:
+            '*/*':
+              schema:
+                oneOf:
+                - $ref: '#/components/schemas/NotificationTemplateEmailUpdateRequest_NotificationTemplate'
+                - $ref: '#/components/schemas/NotificationTemplateSMSUpdateRequest_NotificationTemplate'
+          description: OK
+        '400':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Bad Request
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+        '404':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Not Found
+      security:
+      - securityScheme:
+        - read:config_notification_policy
+      summary: Get a notification template
+      tags:
+      - Notification Template
+    servers:
+    - url: https://{tenant}
+      variables:
+        tenant:
+          default: example.strivacity.com
+          description: Your Strivacity tenant
+components:
+  schemas:
+    ProblemJson:
+      type: object
+      properties:
+        detail:
+          type: string
+        entityName:
+          type: string
+          description: The name of the entity within the error has occurred
+        errorKey:
+          type: string
+          description: A unique identifier of the error
+        fieldErrors:
+          type: array
+          description: Field constraint violation errors
+          items:
+            $ref: '#/components/schemas/FieldError'
+        message:
+          type: string
+          description: A unique identifier in format of 'error.{errorKey}'
+        params:
+          type: array
+          description: Further information related to the actual error
+          items:
+            type: object
+            additionalProperties:
+              type: object
+        path:
+          type: string
+          description: Request URI
+        status:
+          type: integer
+          description: Status code
+          format: int32
+        title:
+          type: string
+      description: Based on [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807)
+    NotificationTemplateResponse_NotificationTemplateMetainfo:
+      type: object
+      properties:
+        displayName:
+          type: string
+        enabled:
+          type: boolean
+        id:
+          type: string
+        modified:
+          type: boolean
+        optional:
+          type: boolean
+        placeholders:
+          type: array
+          items:
+            $ref: '#/components/schemas/Placeholder_NotificationTemplateMetainfo'
+      description: Represents a notification template
+    FieldError:
+      type: object
+      properties:
+        field:
+          type: string
+        message:
+          type: string
+        objectName:
+          type: string
+    Placeholder_NotificationTemplateMetainfo:
+      type: object
+      properties:
+        placeholder:
+          type: string
+      description: Represents a placeholder
+    NotificationTemplateDTO_NotificationTemplate:
+      required:
+      - id
+      type: object
+      properties:
+        body:
+          maxLength: 100000
+          minLength: 1
+          type: string
+          description: HTML body of the template, if not specified it'll be reset to the default template
+        enabled:
+          type: boolean
+          default: true
+        id:
+          maxLength: 255
+          minLength: 0
+          pattern: ^[a-zA-Z0-9-_]+$
+          type: string
+        type:
+          type: string
+          enum:
+          - sms
+          - email
+    NotificationTemplateSMSUpdateRequest_NotificationTemplate:
+      required:
+      - id
+      type: object
+      properties:
+        body:
+          maxLength: 100000
+          minLength: 1
+          type: string
+          description: HTML body of the template, if not specified it'll be reset to the default template
+        enabled:
+          type: boolean
+          default: true
+        id:
+          maxLength: 255
+          minLength: 0
+          pattern: ^[a-zA-Z0-9-_]+$
+          type: string
+        type:
+          type: string
+          enum:
+          - sms
+          - email
+    NotificationTemplateEmailUpdateRequest_NotificationTemplate:
+      required:
+      - id
+      type: object
+      properties:
+        body:
+          maxLength: 100000
+          minLength: 1
+          type: string
+          description: HTML body of the template, if not specified it'll be reset to the default template
+        enabled:
+          type: boolean
+          default: true
+        id:
+          maxLength: 255
+          minLength: 0
+          pattern: ^[a-zA-Z0-9-_]+$
+          type: string
+        plainTextBody:
+          maxLength: 100000
+          minLength: 1
+          type: string
+          description: Plain text body of the template, if not specified it'll be reset to the default template
+        subject:
+          maxLength: 255
+          minLength: 1
+          pattern: ^$|^[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°]([\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*° ]*[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°])?$
+          type: string
+          description: Subject text of the template, if not specified it'll be reset to the default template
+        type:
+          type: string
+          enum:
+          - sms
+          - email
+  securitySchemes:
+    securityScheme:
+      scheme: bearer
+      type: http
+x-refined-from:
+- strivacity-admin-management-openapi-original.json
+- strivacity-admin-portal-openapi-original.json
+x-readme:
+  explorer-enabled: true
+  proxy-enabled: true

@@ -1,0 +1,326 @@
+openapi: 3.2.0
+info:
+  description: API documentation of Admin Portal
+  title: Admin Portal Lifecycle Event Hook Log API
+  version: v0.0.1
+servers:
+- url: https://{tenant}
+  variables:
+    tenant:
+      default: example.strivacity.com
+      description: Your Strivacity tenant
+tags:
+- name: Lifecycle Event Hook Log
+paths:
+  /admin/api/v1/eventHooks/logs:
+    get:
+      description: 'You can list the event hook logs by calling this endpoint.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | read:event_hook_log |'
+      operationId: getEventHookLogs
+      parameters:
+      - in: query
+        name: hookName
+        required: false
+        schema:
+          type: string
+      - in: query
+        name: hookTypes
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+      - in: query
+        name: clientIds
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+      - in: query
+        name: identityStores
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+      - in: query
+        name: hookIds
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+      - in: query
+        name: accountIds
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+      - in: query
+        name: accountEventIds
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+      - in: query
+        name: logLevels
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+      - description: Start date used for filtering
+        in: query
+        name: startDate
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - description: End date used for filtering
+        in: query
+        name: endDate
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - description: Zero-based page index (0..N)
+        in: query
+        name: page
+        schema:
+          type: integer
+          format: int64
+          default: 0
+      - description: The size of the page to be returned
+        in: query
+        name: size
+        schema:
+          type: integer
+          format: int64
+          default: 20
+      - description: 'Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported.'
+        in: query
+        name: sort
+        schema:
+          type: array
+          items:
+            type: string
+      responses:
+        '200':
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/EventHookLogListResponse'
+          description: OK
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+      security:
+      - securityScheme:
+        - read:event_hook_log
+      summary: List event hook logs
+      tags:
+      - Lifecycle Event Hook Log
+  /admin/api/v1/eventHooks/logs/{id}:
+    get:
+      description: 'You can get an event hook log by calling this endpoint.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | read:event_hook_log |'
+      operationId: getEventHookLogById
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/EventHookLogResponse'
+          description: OK
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+        '404':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Not Found
+      security:
+      - securityScheme:
+        - read:event_hook_log
+      summary: Get an event hook log
+      tags:
+      - Lifecycle Event Hook Log
+components:
+  schemas:
+    ProblemJson:
+      type: object
+      properties:
+        detail:
+          type: string
+        entityName:
+          type: string
+          description: The name of the entity within the error has occurred
+        errorKey:
+          type: string
+          description: A unique identifier of the error
+        fieldErrors:
+          type: array
+          description: Field constraint violation errors
+          items:
+            $ref: '#/components/schemas/FieldError'
+        message:
+          type: string
+          description: A unique identifier in format of 'error.{errorKey}'
+        params:
+          type: array
+          description: Further information related to the actual error
+          items:
+            type: object
+            additionalProperties:
+              type: object
+        path:
+          type: string
+          description: Request URI
+        status:
+          type: integer
+          description: Status code
+          format: int32
+        title:
+          type: string
+      description: Based on [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807)
+    HookInfoResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        type:
+          type: string
+    FieldError:
+      type: object
+      properties:
+        field:
+          type: string
+        message:
+          type: string
+        objectName:
+          type: string
+    NameAndIdResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID of the represented entity
+        name:
+          type: string
+          description: Name of the represented entity
+          example: Entity name
+    LogResponse:
+      type: object
+      properties:
+        level:
+          type: string
+        message:
+          type: string
+        timestamp:
+          type: string
+    EventHookLogListResponse:
+      type: object
+      properties:
+        accountEventId:
+          type: string
+        accountId:
+          type: string
+        application:
+          $ref: '#/components/schemas/NameAndIdResponse'
+        client:
+          $ref: '#/components/schemas/NameAndIdResponse'
+        hook:
+          $ref: '#/components/schemas/HookInfoResponse'
+        id:
+          type: string
+        identityStore:
+          type: string
+        logSummary:
+          $ref: '#/components/schemas/LogSummaryResponse'
+        timestamp:
+          type: string
+    EventHookLogResponse:
+      type: object
+      properties:
+        accountEventId:
+          type: string
+        accountId:
+          type: string
+        application:
+          $ref: '#/components/schemas/NameAndIdResponse'
+        client:
+          $ref: '#/components/schemas/NameAndIdResponse'
+        hook:
+          $ref: '#/components/schemas/HookInfoResponse'
+        id:
+          type: string
+        identityStore:
+          type: string
+        logSummary:
+          $ref: '#/components/schemas/LogSummaryResponse'
+        logs:
+          type: array
+          items:
+            $ref: '#/components/schemas/LogResponse'
+        timestamp:
+          type: string
+    LogSummaryResponse:
+      type: object
+      properties:
+        error:
+          type: integer
+          format: int32
+        exception:
+          type: boolean
+        info:
+          type: integer
+          format: int32
+  securitySchemes:
+    securityScheme:
+      scheme: bearer
+      type: http

@@ -1,0 +1,911 @@
+openapi: 3.2.0
+info:
+  description: API documentation of Admin Portal
+  title: Admin Portal Telephony Provider Configuration API
+  version: v0.0.1
+servers:
+- url: https://{tenant}
+  variables:
+    tenant:
+      default: example.strivacity.com
+      description: Your Strivacity tenant
+tags:
+- name: Telephony Provider Configuration
+paths:
+  /admin/api/v1/instance/telephony/providers:
+    get:
+      description: 'You can list existing telephony service providers by calling this endpoint.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | read:config_admin_telephony_service_provider |'
+      operationId: readTelephonyProviders
+      parameters:
+      - description: Name used for filtering
+        in: query
+        name: name
+        required: false
+        schema:
+          type: string
+      - description: Zero-based page index (0..N)
+        in: query
+        name: page
+        schema:
+          type: integer
+          format: int64
+          default: 0
+      - description: The size of the page to be returned
+        in: query
+        name: size
+        schema:
+          type: integer
+          format: int64
+          default: 20
+      - description: 'Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported.'
+        in: query
+        name: sort
+        schema:
+          type: array
+          items:
+            type: string
+      responses:
+        '200':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/PagedModelTelephonyProviderListResponse'
+          description: OK
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+      security:
+      - securityScheme:
+        - read:config_admin_telephony_service_provider
+      summary: List telephony service providers
+      tags:
+      - Telephony Provider Configuration
+    post:
+      description: 'You can create the existing telephony service provider by calling this endpoint.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | write:config_admin_telephony_service_provider |'
+      operationId: createTelephonyProviders
+      requestBody:
+        content:
+          application/json:
+            schema:
+              oneOf:
+              - $ref: '#/components/schemas/TelephonyProviderInsertRequest'
+              - $ref: '#/components/schemas/CustomTelephonyInsertRequest'
+              - $ref: '#/components/schemas/InfobipInsertRequest'
+              - $ref: '#/components/schemas/SinchInsertRequest'
+              - $ref: '#/components/schemas/TelesignInsertRequest'
+              - $ref: '#/components/schemas/TwilioInsertRequest'
+        required: true
+      responses:
+        '201':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/TelephonyProviderResponse'
+          description: Created
+        '400':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Bad Request
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+        '409':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Conflict
+      security:
+      - securityScheme:
+        - write:config_admin_telephony_service_provider
+      summary: Create telephony service provider
+      tags:
+      - Telephony Provider Configuration
+  /admin/api/v1/instance/telephony/providers/{providerId}:
+    delete:
+      description: 'You can delete existing telephony service provider by calling this endpoint.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | delete:config_admin_telephony_service_provider |'
+      operationId: deleteTelephonyProvider
+      parameters:
+      - in: path
+        name: providerId
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: No Content
+        '400':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Bad Request
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+        '409':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Conflict
+      security:
+      - securityScheme:
+        - delete:config_admin_telephony_service_provider
+      summary: Delete telephony service provider
+      tags:
+      - Telephony Provider Configuration
+    get:
+      description: 'You can get existing telephony service provider by calling this endpoint.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | read:config_admin_telephony_service_provider |'
+      operationId: readTelephonyProvider
+      parameters:
+      - in: path
+        name: providerId
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/TelephonyProviderResponse'
+          description: OK
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+        '404':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Not Found
+      security:
+      - securityScheme:
+        - read:config_admin_telephony_service_provider
+      summary: Get telephony service provider
+      tags:
+      - Telephony Provider Configuration
+    put:
+      description: 'You can update existing telephony service provider by calling this endpoint.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | write:config_admin_telephony_service_provider |'
+      operationId: updateTelephonyProvider
+      parameters:
+      - in: path
+        name: providerId
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              oneOf:
+              - $ref: '#/components/schemas/TelephonyProviderUpdateRequest'
+              - $ref: '#/components/schemas/CustomTelephonyUpdateRequest'
+              - $ref: '#/components/schemas/InfobipUpdateRequest'
+              - $ref: '#/components/schemas/SinchUpdateRequest'
+              - $ref: '#/components/schemas/StrivacityUpdateRequest'
+              - $ref: '#/components/schemas/TelesignUpdateRequest'
+              - $ref: '#/components/schemas/TwilioUpdateRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/TelephonyProviderResponse'
+          description: OK
+        '400':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Bad Request
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+        '404':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Not Found
+        '409':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Conflict
+      security:
+      - securityScheme:
+        - write:config_admin_telephony_service_provider
+      summary: Update telephony service provider
+      tags:
+      - Telephony Provider Configuration
+components:
+  schemas:
+    ProblemJson:
+      type: object
+      properties:
+        detail:
+          type: string
+        entityName:
+          type: string
+          description: The name of the entity within the error has occurred
+        errorKey:
+          type: string
+          description: A unique identifier of the error
+        fieldErrors:
+          type: array
+          description: Field constraint violation errors
+          items:
+            $ref: '#/components/schemas/FieldError'
+        message:
+          type: string
+          description: A unique identifier in format of 'error.{errorKey}'
+        params:
+          type: array
+          description: Further information related to the actual error
+          items:
+            type: object
+            additionalProperties:
+              type: object
+        path:
+          type: string
+          description: Request URI
+        status:
+          type: integer
+          description: Status code
+          format: int32
+        title:
+          type: string
+      description: Based on [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807)
+    InfobipCreateRequestConfiguration:
+      required:
+      - apiKey
+      - url
+      type: object
+      properties:
+        apiKey:
+          maxLength: 200
+          minLength: 1
+          type: string
+        sender:
+          maxLength: 200
+          minLength: 1
+          type: string
+        url:
+          maxLength: 200
+          minLength: 1
+          type: string
+    PageMetadata:
+      type: object
+      properties:
+        number:
+          type: integer
+          format: int64
+        size:
+          type: integer
+          format: int64
+        totalElements:
+          type: integer
+          format: int64
+        totalPages:
+          type: integer
+          format: int64
+    TelesignInsertRequest:
+      required:
+      - configuration
+      - name
+      - otpResendLimit
+      - type
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/TelephonyProviderInsertRequest'
+      - type: object
+        properties:
+          configuration:
+            $ref: '#/components/schemas/TelesignCreateRequestConfiguration'
+    TelephonyProviderInsertRequestOtpResendLimit:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+        resendLockoutDurationMinutes:
+          maximum: 30
+          minimum: 1
+          type: integer
+          format: int32
+        resendMaxAttempts:
+          maximum: 10
+          minimum: 1
+          type: integer
+          format: int32
+        timeWindowMinutes:
+          maximum: 30
+          minimum: 1
+          type: integer
+          format: int32
+    TelephonyProviderResponse:
+      type: object
+      properties:
+        configuration:
+          type: object
+        description:
+          type: string
+        id:
+          type: string
+        name:
+          type: string
+        otpResendLimit:
+          $ref: '#/components/schemas/TelephonyProviderOtpResendLimit'
+        supportedChannels:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+            enum:
+            - sms
+            - voice
+        type:
+          type: string
+          enum:
+          - custom
+          - infobip
+          - telesign
+          - twilio
+          - sinch
+          - strivacity
+    CustomTelephonyUpdateRequestConfiguration:
+      required:
+      - packageDependencies
+      type: object
+      properties:
+        code:
+          maxLength: 256000
+          minLength: 1
+          type: string
+          description: Code of the custom telephony provider, if not specified it's generated automatically for each type
+          default: '*example code*'
+        packageDependencies:
+          type: object
+          additionalProperties:
+            type: string
+            description: Dependencies used for the event hook function
+          description: Dependencies used for the event hook function
+    CustomTelephonyUpdateRequest:
+      required:
+      - configuration
+      - id
+      - name
+      - otpResendLimit
+      - supportedChannels
+      - type
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/TelephonyProviderUpdateRequest'
+      - type: object
+        properties:
+          configuration:
+            $ref: '#/components/schemas/CustomTelephonyUpdateRequestConfiguration'
+          supportedChannels:
+            maxItems: 2147483647
+            minItems: 1
+            uniqueItems: true
+            type: array
+            items:
+              type: string
+              enum:
+              - sms
+              - voice
+    InfobipInsertRequest:
+      required:
+      - configuration
+      - name
+      - otpResendLimit
+      - type
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/TelephonyProviderInsertRequest'
+      - type: object
+        properties:
+          configuration:
+            $ref: '#/components/schemas/InfobipCreateRequestConfiguration'
+    SinchCreateRequestConfiguration:
+      required:
+      - apiKey
+      - smsUrl
+      type: object
+      properties:
+        apiKey:
+          maxLength: 200
+          minLength: 1
+          type: string
+        from:
+          maxLength: 200
+          minLength: 1
+          type: string
+        smsUrl:
+          maxLength: 200
+          minLength: 1
+          type: string
+    TelesignCreateRequestConfiguration:
+      required:
+      - apiKey
+      - customerId
+      type: object
+      properties:
+        apiKey:
+          maxLength: 200
+          minLength: 1
+          type: string
+        customerId:
+          maxLength: 200
+          minLength: 1
+          type: string
+    CustomTelephonyInsertRequest:
+      required:
+      - configuration
+      - name
+      - otpResendLimit
+      - supportedChannels
+      - type
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/TelephonyProviderInsertRequest'
+      - type: object
+        properties:
+          configuration:
+            $ref: '#/components/schemas/CustomTelephonyInsertRequestConfiguration'
+          supportedChannels:
+            maxItems: 2147483647
+            minItems: 1
+            uniqueItems: true
+            type: array
+            items:
+              type: string
+              enum:
+              - sms
+              - voice
+    TwilioUpdateRequestConfiguration:
+      required:
+      - accountId
+      - phoneNumber
+      - serviceId
+      - username
+      type: object
+      properties:
+        accountId:
+          maxLength: 200
+          minLength: 1
+          type: string
+        authToken:
+          maxLength: 200
+          minLength: 1
+          type: string
+          description: Setting authToken to null retains its previous value instead of updating to null.
+        phoneNumber:
+          maxLength: 30
+          minLength: 1
+          type: string
+        serviceId:
+          maxLength: 200
+          minLength: 1
+          type: string
+        username:
+          maxLength: 200
+          minLength: 1
+          type: string
+    TwilioCreateRequestConfiguration:
+      required:
+      - accountId
+      - authToken
+      - phoneNumber
+      - serviceId
+      - username
+      type: object
+      properties:
+        accountId:
+          maxLength: 200
+          minLength: 1
+          type: string
+        authToken:
+          maxLength: 200
+          minLength: 1
+          type: string
+        phoneNumber:
+          maxLength: 30
+          minLength: 1
+          type: string
+        serviceId:
+          maxLength: 200
+          minLength: 1
+          type: string
+        username:
+          maxLength: 200
+          minLength: 1
+          type: string
+    CustomTelephonyInsertRequestConfiguration:
+      required:
+      - packageDependencies
+      type: object
+      properties:
+        code:
+          maxLength: 256000
+          minLength: 1
+          type: string
+          description: Code of the custom telephony provider, if not specified it's generated automatically for each type
+          default: '*example code*'
+        packageDependencies:
+          type: object
+          additionalProperties:
+            type: string
+            description: Dependencies used for the event hook function
+          description: Dependencies used for the event hook function
+    TelephonyProviderListResponse:
+      type: object
+      properties:
+        description:
+          type: string
+        id:
+          type: string
+        name:
+          type: string
+        supportedChannels:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+            enum:
+            - sms
+            - voice
+        type:
+          type: string
+          enum:
+          - custom
+          - infobip
+          - telesign
+          - twilio
+          - sinch
+          - strivacity
+    FieldError:
+      type: object
+      properties:
+        field:
+          type: string
+        message:
+          type: string
+        objectName:
+          type: string
+    TelesignUpdateRequestConfiguration:
+      required:
+      - customerId
+      type: object
+      properties:
+        apiKey:
+          maxLength: 200
+          minLength: 1
+          type: string
+          description: Setting apiKey to null retains its previous value instead of updating to null.
+        customerId:
+          maxLength: 200
+          minLength: 1
+          type: string
+    TelephonyProviderInsertRequest:
+      required:
+      - name
+      - otpResendLimit
+      - type
+      type: object
+      properties:
+        description:
+          maxLength: 1024
+          minLength: 0
+          type: string
+        name:
+          maxLength: 64
+          minLength: 3
+          pattern: ^$|^[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°]([\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*° ]*[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°])?$
+          type: string
+        otpResendLimit:
+          $ref: '#/components/schemas/TelephonyProviderInsertRequestOtpResendLimit'
+        type:
+          type: string
+          enum:
+          - custom
+          - infobip
+          - telesign
+          - twilio
+          - sinch
+          - strivacity
+      discriminator:
+        propertyName: type
+    StrivacityUpdateRequest:
+      required:
+      - id
+      - name
+      - otpResendLimit
+      - type
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/TelephonyProviderUpdateRequest'
+    PagedModelTelephonyProviderListResponse:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/TelephonyProviderListResponse'
+        page:
+          $ref: '#/components/schemas/PageMetadata'
+    TwilioInsertRequest:
+      required:
+      - configuration
+      - name
+      - otpResendLimit
+      - type
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/TelephonyProviderInsertRequest'
+      - type: object
+        properties:
+          configuration:
+            $ref: '#/components/schemas/TwilioCreateRequestConfiguration'
+    TelesignUpdateRequest:
+      required:
+      - configuration
+      - id
+      - name
+      - otpResendLimit
+      - type
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/TelephonyProviderUpdateRequest'
+      - type: object
+        properties:
+          configuration:
+            $ref: '#/components/schemas/TelesignUpdateRequestConfiguration'
+    InfobipUpdateRequest:
+      required:
+      - configuration
+      - id
+      - name
+      - otpResendLimit
+      - type
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/TelephonyProviderUpdateRequest'
+      - type: object
+        properties:
+          configuration:
+            $ref: '#/components/schemas/InfobipUpdateRequestConfiguration'
+    SinchUpdateRequestConfiguration:
+      required:
+      - smsUrl
+      type: object
+      properties:
+        apiKey:
+          maxLength: 200
+          minLength: 1
+          type: string
+          description: Setting apiKey to null retains its previous value instead of updating to null.
+        from:
+          maxLength: 200
+          minLength: 1
+          type: string
+        smsUrl:
+          maxLength: 200
+          minLength: 1
+          type: string
+    TelephonyProviderUpdateRequestOtpResendLimit:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+        resendLockoutDurationMinutes:
+          maximum: 30
+          minimum: 1
+          type: integer
+          format: int32
+        resendMaxAttempts:
+          maximum: 10
+          minimum: 1
+          type: integer
+          format: int32
+        timeWindowMinutes:
+          maximum: 30
+          minimum: 1
+          type: integer
+          format: int32
+    TwilioUpdateRequest:
+      required:
+      - configuration
+      - id
+      - name
+      - otpResendLimit
+      - type
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/TelephonyProviderUpdateRequest'
+      - type: object
+        properties:
+          configuration:
+            $ref: '#/components/schemas/TwilioUpdateRequestConfiguration'
+    TelephonyProviderOtpResendLimit:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+        resendLockoutDurationMinutes:
+          type: integer
+          format: int32
+        resendMaxAttempts:
+          type: integer
+          format: int32
+        timeWindowMinutes:
+          type: integer
+          format: int32
+    SinchInsertRequest:
+      required:
+      - configuration
+      - name
+      - otpResendLimit
+      - type
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/TelephonyProviderInsertRequest'
+      - type: object
+        properties:
+          configuration:
+            $ref: '#/components/schemas/SinchCreateRequestConfiguration'
+    TelephonyProviderUpdateRequest:
+      required:
+      - id
+      - name
+      - otpResendLimit
+      - type
+      type: object
+      properties:
+        description:
+          maxLength: 1024
+          minLength: 0
+          type: string
+        id:
+          type: string
+        name:
+          maxLength: 64
+          minLength: 3
+          pattern: ^$|^[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°]([\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*° ]*[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°])?$
+          type: string
+        otpResendLimit:
+          $ref: '#/components/schemas/TelephonyProviderUpdateRequestOtpResendLimit'
+        type:
+          type: string
+          description: This field cannot be altered
+          enum:
+          - custom
+          - infobip
+          - telesign
+          - twilio
+          - sinch
+          - strivacity
+      discriminator:
+        propertyName: type
+    InfobipUpdateRequestConfiguration:
+      required:
+      - url
+      type: object
+      properties:
+        apiKey:
+          maxLength: 200
+          minLength: 1
+          type: string
+          description: Setting apiKey to null retains its previous value instead of updating to null.
+        sender:
+          maxLength: 200
+          minLength: 1
+          type: string
+        url:
+          maxLength: 200
+          minLength: 1
+          type: string
+    SinchUpdateRequest:
+      required:
+      - configuration
+      - id
+      - name
+      - otpResendLimit
+      - type
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/TelephonyProviderUpdateRequest'
+      - type: object
+        properties:
+          configuration:
+            $ref: '#/components/schemas/SinchUpdateRequestConfiguration'
+  securitySchemes:
+    securityScheme:
+      scheme: bearer
+      type: http

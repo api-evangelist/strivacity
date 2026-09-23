@@ -1,0 +1,802 @@
+openapi: 3.2.0
+info:
+  description: API documentation of Admin Portal
+  title: Admin Portal Application Variant API
+  version: v0.0.1
+servers:
+- url: https://{tenant}
+  variables:
+    tenant:
+      default: example.strivacity.com
+      description: Your Strivacity tenant
+tags:
+- name: Application Variant
+paths:
+  /admin/api/v2/applicationVariants:
+    get:
+      description: 'You can list all the existing variants grouped by applications.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | read:config_application |'
+      operationId: applicationVariants
+      responses:
+        '200':
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ApplicationVariantResponse'
+          description: OK
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+      security:
+      - securityScheme:
+        - read:config_application
+      summary: List variants
+      tags:
+      - Application Variant
+  /admin/api/v2/applications/{applicationId}/variants:
+    get:
+      description: 'You can list the existing variants of an application by calling this endpoint.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | read:config_application |'
+      operationId: listVariants
+      parameters:
+      - in: path
+        name: applicationId
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/VariantListResponse'
+          description: OK
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+        '404':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Not Found
+      security:
+      - securityScheme:
+        - read:config_application
+      summary: List application config A/B testing variants
+      tags:
+      - Application Variant
+    post:
+      description: 'You can create a variant by calling this endpoint.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | write:config_application |'
+      operationId: createVariant
+      parameters:
+      - in: path
+        name: applicationId
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VariantInsertRequest'
+        required: true
+      responses:
+        '201':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/VariantResponse'
+          description: Created
+        '400':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Bad Request
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+        '404':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Not Found
+        '409':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Conflict
+      security:
+      - securityScheme:
+        - write:config_application
+      summary: Create an application config A/B testing variant
+      tags:
+      - Application Variant
+    put:
+      description: 'You can reorder variants by calling this endpoint. Request body should contain the existing resource IDs in the desired order.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | write:config_application |'
+      operationId: reorderVariants
+      parameters:
+      - in: path
+        name: applicationId
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/IdReferenceRequest'
+        required: true
+      responses:
+        '204':
+          description: No Content
+        '400':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Bad Request
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+        '404':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Not Found
+      security:
+      - securityScheme:
+        - write:config_application
+      summary: Update the order of application config A/B testing variants
+      tags:
+      - Application Variant
+  /admin/api/v2/applications/{applicationId}/variants/{variantId}:
+    delete:
+      description: 'You can delete a variant by calling this endpoint
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | delete:config_application |'
+      operationId: deleteVariant
+      parameters:
+      - in: path
+        name: applicationId
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: variantId
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: No Content
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+        '404':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Not Found
+      security:
+      - securityScheme:
+        - delete:config_application
+      summary: Delete an application config A/B testing variant
+      tags:
+      - Application Variant
+    get:
+      description: 'You can get a variant by calling this endpoint.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | read:config_application |'
+      operationId: getVariant
+      parameters:
+      - in: path
+        name: applicationId
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: variantId
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/VariantResponse'
+          description: OK
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+        '404':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Not Found
+      security:
+      - securityScheme:
+        - read:config_application
+      summary: Get an application config A/B testing variant
+      tags:
+      - Application Variant
+    put:
+      description: 'You can update a variant by calling this endpoint.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | write:config_application |'
+      operationId: updateVariant
+      parameters:
+      - in: path
+        name: applicationId
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: variantId
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VariantUpdateRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/VariantResponse'
+          description: OK
+        '400':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Bad Request
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+        '404':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Not Found
+        '409':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Conflict
+      security:
+      - securityScheme:
+        - write:config_application
+      summary: Update an application config A/B testing variant
+      tags:
+      - Application Variant
+components:
+  schemas:
+    ProblemJson:
+      type: object
+      properties:
+        detail:
+          type: string
+        entityName:
+          type: string
+          description: The name of the entity within the error has occurred
+        errorKey:
+          type: string
+          description: A unique identifier of the error
+        fieldErrors:
+          type: array
+          description: Field constraint violation errors
+          items:
+            $ref: '#/components/schemas/FieldError'
+        message:
+          type: string
+          description: A unique identifier in format of 'error.{errorKey}'
+        params:
+          type: array
+          description: Further information related to the actual error
+          items:
+            type: object
+            additionalProperties:
+              type: object
+        path:
+          type: string
+          description: Request URI
+        status:
+          type: integer
+          description: Status code
+          format: int32
+        title:
+          type: string
+      description: Based on [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807)
+    StaticVariableRequest:
+      required:
+      - name
+      - type
+      - value
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/VariableOverrideUpsertRequest'
+      - type: object
+        properties:
+          value:
+            maxLength: 8192
+            minLength: 0
+            type: string
+    HookOverrideUpsertRequest:
+      type: object
+      properties:
+        id:
+          pattern: ^[a-zA-Z0-9-]{1,36}$
+          type: string
+          description: ID of the represented entity (nullable)
+        variableOverrides:
+          type: array
+          items:
+            oneOf:
+            - $ref: '#/components/schemas/VariableOverrideUpsertRequest'
+            - $ref: '#/components/schemas/NoValueRequest'
+            - $ref: '#/components/schemas/StaticSecretRequest'
+            - $ref: '#/components/schemas/StaticVariableRequest'
+            - $ref: '#/components/schemas/VariableReferenceRequest'
+      description: 'Defines lifecycle event hook overrides for the variant.
+
+        Alternative hook configuration for a specific hook type: `"HOOK_TYPE" : {"id" : "<hook-uuid>"}`
+
+        Remove hook: `"HOOK_TYPE" : {"id" : null}`'
+    IdReferenceRequest:
+      required:
+      - id
+      type: object
+      properties:
+        id:
+          pattern: ^[a-zA-Z0-9-]{1,36}$
+          type: string
+          description: ID of the represented entity
+    ApplicationVariantResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        variants:
+          type: array
+          items:
+            $ref: '#/components/schemas/NameAndIdResponse'
+    PolicyOverrides:
+      type: object
+      properties:
+        adaptiveMFA:
+          $ref: '#/components/schemas/IdReferenceRequest'
+        brand:
+          $ref: '#/components/schemas/IdReferenceRequest'
+        identityProofing:
+          $ref: '#/components/schemas/NullableIdReferenceRequest'
+        notificationPolicy:
+          $ref: '#/components/schemas/IdReferenceRequest'
+        selfServicePolicy:
+          $ref: '#/components/schemas/IdReferenceRequest'
+      description: 'Defines policy overrides for the variant.
+
+        If any of them is set to `null`, the policy will be inherited.
+
+        Identity proofing policy can be unset to ''No verification policy'' option by `"identityProofing" : { "id": null }`'
+    NullableIdReferenceRequest:
+      type: object
+      properties:
+        id:
+          pattern: ^[a-zA-Z0-9-]{1,36}$
+          type: string
+          description: ID of the represented entity (nullable)
+    NoValueRequest:
+      required:
+      - name
+      - type
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/VariableOverrideUpsertRequest'
+    Policies:
+      type: object
+      properties:
+        adaptiveMFA:
+          $ref: '#/components/schemas/IdReferenceResponse'
+        brand:
+          $ref: '#/components/schemas/IdReferenceResponse'
+        identityProofing:
+          $ref: '#/components/schemas/IdReferenceResponse'
+        notificationPolicy:
+          $ref: '#/components/schemas/IdReferenceResponse'
+        selfServicePolicy:
+          $ref: '#/components/schemas/IdReferenceResponse'
+    EventHookOverride:
+      type: object
+      properties:
+        id:
+          type: string
+        variableOverrides:
+          uniqueItems: true
+          type: array
+          items:
+            $ref: '#/components/schemas/VariableOverrideResponse'
+    VariantInsertRequest:
+      required:
+      - consentOverrides
+      - hookOverrides
+      - name
+      - policyOverrides
+      - target
+      type: object
+      properties:
+        consentOverrides:
+          uniqueItems: true
+          type: array
+          description: 'Defines consent overrides for the variant.
+
+            Consent IDs in the list are required to be unique.
+
+            Add/override: `{ "consent": { "id": "<consent-uuid>" }, "type": "[optional|mandatory|mandatoryHidden]" }`
+
+            Remove: `{ "consent": { "id": "<consent-uuid>" }, "type": null }`
+
+            '
+          items:
+            $ref: '#/components/schemas/ConsentOverride'
+        description:
+          maxLength: 1024
+          minLength: 0
+          type: string
+        enabled:
+          type: boolean
+          default: false
+        hookOverrides:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/HookOverrideUpsertRequest'
+          description: 'Defines lifecycle event hook overrides for the variant.
+
+            Alternative hook configuration for a specific hook type: `"HOOK_TYPE" : {"id" : "<hook-uuid>"}`
+
+            Remove hook: `"HOOK_TYPE" : {"id" : null}`'
+        name:
+          maxLength: 64
+          minLength: 1
+          pattern: ^$|^[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°]([\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*° ]*[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°])?$
+          type: string
+          description: Represents the name of the variant. Must not be 'baseline' (case insensitive).
+        policyOverrides:
+          $ref: '#/components/schemas/PolicyOverrides'
+        target:
+          $ref: '#/components/schemas/BooleanExpressionInsert'
+    BooleanExpressionInsert:
+      type: object
+      properties:
+        operator:
+          type: string
+    VariantListResponse:
+      type: object
+      properties:
+        description:
+          type: string
+        enabled:
+          type: boolean
+        id:
+          type: string
+        name:
+          type: string
+        target:
+          $ref: '#/components/schemas/BooleanExpressionResponse'
+    StaticSecretRequest:
+      required:
+      - name
+      - type
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/VariableOverrideUpsertRequest'
+      - type: object
+        properties:
+          secretValue:
+            maxLength: 8192
+            minLength: 0
+            type: string
+    BooleanExpressionResponse:
+      type: object
+      properties:
+        operator:
+          type: string
+    IdReferenceResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID of the represented entity
+    FieldError:
+      type: object
+      properties:
+        field:
+          type: string
+        message:
+          type: string
+        objectName:
+          type: string
+    NameAndIdResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID of the represented entity
+        name:
+          type: string
+          description: Name of the represented entity
+          example: Entity name
+    VariantUpdateRequest:
+      required:
+      - consentOverrides
+      - hookOverrides
+      - id
+      - name
+      - policyOverrides
+      - target
+      type: object
+      properties:
+        consentOverrides:
+          uniqueItems: true
+          type: array
+          description: 'Defines consent overrides for the variant.
+
+            Consent IDs in the list are required to be unique.
+
+            Add/override: `{ "consent": { "id": "<consent-uuid>" }, "type": "[optional|mandatory|mandatoryHidden]" }`
+
+            Remove: `{ "consent": { "id": "<consent-uuid>" }, "type": null }`
+
+            '
+          items:
+            $ref: '#/components/schemas/ConsentOverride'
+        description:
+          maxLength: 1024
+          minLength: 0
+          type: string
+        enabled:
+          type: boolean
+          default: false
+        hookOverrides:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/HookOverrideUpsertRequest'
+          description: 'Defines lifecycle event hook overrides for the variant.
+
+            Alternative hook configuration for a specific hook type: `"HOOK_TYPE" : {"id" : "<hook-uuid>"}`
+
+            Remove hook: `"HOOK_TYPE" : {"id" : null}`'
+        id:
+          pattern: ^[a-zA-Z0-9-]{1,36}$
+          type: string
+        name:
+          maxLength: 64
+          minLength: 1
+          pattern: ^$|^[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°]([\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*° ]*[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°])?$
+          type: string
+          description: Represents the name of the variant. Must not be 'baseline' (case insensitive).
+        policyOverrides:
+          $ref: '#/components/schemas/PolicyOverrides'
+        target:
+          $ref: '#/components/schemas/BooleanExpressionInsert'
+    VariableOverrideUpsertRequest:
+      required:
+      - name
+      - type
+      type: object
+      properties:
+        name:
+          type: string
+        type:
+          type: string
+          enum:
+          - noValue
+          - variableReference
+          - staticVariable
+          - staticSecret
+      discriminator:
+        propertyName: type
+    VariantResponse:
+      type: object
+      properties:
+        consentOverrides:
+          type: array
+          items:
+            $ref: '#/components/schemas/VariantConsentResponse'
+        description:
+          type: string
+        enabled:
+          type: boolean
+        hookOverrides:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/EventHookOverride'
+        id:
+          type: string
+        name:
+          type: string
+        policyOverrides:
+          $ref: '#/components/schemas/Policies'
+        target:
+          $ref: '#/components/schemas/BooleanExpressionResponse'
+    VariableOverrideResponse:
+      type: object
+      properties:
+        name:
+          type: string
+        type:
+          type: string
+          enum:
+          - noValue
+          - variableReference
+          - staticVariable
+          - staticSecret
+        value:
+          type: string
+    VariableReferenceRequest:
+      required:
+      - name
+      - type
+      - value
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/VariableOverrideUpsertRequest'
+      - type: object
+        properties:
+          value:
+            maxLength: 36
+            minLength: 0
+            type: string
+    ConsentOverride:
+      required:
+      - consent
+      type: object
+      properties:
+        consent:
+          $ref: '#/components/schemas/IdReferenceRequest'
+        type:
+          type: string
+          enum:
+          - optional
+          - mandatory
+          - mandatoryHidden
+    VariantConsentResponse:
+      type: object
+      properties:
+        consent:
+          $ref: '#/components/schemas/IdReferenceResponse'
+        type:
+          type: string
+          enum:
+          - optional
+          - mandatory
+          - mandatoryHidden
+  securitySchemes:
+    securityScheme:
+      scheme: bearer
+      type: http

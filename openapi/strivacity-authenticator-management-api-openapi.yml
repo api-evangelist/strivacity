@@ -1,0 +1,261 @@
+openapi: 3.2.0
+info:
+  description: API documentation of MyAccount Portal
+  title: MyAccount Portal Authenticator management API
+  version: v0.0.1
+servers:
+- url: https://{tenant}
+  variables:
+    tenant:
+      default: example.strivacity.com
+      description: Your Strivacity tenant
+tags:
+- name: Authenticator management
+paths:
+  /myaccount/api/v1/authenticators:
+    post:
+      description: You can enroll authenticator of the authenticated account using this endpoint. This action needs verification. The request should be repeated with X-Challenge header filled with the verification code sent right after the first request.
+      operationId: addAuthenticatorRequest
+      parameters:
+      - in: header
+        name: X-Challenge
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthenticatorInsert_Authenticator'
+        required: true
+      responses:
+        '200':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AuthenticatorSchemaResponse'
+          description: OK
+        '202':
+          description: Accepted
+          headers:
+            X-Retry-After:
+              description: Timestamp indicating when the request can be retried.
+              schema:
+                type: string
+                format: date-time
+              style: simple
+        '400':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Bad Request
+        '409':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Conflict
+        '429':
+          description: Too many requests - rate limit exceeded or progressive delay enforcement triggered
+          headers:
+            X-Retry-After:
+              description: Timestamp indicating when the request can be retried.
+              required: true
+              schema:
+                type: string
+                format: date-time
+              style: simple
+      summary: Enroll an authenticator
+      tags:
+      - Authenticator management
+  /myaccount/api/v1/authenticators/{authenticatorId}:
+    delete:
+      description: You can delete an authenticator of the authenticated account using this endpoint. This action needs verification. The request should be repeated with X-Challenge header filled with the verification code sent right after the first request.
+      operationId: removeAuthenticatorRequest
+      parameters:
+      - in: header
+        name: X-Challenge
+        schema:
+          type: string
+      - in: path
+        name: authenticatorId
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            '*/*':
+              schema:
+                type: string
+          description: OK
+        '202':
+          description: Accepted
+          headers:
+            X-Retry-After:
+              description: Timestamp indicating when the request can be retried.
+              schema:
+                type: string
+                format: date-time
+              style: simple
+        '429':
+          description: Too many requests - rate limit exceeded or progressive delay enforcement triggered
+          headers:
+            X-Retry-After:
+              description: Timestamp indicating when the request can be retried.
+              required: true
+              schema:
+                type: string
+                format: date-time
+              style: simple
+      summary: Delete an authenticator
+      tags:
+      - Authenticator management
+    post:
+      description: You can update the methods of an authenticator of the authenticated account using this endpoint.
+      operationId: updateAuthenticator
+      parameters:
+      - in: path
+        name: authenticatorId
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthenticatorUpdate_Authenticator'
+        required: true
+      responses:
+        '200':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AuthenticatorSchemaResponse'
+          description: OK
+      summary: Update authenticator methods
+      tags:
+      - Authenticator management
+components:
+  schemas:
+    ProblemJson:
+      type: object
+      properties:
+        detail:
+          type: string
+        entityName:
+          type: string
+          description: The name of the entity within the error has occurred
+        errorKey:
+          type: string
+          description: A unique identifier of the error
+        fieldErrors:
+          type: array
+          description: Field constraint violation errors
+          items:
+            $ref: '#/components/schemas/FieldError'
+        message:
+          type: string
+          description: A unique identifier in format of 'error.{errorKey}'
+        params:
+          type: array
+          description: Further information related to the actual error
+          items:
+            type: object
+            additionalProperties:
+              type: object
+        path:
+          type: string
+          description: Request URI
+        status:
+          type: integer
+          description: Status code
+          format: int32
+        title:
+          type: string
+      description: Based on [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807)
+    AuthenticatorInsert_Authenticator:
+      required:
+      - methods
+      - target
+      - type
+      type: object
+      properties:
+        methods:
+          type: array
+          items:
+            type: string
+            description: Methods of the authenticator. Can be 'passcode', or 'magicLink' for email and 'voice', 'passcode', or 'magicLink' for phone.
+            enum:
+            - passcode
+            - voice
+            - magicLink
+        target:
+          minLength: 1
+          type: string
+          description: Target value of the authenticator, such as an email address or phone number.
+        type:
+          type: string
+          description: Type of the authenticator, can be 'email' or 'phone'.
+          enum:
+          - email
+          - phone
+    FieldError:
+      type: object
+      properties:
+        field:
+          type: string
+        message:
+          type: string
+        objectName:
+          type: string
+    AuthenticatorSchemaResponse:
+      type: object
+      properties:
+        createdAt:
+          type: string
+          description: Creation time of the authenticator
+          format: date-time
+        id:
+          type: string
+        lastUsedAt:
+          type: string
+          description: Last usage time of the authenticator
+          format: date-time
+        methods:
+          type: array
+          items:
+            type: string
+            description: 'Authenticator method that defines how the authentication can be done. Possible values: `passcode`, `magicLink` or `voice`'
+            example: passcode
+        target:
+          type: string
+          description: Authenticator target, to where the MFA will be requested for
+          example: '+36301234567'
+        type:
+          type: string
+          description: Authenticator type used for MFA
+          enum:
+          - phone
+          - email
+      description: Represents an authenticator for an account
+    AuthenticatorUpdate_Authenticator:
+      required:
+      - methods
+      type: object
+      properties:
+        methods:
+          maxItems: 2147483647
+          minItems: 1
+          type: array
+          items:
+            type: string
+            description: Methods of the authenticator. Can be 'passcode', or 'magicLink' for email and 'voice', 'passcode', or 'magicLink' for phone.
+            enum:
+            - passcode
+            - voice
+            - magicLink
+  securitySchemes:
+    securityScheme:
+      scheme: bearer
+      type: http

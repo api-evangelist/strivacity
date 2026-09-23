@@ -1,0 +1,711 @@
+openapi: 3.2.0
+info:
+  description: API documentation of Admin Portal
+  title: Admin Portal Inbound Connection [beta] API
+  version: v0.0.1
+servers:
+- url: https://{tenant}
+  variables:
+    tenant:
+      default: example.strivacity.com
+      description: Your Strivacity tenant
+tags:
+- description: These endpoints are subject to change
+  name: Inbound Connection [beta]
+paths:
+  /admin/api/v1/identityStores/{identityStoreName}/inboundConnections:
+    get:
+      description: 'List the existing inbound connections of an identity store.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | read:config_inbound_connection |'
+      operationId: listInboundConnections
+      parameters:
+      - in: path
+        name: identityStoreName
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/InboundConnectionListResponse'
+          description: OK
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+        '404':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Not Found
+      security:
+      - securityScheme:
+        - read:config_inbound_connection
+      summary: List inbound connections
+      tags:
+      - Inbound Connection [beta]
+    post:
+      description: 'Create an inbound connection for an identity store.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | write:config_inbound_connection |'
+      operationId: createInboundConnection
+      parameters:
+      - in: path
+        name: identityStoreName
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InboundConnectionInsertRequest'
+        required: true
+      responses:
+        '201':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/InboundConnectionResponse'
+          description: Created
+        '400':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Bad Request
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+        '404':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Not Found
+        '409':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Conflict
+      security:
+      - securityScheme:
+        - write:config_inbound_connection
+      summary: Create an inbound connection
+      tags:
+      - Inbound Connection [beta]
+  /admin/api/v1/identityStores/{identityStoreName}/inboundConnections/{inboundConnectionId}:
+    delete:
+      description: 'Delete an inbound connection from an identity store.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | delete:config_inbound_connection |'
+      operationId: deleteInboundConnection
+      parameters:
+      - in: path
+        name: identityStoreName
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: inboundConnectionId
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: No Content
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+        '404':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Not Found
+      security:
+      - securityScheme:
+        - delete:config_inbound_connection
+      summary: Delete an inbound connection
+      tags:
+      - Inbound Connection [beta]
+    get:
+      description: 'Get an inbound connection by its ID.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | read:config_inbound_connection |'
+      operationId: getInboundConnection
+      parameters:
+      - in: path
+        name: identityStoreName
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: inboundConnectionId
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/InboundConnectionResponse'
+          description: OK
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+        '404':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Not Found
+      security:
+      - securityScheme:
+        - read:config_inbound_connection
+      summary: Get an inbound connection
+      tags:
+      - Inbound Connection [beta]
+    put:
+      description: 'Update an inbound connection for an identity store.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | write:config_inbound_connection |'
+      operationId: updateInboundConnection
+      parameters:
+      - in: path
+        name: identityStoreName
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: inboundConnectionId
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InboundConnectionUpdateRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/InboundConnectionResponse'
+          description: OK
+        '400':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Bad Request
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+        '404':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Not Found
+        '409':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Conflict
+      security:
+      - securityScheme:
+        - write:config_inbound_connection
+      summary: Update an inbound connection
+      tags:
+      - Inbound Connection [beta]
+  /admin/api/v1/identityStores/{identityStoreName}/inboundConnections/{inboundConnectionId}/forceSync:
+    post:
+      description: 'Forces a sync for inbound connection
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | write:config_inbound_connection |'
+      operationId: inboundConnectionFullSync
+      parameters:
+      - in: path
+        name: identityStoreName
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: inboundConnectionId
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          content:
+            '*/*':
+              schema:
+                type: object
+          description: No Content
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+        '404':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Not Found
+      security:
+      - securityScheme:
+        - write:config_inbound_connection
+      summary: Forces a sync for inbound connection
+      tags:
+      - Inbound Connection [beta]
+components:
+  schemas:
+    ProblemJson:
+      type: object
+      properties:
+        detail:
+          type: string
+        entityName:
+          type: string
+          description: The name of the entity within the error has occurred
+        errorKey:
+          type: string
+          description: A unique identifier of the error
+        fieldErrors:
+          type: array
+          description: Field constraint violation errors
+          items:
+            $ref: '#/components/schemas/FieldError'
+        message:
+          type: string
+          description: A unique identifier in format of 'error.{errorKey}'
+        params:
+          type: array
+          description: Further information related to the actual error
+          items:
+            type: object
+            additionalProperties:
+              type: object
+        path:
+          type: string
+          description: Request URI
+        status:
+          type: integer
+          description: Status code
+          format: int32
+        title:
+          type: string
+      description: Based on [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807)
+    InboundConnectionJdbcConfigurationConnectionResponse:
+      type: object
+      properties:
+        url:
+          type: string
+        username:
+          type: string
+    SyncSettings:
+      required:
+      - cron
+      - forceSync
+      - query
+      type: object
+      properties:
+        batchSize:
+          maximum: 1000
+          minimum: 1
+          type: integer
+          format: int32
+        cron:
+          minLength: 1
+          type: string
+        deleteDelay:
+          maximum: 100
+          minimum: 1
+          type: integer
+          format: int32
+        forceSync:
+          $ref: '#/components/schemas/ForceSync'
+        query:
+          minLength: 1
+          type: string
+        singleResultQuery:
+          type: string
+    AccountEnabledTarget:
+      required:
+      - type
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/Target'
+    Source:
+      required:
+      - path
+      type: object
+      properties:
+        path:
+          maxLength: 256
+          minLength: 0
+          type: string
+        regex:
+          maxLength: 64
+          minLength: 0
+          type: string
+    ForceSync:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+        intervalInDays:
+          maximum: 365
+          minimum: 2
+          type: integer
+          format: int32
+    JdbcConfiguration:
+      required:
+      - connection
+      - syncSettings
+      type: object
+      properties:
+        connection:
+          $ref: '#/components/schemas/Connection'
+        syncSettings:
+          $ref: '#/components/schemas/SyncSettings'
+    InboundConnectionUpdateRequest:
+      required:
+      - configuration
+      - id
+      - mappings
+      - name
+      - type
+      type: object
+      properties:
+        configuration:
+          $ref: '#/components/schemas/Configuration'
+        description:
+          maxLength: 1024
+          minLength: 0
+          type: string
+        enabled:
+          type: boolean
+          default: false
+        id:
+          pattern: ^[a-zA-Z0-9-]{1,36}$
+          type: string
+        mappings:
+          maxItems: 100
+          minItems: 0
+          type: array
+          items:
+            $ref: '#/components/schemas/MappingRequest'
+        name:
+          maxLength: 64
+          minLength: 2
+          pattern: '[a-zA-Z0-9]+'
+          type: string
+          description: This field cannot be altered
+        type:
+          type: string
+          enum:
+          - jdbcAggregation
+      description: Represents an inbound connection update request. Mapping should contain one mapping with useAsCorrelationId = true, also the correlationId mapping must be mapped to identity store unique attribute
+    InboundConnectionJdbcConfigurationSyncSettingsResponse:
+      type: object
+      properties:
+        batchSize:
+          type: integer
+          format: int32
+        cron:
+          type: string
+        deleteDelay:
+          type: integer
+          format: int32
+        forceSync:
+          $ref: '#/components/schemas/InboundConnectionJdbcConfigurationForceSyncResponse'
+        query:
+          type: string
+        singleResultQuery:
+          type: string
+    Target:
+      required:
+      - type
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - attribute
+          - accountEnabled
+      discriminator:
+        propertyName: type
+    MappingRequest:
+      required:
+      - source
+      - target
+      type: object
+      properties:
+        enabled:
+          type: boolean
+          default: false
+        source:
+          $ref: '#/components/schemas/Source'
+        target:
+          oneOf:
+          - $ref: '#/components/schemas/Target'
+          - $ref: '#/components/schemas/AccountEnabledTarget'
+          - $ref: '#/components/schemas/AttributeTarget'
+        useAsCorrelationId:
+          type: boolean
+          default: false
+    OnlyIdRequest:
+      required:
+      - id
+      type: object
+      properties:
+        id:
+          pattern: ^[a-zA-Z0-9-]{1,36}$
+          type: string
+    AttributeTarget:
+      required:
+      - attribute
+      - type
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/Target'
+      - type: object
+        properties:
+          attribute:
+            $ref: '#/components/schemas/OnlyIdRequest'
+    FieldError:
+      type: object
+      properties:
+        field:
+          type: string
+        message:
+          type: string
+        objectName:
+          type: string
+    InboundConnectionJdbcConfigurationResponse:
+      type: object
+      properties:
+        connection:
+          $ref: '#/components/schemas/InboundConnectionJdbcConfigurationConnectionResponse'
+        syncSettings:
+          $ref: '#/components/schemas/InboundConnectionJdbcConfigurationSyncSettingsResponse'
+    Connection:
+      required:
+      - url
+      type: object
+      properties:
+        password:
+          maxLength: 512
+          minLength: 0
+          type: string
+        url:
+          maxLength: 1024
+          minLength: 0
+          type: string
+        username:
+          maxLength: 512
+          minLength: 0
+          type: string
+    InboundConnectionListResponse:
+      type: object
+      properties:
+        description:
+          type: string
+        enabled:
+          type: boolean
+        id:
+          type: string
+        name:
+          type: string
+        type:
+          type: string
+          enum:
+          - jdbcAggregation
+      description: Represents an inbound connection list response
+    InboundConnectionInsertRequest:
+      required:
+      - configuration
+      - name
+      - type
+      type: object
+      properties:
+        configuration:
+          $ref: '#/components/schemas/Configuration'
+        description:
+          maxLength: 1024
+          minLength: 0
+          type: string
+        name:
+          maxLength: 64
+          minLength: 2
+          pattern: '[a-zA-Z0-9]+'
+          type: string
+          description: This field cannot be altered
+        type:
+          type: string
+          enum:
+          - jdbcAggregation
+      description: Represents an inbound connection insert request
+    MappingResponse:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+        source:
+          $ref: '#/components/schemas/MappingSourceResponse'
+        target:
+          $ref: '#/components/schemas/MappingTargetResponse'
+        useAsCorrelationId:
+          type: boolean
+    InboundConnectionResponse:
+      type: object
+      properties:
+        configuration:
+          $ref: '#/components/schemas/InboundConnectionConfigurationResponse'
+        description:
+          type: string
+        enabled:
+          type: boolean
+        id:
+          type: string
+        mappings:
+          type: array
+          items:
+            $ref: '#/components/schemas/MappingResponse'
+        name:
+          type: string
+        type:
+          type: string
+          enum:
+          - jdbcAggregation
+      description: Represents an inbound connection response
+    InboundConnectionConfigurationResponse:
+      type: object
+      oneOf:
+      - $ref: '#/components/schemas/InboundConnectionJdbcConfigurationResponse'
+    Configuration:
+      type: object
+      oneOf:
+      - $ref: '#/components/schemas/JdbcConfiguration'
+    MappingTargetResponse:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - attribute
+          - accountEnabled
+    MappingSourceResponse:
+      type: object
+      properties:
+        path:
+          type: string
+        regex:
+          type: string
+    InboundConnectionJdbcConfigurationForceSyncResponse:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+        intervalInDays:
+          type: integer
+          format: int32
+  securitySchemes:
+    securityScheme:
+      scheme: bearer
+      type: http

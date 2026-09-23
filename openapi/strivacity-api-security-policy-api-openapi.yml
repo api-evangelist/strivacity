@@ -1,0 +1,765 @@
+openapi: 3.2.0
+info:
+  description: API documentation of Admin Portal
+  title: Admin Portal API Security Policy API
+  version: v0.0.1
+servers:
+- url: https://{tenant}
+  variables:
+    tenant:
+      default: example.strivacity.com
+      description: Your Strivacity tenant
+tags:
+- name: API Security Policy
+paths:
+  /admin/api/v1/accessPolicies:
+    get:
+      description: 'You can list the existing API security policies by calling this endpoint.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | read:config_api_access |'
+      operationId: listApiAccessPolicies
+      parameters:
+      - description: Audience used for filtering
+        in: query
+        name: audience
+        required: false
+        schema:
+          type: string
+      - description: Assigned clients used for filtering
+        in: query
+        name: clients
+        required: false
+        schema:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+      - description: Tags used for filtering must exactly match the tag name
+        in: query
+        name: policyTags
+        required: false
+        schema:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+      - description: Name used for filtering
+        in: query
+        name: name
+        required: false
+        schema:
+          type: string
+      - description: Zero-based page index (0..N)
+        in: query
+        name: page
+        schema:
+          type: integer
+          format: int64
+          default: 0
+      - description: The size of the page to be returned
+        in: query
+        name: size
+        schema:
+          type: integer
+          format: int64
+          default: 20
+      - description: 'Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported.'
+        in: query
+        name: sort
+        schema:
+          type: array
+          items:
+            type: string
+      responses:
+        '200':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/PagedModelApiSecurityPolicyListResponse'
+          description: OK
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+      security:
+      - securityScheme:
+        - read:config_api_access
+      summary: List API security policies
+      tags:
+      - API Security Policy
+    post:
+      description: 'You can create an API security policy by calling this endpoint.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | write:config_api_access |'
+      operationId: createApiAccessPolicy
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApiSecurityPolicy_InsertRequest'
+        required: true
+      responses:
+        '201':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiSecurityPolicyResponse_ApiAccessPolicy'
+          description: Created
+        '400':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Bad Request
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+        '409':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Conflict
+      security:
+      - securityScheme:
+        - write:config_api_access
+      summary: Create an API security policy
+      tags:
+      - API Security Policy
+  /admin/api/v1/accessPolicies/{policyId}:
+    delete:
+      description: 'You can delete an API security policy by calling this endpoint.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | delete:config_api_access |'
+      operationId: deleteApiAccessPolicy
+      parameters:
+      - in: path
+        name: policyId
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: No Content
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+        '409':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: API security policy has assigned clients
+      security:
+      - securityScheme:
+        - delete:config_api_access
+      summary: Delete an API security policy
+      tags:
+      - API Security Policy
+    get:
+      description: 'You can get an API security policy by calling this endpoint.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | read:config_api_access |'
+      operationId: getApiAccessPolicy
+      parameters:
+      - in: path
+        name: policyId
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiSecurityPolicyResponse_ApiAccessPolicy'
+          description: OK
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+        '404':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Not Found
+      security:
+      - securityScheme:
+        - read:config_api_access
+      summary: Get an API security policy
+      tags:
+      - API Security Policy
+    put:
+      description: 'You can update an API security policy by calling this endpoint.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | write:config_api_access |'
+      operationId: updateApiAccessPolicy
+      parameters:
+      - in: path
+        name: policyId
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApiSecurityPolicyUpsertRequest_ApiAccessPolicy'
+        required: true
+      responses:
+        '200':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiSecurityPolicyResponse_ApiAccessPolicy'
+          description: OK
+        '400':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Bad Request
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+        '404':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Not Found
+        '409':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Conflict
+      security:
+      - securityScheme:
+        - write:config_api_access
+      summary: Update an API security policy
+      tags:
+      - API Security Policy
+  /admin/api/v1/accessPolicies/{policyId}/assignments:
+    post:
+      description: 'You can assign a client to an API security policy by calling this endpoint. Only available clients can be assigned.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | write:config_api_access |'
+      operationId: createApplicationAssignment
+      parameters:
+      - in: path
+        name: policyId
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApiSecurityPolicyAssignmentUpsertRequest_ApiAccessPolicy'
+        required: true
+      responses:
+        '201':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiSecurityPolicyAssignmentResponse_ApiAccessPolicy'
+          description: Created
+        '400':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Bad Request
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+        '404':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Not Found
+        '409':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Conflict
+      security:
+      - securityScheme:
+        - write:config_api_access
+      summary: Assign a client to an API security policy
+      tags:
+      - API Security Policy
+  /admin/api/v1/accessPolicies/{policyId}/assignments/{clientId}:
+    delete:
+      description: 'You can delete an API security policy assignment by calling this endpoint.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | write:config_api_access |'
+      operationId: deleteApplicationAssignmentFromApiAccessPolicy
+      parameters:
+      - in: path
+        name: policyId
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: clientId
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: No Content
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+        '404':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Not Found
+      security:
+      - securityScheme:
+        - write:config_api_access
+      summary: Delete an API security policy assignment
+      tags:
+      - API Security Policy
+    get:
+      description: 'You can get an API security policy assignment for a given client ID by calling this endpoint.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | read:config_api_access |'
+      operationId: getApiAccessPolicyAssignmentByClientId
+      parameters:
+      - in: path
+        name: policyId
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: clientId
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiSecurityPolicyAssignmentResponse_ApiAccessPolicy'
+          description: OK
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+        '404':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Not Found
+      security:
+      - securityScheme:
+        - read:config_api_access
+      summary: Get an API security policy assignment
+      tags:
+      - API Security Policy
+    put:
+      description: 'You can update an API security policy assignment by calling this endpoint.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | write:config_api_access |'
+      operationId: updateApplicationAssignment
+      parameters:
+      - in: path
+        name: policyId
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: clientId
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApiSecurityPolicyAssignmentUpsertRequest_ApiAccessPolicy'
+        required: true
+      responses:
+        '200':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ApiSecurityPolicyAssignmentResponse_ApiAccessPolicy'
+          description: OK
+        '400':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Bad Request
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+        '404':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Not Found
+      security:
+      - securityScheme:
+        - write:config_api_access
+      summary: Update an API security policy assignment
+      tags:
+      - API Security Policy
+components:
+  schemas:
+    ProblemJson:
+      type: object
+      properties:
+        detail:
+          type: string
+        entityName:
+          type: string
+          description: The name of the entity within the error has occurred
+        errorKey:
+          type: string
+          description: A unique identifier of the error
+        fieldErrors:
+          type: array
+          description: Field constraint violation errors
+          items:
+            $ref: '#/components/schemas/FieldError'
+        message:
+          type: string
+          description: A unique identifier in format of 'error.{errorKey}'
+        params:
+          type: array
+          description: Further information related to the actual error
+          items:
+            type: object
+            additionalProperties:
+              type: object
+        path:
+          type: string
+          description: Request URI
+        status:
+          type: integer
+          description: Status code
+          format: int32
+        title:
+          type: string
+      description: Based on [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807)
+    PageMetadata:
+      type: object
+      properties:
+        number:
+          type: integer
+          format: int64
+        size:
+          type: integer
+          format: int64
+        totalElements:
+          type: integer
+          format: int64
+        totalPages:
+          type: integer
+          format: int64
+    ApiSecurityPolicyAssignmentResponse_ApiAccessPolicy:
+      type: object
+      properties:
+        apiAccessPolicy:
+          $ref: '#/components/schemas/IdReferenceResponse_ApiAccessPolicy'
+        application:
+          $ref: '#/components/schemas/NameAndId_ApiAccessPolicy'
+        client:
+          $ref: '#/components/schemas/NameAndId_ApiAccessPolicy'
+        scopes:
+          uniqueItems: true
+          type: array
+          items:
+            $ref: '#/components/schemas/ScopeResponse_ApiAccessPolicy'
+    FieldError:
+      type: object
+      properties:
+        field:
+          type: string
+        message:
+          type: string
+        objectName:
+          type: string
+    ApiSecurityPolicy_InsertRequest:
+      required:
+      - audience
+      - name
+      type: object
+      properties:
+        audience:
+          maxLength: 767
+          minLength: 1
+          pattern: '[^|]*'
+          type: string
+        description:
+          maxLength: 1024
+          minLength: 0
+          type: string
+        name:
+          maxLength: 255
+          minLength: 1
+          pattern: ^$|^[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°]([\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*° ]*[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°])?$
+          type: string
+        policyTag:
+          pattern: ^[a-z0-9_]{2,32}$
+          type: string
+          description: Must be an existing policy tag name
+    ApiSecurityPolicyUpsertRequest_ApiAccessPolicy:
+      required:
+      - audience
+      - id
+      - name
+      type: object
+      properties:
+        audience:
+          maxLength: 767
+          minLength: 1
+          pattern: '[^|]*'
+          type: string
+        description:
+          maxLength: 1024
+          minLength: 0
+          type: string
+        id:
+          type: string
+        name:
+          maxLength: 255
+          minLength: 1
+          pattern: ^$|^[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°]([\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*° ]*[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°])?$
+          type: string
+        policyTag:
+          pattern: ^[a-z0-9_]{2,32}$
+          type: string
+          description: Must be an existing policy tag name
+    IdReferenceRequest_ApiAccessPolicy:
+      required:
+      - id
+      type: object
+      properties:
+        id:
+          pattern: ^[a-zA-Z0-9-]{1,36}$
+          type: string
+          description: ID of the represented entity
+    PagedModelApiSecurityPolicyListResponse:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/ApiSecurityPolicyListResponse'
+        page:
+          $ref: '#/components/schemas/PageMetadata'
+    ApiSecurityPolicyResponse_ApiAccessPolicy:
+      type: object
+      properties:
+        assignments:
+          uniqueItems: true
+          type: array
+          items:
+            $ref: '#/components/schemas/ApiSecurityPolicyAssignmentResponse_ApiAccessPolicy'
+        audience:
+          type: string
+        description:
+          type: string
+        id:
+          type: string
+        name:
+          type: string
+        policyTag:
+          type: string
+        scopes:
+          uniqueItems: true
+          type: array
+          items:
+            $ref: '#/components/schemas/ScopeResponse_ApiAccessPolicy'
+    ApiSecurityPolicyListResponse:
+      type: object
+      properties:
+        audience:
+          type: string
+        description:
+          type: string
+        id:
+          type: string
+        name:
+          type: string
+        policyTag:
+          type: string
+    NameAndId_ApiAccessPolicy:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID of the represented entity
+    ApiSecurityPolicyAssignmentUpsertRequest_ApiAccessPolicy:
+      required:
+      - apiAccessPolicy
+      - client
+      - scopes
+      type: object
+      properties:
+        apiAccessPolicy:
+          $ref: '#/components/schemas/IdReferenceRequest_ApiAccessPolicy'
+        client:
+          $ref: '#/components/schemas/IdReferenceRequest_ApiAccessPolicy'
+        scopes:
+          maxItems: 2147483647
+          minItems: 1
+          type: array
+          items:
+            $ref: '#/components/schemas/IdReferenceRequest_ApiAccessPolicy'
+    IdReferenceResponse_ApiAccessPolicy:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID of the represented entity
+    ScopeResponse_ApiAccessPolicy:
+      type: object
+      properties:
+        displayName:
+          type: string
+        id:
+          type: string
+        name:
+          type: string
+  securitySchemes:
+    securityScheme:
+      scheme: bearer
+      type: http

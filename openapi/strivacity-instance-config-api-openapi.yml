@@ -1,0 +1,248 @@
+openapi: 3.2.0
+info:
+  description: API documentation of Admin Portal
+  title: Admin Portal Instance Config API
+  version: v0.0.1
+servers:
+- url: https://{tenant}
+  variables:
+    tenant:
+      default: example.strivacity.com
+      description: Your Strivacity tenant
+tags:
+- name: Instance Config
+paths:
+  /admin/api/v1/instance/config:
+    get:
+      description: 'You can get the instance configuration by calling this endpoint.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | read:config_instance |'
+      operationId: getInstanceConfig
+      responses:
+        '200':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/InstanceConfigResponse_InstanceConfig'
+          description: OK
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+      security:
+      - securityScheme:
+        - read:config_instance
+      summary: Get instance config
+      tags:
+      - Instance Config
+    post:
+      description: 'You can update the instance configuration by calling this endpoint.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | write:config_instance |'
+      operationId: updateInstanceConfig
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InstanceConfig_InsertRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/InstanceConfigResponse_InstanceConfig'
+          description: OK
+        '400':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Bad Request
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+      security:
+      - securityScheme:
+        - write:config_instance
+      summary: Update instance config
+      tags:
+      - Instance Config
+  /admin/api/v1/instance/config/addresses:
+    get:
+      description: 'You can get the instance address by calling this endpoint.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | read:config_instance |
+
+        | read:config_application |'
+      operationId: getInstanceAddress
+      responses:
+        '200':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/InstanceAddress_InstanceConfig'
+          description: OK
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+      security:
+      - securityScheme:
+        - read:config_instance
+        - read:config_application
+      summary: Get instance address
+      tags:
+      - Instance Config
+components:
+  schemas:
+    ProblemJson:
+      type: object
+      properties:
+        detail:
+          type: string
+        entityName:
+          type: string
+          description: The name of the entity within the error has occurred
+        errorKey:
+          type: string
+          description: A unique identifier of the error
+        fieldErrors:
+          type: array
+          description: Field constraint violation errors
+          items:
+            $ref: '#/components/schemas/FieldError'
+        message:
+          type: string
+          description: A unique identifier in format of 'error.{errorKey}'
+        params:
+          type: array
+          description: Further information related to the actual error
+          items:
+            type: object
+            additionalProperties:
+              type: object
+        path:
+          type: string
+          description: Request URI
+        status:
+          type: integer
+          description: Status code
+          format: int32
+        title:
+          type: string
+      description: Based on [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807)
+    FieldError:
+      type: object
+      properties:
+        field:
+          type: string
+        message:
+          type: string
+        objectName:
+          type: string
+    InstanceConfig_InsertRequest:
+      required:
+      - companyName
+      type: object
+      properties:
+        companyName:
+          maxLength: 48
+          minLength: 2
+          pattern: ^[- a-zA-Z0-9@£$¥èéùìòÇØøÅåΔ_ΦΓΛΩΠΨΣΘΞÆæßÉ!"#¤%&'()*+,.\/:;<=>?¡ÄÖÑÜ§¿äöñüà]*$
+          type: string
+        ipAllowedList:
+          maxItems: 32
+          minItems: 0
+          type: array
+          description: 'This represents a list of subnet ranges (CIDR). See: [RFC 4632](https://www.rfc-editor.org/rfc/rfc4632). Private addresses are not allowed.'
+          items:
+            type: string
+            example: 1.1.1.1/32
+    InstanceConfigResponse_InstanceConfig:
+      type: object
+      properties:
+        clusterPauseConfiguration:
+          $ref: '#/components/schemas/InstanceConfigResponse_ClusterPauseConfiguration_InstanceConfig'
+        companyName:
+          type: string
+        hostingRegion:
+          type: string
+        instanceAddress:
+          $ref: '#/components/schemas/InstanceAddress_InstanceConfig'
+        ipAllowedList:
+          type: array
+          items:
+            type: string
+        releaseVersion:
+          type: string
+    InstanceAddress_InstanceConfig:
+      type: object
+      properties:
+        additional:
+          type: array
+          items:
+            type: string
+        default:
+          type: string
+      description: Represents an instance address
+    InstanceConfigResponse_ClusterPauseConfiguration_InstanceConfig:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+        keepAliveDurationInHours:
+          type: integer
+          format: int32
+        pauseThresholdInHours:
+          type: integer
+          format: int32
+        warningThresholdInHours:
+          type: integer
+          format: int32
+      description: Contains information about cluster pause configurations
+  securitySchemes:
+    securityScheme:
+      scheme: bearer
+      type: http

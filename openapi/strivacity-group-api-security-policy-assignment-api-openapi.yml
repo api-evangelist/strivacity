@@ -1,0 +1,413 @@
+openapi: 3.2.0
+info:
+  description: API documentation of Admin Portal
+  title: Admin Portal Group API Security Policy Assignment API
+  version: v0.0.1
+servers:
+- url: https://{tenant}
+  variables:
+    tenant:
+      default: example.strivacity.com
+      description: Your Strivacity tenant
+tags:
+- name: Group API Security Policy Assignment
+paths:
+  /admin/api/v1/identityStores/{identityStoreName}/groups/{groupId}/apiAccessPolicyAssignments:
+    get:
+      description: 'You can list existing API security policy assignments for a given group ID by calling this endpoint.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | read:config_identity_store |'
+      operationId: listGroupApiAccessPolicyAssignments
+      parameters:
+      - in: path
+        name: identityStoreName
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: groupId
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            '*/*':
+              schema:
+                uniqueItems: true
+                type: array
+                items:
+                  $ref: '#/components/schemas/GroupApiSecurityPolicyAssignmentResponse'
+          description: OK
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+        '404':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Not Found
+      security:
+      - securityScheme:
+        - read:config_identity_store
+      summary: List API security policy assignments for a group
+      tags:
+      - Group API Security Policy Assignment
+    post:
+      description: 'You can assign an API security policy and its scopes to a group by calling this endpoint.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | write:config_identity_store |'
+      operationId: createGroupApiAccessPolicyAssignment
+      parameters:
+      - in: path
+        name: identityStoreName
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: groupId
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GroupApiSecurityPolicyAssignmentRequest'
+        required: true
+      responses:
+        '201':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/GroupApiSecurityPolicyAssignmentResponse'
+          description: Created
+        '400':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Bad Request
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+        '404':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Not Found
+        '409':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Conflict
+      security:
+      - securityScheme:
+        - write:config_identity_store
+      summary: Assign API security policy to a group
+      tags:
+      - Group API Security Policy Assignment
+  /admin/api/v1/identityStores/{identityStoreName}/groups/{groupId}/apiAccessPolicyAssignments/{apiAccessPolicyId}:
+    delete:
+      description: 'You can delete a group API security policy assignment by calling this endpoint.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | write:config_identity_store |'
+      operationId: deleteGroupApiAccessPolicyAssignment
+      parameters:
+      - in: path
+        name: identityStoreName
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: groupId
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: apiAccessPolicyId
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: No Content
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+        '404':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Not Found
+      security:
+      - securityScheme:
+        - write:config_identity_store
+      summary: Delete a group API security policy assignment
+      tags:
+      - Group API Security Policy Assignment
+    get:
+      description: 'You can get an API security policy assignment for a given group ID by calling this endpoint.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | read:config_identity_store |'
+      operationId: getGroupApiAccessPolicyAssignment
+      parameters:
+      - in: path
+        name: identityStoreName
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: groupId
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: apiAccessPolicyId
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/GroupApiSecurityPolicyAssignmentResponse'
+          description: OK
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+        '404':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Not Found
+      security:
+      - securityScheme:
+        - read:config_identity_store
+      summary: Get API security policy assignment for a group
+      tags:
+      - Group API Security Policy Assignment
+    put:
+      description: 'You can update the scopes of an API security policy group assignment by calling this endpoint.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | write:config_identity_store |'
+      operationId: updateGroupApiAccessPolicyAssignment
+      parameters:
+      - in: path
+        name: identityStoreName
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: groupId
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: apiAccessPolicyId
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GroupApiSecurityPolicyAssignmentRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/GroupApiSecurityPolicyAssignmentResponse'
+          description: OK
+        '400':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Bad Request
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+        '404':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Not Found
+      security:
+      - securityScheme:
+        - write:config_identity_store
+      summary: Update assigned scopes
+      tags:
+      - Group API Security Policy Assignment
+components:
+  schemas:
+    GroupApiSecurityPolicyAssignmentRequest:
+      required:
+      - apiAccessPolicy
+      - scopes
+      type: object
+      properties:
+        apiAccessPolicy:
+          $ref: '#/components/schemas/OnlyIdRequest'
+        scopes:
+          minItems: 1
+          type: array
+          items:
+            $ref: '#/components/schemas/OnlyIdRequest'
+      description: Represents a group API security policy assignment to be inserted or updated
+    ProblemJson:
+      type: object
+      properties:
+        detail:
+          type: string
+        entityName:
+          type: string
+          description: The name of the entity within the error has occurred
+        errorKey:
+          type: string
+          description: A unique identifier of the error
+        fieldErrors:
+          type: array
+          description: Field constraint violation errors
+          items:
+            $ref: '#/components/schemas/FieldError'
+        message:
+          type: string
+          description: A unique identifier in format of 'error.{errorKey}'
+        params:
+          type: array
+          description: Further information related to the actual error
+          items:
+            type: object
+            additionalProperties:
+              type: object
+        path:
+          type: string
+          description: Request URI
+        status:
+          type: integer
+          description: Status code
+          format: int32
+        title:
+          type: string
+      description: Based on [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807)
+    FieldError:
+      type: object
+      properties:
+        field:
+          type: string
+        message:
+          type: string
+        objectName:
+          type: string
+    NameAndIdResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID of the represented entity
+        name:
+          type: string
+          description: Name of the represented entity
+          example: Entity name
+    GroupApiSecurityPolicyAssignmentResponse:
+      type: object
+      properties:
+        apiAccessPolicy:
+          $ref: '#/components/schemas/NameAndIdResponse'
+        scopes:
+          type: array
+          items:
+            $ref: '#/components/schemas/NameAndIdResponse'
+      description: Represents a group API security policy assignment
+    OnlyIdRequest:
+      required:
+      - id
+      type: object
+      properties:
+        id:
+          pattern: ^[a-zA-Z0-9-]{1,36}$
+          type: string
+  securitySchemes:
+    securityScheme:
+      scheme: bearer
+      type: http

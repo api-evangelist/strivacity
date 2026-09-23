@@ -1,0 +1,219 @@
+openapi: 3.2.0
+info:
+  description: API documentation of Admin Portal
+  title: Admin Portal NPM Dependency API
+  version: v0.0.1
+servers:
+- url: https://{tenant}
+  variables:
+    tenant:
+      default: example.strivacity.com
+      description: Your Strivacity tenant
+tags:
+- name: NPM Dependency
+paths:
+  /admin/api/v1/eventHooks/npm/package:
+    post:
+      description: 'You can list the versions for an NPM dependency by calling this endpoint.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | read:config_event_hook |
+
+        | read:config_journey |
+
+        | read:config_custom_mfa |'
+      operationId: getPackage
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NpmPackageRequest_Npm'
+        required: true
+      responses:
+        '200':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/NpmPackage_Npm'
+          description: OK
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+      security:
+      - securityScheme:
+        - read:config_event_hook
+        - read:config_journey
+        - read:config_custom_mfa
+      summary: List NPM dependency versions
+      tags:
+      - NPM Dependency
+  /admin/api/v1/eventHooks/npm/search:
+    post:
+      description: 'You can filter for NPM dependency suggestions for a lifecycle event hook by calling this endpoint.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | read:config_event_hook |
+
+        | read:config_journey |
+
+        | read:config_custom_mfa |'
+      operationId: getSuggestions
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NpmPackageSuggestionsRequest_Npm'
+        required: true
+      responses:
+        '200':
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/NpmPackageSuggestion_Npm'
+          description: OK
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+      security:
+      - securityScheme:
+        - read:config_event_hook
+        - read:config_journey
+        - read:config_custom_mfa
+      summary: Filter for NPM dependency suggestions for a lifecycle event hook
+      tags:
+      - NPM Dependency
+components:
+  schemas:
+    ProblemJson:
+      type: object
+      properties:
+        detail:
+          type: string
+        entityName:
+          type: string
+          description: The name of the entity within the error has occurred
+        errorKey:
+          type: string
+          description: A unique identifier of the error
+        fieldErrors:
+          type: array
+          description: Field constraint violation errors
+          items:
+            $ref: '#/components/schemas/FieldError'
+        message:
+          type: string
+          description: A unique identifier in format of 'error.{errorKey}'
+        params:
+          type: array
+          description: Further information related to the actual error
+          items:
+            type: object
+            additionalProperties:
+              type: object
+        path:
+          type: string
+          description: Request URI
+        status:
+          type: integer
+          description: Status code
+          format: int32
+        title:
+          type: string
+      description: Based on [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807)
+    NpmPackage_Npm:
+      type: object
+      properties:
+        packument:
+          $ref: '#/components/schemas/Packument_Npm'
+      description: Represents an NPM package
+    FieldError:
+      type: object
+      properties:
+        field:
+          type: string
+        message:
+          type: string
+        objectName:
+          type: string
+    NpmPackageSuggestionsRequest_Npm:
+      required:
+      - query
+      type: object
+      properties:
+        query:
+          minLength: 1
+          type: string
+          description: Query string to match for NPM dependencies
+      description: Represents a query to match for NPM dependencies
+    NpmPackageSuggestion_Npm:
+      type: object
+      properties:
+        description:
+          type: string
+        name:
+          type: string
+        version:
+          type: string
+          example: 1.0.0
+      description: Represents an NPM package suggestion based on a prefix search
+    NpmPackageRequest_Npm:
+      required:
+      - name
+      type: object
+      properties:
+        name:
+          minLength: 1
+          type: string
+          description: Name of the NPM dependency
+      description: Represents a package by its name for fetching available package versions
+    AvailableVersion_Npm:
+      type: object
+      properties:
+        version:
+          type: string
+          example: 1.0.0
+    Packument_Npm:
+      type: object
+      properties:
+        version:
+          type: string
+          description: Latest stable version of the NPM package
+          example: 1.0.0
+        versions:
+          type: array
+          description: Available versions of the NPM package
+          items:
+            $ref: '#/components/schemas/AvailableVersion_Npm'
+      description: Represents the available versions and the latest stable version for an NPM package
+  securitySchemes:
+    securityScheme:
+      scheme: bearer
+      type: http

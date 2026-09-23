@@ -1,0 +1,543 @@
+openapi: 3.2.0
+info:
+  description: API documentation of Admin Portal
+  title: Admin Portal Translation API
+  version: v0.0.1
+servers:
+- url: https://{tenant}
+  variables:
+    tenant:
+      default: example.strivacity.com
+      description: Your Strivacity tenant
+tags:
+- name: Translation
+paths:
+  /admin/api/v1/translations:
+    get:
+      description: 'You can list the translations by calling this endpoint.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | read:config_admin_translation |
+
+        | brand_admin |
+
+        | api_key |'
+      operationId: list_7
+      responses:
+        '200':
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/GenericTranslationResponse'
+          description: '| TYPE | REQUESTED WITH |
+
+            |:----------------- | ----------------|
+
+            | TranslationListResponse  | `read:config_admin_translation` scope |
+
+            | LanguageCodeListResponse | otherwise |'
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+      security:
+      - securityScheme:
+        - read:config_admin_translation
+        - brand_admin
+        - api_key
+      summary: List translations
+      tags:
+      - Translation
+  /admin/api/v1/translations/{languageCode}:
+    delete:
+      description: 'Clears previously imported translations for the language.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | write:config_admin_translation |'
+      operationId: reset
+      parameters:
+      - description: The format for a language code is two lowercase characters representing the language, followed by a dash and two uppercase characters representing the region.
+        example: '`fr-CA`, `fr-FR`, `ja-JP`'
+        in: path
+        name: languageCode
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: No Content
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+        '404':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Language is not supported
+      security:
+      - securityScheme:
+        - write:config_admin_translation
+      summary: Reset a translation
+      tags:
+      - Translation
+    get:
+      description: 'You can export a translation by calling this endpoint.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | read:config_admin_translation |'
+      operationId: export
+      parameters:
+      - description: The format for a language code is two lowercase characters representing the language, followed by a dash and two uppercase characters representing the region.
+        example: '`en-US`, `fr-CA`, `fr-FR`, `ja-JP`'
+        in: path
+        name: languageCode
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/TranslationJson'
+          description: OK
+          headers:
+            Content-Disposition:
+              schema:
+                type: string
+                example: attachment; filename="{filename}"
+              style: simple
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+        '404':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Language is not supported
+      security:
+      - securityScheme:
+        - read:config_admin_translation
+      summary: Export a translation
+      tags:
+      - Translation
+    post:
+      description: 'You can import a translation by calling this endpoint.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | write:config_admin_translation |'
+      operationId: importTranslation
+      parameters:
+      - description: The format for a language code is two lowercase characters representing the language, followed by a dash and two uppercase characters representing the region.
+        example: '`fr-CA`, `fr-FR`, `ja-JP`'
+        in: path
+        name: languageCode
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+              required:
+              - file
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TranslationJson'
+          description: OK
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Bad Request
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Language is not supported
+      security:
+      - securityScheme:
+        - write:config_admin_translation
+      summary: Import a translation
+      tags:
+      - Translation
+  /admin/api/v1/translations/{languageCode}/disable:
+    post:
+      description: 'You can disable a translation by calling this endpoint.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | write:config_admin_translation |'
+      operationId: disableLanguage
+      parameters:
+      - description: The format for a language code is two lowercase characters representing the language, followed by a dash and two uppercase characters representing the region.
+        example: '`fr-CA`, `fr-FR`, `ja-JP`'
+        in: path
+        name: languageCode
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: No Content
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+        '404':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Language is not supported
+      security:
+      - securityScheme:
+        - write:config_admin_translation
+      summary: Disable a translation
+      tags:
+      - Translation
+  /admin/api/v1/translations/{languageCode}/enable:
+    post:
+      description: 'You can enable a translation by calling this endpoint.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | write:config_admin_translation |'
+      operationId: enableLanguage
+      parameters:
+      - description: The format for a language code is two lowercase characters representing the language, followed by a dash and two uppercase characters representing the region.
+        example: '`fr-CA`, `fr-FR`, `ja-JP`'
+        in: path
+        name: languageCode
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: No Content
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+        '404':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Language is not supported
+      security:
+      - securityScheme:
+        - write:config_admin_translation
+      summary: Enable a translation
+      tags:
+      - Translation
+components:
+  schemas:
+    ProblemJson:
+      type: object
+      properties:
+        detail:
+          type: string
+        entityName:
+          type: string
+          description: The name of the entity within the error has occurred
+        errorKey:
+          type: string
+          description: A unique identifier of the error
+        fieldErrors:
+          type: array
+          description: Field constraint violation errors
+          items:
+            $ref: '#/components/schemas/FieldError'
+        message:
+          type: string
+          description: A unique identifier in format of 'error.{errorKey}'
+        params:
+          type: array
+          description: Further information related to the actual error
+          items:
+            type: object
+            additionalProperties:
+              type: object
+        path:
+          type: string
+          description: Request URI
+        status:
+          type: integer
+          description: Status code
+          format: int32
+        title:
+          type: string
+      description: Based on [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807)
+    TranslationListResponse:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+        languageCode:
+          type: string
+        primary:
+          type: boolean
+        uploaded:
+          type: boolean
+    BrandTranslation:
+      type: object
+      properties:
+        additionalContents:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/BrandTranslationAdditionalContents'
+        additionalTexts:
+          type: object
+          additionalProperties:
+            type: string
+        copyright:
+          type: string
+        supportText:
+          type: string
+    NotificationTemplateTranslation:
+      type: object
+      properties:
+        body:
+          type: string
+        plainTextBody:
+          type: string
+        subject:
+          type: string
+    ExternalLoginProviderTranslation:
+      type: object
+      properties:
+        loginButtonText:
+          type: string
+    FieldError:
+      type: object
+      properties:
+        field:
+          type: string
+        message:
+          type: string
+        objectName:
+          type: string
+    NotificationPreferenceDescriptor:
+      type: object
+      properties:
+        displayName:
+          type: string
+    AccountAttributeTranslation:
+      type: object
+      properties:
+        displayName:
+          type: string
+        errorMessage:
+          type: string
+        values:
+          type: object
+          additionalProperties:
+            type: string
+    IdentityProofingTranslation:
+      type: object
+      properties:
+        dataSteps:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/IdentityProofingTranslationDataStep'
+        failureMessage:
+          type: string
+        proofingNotificationDisplayText:
+          type: string
+    SystemTranslation:
+      type: object
+      properties:
+        externalLoginProviderUnlinkedNotification:
+          type: string
+        notificationPreferenceDescriptors:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/NotificationPreferenceDescriptor'
+        notificationPreferencesUpdatedNotification:
+          type: string
+    BrandTranslationAdditionalContents:
+      type: object
+      properties:
+        footer:
+          $ref: '#/components/schemas/BrandTranslationAdditionalContent'
+        header:
+          $ref: '#/components/schemas/BrandTranslationAdditionalContent'
+        left:
+          $ref: '#/components/schemas/BrandTranslationAdditionalContent'
+        right:
+          $ref: '#/components/schemas/BrandTranslationAdditionalContent'
+    IdentityProofingTranslationDataStep:
+      type: object
+      properties:
+        displayText:
+          type: string
+        fields:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/IdentityProofingTranslationField'
+    TranslationJson:
+      required:
+      - accountAttribute
+      - brand
+      - consent
+      - externalLoginProvider
+      - identityProofing
+      - notificationPolicy
+      - system
+      type: object
+      properties:
+        accountAttribute:
+          type: object
+          additionalProperties:
+            type: object
+            additionalProperties:
+              $ref: '#/components/schemas/AccountAttributeTranslation'
+        brand:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/BrandTranslation'
+        consent:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/ConsentTranslation'
+        externalLoginProvider:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/ExternalLoginProviderTranslation'
+        identityProofing:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/IdentityProofingTranslation'
+        notificationPolicy:
+          type: object
+          additionalProperties:
+            type: object
+            additionalProperties:
+              type: object
+              additionalProperties:
+                $ref: '#/components/schemas/NotificationTemplateTranslation'
+        system:
+          $ref: '#/components/schemas/SystemTranslation'
+      description: Represents an imported translation
+    ConsentTranslation:
+      type: object
+      properties:
+        displayText:
+          type: string
+        selfServiceDisplayText:
+          type: string
+    LanguageCodeListResponse:
+      type: object
+      properties:
+        languageCode:
+          type: string
+    IdentityProofingTranslationField:
+      type: object
+      properties:
+        displayName:
+          type: string
+    GenericTranslationResponse:
+      type: object
+      oneOf:
+      - $ref: '#/components/schemas/LanguageCodeListResponse'
+      - $ref: '#/components/schemas/TranslationListResponse'
+    BrandTranslationAdditionalContent:
+      type: object
+      properties:
+        html:
+          type: string
+  securitySchemes:
+    securityScheme:
+      scheme: bearer
+      type: http

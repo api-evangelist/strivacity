@@ -1,0 +1,982 @@
+openapi: 3.2.0
+info:
+  description: API documentation of Admin Portal
+  title: Admin Portal Lifecycle Event Hook API
+  version: v0.0.1
+servers:
+- url: https://{tenant}
+  variables:
+    tenant:
+      default: example.strivacity.com
+      description: Your Strivacity tenant
+tags:
+- name: Lifecycle Event Hook
+paths:
+  /admin/api/v1/eventHooks/function:
+    get:
+      description: 'You can list the existing lifecycle event hooks by calling this endpoint. Keep in mind that the `policyTags` query param is ignored when the `hook` query param is sent.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | read:config_event_hook |'
+      operationId: getAllEventHookFunctions
+      parameters:
+      - description: Type used for filtering
+        in: query
+        name: hook
+        required: false
+        schema:
+          type: string
+          enum:
+          - DENY_AUTHENTICATION
+          - UNIDENTIFIED_USER
+          - POST_ACCOUNT_LOGIN
+          - POST_CONSENT_UPDATE
+          - POST_ID_PROOFING
+          - POST_IDENTIFICATION
+          - POST_MFA_FACTOR_CHANGE
+          - POST_REGISTRATION
+          - POST_EXTERNAL_LOGIN
+          - POST_TOKEN_REFRESH
+          - PRE_ID_PROOFING
+          - PRE_ID_TOKEN_GENERATION
+          - PRE_SAML2_ASSERTION_GENERATION
+          - PRE_PROGRESSIVE_PROFILING
+          - PRE_REGISTRATION
+          - PRE_PASSWORD
+          - PRE_PASSWORD_RESET
+          - PRE_MULTI_STAGE_REGISTRATION
+          - PRE_EXTERNAL_REGISTRATION
+          - PRE_AUTHENTICATOR_ENROLLMENT
+          - PRE_PASSWORD_PERSIST
+          - PRE_CONTACT_UPDATE
+          - POST_ACCOUNT_DELETION
+          - POST_ACCOUNT_UPDATE
+      - description: Tags used for filtering must exactly match the tag name
+        in: query
+        name: policyTags
+        required: false
+        schema:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+      - description: Name used for filtering
+        in: query
+        name: name
+        required: false
+        schema:
+          type: string
+      - description: Specifies whether to include event hook status in response
+        in: query
+        name: withStatus
+        required: false
+        schema:
+          type: boolean
+          default: false
+      - description: Zero-based page index (0..N)
+        in: query
+        name: page
+        schema:
+          type: integer
+          format: int64
+          default: 0
+      - description: The size of the page to be returned
+        in: query
+        name: size
+        schema:
+          type: integer
+          format: int64
+          default: 20
+      - description: 'Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported.'
+        in: query
+        name: sort
+        schema:
+          type: array
+          items:
+            type: string
+      responses:
+        '200':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/PagedModelEventHookFunctionListItemResponse'
+          description: OK
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+      security:
+      - securityScheme:
+        - read:config_event_hook
+      summary: List lifecycle event hooks
+      tags:
+      - Lifecycle Event Hook
+    post:
+      description: 'You can create a lifecycle event hook by calling this endpoint.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | write:config_event_hook |'
+      operationId: createEventHookFunction
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EventHookFunction_InsertRequest'
+        required: true
+      responses:
+        '201':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/EventHookFunctionResponse_EventHookFunction'
+          description: Created
+        '400':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Bad Request
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+        '409':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Conflict
+      security:
+      - securityScheme:
+        - write:config_event_hook
+      summary: Create a lifecycle event hook
+      tags:
+      - Lifecycle Event Hook
+  /admin/api/v1/eventHooks/function/{id}:
+    delete:
+      description: 'You can delete a lifecycle event hook by calling this endpoint. If lifecycle event hook is assigned then cannot be deleted.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | delete:config_event_hook |'
+      operationId: deleteEventHookFunction
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: No Content
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+        '409':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Lifecycle event hook is assigned and cannot be deleted.
+      security:
+      - securityScheme:
+        - delete:config_event_hook
+      summary: Delete a lifecycle event hook
+      tags:
+      - Lifecycle Event Hook
+    get:
+      description: 'You can get a lifecycle event hook by calling this endpoint.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | read:config_event_hook |'
+      operationId: getEventHookFunctionById
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/EventHookFunctionWithStatusResponse_EventHookFunction'
+          description: OK
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+        '404':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Not Found
+      security:
+      - securityScheme:
+        - read:config_event_hook
+      summary: Get a lifecycle event hook
+      tags:
+      - Lifecycle Event Hook
+    put:
+      description: 'You can update a lifecycle event hook by calling this endpoint.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | write:config_event_hook |'
+      operationId: updateEventHookFunction
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EventHookFunctionRequest_EventHookFunction'
+        required: true
+      responses:
+        '200':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/EventHookFunctionResponse_EventHookFunction'
+          description: OK
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+        '404':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Not Found
+        '409':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Conflict
+      security:
+      - securityScheme:
+        - write:config_event_hook
+      summary: Update a lifecycle event hook
+      tags:
+      - Lifecycle Event Hook
+  /admin/api/v1/eventHooks/function/{id}/deploy:
+    post:
+      description: 'You can deploy a lifecycle event hook by calling this endpoint.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | write:config_event_hook |'
+      operationId: deployEventHookFunction
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            text/plain:
+              schema:
+                type: object
+          description: OK
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+        '404':
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Not Found
+      security:
+      - securityScheme:
+        - write:config_event_hook
+      summary: Deploy a lifecycle event hook
+      tags:
+      - Lifecycle Event Hook
+  /admin/api/v1/eventHooks/function/{id}/status:
+    get:
+      description: 'You an get the status of a lifecycle event hook by calling this endpoint.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | read:config_event_hook |'
+      operationId: getEventHookFunctionStatusById
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/EventHookStatusResponse_EventHookFunction'
+          description: OK
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+        '404':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Not Found
+      security:
+      - securityScheme:
+        - read:config_event_hook
+      summary: Get status of a lifecycle event hook
+      tags:
+      - Lifecycle Event Hook
+components:
+  schemas:
+    ProblemJson:
+      type: object
+      properties:
+        detail:
+          type: string
+        entityName:
+          type: string
+          description: The name of the entity within the error has occurred
+        errorKey:
+          type: string
+          description: A unique identifier of the error
+        fieldErrors:
+          type: array
+          description: Field constraint violation errors
+          items:
+            $ref: '#/components/schemas/FieldError'
+        message:
+          type: string
+          description: A unique identifier in format of 'error.{errorKey}'
+        params:
+          type: array
+          description: Further information related to the actual error
+          items:
+            type: object
+            additionalProperties:
+              type: object
+        path:
+          type: string
+          description: Request URI
+        status:
+          type: integer
+          description: Status code
+          format: int32
+        title:
+          type: string
+      description: Based on [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807)
+    HookVariableResponse_EventHookFunction:
+      type: object
+      properties:
+        default:
+          $ref: '#/components/schemas/DefaultValueResponse_EventHookFunction'
+        description:
+          type: string
+        name:
+          type: string
+        required:
+          type: boolean
+        type:
+          type: string
+          enum:
+          - variable
+          - secret
+    PageMetadata:
+      type: object
+      properties:
+        number:
+          type: integer
+          format: int64
+        size:
+          type: integer
+          format: int64
+        totalElements:
+          type: integer
+          format: int64
+        totalPages:
+          type: integer
+          format: int64
+    DefaultValueRequest_EventHookFunction:
+      required:
+      - type
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - noValue
+          - variableReference
+          - staticVariable
+          - staticSecret
+      discriminator:
+        propertyName: type
+    NoValueResponse_EventHookFunction:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - noValue
+          - variableReference
+          - staticVariable
+          - staticSecret
+    DefaultValueResponse_EventHookFunction:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - noValue
+          - variableReference
+          - staticVariable
+          - staticSecret
+      oneOf:
+      - $ref: '#/components/schemas/NoValueResponse_EventHookFunction'
+      - $ref: '#/components/schemas/StaticVariableResponse_EventHookFunction'
+      - $ref: '#/components/schemas/StaticSecretResponse_EventHookFunction'
+      - $ref: '#/components/schemas/VariableReferenceResponse_EventHookFunction'
+    StaticSecretRequest_EventHookFunction:
+      required:
+      - type
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/DefaultValueRequest_EventHookFunction'
+      - type: object
+        properties:
+          secretValue:
+            maxLength: 8192
+            minLength: 0
+            type: string
+    EventHookFunctionListItemResponse:
+      type: object
+      properties:
+        blocking:
+          type: boolean
+        description:
+          type: string
+        hook:
+          type: string
+          description: Type of the event hook
+          enum:
+          - DENY_AUTHENTICATION
+          - UNIDENTIFIED_USER
+          - POST_ACCOUNT_LOGIN
+          - POST_CONSENT_UPDATE
+          - POST_ID_PROOFING
+          - POST_IDENTIFICATION
+          - POST_MFA_FACTOR_CHANGE
+          - POST_REGISTRATION
+          - POST_EXTERNAL_LOGIN
+          - POST_TOKEN_REFRESH
+          - PRE_ID_PROOFING
+          - PRE_ID_TOKEN_GENERATION
+          - PRE_SAML2_ASSERTION_GENERATION
+          - PRE_PROGRESSIVE_PROFILING
+          - PRE_REGISTRATION
+          - PRE_PASSWORD
+          - PRE_PASSWORD_RESET
+          - PRE_MULTI_STAGE_REGISTRATION
+          - PRE_EXTERNAL_REGISTRATION
+          - PRE_AUTHENTICATOR_ENROLLMENT
+          - PRE_PASSWORD_PERSIST
+          - PRE_CONTACT_UPDATE
+          - POST_ACCOUNT_DELETION
+          - POST_ACCOUNT_UPDATE
+        id:
+          type: string
+        name:
+          type: string
+        policyTag:
+          type: string
+        status:
+          type: string
+          enum:
+          - ACTIVE
+          - UPGRADING
+          - UNHEALTHY
+          - NOT_RUNNING
+          - NON_DEPLOYED
+    EventHookFunctionWithStatusResponse_EventHookFunction:
+      type: object
+      properties:
+        blocking:
+          type: boolean
+        code:
+          type: string
+        description:
+          type: string
+        hook:
+          type: string
+          enum:
+          - DENY_AUTHENTICATION
+          - UNIDENTIFIED_USER
+          - POST_ACCOUNT_LOGIN
+          - POST_CONSENT_UPDATE
+          - POST_ID_PROOFING
+          - POST_IDENTIFICATION
+          - POST_MFA_FACTOR_CHANGE
+          - POST_REGISTRATION
+          - POST_EXTERNAL_LOGIN
+          - POST_TOKEN_REFRESH
+          - PRE_ID_PROOFING
+          - PRE_ID_TOKEN_GENERATION
+          - PRE_SAML2_ASSERTION_GENERATION
+          - PRE_PROGRESSIVE_PROFILING
+          - PRE_REGISTRATION
+          - PRE_PASSWORD
+          - PRE_PASSWORD_RESET
+          - PRE_MULTI_STAGE_REGISTRATION
+          - PRE_EXTERNAL_REGISTRATION
+          - PRE_AUTHENTICATOR_ENROLLMENT
+          - PRE_PASSWORD_PERSIST
+          - PRE_CONTACT_UPDATE
+          - POST_ACCOUNT_DELETION
+          - POST_ACCOUNT_UPDATE
+        id:
+          type: string
+        name:
+          type: string
+        packageDependencies:
+          type: object
+          additionalProperties:
+            type: string
+        policyTag:
+          type: string
+        requestBody:
+          type: string
+        status:
+          type: string
+          enum:
+          - ACTIVE
+          - UPGRADING
+          - UNHEALTHY
+          - NOT_RUNNING
+          - NON_DEPLOYED
+        variables:
+          uniqueItems: true
+          type: array
+          items:
+            $ref: '#/components/schemas/HookVariableResponse_EventHookFunction'
+    EventHookStatusResponse_EventHookFunction:
+      type: object
+      properties:
+        status:
+          type: string
+          enum:
+          - ACTIVE
+          - UPGRADING
+          - UNHEALTHY
+          - NOT_RUNNING
+          - NON_DEPLOYED
+    StaticSecretResponse_EventHookFunction:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - noValue
+          - variableReference
+          - staticVariable
+          - staticSecret
+    HookVariableUpsertRequest_EventHookFunction:
+      required:
+      - default
+      - name
+      - type
+      type: object
+      properties:
+        default:
+          oneOf:
+          - $ref: '#/components/schemas/DefaultValueRequest_EventHookFunction'
+          - $ref: '#/components/schemas/NoValueRequest_EventHookFunction'
+          - $ref: '#/components/schemas/StaticSecretRequest_EventHookFunction'
+          - $ref: '#/components/schemas/StaticVariableRequest_EventHookFunction'
+          - $ref: '#/components/schemas/VariableReferenceRequest_EventHookFunction'
+        description:
+          maxLength: 1024
+          minLength: 0
+          type: string
+        name:
+          maxLength: 64
+          minLength: 0
+          pattern: ^$|^[A-Za-z_][A-Za-z_0-9]*$
+          type: string
+        required:
+          type: boolean
+        type:
+          type: string
+          enum:
+          - variable
+          - secret
+    VariableReferenceRequest_EventHookFunction:
+      required:
+      - type
+      - value
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/DefaultValueRequest_EventHookFunction'
+      - type: object
+        properties:
+          value:
+            maxLength: 36
+            minLength: 0
+            type: string
+    VariableReferenceResponse_EventHookFunction:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - noValue
+          - variableReference
+          - staticVariable
+          - staticSecret
+        value:
+          type: string
+    EventHookFunctionRequest_EventHookFunction:
+      required:
+      - blocking
+      - hook
+      - name
+      - packageDependencies
+      type: object
+      properties:
+        blocking:
+          type: boolean
+        code:
+          maxLength: 256000
+          minLength: 1
+          type: string
+          description: Code of the event hook function, if not specified it's generated automatically for each type
+          default: '*example code*'
+        description:
+          maxLength: 1024
+          minLength: 0
+          type: string
+        hook:
+          type: string
+          enum:
+          - DENY_AUTHENTICATION
+          - UNIDENTIFIED_USER
+          - POST_ACCOUNT_LOGIN
+          - POST_CONSENT_UPDATE
+          - POST_ID_PROOFING
+          - POST_IDENTIFICATION
+          - POST_MFA_FACTOR_CHANGE
+          - POST_REGISTRATION
+          - POST_EXTERNAL_LOGIN
+          - POST_TOKEN_REFRESH
+          - PRE_ID_PROOFING
+          - PRE_ID_TOKEN_GENERATION
+          - PRE_SAML2_ASSERTION_GENERATION
+          - PRE_PROGRESSIVE_PROFILING
+          - PRE_REGISTRATION
+          - PRE_PASSWORD
+          - PRE_PASSWORD_RESET
+          - PRE_MULTI_STAGE_REGISTRATION
+          - PRE_EXTERNAL_REGISTRATION
+          - PRE_AUTHENTICATOR_ENROLLMENT
+          - PRE_PASSWORD_PERSIST
+          - PRE_CONTACT_UPDATE
+          - POST_ACCOUNT_DELETION
+          - POST_ACCOUNT_UPDATE
+        id:
+          type: string
+        name:
+          maxLength: 64
+          minLength: 3
+          pattern: ^$|^[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°]([\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*° ]*[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°])?$
+          type: string
+        packageDependencies:
+          type: object
+          additionalProperties:
+            type: string
+            description: Dependencies used for the event hook function
+          description: Dependencies used for the event hook function
+        policyTag:
+          pattern: ^[a-z0-9_]{2,32}$
+          type: string
+          description: Must be an existing policy tag name
+        requestBody:
+          maxLength: 8000
+          minLength: 1
+          type: string
+          default: '*example code*'
+        variables:
+          type: array
+          items:
+            $ref: '#/components/schemas/HookVariableUpsertRequest_EventHookFunction'
+      description: Represents an event hook function
+    StaticVariableRequest_EventHookFunction:
+      required:
+      - type
+      - value
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/DefaultValueRequest_EventHookFunction'
+      - type: object
+        properties:
+          value:
+            maxLength: 8192
+            minLength: 0
+            type: string
+    FieldError:
+      type: object
+      properties:
+        field:
+          type: string
+        message:
+          type: string
+        objectName:
+          type: string
+    EventHookFunctionResponse_EventHookFunction:
+      type: object
+      properties:
+        blocking:
+          type: boolean
+        code:
+          type: string
+        description:
+          type: string
+        hook:
+          type: string
+          enum:
+          - DENY_AUTHENTICATION
+          - UNIDENTIFIED_USER
+          - POST_ACCOUNT_LOGIN
+          - POST_CONSENT_UPDATE
+          - POST_ID_PROOFING
+          - POST_IDENTIFICATION
+          - POST_MFA_FACTOR_CHANGE
+          - POST_REGISTRATION
+          - POST_EXTERNAL_LOGIN
+          - POST_TOKEN_REFRESH
+          - PRE_ID_PROOFING
+          - PRE_ID_TOKEN_GENERATION
+          - PRE_SAML2_ASSERTION_GENERATION
+          - PRE_PROGRESSIVE_PROFILING
+          - PRE_REGISTRATION
+          - PRE_PASSWORD
+          - PRE_PASSWORD_RESET
+          - PRE_MULTI_STAGE_REGISTRATION
+          - PRE_EXTERNAL_REGISTRATION
+          - PRE_AUTHENTICATOR_ENROLLMENT
+          - PRE_PASSWORD_PERSIST
+          - PRE_CONTACT_UPDATE
+          - POST_ACCOUNT_DELETION
+          - POST_ACCOUNT_UPDATE
+        id:
+          type: string
+        name:
+          type: string
+        packageDependencies:
+          type: object
+          additionalProperties:
+            type: string
+        policyTag:
+          type: string
+        requestBody:
+          type: string
+        variables:
+          uniqueItems: true
+          type: array
+          items:
+            $ref: '#/components/schemas/HookVariableResponse_EventHookFunction'
+    EventHookFunction_InsertRequest:
+      required:
+      - blocking
+      - hook
+      - name
+      - packageDependencies
+      type: object
+      properties:
+        blocking:
+          type: boolean
+        code:
+          maxLength: 256000
+          minLength: 1
+          type: string
+          description: Code of the event hook function, if not specified it's generated automatically for each type
+          default: '*example code*'
+        description:
+          maxLength: 1024
+          minLength: 0
+          type: string
+        hook:
+          type: string
+          enum:
+          - DENY_AUTHENTICATION
+          - UNIDENTIFIED_USER
+          - POST_ACCOUNT_LOGIN
+          - POST_CONSENT_UPDATE
+          - POST_ID_PROOFING
+          - POST_IDENTIFICATION
+          - POST_MFA_FACTOR_CHANGE
+          - POST_REGISTRATION
+          - POST_EXTERNAL_LOGIN
+          - POST_TOKEN_REFRESH
+          - PRE_ID_PROOFING
+          - PRE_ID_TOKEN_GENERATION
+          - PRE_SAML2_ASSERTION_GENERATION
+          - PRE_PROGRESSIVE_PROFILING
+          - PRE_REGISTRATION
+          - PRE_PASSWORD
+          - PRE_PASSWORD_RESET
+          - PRE_MULTI_STAGE_REGISTRATION
+          - PRE_EXTERNAL_REGISTRATION
+          - PRE_AUTHENTICATOR_ENROLLMENT
+          - PRE_PASSWORD_PERSIST
+          - PRE_CONTACT_UPDATE
+          - POST_ACCOUNT_DELETION
+          - POST_ACCOUNT_UPDATE
+        name:
+          maxLength: 64
+          minLength: 3
+          pattern: ^$|^[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°]([\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*° ]*[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°])?$
+          type: string
+        packageDependencies:
+          type: object
+          additionalProperties:
+            type: string
+            description: Dependencies used for the event hook function
+          description: Dependencies used for the event hook function
+        policyTag:
+          pattern: ^[a-z0-9_]{2,32}$
+          type: string
+          description: Must be an existing policy tag name
+        requestBody:
+          maxLength: 8000
+          minLength: 1
+          type: string
+          default: '*example code*'
+        variables:
+          type: array
+          items:
+            $ref: '#/components/schemas/HookVariableUpsertRequest_EventHookFunction'
+      description: Represents an event hook function
+    NoValueRequest_EventHookFunction:
+      required:
+      - type
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/DefaultValueRequest_EventHookFunction'
+    PagedModelEventHookFunctionListItemResponse:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/EventHookFunctionListItemResponse'
+        page:
+          $ref: '#/components/schemas/PageMetadata'
+    StaticVariableResponse_EventHookFunction:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - noValue
+          - variableReference
+          - staticVariable
+          - staticSecret
+        value:
+          type: string
+  securitySchemes:
+    securityScheme:
+      scheme: bearer
+      type: http

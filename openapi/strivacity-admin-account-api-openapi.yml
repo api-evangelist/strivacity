@@ -1,0 +1,1775 @@
+openapi: 3.2.0
+info:
+  description: API documentation of Admin Portal - Admin Management
+  title: Admin Portal - Admin Management Admin Account API
+  version: v0.0.1
+servers:
+- url: https://{tenant}
+  variables:
+    tenant:
+      default: example.strivacity.com
+      description: Your Strivacity tenant
+tags:
+- name: Admin Account
+paths:
+  /admin/api/v1/admin/identityStore/accounts:
+    get:
+      description: 'You can list the existing admin accounts by calling this endpoint.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | read:admin_account |'
+      operationId: listAccounts
+      parameters:
+      - description: Account ID
+        in: query
+        name: id
+        schema:
+          type: string
+      - description: Login identifier (username, email or phone). Start with `@` to search by email domain. When searching by domain, only email addresses belonging to that domain or its subdomains are returned.
+        in: query
+        name: loginIdentifier
+        schema:
+          type: string
+      - description: Attribute mapped to the Email native claim. Start with `@` to search by domain. When searching by domain, only email addresses belonging to that domain or its subdomains are returned.
+        in: query
+        name: emailNativeClaim
+        schema:
+          type: string
+      - description: User name in account info
+        in: query
+        name: userNameNativeClaim
+        schema:
+          type: string
+      - description: Account is enabled or not
+        in: query
+        name: enabled
+        schema:
+          type: boolean
+      - description: Start date used for filtering based on updatedAt field. Accepted formats are an ISO 8061 timestamp or an ISO 8061 duration with a +/- prefix.
+        in: query
+        name: updatedAtStartDate
+        schema:
+          type: string
+          format: date-time
+      - description: End date used for filtering based on updatedAt field. Accepted formats are an ISO 8061 timestamp or an ISO 8061 duration with a +/- prefix.
+        in: query
+        name: updatedAtEndDate
+        schema:
+          type: string
+          format: date-time
+      - description: Start date used for filtering based on createdAt field. Accepted formats are an ISO 8061 timestamp or an ISO 8061 duration with a +/- prefix.
+        in: query
+        name: createdAtStartDate
+        schema:
+          type: string
+          format: date-time
+      - description: End date used for filtering based on createdAt field. Accepted formats are an ISO 8061 timestamp or an ISO 8061 duration with a +/- prefix.
+        in: query
+        name: createdAtEndDate
+        schema:
+          type: string
+          format: date-time
+      - description: Start date used for filtering based on disabledAt field. Accepted formats are an ISO 8061 timestamp or an ISO 8061 duration with a +/- prefix.
+        in: query
+        name: disabledAtStartDate
+        schema:
+          type: string
+          format: date-time
+      - description: End date used for filtering based on disabledAt field. Accepted formats are an ISO 8061 timestamp or an ISO 8061 duration with a +/- prefix.
+        in: query
+        name: disabledAtEndDate
+        schema:
+          type: string
+          format: date-time
+      - description: Start date used for filtering based on lastLoggedIn field. Must not be provided if `neverLoggedIn` is true. Accepted formats are an ISO 8061 timestamp or an ISO 8061 duration with a +/- prefix.
+        in: query
+        name: lastLoginAtStartDate
+        schema:
+          type: string
+          format: date-time
+      - description: End date used for filtering based on lastLoggedIn field. Must not be provided if `neverLoggedIn` is true. Accepted formats are an ISO 8061 timestamp or an ISO 8061 duration with a +/- prefix.
+        in: query
+        name: lastLoginAtEndDate
+        schema:
+          type: string
+          format: date-time
+      - description: Flag to filter for accounts that have never logged in.
+        in: query
+        name: neverLoggedIn
+        schema:
+          type: boolean
+      - description: Start date used for filtering based on lastAuthenticationActivity field. Must not be provided if `neverLoggedIn` is true. Accepted formats are an ISO 8061 timestamp or an ISO 8061 duration with a +/- prefix.
+        in: query
+        name: lastAuthenticationActivityAtStartDate
+        schema:
+          type: string
+          format: date-time
+      - description: End date used for filtering based on lastAuthenticationActivity field. Must not be provided if `neverLoggedIn` is true. Accepted formats are an ISO 8061 timestamp or an ISO 8061 duration with a +/- prefix.
+        in: query
+        name: lastAuthenticationActivityAtEndDate
+        schema:
+          type: string
+          format: date-time
+      - content:
+          '*/*':
+            schema:
+              type: array
+              items:
+                type: string
+        description: Role IDs used for filtering
+        in: query
+        name: roles
+      - description: Type of inclusion used for roles filter. By setting to `exclude` makes it an `AND` relationship within the values of the roles parameter.
+        in: query
+        name: rolesFilter
+        schema:
+          type: string
+          enum:
+          - include
+          - exclude
+      - description: Zero-based page index (0..N)
+        in: query
+        name: page
+        schema:
+          type: integer
+          format: int64
+          default: 0
+      - description: The size of the page to be returned
+        in: query
+        name: size
+        schema:
+          type: integer
+          format: int64
+          default: 20
+      - description: 'Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported.'
+        in: query
+        name: sort
+        schema:
+          type: array
+          items:
+            type: string
+      responses:
+        '200':
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AccountResponse_Account'
+          description: OK
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+      security:
+      - securityScheme:
+        - read:admin_account
+      summary: List admin accounts
+      tags:
+      - Admin Account
+    post:
+      description: 'You can create an admin account by calling this endpoint.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | write:admin_account |'
+      operationId: createAccount
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminAccountInsertRequest_Account'
+        required: true
+      responses:
+        '201':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AccountResponse_Account'
+          description: Created
+        '400':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Bad Request
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+        '409':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Conflict
+      security:
+      - securityScheme:
+        - write:admin_account
+      summary: Create an admin account
+      tags:
+      - Admin Account
+  /admin/api/v1/admin/identityStore/accounts/{accountId}:
+    delete:
+      description: 'You can delete an admin account by calling this endpoint. Admin accounts cannot delete themselves. The last existing admin account cannot be deleted.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | delete:admin_account |'
+      operationId: deleteAccountById
+      parameters:
+      - in: path
+        name: accountId
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: No Content
+        '400':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Administrator accounts cannot delete themselves
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+        '409':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: The last assigned admin cannot be deleted
+      security:
+      - securityScheme:
+        - delete:admin_account
+      summary: Delete an admin account
+      tags:
+      - Admin Account
+    get:
+      description: 'You can get an admin account by calling this endpoint.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | read:admin_account |'
+      operationId: getAccountById
+      parameters:
+      - in: path
+        name: accountId
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AccountResponse_Account'
+          description: OK
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+        '404':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Not Found
+      security:
+      - securityScheme:
+        - read:admin_account
+      summary: Get an admin account
+      tags:
+      - Admin Account
+  /admin/api/v1/admin/identityStore/accounts/{accountId}/authenticators:
+    post:
+      description: 'You can create an authenticator for an admin account by calling this endpoint. Authenticator type can be either `email` or `phone`.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | write:admin_account_authenticator |'
+      operationId: addAuthenticator
+      parameters:
+      - in: path
+        name: accountId
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthenticatorAdminInsertRequest_Account'
+        required: true
+      responses:
+        '201':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AuthenticatorResponse_Account'
+          description: Created
+        '400':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Bad Request
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+        '404':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Not Found
+        '409':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Conflict
+      security:
+      - securityScheme:
+        - write:admin_account_authenticator
+      summary: Create authenticator for an admin account
+      tags:
+      - Admin Account
+  /admin/api/v1/admin/identityStore/accounts/{accountId}/authenticators/{authenticatorId}:
+    delete:
+      description: 'You can delete an authenticator for an admin account by calling this endpoint.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | delete:admin_account_authenticator |'
+      operationId: deleteAuthenticator
+      parameters:
+      - in: path
+        name: accountId
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: authenticatorId
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: No Content
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+        '404':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Not Found
+      security:
+      - securityScheme:
+        - delete:admin_account_authenticator
+      summary: Delete authenticator for an admin account
+      tags:
+      - Admin Account
+  /admin/api/v1/admin/identityStore/accounts/{accountId}/disable:
+    post:
+      description: 'You can disable an admin account by calling this endpoint.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | write:admin_account |'
+      operationId: disableAccount
+      parameters:
+      - in: path
+        name: accountId
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+        '400':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Bad Request
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+        '404':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Not Found
+      security:
+      - securityScheme:
+        - write:admin_account
+      summary: Disable an admin account
+      tags:
+      - Admin Account
+  /admin/api/v1/admin/identityStore/accounts/{accountId}/download:
+    get:
+      description: 'You can download the admin account information in HTML or JSON format by calling this endpoint.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | read:admin_account_download |'
+      operationId: getPersonalData
+      parameters:
+      - in: path
+        name: accountId
+        required: true
+        schema:
+          type: string
+      - in: query
+        name: fileType
+        required: true
+        schema:
+          pattern: html|json
+          type: string
+          enum:
+          - html
+          - json
+      responses:
+        '200':
+          content:
+            '*/*':
+              schema:
+                type: string
+          description: OK
+          headers:
+            Content-Disposition:
+              schema:
+                type: string
+                example: attachment; filename="{filename}"
+              style: simple
+        '400':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Invalid file type or file type is not present
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+        '404':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Not Found
+      security:
+      - securityScheme:
+        - read:admin_account_download
+      summary: Download admin account information
+      tags:
+      - Admin Account
+  /admin/api/v1/admin/identityStore/accounts/{accountId}/enable:
+    post:
+      description: 'You can enable an admin account by calling this endpoint.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | write:admin_account |'
+      operationId: enableAccount
+      parameters:
+      - in: path
+        name: accountId
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+        '404':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Not Found
+      security:
+      - securityScheme:
+        - write:admin_account
+      summary: Enable an admin account
+      tags:
+      - Admin Account
+  /admin/api/v1/admin/identityStore/accounts/{accountId}/identities:
+    get:
+      description: 'You can list the existing identities for an admin account by calling this endpoint.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | read:admin_account_identity |'
+      operationId: getIdentities
+      parameters:
+      - in: path
+        name: accountId
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/IdentitiesResponse_Identities'
+          description: OK
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+        '404':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Not Found
+      security:
+      - securityScheme:
+        - read:admin_account_identity
+      summary: List identities for an admin account
+      tags:
+      - Admin Account
+  /admin/api/v1/admin/identityStore/accounts/{accountId}/identities/identifier:
+    post:
+      description: 'You can update the identifier for an admin account by calling this endpoint.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | write:admin_account_identity |'
+      operationId: updateAccountIdentifier
+      parameters:
+      - in: path
+        name: accountId
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AccountIdentifierUpdateRequest_Account'
+        required: true
+      responses:
+        '200':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/IdentitiesResponse_Account'
+          description: OK
+        '400':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Bad Request
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+        '404':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Not Found
+        '409':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Conflict
+      security:
+      - securityScheme:
+        - write:admin_account_identity
+      summary: Update identifier for an admin account
+      tags:
+      - Admin Account
+  /admin/api/v1/admin/identityStore/accounts/{accountId}/liftPasscodeLock:
+    post:
+      description: 'You can lift passcode lock for an admin account by calling this endpoint.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | write:admin_account |'
+      operationId: liftPasscodeLock
+      parameters:
+      - in: path
+        name: accountId
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: No Content
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+        '404':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Not Found
+      security:
+      - securityScheme:
+        - write:admin_account
+      summary: Lift passcode lock for an admin account
+      tags:
+      - Admin Account
+  /admin/api/v1/admin/identityStore/accounts/{accountId}/liftPasswordLock:
+    post:
+      description: 'You can lift password lock for an admin account by calling this endpoint.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | write:admin_account |'
+      operationId: liftPasswordLock
+      parameters:
+      - in: path
+        name: accountId
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: No Content
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+        '404':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Not Found
+      security:
+      - securityScheme:
+        - write:admin_account
+      summary: Lift password lock for an admin account
+      tags:
+      - Admin Account
+  /admin/api/v1/admin/identityStore/accounts/{accountId}/notificationPreferences:
+    put:
+      description: 'You can update the notification preferences for an admin account by calling this endpoint.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | write:admin_account |'
+      operationId: updateAdminAccountNotificationPreferences
+      parameters:
+      - in: path
+        name: accountId
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NotificationPreferencesRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/NotificationPreferencesResponse'
+          description: OK
+        '400':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Bad Request
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+        '404':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Not Found
+      security:
+      - securityScheme:
+        - write:admin_account
+      summary: Update notification preferences for an admin account
+      tags:
+      - Admin Account
+  /admin/api/v1/admin/identityStore/accounts/{accountId}/password/change:
+    post:
+      description: 'You can change the password for an admin account by calling this endpoint.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | write:admin_account_authenticator |'
+      operationId: resetPassword
+      parameters:
+      - in: path
+        name: accountId
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminPasswordResetDTO_Account'
+        required: true
+      responses:
+        '204':
+          description: No Content
+        '400':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Bad Request
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+        '404':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Not Found
+      security:
+      - securityScheme:
+        - write:admin_account_authenticator
+      summary: Change password for an admin account
+      tags:
+      - Admin Account
+  /admin/api/v1/admin/identityStore/accounts/{accountId}/password/reset:
+    post:
+      description: 'You can request a password reset for an admin account by calling this endpoint. A password reset email will be sent to the email address of the corresponding admin account.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | write:admin_account_authenticator |'
+      operationId: adminInitiatedForgottenPassword
+      parameters:
+      - in: path
+        name: accountId
+        required: true
+        schema:
+          minLength: 1
+          type: string
+      responses:
+        '204':
+          description: No Content
+        '400':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Bad Request
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+        '404':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Not Found
+      security:
+      - securityScheme:
+        - write:admin_account_authenticator
+      summary: Request password reset for an admin account
+      tags:
+      - Admin Account
+  /admin/api/v1/admin/identityStore/accounts/{accountId}/personal:
+    put:
+      description: 'You can update metadata for an admin account by calling this endpoint. Only the given attributes will be modified. After a successful update, the entire metadata will be returned. Attributes provided with an explicit `null` value won''t be overridden by external metadata values.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | write:admin_account |'
+      operationId: updateLocalMetadata
+      parameters:
+      - in: path
+        name: accountId
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties:
+                type: object
+        required: true
+      responses:
+        '200':
+          content:
+            '*/*':
+              schema:
+                type: object
+                additionalProperties:
+                  type: object
+          description: OK
+        '400':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Bad Request
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+        '404':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Not Found
+      security:
+      - securityScheme:
+        - write:admin_account
+      summary: Update metadata for an admin account
+      tags:
+      - Admin Account
+  /admin/api/v1/admin/identityStore/accounts/{accountId}/roles:
+    post:
+      description: 'You can assign one or more roles to an account by calling this endpoint.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | write:admin_account |'
+      operationId: addRolesToAccount
+      parameters:
+      - in: path
+        name: accountId
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/IdReferenceRequest_Account'
+        required: true
+      responses:
+        '204':
+          description: No Content
+        '400':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Bad Request
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+        '404':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Not Found
+      security:
+      - securityScheme:
+        - write:admin_account
+      summary: Assign multiple roles to an account
+      tags:
+      - Admin Account
+  /admin/api/v1/admin/identityStore/accounts/{accountId}/sessions:
+    delete:
+      description: 'You can clear the sessions for an admin account by calling this endpoint. Note that clearing sessions for an admin account results in logging out of all browsers that admin had been logged into previously. This performs a back-channel logout on the specified admin account.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | write:admin_account |'
+      operationId: clearAccountDeviceSessions
+      parameters:
+      - in: path
+        name: accountId
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: No Content
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+        '404':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Not Found
+      security:
+      - securityScheme:
+        - write:admin_account
+      summary: Clear sessions for an admin account
+      tags:
+      - Admin Account
+    get:
+      description: 'You can list the sessions for an admin account by calling this endpoint.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | read:admin_account |'
+      operationId: getIdentifiedAccountDeviceSessions
+      parameters:
+      - in: path
+        name: accountId
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/IdentifiedSessionResponse_Account'
+          description: OK
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+      security:
+      - securityScheme:
+        - read:admin_account
+      summary: List sessions for an admin account
+      tags:
+      - Admin Account
+  /admin/api/v1/admin/identityStore/accounts/{accountId}/sessions/{sessionId}:
+    delete:
+      description: 'You can delete a session for an admin account by calling this endpoint.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | write:admin_account |'
+      operationId: deleteAccountDeviceSession
+      parameters:
+      - in: path
+        name: accountId
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: sessionId
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: No Content
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+        '404':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Not Found
+      security:
+      - securityScheme:
+        - write:admin_account
+      summary: Delete session for an admin account
+      tags:
+      - Admin Account
+components:
+  schemas:
+    ProblemJson:
+      type: object
+      properties:
+        detail:
+          type: string
+        entityName:
+          type: string
+          description: The name of the entity within the error has occurred
+        errorKey:
+          type: string
+          description: A unique identifier of the error
+        fieldErrors:
+          type: array
+          description: Field constraint violation errors
+          items:
+            $ref: '#/components/schemas/FieldError'
+        message:
+          type: string
+          description: A unique identifier in format of 'error.{errorKey}'
+        params:
+          type: array
+          description: Further information related to the actual error
+          items:
+            type: object
+            additionalProperties:
+              type: object
+        path:
+          type: string
+          description: Request URI
+        status:
+          type: integer
+          description: Status code
+          format: int32
+        title:
+          type: string
+      description: Based on [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807)
+    NotificationPreferencesResponse:
+      type: object
+      properties:
+        accountAttributeUpdate:
+          type: boolean
+        accountDeletion:
+          type: boolean
+        accountLockout:
+          type: boolean
+        mfaMethodChange:
+          type: boolean
+        passwordResetSuccess:
+          type: boolean
+      description: Contains which types of notifications are enabled or not for an account
+    AccountProofingWithNameAndDeletedResponse_Account:
+      type: object
+      properties:
+        attempts:
+          type: integer
+          format: int64
+        deleted:
+          type: boolean
+        id:
+          type: string
+          format: uuid
+        invalidatedAt:
+          type: string
+          format: date-time
+        policyId:
+          type: string
+        proofedAt:
+          type: string
+          format: date-time
+    AccountRole_Account:
+      required:
+      - id
+      - organization
+      type: object
+      properties:
+        id:
+          minLength: 1
+          type: string
+          description: ID of the represented role
+        organization:
+          minLength: 1
+          type: string
+          description: ID of the represented organization
+      description: Represents an organization-role assignment
+    AdminAccountInsertLocal_Account:
+      type: object
+      properties:
+        metadata:
+          type: object
+          additionalProperties:
+            type: object
+            description: Represents metadata for account information
+            example: "{\n  \"name\": {\n    \"givenName\": \"John\"\n    \"familyName\": \"Doe\"\n  }\n}"
+          description: Represents metadata for account information
+          example: "{\n  \"name\": {\n    \"givenName\": \"John\"\n    \"familyName\": \"Doe\"\n  }\n}"
+    IdentitiesResponse.External_Account:
+      type: object
+      properties:
+        display:
+          type: string
+        id:
+          type: string
+          description: Represents an external identifier
+        metadata:
+          type: object
+          additionalProperties:
+            type: object
+    AdminPasswordResetDTO_Account:
+      type: object
+      properties:
+        newPassword:
+          maxLength: 256
+          minLength: 1
+          type: string
+        skipPasswordPolicy:
+          type: boolean
+    IdReferenceRequest_Account:
+      required:
+      - id
+      type: object
+      properties:
+        id:
+          pattern: ^[a-zA-Z0-9-]{1,36}$
+          type: string
+          description: ID of the represented entity
+    AdminAccountInsertRequest_Account:
+      type: object
+      properties:
+        email:
+          $ref: '#/components/schemas/AccountInsertRequest.Email_Account'
+        local:
+          $ref: '#/components/schemas/AdminAccountInsertLocal_Account'
+        password:
+          maxLength: 256
+          minLength: 1
+          type: string
+        skipPasswordPolicy:
+          type: boolean
+          default: false
+    AccountIdentifierUpdateRequest_Account:
+      required:
+      - type
+      type: object
+      properties:
+        identifier:
+          type: string
+        type:
+          type: string
+          description: Identifier method used by identity stores
+          enum:
+          - username
+          - email
+          - phone
+    FeatureResponse_Account:
+      type: object
+      properties:
+        geometry:
+          $ref: '#/components/schemas/GeometryResponse_Account'
+        properties:
+          type: object
+          additionalProperties:
+            type: string
+        type:
+          type: string
+      description: Represents a feature object according to the [RFC 7946](https://www.rfc-editor.org/rfc/rfc7946#section-3.2) standard
+    IdentitiesResponse_Identities:
+      type: object
+      description: Represents the identities of an account
+      oneOf:
+      - $ref: '#/components/schemas/IdentitiesResponse.Local_Identities'
+      - $ref: '#/components/schemas/IdentitiesResponse.Email_Identities'
+      - $ref: '#/components/schemas/IdentitiesResponse.Phone_Identities'
+      - $ref: '#/components/schemas/IdentitiesResponse.External_Identities'
+    AccountLockout_Account:
+      type: object
+      properties:
+        failedPasscodeAttemptCount:
+          type: integer
+          format: int32
+        failedPasscodeAttemptCountPermanentLock:
+          type: integer
+          format: int32
+        failedPasswordAttemptCount:
+          type: integer
+          format: int32
+        failedPasswordAttemptCountPermanentLock:
+          type: integer
+          format: int32
+        locks:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/AccountLock_Account'
+      description: Represents the account lockout details
+    IdentitiesResponse.External_Identities:
+      type: object
+      properties:
+        display:
+          type: string
+        id:
+          type: string
+          description: Represents an external identifier
+        metadata:
+          type: object
+          additionalProperties:
+            type: object
+    IdentitiesResponse.Phone_Identities:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Represents the phone identifier
+        verified:
+          type: boolean
+    AccountLock_Account:
+      type: object
+      properties:
+        until:
+          type: string
+          description: null in case of permanent lock, otherwise temporary lock
+          format: date-time
+      description: Represents a lock on the account
+    AuthenticatorAdminInsertRequest_Account:
+      required:
+      - target
+      - type
+      type: object
+      properties:
+        metadata:
+          type: object
+          additionalProperties:
+            type: object
+        publicMetadata:
+          type: object
+          additionalProperties:
+            type: object
+        subType:
+          type: string
+          description: ID of subtype
+        target:
+          minLength: 1
+          type: string
+          description: Targeted email address or phone number the MFA request is sent to
+        type:
+          type: string
+          enum:
+          - email
+          - phone
+          - custom
+    NotificationPreferencesResponse_Account:
+      type: object
+      properties:
+        accountAttributeUpdate:
+          type: boolean
+        accountDeletion:
+          type: boolean
+        accountLockout:
+          type: boolean
+        mfaMethodChange:
+          type: boolean
+        passwordResetSuccess:
+          type: boolean
+      description: Contains which types of notifications are enabled or not for an account
+    IdentitiesResponse.Email_Identities:
+      type: object
+      properties:
+        display:
+          type: string
+        id:
+          type: string
+          description: Represents the email identifier
+        verified:
+          type: boolean
+    AuthenticatorResponse_Account:
+      type: object
+      properties:
+        createdAt:
+          type: string
+          description: Creation time of the authenticator
+          format: date-time
+        id:
+          type: string
+        lastUsedAt:
+          type: string
+          description: Last usage time of the authenticator
+          format: date-time
+        methods:
+          type: array
+          items:
+            type: string
+            description: 'Authenticator method that defines how the authentication can be done. Possible values: `passcode`, `magicLink`, `voice` and `publicKey`.'
+            example: passcode
+        publicMetadata:
+          type: object
+          additionalProperties:
+            type: object
+            description: Authenticator public metadata
+          description: Authenticator public metadata
+        subType:
+          type: string
+          description: ID of Additional factor used for MFA
+        target:
+          type: string
+          description: Authenticator target, to where the MFA will be requested for
+          example: '+36301234567'
+        type:
+          type: string
+          description: Authenticator type used for MFA
+          enum:
+          - phone
+          - email
+          - softToken
+          - webAuthnSecurityKey
+          - webAuthnDeviceBiometrics
+          - passkey
+          - custom
+      description: Represents an authenticator for an account
+    IdentitiesResponse.Local_Identities:
+      type: object
+      properties:
+        display:
+          type: string
+        id:
+          type: string
+          description: Represents the username identifier
+        metadata:
+          type: object
+          additionalProperties:
+            type: object
+            description: Represents metadata for account information
+          description: Represents metadata for account information
+      description: Represents the local metadata for an account
+    FieldError:
+      type: object
+      properties:
+        field:
+          type: string
+        message:
+          type: string
+        objectName:
+          type: string
+    AuthenticatorsResponse_Account:
+      type: object
+      properties:
+        methods:
+          type: array
+          items:
+            $ref: '#/components/schemas/AuthenticatorResponse_Account'
+      description: Represents the authenticators for an account
+    AccountInsertRequest.Email_Account:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Represents the email identifier
+          example: john@example.com
+        verified:
+          type: boolean
+          default: false
+    NotificationPreferencesRequest:
+      type: object
+      properties:
+        accountAttributeUpdate:
+          type: boolean
+        accountDeletion:
+          type: boolean
+        accountLockout:
+          type: boolean
+        mfaMethodChange:
+          type: boolean
+        passwordResetSuccess:
+          type: boolean
+      description: Contains which types of notifications are enabled or not for an account
+    IdentitiesResponse_Account:
+      type: object
+      description: Represents the identities of an account
+      oneOf:
+      - $ref: '#/components/schemas/IdentitiesResponse.Local_Account'
+      - $ref: '#/components/schemas/IdentitiesResponse.Email_Account'
+      - $ref: '#/components/schemas/IdentitiesResponse.Phone_Account'
+      - $ref: '#/components/schemas/IdentitiesResponse.External_Account'
+    IdentitiesResponse.Email_Account:
+      type: object
+      properties:
+        display:
+          type: string
+        id:
+          type: string
+          description: Represents the email identifier
+        verified:
+          type: boolean
+    AccountResponse_Account:
+      type: object
+      properties:
+        accountInfo:
+          type: object
+          additionalProperties:
+            type: object
+            description: Contains metadata for an account
+          description: Contains metadata for an account
+        accountLockout:
+          $ref: '#/components/schemas/AccountLockout_Account'
+        accountProofings:
+          type: array
+          items:
+            $ref: '#/components/schemas/AccountProofingWithNameAndDeletedResponse_Account'
+        authenticators:
+          $ref: '#/components/schemas/AuthenticatorsResponse_Account'
+        consents:
+          type: array
+          items:
+            $ref: '#/components/schemas/ConsentResponse_Account'
+        createdAt:
+          type: string
+          format: date-time
+        disabledAt:
+          type: string
+          format: date-time
+        enabled:
+          type: boolean
+        groups:
+          type: array
+          items:
+            $ref: '#/components/schemas/IdReferenceRequest_Account'
+        id:
+          type: string
+        identities:
+          type: object
+          additionalProperties:
+            type: object
+            description: Contains identities for an account, like email, username and local metadata
+          description: Contains identities for an account, like email, username and local metadata
+        language:
+          type: string
+        lastAuthenticationActivity:
+          $ref: '#/components/schemas/LastLoginResponse_Account'
+        lastLogin:
+          $ref: '#/components/schemas/LastLoginResponse_Account'
+        notificationPreferences:
+          $ref: '#/components/schemas/NotificationPreferencesResponse_Account'
+        numberOfLogins:
+          type: integer
+          format: int64
+        organization:
+          type: string
+          description: ID of the represented organization. If the value is null, the account is non-organizational.
+        roles:
+          type: array
+          items:
+            $ref: '#/components/schemas/AccountRole_Account'
+        store:
+          type: string
+          description: Name of the represented identity store
+        updatedAt:
+          type: string
+          format: date-time
+    LastLoginResponse_Account:
+      type: object
+      properties:
+        ip:
+          type: string
+        location:
+          $ref: '#/components/schemas/FeatureResponse_Account'
+        time:
+          type: string
+          format: date-time
+      description: Represents the last login by IP address and time of login
+    ConsentResponse_Account:
+      type: object
+      properties:
+        consentId:
+          type: string
+        consentVersion:
+          type: integer
+          format: int32
+        id:
+          type: string
+        optIn:
+          type: string
+          format: date-time
+        optOut:
+          type: string
+          format: date-time
+    IdentitiesResponse.Local_Account:
+      type: object
+      properties:
+        display:
+          type: string
+        id:
+          type: string
+          description: Represents the username identifier
+        metadata:
+          type: object
+          additionalProperties:
+            type: object
+            description: Represents metadata for account information
+          description: Represents metadata for account information
+      description: Represents the local metadata for an account
+    GeometryResponse_Account:
+      type: object
+      properties:
+        coordinates:
+          type: array
+          items:
+            type: number
+            format: double
+        type:
+          type: string
+      description: Represents a geometry object according to the [RFC 7946](https://www.rfc-editor.org/rfc/rfc7946#section-3.1) standard
+    IdentitiesResponse.Phone_Account:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Represents the phone identifier
+        verified:
+          type: boolean
+    IdentifiedSessionResponse_Account:
+      type: object
+      properties:
+        deviceString:
+          type: string
+        id:
+          type: string
+        lastIP:
+          type: string
+        lastLoginAt:
+          type: string
+          format: date-time
+        location:
+          $ref: '#/components/schemas/FeatureResponse_Account'
+        userAgent:
+          type: string
+  securitySchemes:
+    securityScheme:
+      scheme: bearer
+      type: http

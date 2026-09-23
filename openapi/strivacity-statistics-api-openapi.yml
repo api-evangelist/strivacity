@@ -1,0 +1,773 @@
+openapi: 3.2.0
+info:
+  description: API documentation of Admin Portal
+  title: Admin Portal Statistics API
+  version: v0.0.1
+servers:
+- url: https://{tenant}
+  variables:
+    tenant:
+      default: example.strivacity.com
+      description: Your Strivacity tenant
+tags:
+- name: Statistics
+paths:
+  /admin/api/v1/statistics/ActiveAccounts:
+    get:
+      description: 'You can query the active account statistics by calling this endpoint.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | read:statistic |'
+      operationId: queryActiveAccountsStatistics
+      parameters:
+      - in: query
+        name: startDate
+        required: true
+        schema:
+          type: string
+          format: date-time
+      - in: query
+        name: endDate
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - description: Location in IANA time zone format.
+        in: query
+        name: location
+        required: false
+        schema:
+          pattern: ^\w+/\w+$
+          type: string
+          default: Etc/UTC
+      - description: Desired resolution for the the requested statistics
+        in: query
+        name: period
+        required: false
+        schema:
+          pattern: ^(hour|day|month|year)$
+          type: string
+          enum:
+          - hour
+          - day
+          - month
+          - year
+      responses:
+        '200':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/StatsResponse_Stats'
+          description: OK
+        '400':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Bad Request
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+      security:
+      - securityScheme:
+        - read:statistic
+      summary: Query active account statistics
+      tags:
+      - Statistics
+  /admin/api/v1/statistics/ConnectorJob:
+    get:
+      description: 'You can query the connector job statistics by calling this endpoint. This endpoint is subject to change
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | read:statistic |'
+      operationId: connectorJobStatistics
+      parameters:
+      - in: query
+        name: startDate
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - in: query
+        name: endDate
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - in: query
+        name: identityStore
+        required: true
+        schema:
+          type: string
+      - in: query
+        name: inboundConnection
+        required: false
+        schema:
+          type: string
+      - in: query
+        name: status
+        required: false
+        schema:
+          type: string
+          enum:
+          - IN_PROGRESS
+          - FINISHED
+          - FAILED
+          - ABORTED
+      - in: query
+        name: limit
+        required: false
+        schema:
+          maximum: 100
+          minimum: 1
+          type: integer
+          format: int32
+          default: 5
+      responses:
+        '200':
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ConnectorJobResponse_Stats'
+          description: OK
+        '400':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Bad Request
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+      security:
+      - securityScheme:
+        - read:statistic
+      summary: Query connector job statistics [beta]
+      tags:
+      - Statistics
+  /admin/api/v1/statistics/ConnectorUptime:
+    get:
+      description: 'You can query the connector uptime statistics by calling this endpoint.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | read:statistic |'
+      operationId: queryConnectorUptimeStatistics
+      parameters:
+      - in: query
+        name: identityStore
+        required: true
+        schema:
+          type: string
+      - in: query
+        name: startDate
+        required: true
+        schema:
+          type: string
+          format: date-time
+      - in: query
+        name: endDate
+        required: false
+        schema:
+          type: string
+          format: date-time
+      responses:
+        '200':
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ConnectorUptimeEventResponse_Stats'
+          description: OK
+        '400':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Bad Request
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+      security:
+      - securityScheme:
+        - read:statistic
+      summary: Query connector uptime statistics
+      tags:
+      - Statistics
+  /admin/api/v1/statistics/ConsentAcceptance:
+    get:
+      description: 'You can query the consent acceptance statistics by calling this endpoint.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | read:statistic |'
+      operationId: queryConsentAcceptanceStatistics
+      parameters:
+      - in: query
+        name: startDate
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - in: query
+        name: endDate
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - description: Location in IANA time zone format.
+        in: query
+        name: location
+        required: false
+        schema:
+          pattern: ^\w+/\w+$
+          type: string
+          default: Etc/UTC
+      - description: List of application ids that events should be used for the statistics
+        in: query
+        name: application
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+      - in: query
+        name: interval
+        required: false
+        schema:
+          pattern: ^\d{1,2}h$
+          type: string
+          enum:
+          - 1h
+          - '...'
+          - 99h
+      - description: Desired resolution for the the requested statistics
+        in: query
+        name: period
+        required: false
+        schema:
+          pattern: ^(hour|day|month|year)$
+          type: string
+          enum:
+          - hour
+          - day
+          - month
+          - year
+      - description: Filter against the given variant IDs or 'null'. Explicit 'null' means baseline variant.
+        in: query
+        name: variant
+        required: false
+        schema:
+          type: array
+          items:
+            pattern: ^$|^[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°]([\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*° ]*[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°])?$
+            type: string
+            description: UUID or 'null'
+      responses:
+        '200':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/StatsResponse_Stats'
+          description: OK
+        '400':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Bad Request
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+      security:
+      - securityScheme:
+        - read:statistic
+      summary: Query consent acceptance statistics
+      tags:
+      - Statistics
+  /admin/api/v1/statistics/{name}:
+    get:
+      description: 'You can query statistics by calling this endpoint.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | read:statistic |'
+      operationId: queryNamedStatistics
+      parameters:
+      - in: path
+        name: name
+        required: true
+        schema:
+          pattern: ^[a-zA-Z0-9\-_]+$
+          type: string
+          enum:
+          - CustomerAuthenticated
+          - CustomerRegistered
+          - ForgottenUsernameRequested
+          - MFAEnrollment
+          - PasswordReset
+          - FlowRun
+          - ExternalServiceCall
+          - MFAAuthentication
+          - AdaptiveAccess
+          - ResendRequest
+          - AccountLockout
+          - DisabledAccountLoginAttempt
+          - ConsentActivity
+          - ScreenTime
+          - ConnectorError
+          - ConnectorResponseTime
+          - EventHookExecutionTime
+          - EventHookErrors
+          - IdentityVerificationStep
+      - in: query
+        name: startDate
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - in: query
+        name: endDate
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - description: Location in IANA time zone format.
+        in: query
+        name: location
+        required: false
+        schema:
+          pattern: ^\w+/\w+$
+          type: string
+          default: Etc/UTC
+      - in: query
+        name: groupBy
+        required: false
+        schema:
+          type: array
+          items:
+            pattern: ^[a-zA-Z0-9\-_]+$
+            type: string
+      - description: List of application ids that events should be used for the statistics
+        in: query
+        name: application
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+      - description: List of client ids that events should be used for the statistics
+        in: query
+        name: client
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+      - description: Filter by identity store names
+        in: query
+        name: identityStores
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+      - description: Filter by hook id or ids. Supported for 'EventHookExecutionTime' and 'EventHookErrors', otherwise ignored.
+        in: query
+        name: hook
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+      - description: Filter by organization id or ids
+        in: query
+        name: organization
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+      - in: query
+        name: interval
+        required: false
+        schema:
+          pattern: ^\d{1,2}h$
+          type: string
+          enum:
+          - 1h
+          - '...'
+          - 99h
+      - description: Desired resolution for the the requested statistics
+        in: query
+        name: period
+        required: false
+        schema:
+          pattern: ^(hour|day|month|year)$
+          type: string
+          enum:
+          - hour
+          - day
+          - month
+          - year
+      - description: Filter against the given flowType. Supported for 'FlowRun', otherwise ignored.
+        in: query
+        name: flowType
+        required: false
+        schema:
+          type: array
+          items:
+            pattern: login|registration|selfManagement
+            type: string
+          enum:
+          - login
+          - registration
+          - selfManagement
+      - description: Filter against adaptive access decision. Supported for 'AdaptiveAccess', otherwise ignored.
+        in: query
+        name: decision
+        required: false
+        schema:
+          type: array
+          items:
+            pattern: blocking|stepUp|stepDown
+            type: string
+          enum:
+          - blocking
+          - stepUp
+          - stepDown
+      - description: Filter against the given result.
+        in: query
+        name: result
+        required: false
+        schema:
+          type: array
+          items:
+            pattern: success|failure|abandoned
+            type: string
+          enum:
+          - success
+          - failure
+          - abandoned
+      - description: Filter against the given variant IDs or 'null'. Explicit 'null' means baseline variant.
+        in: query
+        name: variant
+        required: false
+        schema:
+          type: array
+          items:
+            pattern: ^$|^[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°]([\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*° ]*[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°])?$
+            type: string
+            description: UUID or 'null'
+      - description: Limits the number of returned elements. Value '0' means no limiting. Supported for 'FlowRun' and 'ScreenTime', otherwise ignored.
+        in: query
+        name: size
+        required: false
+        schema:
+          minimum: 0
+          type: integer
+          format: int32
+          default: 0
+      - description: 'Sorting criteria in the format: value,(asc|desc). Supported for ''FlowRun'' and ''ScreenTime'', otherwise ignored.'
+        in: query
+        name: sort
+        required: false
+        schema:
+          pattern: value,(?:asc|desc)
+          type: string
+      - description: Consent ID filter. Supported for 'ConsentActivity', otherwise ignored.
+        in: query
+        name: consentId
+        required: false
+        schema:
+          type: string
+      - description: Consent version filter, which should be used with consent ID. Supported for 'ConsentActivity', otherwise ignored.
+        in: query
+        name: consentVersion
+        required: false
+        schema:
+          type: integer
+          format: int32
+      - description: Filter against the given connector response time type. Supported for 'ConnectorResponseTime', otherwise ignored.
+        in: query
+        name: connectorResponseTimeType
+        required: false
+        schema:
+          type: array
+          items:
+            pattern: queueTime|datastoreResponseTime|totalRoundTrip
+            type: string
+            enum:
+            - queueTime
+            - datastoreResponseTime
+            - totalRoundTrip
+      - description: Filter against the given connector error type. Supported for 'ConnectorError', otherwise ignored.
+        in: query
+        name: connectorErrorType
+        required: false
+        schema:
+          type: array
+          items:
+            pattern: taskError|unexpectedError
+            type: string
+            enum:
+            - taskError
+            - unexpectedError
+      - description: Filter against identity verification step id. supported for 'IdentityVerificationStep', otherwise ignored.
+        in: query
+        name: stepId
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+      - description: Identity verification policy ID filter. supported for 'IdentityVerificationStep', otherwise ignored.
+        in: query
+        name: policyId
+        required: false
+        schema:
+          type: string
+      - description: Identity verification policy version filter. Should be used with identity verification policy ID. Supported for 'IdentityVerificationStep', otherwise ignored.
+        in: query
+        name: policyVersion
+        required: false
+        schema:
+          type: string
+      - description: Percentile filter. Supported for 'ConnectorResponseTime', 'EventHookExecutionTime', 'ScreenTime', otherwise ignored. If not provided, defaults to 50th percentile (median)
+        in: query
+        name: percentile
+        required: false
+        schema:
+          maximum: 100
+          minimum: 0
+          type: integer
+          format: int32
+          default: 50
+      responses:
+        '200':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/StatsResponse_Stats'
+          description: OK
+        '400':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Bad Request
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+      security:
+      - securityScheme:
+        - read:statistic
+      summary: Query statistics
+      tags:
+      - Statistics
+components:
+  schemas:
+    ProblemJson:
+      type: object
+      properties:
+        detail:
+          type: string
+        entityName:
+          type: string
+          description: The name of the entity within the error has occurred
+        errorKey:
+          type: string
+          description: A unique identifier of the error
+        fieldErrors:
+          type: array
+          description: Field constraint violation errors
+          items:
+            $ref: '#/components/schemas/FieldError'
+        message:
+          type: string
+          description: A unique identifier in format of 'error.{errorKey}'
+        params:
+          type: array
+          description: Further information related to the actual error
+          items:
+            type: object
+            additionalProperties:
+              type: object
+        path:
+          type: string
+          description: Request URI
+        status:
+          type: integer
+          description: Status code
+          format: int32
+        title:
+          type: string
+      description: Based on [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807)
+    Link_Stats:
+      type: object
+      properties:
+        href:
+          type: string
+        meta:
+          type: object
+          additionalProperties:
+            type: string
+      description: Represents a single link for statistics
+    FieldError:
+      type: object
+      properties:
+        field:
+          type: string
+        message:
+          type: string
+        objectName:
+          type: string
+    LinksResponse_Stats:
+      type: object
+      properties:
+        self:
+          $ref: '#/components/schemas/Link_Stats'
+    ConnectorUptimeEventResponse_Stats:
+      type: object
+      properties:
+        end:
+          type: string
+          format: date-time
+        start:
+          type: string
+          format: date-time
+        type:
+          type: string
+    StatsResponseValue_Stats:
+      type: object
+      properties:
+        groups:
+          type: object
+          additionalProperties:
+            type: string
+        time:
+          type: string
+          format: date-time
+        value:
+          type: number
+          format: double
+      description: Represents a time-group-value triplet.
+    Metrics_Stats:
+      type: object
+      properties:
+        errorCount:
+          type: integer
+          format: int64
+        identitiesCached:
+          type: integer
+          format: int64
+        identitiesCreated:
+          type: integer
+          format: int64
+        identitiesDeleted:
+          type: integer
+          format: int64
+        identitiesUpdated:
+          type: integer
+          format: int64
+        rowsProcessed:
+          type: integer
+          format: int64
+    StatsResponse_Stats:
+      type: object
+      properties:
+        links:
+          $ref: '#/components/schemas/LinksResponse_Stats'
+        values:
+          type: array
+          items:
+            $ref: '#/components/schemas/StatsResponseValue_Stats'
+    ConnectorJobResponse_Stats:
+      type: object
+      properties:
+        end:
+          type: string
+          format: date-time
+        id:
+          type: string
+        inboundConnectionId:
+          type: string
+        lastSeen:
+          type: string
+          format: date-time
+        metrics:
+          $ref: '#/components/schemas/Metrics_Stats'
+        start:
+          type: string
+          format: date-time
+        status:
+          type: string
+  securitySchemes:
+    securityScheme:
+      scheme: bearer
+      type: http

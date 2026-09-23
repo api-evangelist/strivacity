@@ -1,0 +1,472 @@
+openapi: 3.2.0
+info:
+  description: API documentation of Admin Portal - Admin Management
+  title: Admin Portal - Admin Management Admin Account Invitation API
+  version: v0.0.1
+servers:
+- url: https://{tenant}
+  variables:
+    tenant:
+      default: example.strivacity.com
+      description: Your Strivacity tenant
+tags:
+- name: Admin Account Invitation
+paths:
+  /admin/api/v1/admin/identityStore/invite:
+    get:
+      description: 'You can list the existing admin account invitations by calling this endpoint.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | read:admin_account |'
+      operationId: getAccountInvitations
+      parameters:
+      - description: Invitation has been accepted or not
+        in: query
+        name: accepted
+        required: false
+        schema:
+          type: boolean
+      - description: Invitation email used for filtering
+        in: query
+        name: email
+        required: false
+        schema:
+          type: string
+      - description: Organization ID used for filtering
+        in: query
+        name: organization
+        required: false
+        schema:
+          type: string
+      - description: Unique identifier organization ID used for filtering
+        in: query
+        name: organizationScope
+        required: false
+        schema:
+          type: string
+      - description: Zero-based page index (0..N)
+        in: query
+        name: page
+        schema:
+          type: integer
+          format: int64
+          default: 0
+      - description: The size of the page to be returned
+        in: query
+        name: size
+        schema:
+          type: integer
+          format: int64
+          default: 20
+      - description: 'Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported.'
+        in: query
+        name: sort
+        schema:
+          type: array
+          items:
+            type: string
+      responses:
+        '200':
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AdminAccountInvitationResponse_Account'
+          description: OK
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+      security:
+      - securityScheme:
+        - read:admin_account
+      summary: List admin account invitations
+      tags:
+      - Admin Account Invitation
+    post:
+      description: 'You can create an admin account invitation by calling this endpoint. An invite will be sent to the given email address to register a new admin account. If a pending invitation exists with the given email address, the response contains the existing invitation ID. If an admin account exists with the given email address, the invitation will not be sent, because email mismatch is not allowed for admin invites.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | write:admin_account |'
+      operationId: createInvitation
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminAccountInvitationInsertRequest_AccountInvitationDetails'
+        required: true
+      responses:
+        '201':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AdminAccountInvitationResponse_AccountInvitationDetails'
+          description: Created
+        '400':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Bad Request
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+        '409':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/InvitationConflictProblemJson_AccountInvitationDetails'
+          description: Admin account with this email identifier already exists or an invitation with this email identifier already exists. When an invitation already exists, a `conflictingId` field will be returned in addition, which points to the already existing invitation.
+      security:
+      - securityScheme:
+        - write:admin_account
+      summary: Create an admin account invitation
+      tags:
+      - Admin Account Invitation
+  /admin/api/v1/admin/identityStore/invite/{invitationId}:
+    delete:
+      description: 'You can revoke an admin account invitation by calling this endpoint.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | write:admin_account |'
+      operationId: deleteAccountInvitation
+      parameters:
+      - in: path
+        name: invitationId
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: No Content
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+      security:
+      - securityScheme:
+        - write:admin_account
+      summary: Revoke an admin account invitation
+      tags:
+      - Admin Account Invitation
+    get:
+      description: 'You can get an admin account invitation by calling this endpoint.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | read:admin_account |'
+      operationId: getAccountInvitation
+      parameters:
+      - in: path
+        name: invitationId
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AdminAccountInvitationResponse_AccountInvitationDetails'
+          description: OK
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+        '404':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Not Found
+      security:
+      - securityScheme:
+        - read:admin_account
+      summary: Get an admin account invitation
+      tags:
+      - Admin Account Invitation
+  /admin/api/v1/admin/identityStore/invite/{invitationId}/resend:
+    post:
+      description: 'You can resend an admin account invitation by calling this endpoint. Once an invite is sent, the `validUntil` field is updated.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | write:admin_account |'
+      operationId: resendInvitation
+      parameters:
+      - in: path
+        name: invitationId
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AdminAccountInvitationResponse_AccountInvitationDetails'
+          description: OK
+        '400':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Bad Request
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+        '404':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Not Found
+      security:
+      - securityScheme:
+        - write:admin_account
+      summary: Resend an admin account invitation
+      tags:
+      - Admin Account Invitation
+components:
+  schemas:
+    ProblemJson:
+      type: object
+      properties:
+        detail:
+          type: string
+        entityName:
+          type: string
+          description: The name of the entity within the error has occurred
+        errorKey:
+          type: string
+          description: A unique identifier of the error
+        fieldErrors:
+          type: array
+          description: Field constraint violation errors
+          items:
+            $ref: '#/components/schemas/FieldError'
+        message:
+          type: string
+          description: A unique identifier in format of 'error.{errorKey}'
+        params:
+          type: array
+          description: Further information related to the actual error
+          items:
+            type: object
+            additionalProperties:
+              type: object
+        path:
+          type: string
+          description: Request URI
+        status:
+          type: integer
+          description: Status code
+          format: int32
+        title:
+          type: string
+      description: Based on [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807)
+    AdminAccountInvitationInsertRequest_AccountInvitationDetails:
+      required:
+      - email
+      - metadata
+      - roles
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+          minLength: 1
+        metadata:
+          type: object
+          additionalProperties:
+            type: object
+            description: Represents metadata for an admin account to be invited
+          description: Represents metadata for an admin account to be invited
+        roles:
+          type: array
+          description: Represents the role IDs for an admin account to be invited
+          items:
+            $ref: '#/components/schemas/IdReferenceRequest_AccountInvitationDetails'
+    FieldError:
+      type: object
+      properties:
+        field:
+          type: string
+        message:
+          type: string
+        objectName:
+          type: string
+    AdminAccountInvitationResponse_Account:
+      type: object
+      properties:
+        accountId:
+          type: string
+        email:
+          type: string
+        id:
+          type: string
+        sent:
+          type: string
+          format: date-time
+        validUntil:
+          type: string
+          format: date-time
+    IdReferenceRequest_AccountInvitationDetails:
+      required:
+      - id
+      type: object
+      properties:
+        id:
+          pattern: ^[a-zA-Z0-9-]{1,36}$
+          type: string
+          description: ID of the represented entity
+    FieldError_AccountInvitationDetails:
+      type: object
+      properties:
+        field:
+          type: string
+        message:
+          type: string
+        objectName:
+          type: string
+    InvitationConflictProblemJson_AccountInvitationDetails:
+      type: object
+      properties:
+        conflictingId:
+          type: string
+        detail:
+          type: string
+        entityName:
+          type: string
+          description: The name of the entity within the error has occurred
+        errorKey:
+          type: string
+          description: A unique identifier of the error
+        fieldErrors:
+          type: array
+          description: Field constraint violation errors
+          items:
+            $ref: '#/components/schemas/FieldError_AccountInvitationDetails'
+        message:
+          type: string
+          description: A unique identifier in format of 'error.{errorKey}'
+        params:
+          type: array
+          description: Further information related to the actual error
+          items:
+            type: object
+            additionalProperties:
+              type: object
+        path:
+          type: string
+          description: Request URI
+        status:
+          type: integer
+          description: Status code
+          format: int32
+        title:
+          type: string
+    AdminAccountInvitationResponse_AccountInvitationDetails:
+      type: object
+      properties:
+        accountId:
+          type: string
+        email:
+          type: string
+        id:
+          type: string
+        metadata:
+          type: object
+          additionalProperties:
+            type: object
+        roles:
+          type: array
+          items:
+            $ref: '#/components/schemas/AccountRole_AccountInvitationDetails'
+        sent:
+          type: string
+          format: date-time
+        validUntil:
+          type: string
+          format: date-time
+    AccountRole_AccountInvitationDetails:
+      required:
+      - id
+      - organization
+      type: object
+      properties:
+        id:
+          minLength: 1
+          type: string
+          description: ID of the represented role
+        organization:
+          minLength: 1
+          type: string
+          description: ID of the represented organization
+      description: Represents an organization-role assignment
+  securitySchemes:
+    securityScheme:
+      scheme: bearer
+      type: http

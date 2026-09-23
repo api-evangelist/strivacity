@@ -1,0 +1,835 @@
+openapi: 3.2.0
+info:
+  description: API documentation of Admin Portal
+  title: Admin Portal Account Event API
+  version: v0.0.1
+servers:
+- url: https://{tenant}
+  variables:
+    tenant:
+      default: example.strivacity.com
+      description: Your Strivacity tenant
+tags:
+- name: Account Event
+paths:
+  /admin/api/v1/events/account:
+    get:
+      description: 'You can list the account events by calling this endpoint.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | read:event_account |'
+      operationId: getAccountEvents
+      parameters:
+      - description: The applications in which the events occurred (specified by ID)
+        in: query
+        name: actorApplicationIds
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+      - description: The applications in which the events occurred (specified by name)
+        in: query
+        name: actorApplicationNames
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+      - description: The identity stores in which the events occurred (specified by ID)
+        in: query
+        name: subjectIdentityStores
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+      - description: Labels indicating the type of events. Filter events that contain all the listed labels.
+        in: query
+        name: labels
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+      - description: The accounts that were involved in the events
+        in: query
+        name: subjectAccountIds
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+      - description: Filter against the given variant IDs or 'null'. Explicit 'null' means baseline variant.
+        in: query
+        name: variantIds
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+      - description: 'The IP addresses from which the events have been initiated. This represents a list of subnet ranges (CIDR). See: [RFC 4632](https://www.rfc-editor.org/rfc/rfc4632)'
+        example: 1.1.1.1/32
+        in: query
+        name: actorIps
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+      - description: The sessions in which the events occurred (`sid` claim in ID token)
+        in: query
+        name: loginSessionIds
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+      - description: Types of account events to filter, if not defined every type is returned
+        in: query
+        name: eventTypes
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - customerFlow
+            - selfService
+            - administrative
+            - scheduled
+            - bulkOperation
+            - systemInitiatedOperation
+      - description: Outbound provisioning targets to filter events by (specified by ID). If provided, only events associated with one of these outboundProvisionTargetId values are returned.
+        in: query
+        name: outboundProvisionTargetIds
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+      - description: Start date used for filtering
+        in: query
+        name: startDate
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - description: End date used for filtering
+        in: query
+        name: endDate
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - description: Zero-based page index (0..N)
+        in: query
+        name: page
+        schema:
+          type: integer
+          format: int64
+          default: 0
+      - description: The size of the page to be returned
+        in: query
+        name: size
+        schema:
+          type: integer
+          format: int64
+          default: 20
+      - description: 'Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported.'
+        in: query
+        name: sort
+        schema:
+          type: array
+          items:
+            type: string
+      responses:
+        '200':
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AccountEventHeaderResponse'
+          description: OK
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+      security:
+      - securityScheme:
+        - read:event_account
+      summary: List account events
+      tags:
+      - Account Event
+  /admin/api/v1/events/account/{eventId}:
+    get:
+      description: 'You can get an account event by calling this endpoint.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | read:event_account |'
+      operationId: getAccountEventById
+      parameters:
+      - in: path
+        name: eventId
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AccountEventResponse'
+          description: OK
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+        '404':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Not Found
+      security:
+      - securityScheme:
+        - read:event_account
+      summary: Get an account event
+      tags:
+      - Account Event
+  /admin/api/v1/events/descriptor:
+    get:
+      description: 'You can list the possible descriptors for account events by calling this endpoint. Descriptors for account events are in the following format: `(failure|success):{eventType}`.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | read:event_account |'
+      operationId: getDescriptor
+      responses:
+        '200':
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  type: string
+                  example: success:login
+          description: OK
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+      security:
+      - securityScheme:
+        - read:event_account
+      summary: List descriptors for account events
+      tags:
+      - Account Event
+  /admin/api/v1/events/notification:
+    get:
+      description: 'You can list the notification events by calling this endpoint.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | read:event_account |'
+      operationId: getNotificationEvents
+      parameters:
+      - description: The identity stores in which the notification events occurred (specified by ID)
+        in: query
+        name: identityStores
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+      - description: The email address or phone number to which the notifications were sent
+        in: query
+        name: target
+        required: false
+        schema:
+          type: string
+      - description: The accounts associated with the notification events
+        in: query
+        name: accountIds
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+      - description: The invitations associated with the notification events
+        in: query
+        name: invitationIds
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+      - description: The account events associated with the notification events
+        in: query
+        name: accountEventIds
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+      - description: Whether the notification sending was successful or not
+        in: query
+        name: success
+        required: false
+        schema:
+          type: boolean
+      - description: Zero-based page index (0..N)
+        in: query
+        name: page
+        schema:
+          type: integer
+          format: int64
+          default: 0
+      - description: The size of the page to be returned
+        in: query
+        name: size
+        schema:
+          type: integer
+          format: int64
+          default: 20
+      - description: 'Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported.'
+        in: query
+        name: sort
+        schema:
+          type: array
+          items:
+            type: string
+      responses:
+        '200':
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/NotificationEventListResponse'
+          description: OK
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+      security:
+      - securityScheme:
+        - read:event_account
+      summary: List notification events
+      tags:
+      - Account Event
+  /admin/api/v1/events/notification/{eventId}:
+    get:
+      description: 'You can get a notification event by calling this endpoint.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | read:event_account |'
+      operationId: getNotificationEventById
+      parameters:
+      - in: path
+        name: eventId
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/NotificationEventResponse'
+          description: OK
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+        '404':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Not Found
+      security:
+      - securityScheme:
+        - read:event_account
+      summary: Get a notification event
+      tags:
+      - Account Event
+components:
+  schemas:
+    ProblemJson:
+      type: object
+      properties:
+        detail:
+          type: string
+        entityName:
+          type: string
+          description: The name of the entity within the error has occurred
+        errorKey:
+          type: string
+          description: A unique identifier of the error
+        fieldErrors:
+          type: array
+          description: Field constraint violation errors
+          items:
+            $ref: '#/components/schemas/FieldError'
+        message:
+          type: string
+          description: A unique identifier in format of 'error.{errorKey}'
+        params:
+          type: array
+          description: Further information related to the actual error
+          items:
+            type: object
+            additionalProperties:
+              type: object
+        path:
+          type: string
+          description: Request URI
+        status:
+          type: integer
+          description: Status code
+          format: int32
+        title:
+          type: string
+      description: Based on [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807)
+    AccountEventActorClient:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+      description: Client in which the actor initiated the event
+    ResolvedClient:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+      description: Represents the resolved client of a token exchange account event
+    ActorApplication:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+      description: Application in which the actor initiated the event
+    NotificationEventListResponse:
+      type: object
+      properties:
+        accountEventId:
+          type: string
+        accountId:
+          type: string
+        channel:
+          type: string
+        id:
+          type: string
+        identityStore:
+          type: string
+        invitationId:
+          type: string
+        notificationPolicyId:
+          type: string
+        notificationTemplate:
+          $ref: '#/components/schemas/DisplayNameAndIdResponse'
+        success:
+          type: boolean
+        target:
+          type: string
+        timestamp:
+          type: string
+        validUntil:
+          type: string
+      description: Represents a notification event briefly. Fields with empty values are not included in the response.
+    Subject:
+      type: object
+      properties:
+        accountId:
+          type: string
+        requestedSubject:
+          type: string
+        resolvedApplication:
+          $ref: '#/components/schemas/ResolvedApplication'
+        resolvedClient:
+          $ref: '#/components/schemas/ResolvedClient'
+        store:
+          type: string
+          description: Name of the identity store
+        token:
+          $ref: '#/components/schemas/Token'
+        userName:
+          type: string
+      description: Represents the subject of an account event by additional context
+    Token:
+      type: object
+      properties:
+        iss:
+          type: string
+        sub:
+          type: string
+      description: Represents the token of a token exchange account event
+    GeometryResponse:
+      type: object
+      properties:
+        coordinates:
+          type: array
+          items:
+            type: number
+            format: double
+        type:
+          type: string
+      description: Represents a geometry object according to the [RFC 7946](https://www.rfc-editor.org/rfc/rfc7946#section-3.1) standard
+    Http:
+      type: object
+      properties:
+        request:
+          $ref: '#/components/schemas/Request'
+        response:
+          $ref: '#/components/schemas/Response'
+      description: Represents the HTTP communication for an event
+    ErrorMessage:
+      type: object
+      properties:
+        message:
+          type: string
+        retryCount:
+          type: integer
+          format: int32
+    NotificationEventResponse:
+      type: object
+      properties:
+        accountEventId:
+          type: string
+        accountId:
+          type: string
+        channel:
+          type: string
+        errorMessages:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorMessage'
+        id:
+          type: string
+        identityStore:
+          type: string
+        invitationId:
+          type: string
+        message:
+          type: string
+        messagePlainText:
+          type: string
+        notificationPolicyId:
+          type: string
+        notificationTemplate:
+          $ref: '#/components/schemas/DisplayNameAndIdResponse'
+        providerMessageId:
+          type: string
+        success:
+          type: boolean
+        target:
+          type: string
+        timestamp:
+          type: string
+        validUntil:
+          type: string
+      description: Represents a notification event. Fields with empty values are not included in the response.
+    EventActor:
+      type: object
+      properties:
+        accountId:
+          type: string
+        bulkJobId:
+          type: string
+        inboundConnectionId:
+          type: string
+        ip:
+          type: string
+        location:
+          $ref: '#/components/schemas/FeatureResponse'
+        outboundProvisionTargetId:
+          type: string
+        resolvedApplication:
+          $ref: '#/components/schemas/ResolvedApplication'
+        resolvedClient:
+          $ref: '#/components/schemas/ResolvedClient'
+        ruleId:
+          type: string
+        store:
+          type: string
+          description: Name of the represented identity store
+        token:
+          $ref: '#/components/schemas/Token'
+        userAgent:
+          type: string
+          description: Information about the browser the actor used
+        userName:
+          type: string
+          description: Username or email of the actor (email for email-only identity stores)
+      description: Actor of the event, which account initiated the event
+    FeatureResponse:
+      type: object
+      properties:
+        geometry:
+          $ref: '#/components/schemas/GeometryResponse'
+        properties:
+          type: object
+          additionalProperties:
+            type: string
+        type:
+          type: string
+      description: Represents a feature object according to the [RFC 7946](https://www.rfc-editor.org/rfc/rfc7946#section-3.2) standard
+    Response:
+      type: object
+      properties:
+        body:
+          type: string
+        code:
+          type: integer
+          format: int32
+        location:
+          type: string
+      description: Represents the HTTP response for an event
+    FieldError:
+      type: object
+      properties:
+        field:
+          type: string
+        message:
+          type: string
+        objectName:
+          type: string
+    AccountEventResponse:
+      type: object
+      properties:
+        actions:
+          type: array
+          items:
+            $ref: '#/components/schemas/ActionResponse'
+        actor:
+          $ref: '#/components/schemas/EventActor'
+        actorApplication:
+          $ref: '#/components/schemas/ActorApplication'
+        actorClient:
+          $ref: '#/components/schemas/AccountEventActorClient'
+        endTimestamp:
+          type: string
+          format: date-time
+        eventId:
+          type: string
+          format: uuid
+        labels:
+          type: array
+          description: 'Labels indicating what happened during the occurrence of the event.Labels are in the following format: `(failure|success):{eventType}`'
+          items:
+            type: string
+            example: success:login
+        loginSessionId:
+          type: string
+        startTimestamp:
+          type: string
+          format: date-time
+        subject:
+          $ref: '#/components/schemas/Subject'
+        type:
+          type: string
+          description: 'Gives additional context for an account event. An example for each event type: `customerFlow` - an account tries to log in, `selfService` - an account modifies their own metadata, `administrative` - an admin modifies metadata for an account'
+          enum:
+          - customerFlow
+          - selfService
+          - administrative
+          - scheduled
+          - bulkOperation
+          - systemInitiatedOperation
+        variantId:
+          type: string
+      description: Represents an account event. Fields with empty values are not included in the response.
+    Request:
+      type: object
+      properties:
+        body:
+          type: string
+        method:
+          type: string
+        url:
+          type: string
+      description: Represents the HTTP request for an event
+    DisplayNameAndIdResponse:
+      type: object
+      properties:
+        displayName:
+          type: string
+        id:
+          type: string
+    Detail:
+      type: object
+      properties:
+        label:
+          type: string
+        metadata:
+          type: object
+          additionalProperties:
+            type: object
+        name:
+          type: string
+        notifications:
+          type: array
+          items:
+            $ref: '#/components/schemas/Notification'
+        outcome:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        type:
+          type: string
+      description: Represents the details of an event
+    ActionResponse:
+      type: object
+      properties:
+        actor:
+          $ref: '#/components/schemas/EventActor'
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/Detail'
+        http:
+          $ref: '#/components/schemas/Http'
+        notifications:
+          type: array
+          items:
+            $ref: '#/components/schemas/Notification'
+        timestamp:
+          type: string
+          format: date-time
+        type:
+          type: string
+          description: 'Gives additional context for an account event. An example for each event type: `customerFlow` - an account tries to log in, `selfService` - an account modifies their own metadata, `administrative` - an admin modifies metadata for an account'
+          enum:
+          - customerFlow
+          - selfService
+          - administrative
+          - scheduled
+          - bulkOperation
+          - systemInitiatedOperation
+    ResolvedApplication:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+      description: Represents the resolved application of a token exchange account event
+    Notification:
+      type: object
+      properties:
+        id:
+          type: string
+        target:
+          type: string
+    AccountEventHeaderResponse:
+      type: object
+      properties:
+        actor:
+          $ref: '#/components/schemas/EventActor'
+        actorApplication:
+          $ref: '#/components/schemas/ActorApplication'
+        actorClient:
+          $ref: '#/components/schemas/AccountEventActorClient'
+        endTimestamp:
+          type: string
+          format: date-time
+        eventId:
+          type: string
+          format: uuid
+        labels:
+          type: array
+          description: 'Labels indicating what happened during the occurrence of the event.Labels are in the following format: `(failure|success):{eventType}`'
+          items:
+            type: string
+            example: success:login
+        loginSessionId:
+          type: string
+        startTimestamp:
+          type: string
+          format: date-time
+        subject:
+          $ref: '#/components/schemas/Subject'
+        type:
+          type: string
+          description: 'Gives additional context for an account event. An example for each event type: `customerFlow` - an account tries to log in, `selfService` - an account modifies their own metadata, `administrative` - an admin modifies metadata for an account'
+          enum:
+          - customerFlow
+          - selfService
+          - administrative
+          - scheduled
+          - bulkOperation
+          - systemInitiatedOperation
+        variantId:
+          type: string
+      description: Represents an account event header. Fields with empty values are not included in the response.
+  securitySchemes:
+    securityScheme:
+      scheme: bearer
+      type: http

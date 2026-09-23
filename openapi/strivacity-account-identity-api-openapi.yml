@@ -1,0 +1,295 @@
+openapi: 3.2.0
+info:
+  description: API documentation of Admin Portal
+  title: Admin Portal Account Identity API
+  version: v0.0.1
+servers:
+- url: https://{tenant}
+  variables:
+    tenant:
+      default: example.strivacity.com
+      description: Your Strivacity tenant
+tags:
+- name: Account Identity
+paths:
+  /admin/api/v1/identityStores/{identityStoreName}/accounts/{accountId}/identities:
+    get:
+      description: 'You can list the identities for an account by calling this endpoint.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | read:account_identity |'
+      operationId: getIdentities
+      parameters:
+      - in: path
+        name: identityStoreName
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: accountId
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/IdentitiesResponse_Identities'
+          description: OK
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+        '404':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Not Found
+      security:
+      - securityScheme:
+        - read:account_identity
+      summary: List identities for an account
+      tags:
+      - Account Identity
+  /admin/api/v1/identityStores/{identityStoreName}/accounts/{accountId}/identities/{connectorIdentityId}:forceSync:
+    post:
+      description: 'You can force sync a connector identity for an account by calling this endpoint.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | write:account_identity |'
+      operationId: forceSyncConnectorIdentity
+      parameters:
+      - in: path
+        name: identityStoreName
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: accountId
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: connectorIdentityId
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          content:
+            '*/*':
+              schema:
+                type: object
+          description: No Content
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+        '404':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Not Found
+      security:
+      - securityScheme:
+        - write:account_identity
+      summary: Force sync a connector identity for an account
+      tags:
+      - Account Identity
+  /admin/api/v1/identityStores/{identityStoreName}/accounts/{accountId}/identities/{externalLoginId}:
+    delete:
+      description: 'You can unlink an external identity from an account by calling this endpoint.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | delete:account_identity |'
+      operationId: deleteExternalIdentity
+      parameters:
+      - description: Header containing the client object identifier (not the OIDC client ID)
+        in: header
+        name: X-Notification-By-Application
+        required: false
+        schema:
+          type: string
+      - in: path
+        name: identityStoreName
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: accountId
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: externalLoginId
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: No Content
+        '400':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Bad Request
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+        '404':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Not Found
+      security:
+      - securityScheme:
+        - delete:account_identity
+      summary: Unlink an external identity from an account
+      tags:
+      - Account Identity
+components:
+  schemas:
+    IdentitiesResponse.Local_Identities:
+      type: object
+      properties:
+        display:
+          type: string
+        id:
+          type: string
+          description: Represents the username identifier
+        metadata:
+          type: object
+          additionalProperties:
+            type: object
+            description: Represents metadata for account information
+          description: Represents metadata for account information
+      description: Represents the local metadata for an account
+    ProblemJson:
+      type: object
+      properties:
+        detail:
+          type: string
+        entityName:
+          type: string
+          description: The name of the entity within the error has occurred
+        errorKey:
+          type: string
+          description: A unique identifier of the error
+        fieldErrors:
+          type: array
+          description: Field constraint violation errors
+          items:
+            $ref: '#/components/schemas/FieldError'
+        message:
+          type: string
+          description: A unique identifier in format of 'error.{errorKey}'
+        params:
+          type: array
+          description: Further information related to the actual error
+          items:
+            type: object
+            additionalProperties:
+              type: object
+        path:
+          type: string
+          description: Request URI
+        status:
+          type: integer
+          description: Status code
+          format: int32
+        title:
+          type: string
+      description: Based on [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807)
+    IdentitiesResponse_Identities:
+      type: object
+      description: Represents the identities of an account
+      oneOf:
+      - $ref: '#/components/schemas/IdentitiesResponse.Local_Identities'
+      - $ref: '#/components/schemas/IdentitiesResponse.Email_Identities'
+      - $ref: '#/components/schemas/IdentitiesResponse.Phone_Identities'
+      - $ref: '#/components/schemas/IdentitiesResponse.External_Identities'
+    FieldError:
+      type: object
+      properties:
+        field:
+          type: string
+        message:
+          type: string
+        objectName:
+          type: string
+    IdentitiesResponse.External_Identities:
+      type: object
+      properties:
+        display:
+          type: string
+        id:
+          type: string
+          description: Represents an external identifier
+        metadata:
+          type: object
+          additionalProperties:
+            type: object
+    IdentitiesResponse.Phone_Identities:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Represents the phone identifier
+        verified:
+          type: boolean
+    IdentitiesResponse.Email_Identities:
+      type: object
+      properties:
+        display:
+          type: string
+        id:
+          type: string
+          description: Represents the email identifier
+        verified:
+          type: boolean
+  securitySchemes:
+    securityScheme:
+      scheme: bearer
+      type: http

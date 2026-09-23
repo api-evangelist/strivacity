@@ -1,0 +1,311 @@
+openapi: 3.2.0
+info:
+  description: API documentation of Admin Portal
+  title: Admin Portal Audit entry API
+  version: v0.0.1
+servers:
+- url: https://{tenant}
+  variables:
+    tenant:
+      default: example.strivacity.com
+      description: Your Strivacity tenant
+tags:
+- name: Audit entry
+paths:
+  /admin/api/v2/admin/events/audit:
+    get:
+      description: 'You can list the audit logs by calling this endpoint.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | read:admin_event_audit |'
+      operationId: list_6
+      parameters:
+      - description: URL used for filtering, can be prefix or exact match, depending on the `urlExactMatch` parameter
+        in: query
+        name: url
+        required: false
+        schema:
+          type: string
+      - description: Specify whether the URL is an exact match or should be searched as a prefix (matching URLs that start with this value)
+        in: query
+        name: urlExactMatch
+        required: false
+        schema:
+          type: boolean
+      - description: Entity type used for filtering, based on prefix match
+        in: query
+        name: entityType
+        required: false
+        schema:
+          type: string
+      - description: Version used for filtering, based on exact match
+        in: query
+        name: version
+        required: false
+        schema:
+          type: integer
+          format: int32
+      - description: Name used for filtering, based on prefix match
+        in: query
+        name: name
+        required: false
+        schema:
+          type: string
+      - description: Action used for filtering, based on exact match
+        in: query
+        name: action
+        required: false
+        schema:
+          type: string
+          enum:
+          - Create
+          - Update
+          - Delete
+      - description: Actor account ID used for filtering, based on prefix match
+        in: query
+        name: actorAccountId
+        required: false
+        schema:
+          type: string
+      - description: Actor IP used for filtering, based on exact match
+        in: query
+        name: actorIp
+        required: false
+        schema:
+          type: string
+      - description: OAuth2 protocol client ID (when using client credential flow) used for filtering, based on prefix match
+        in: query
+        name: actorClientId
+        required: false
+        schema:
+          type: string
+      - description: Start date used for filtering
+        in: query
+        name: startDate
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - description: End date used for filtering
+        in: query
+        name: endDate
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - description: Zero-based page index (0..N)
+        in: query
+        name: page
+        schema:
+          type: integer
+          format: int64
+          default: 0
+      - description: The size of the page to be returned
+        in: query
+        name: size
+        schema:
+          type: integer
+          format: int64
+          default: 20
+      - description: 'Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported.'
+        in: query
+        name: sort
+        schema:
+          type: array
+          items:
+            type: string
+      responses:
+        '200':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/PagedModelAuditEntry'
+          description: OK
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+      security:
+      - securityScheme:
+        - read:admin_event_audit
+      summary: List audit logs
+      tags:
+      - Audit entry
+  /admin/api/v2/admin/events/audit/{id}:
+    get:
+      description: 'You can get the audit log for a given ID by calling this endpoint.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | read:admin_event_audit |'
+      operationId: get_6
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AuditEntry'
+          description: OK
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+      security:
+      - securityScheme:
+        - read:admin_event_audit
+      summary: Get an audit log
+      tags:
+      - Audit entry
+components:
+  schemas:
+    ProblemJson:
+      type: object
+      properties:
+        detail:
+          type: string
+        entityName:
+          type: string
+          description: The name of the entity within the error has occurred
+        errorKey:
+          type: string
+          description: A unique identifier of the error
+        fieldErrors:
+          type: array
+          description: Field constraint violation errors
+          items:
+            $ref: '#/components/schemas/FieldError'
+        message:
+          type: string
+          description: A unique identifier in format of 'error.{errorKey}'
+        params:
+          type: array
+          description: Further information related to the actual error
+          items:
+            type: object
+            additionalProperties:
+              type: object
+        path:
+          type: string
+          description: Request URI
+        status:
+          type: integer
+          description: Status code
+          format: int32
+        title:
+          type: string
+      description: Based on [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807)
+    PageMetadata:
+      type: object
+      properties:
+        number:
+          type: integer
+          format: int64
+        size:
+          type: integer
+          format: int64
+        totalElements:
+          type: integer
+          format: int64
+        totalPages:
+          type: integer
+          format: int64
+    FieldError:
+      type: object
+      properties:
+        field:
+          type: string
+        message:
+          type: string
+        objectName:
+          type: string
+    PagedModelAuditEntry:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/AuditEntry'
+        page:
+          $ref: '#/components/schemas/PageMetadata'
+    ActorClient:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+    Actor:
+      type: object
+      properties:
+        accountId:
+          type: string
+        ip:
+          type: string
+        userAgent:
+          type: string
+        userName:
+          type: string
+    AuditEntry:
+      required:
+      - id
+      type: object
+      properties:
+        action:
+          type: string
+        actor:
+          $ref: '#/components/schemas/Actor'
+        actorClient:
+          $ref: '#/components/schemas/ActorClient'
+        date:
+          type: string
+          format: date-time
+        entityType:
+          type: string
+        id:
+          type: string
+        method:
+          type: string
+        name:
+          type: string
+        request:
+          type: string
+        response:
+          type: string
+        url:
+          type: string
+        version:
+          type: integer
+          format: int32
+  securitySchemes:
+    securityScheme:
+      scheme: bearer
+      type: http

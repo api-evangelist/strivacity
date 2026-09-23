@@ -1,0 +1,555 @@
+openapi: 3.2.0
+info:
+  description: API documentation of Admin Portal
+  title: Admin Portal Organization Policy API
+  version: v0.0.1
+servers:
+- url: https://{tenant}
+  variables:
+    tenant:
+      default: example.strivacity.com
+      description: Your Strivacity tenant
+tags:
+- name: Organization Policy
+paths:
+  /admin/api/v2/applications/{appId}/organizations:
+    get:
+      description: 'You can list the existing organization policies for an application by calling this endpoint.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | read:config_application |'
+      operationId: getOrganizationPolicies
+      parameters:
+      - in: path
+        name: appId
+        required: true
+        schema:
+          type: string
+      - description: Zero-based page index (0..N)
+        in: query
+        name: page
+        schema:
+          type: integer
+          format: int64
+          default: 0
+      - description: The size of the page to be returned
+        in: query
+        name: size
+        schema:
+          type: integer
+          format: int64
+          default: 20
+      - description: 'Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported.'
+        in: query
+        name: sort
+        schema:
+          type: array
+          items:
+            type: string
+      responses:
+        '200':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/PagedModelOrganizationPolicyResponse'
+          description: OK
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+        '404':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Not Found
+      security:
+      - securityScheme:
+        - read:config_application
+      summary: List organization policies
+      tags:
+      - Organization Policy
+    post:
+      description: 'You can create an organization policy for an application by calling this endpoint.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | write:config_application |'
+      operationId: createOrganizationPolicy
+      parameters:
+      - in: path
+        name: appId
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrganizationPolicyUpsertRequest_OrganizationPolicy'
+        required: true
+      responses:
+        '201':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/OrganizationPolicyResponse_OrganizationPolicy'
+          description: Created
+        '400':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Bad Request
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+        '404':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Not Found
+        '409':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Conflict
+      security:
+      - securityScheme:
+        - write:config_application
+      summary: Create an organization policy
+      tags:
+      - Organization Policy
+  /admin/api/v2/applications/{appId}/organizations/{orgId}:
+    delete:
+      description: 'You can delete an organization policy for an application by calling this endpoint.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | write:config_application |'
+      operationId: deleteOrganizationPolicy
+      parameters:
+      - in: path
+        name: appId
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: orgId
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: No Content
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+        '404':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Not Found
+      security:
+      - securityScheme:
+        - write:config_application
+      summary: Delete an organization policy
+      tags:
+      - Organization Policy
+    get:
+      description: 'You can get an organization policy for an application by calling this endpoint.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | read:config_application |'
+      operationId: getOrganizationPolicy
+      parameters:
+      - in: path
+        name: appId
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: orgId
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/OrganizationPolicyResponse_OrganizationPolicy'
+          description: OK
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+        '404':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Not Found
+      security:
+      - securityScheme:
+        - read:config_application
+      summary: Get an organization policy
+      tags:
+      - Organization Policy
+    put:
+      description: 'You can update an organization policy for an application by calling this endpoint.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | write:config_application |'
+      operationId: updateOrganizationPolicy
+      parameters:
+      - in: path
+        name: appId
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: orgId
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrganizationPolicyUpsertRequest_OrganizationPolicy'
+        required: true
+      responses:
+        '200':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/OrganizationPolicyResponse_OrganizationPolicy'
+          description: OK
+        '400':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Bad Request
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+        '404':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Not Found
+      security:
+      - securityScheme:
+        - write:config_application
+      summary: Update an organization policy
+      tags:
+      - Organization Policy
+components:
+  schemas:
+    ProblemJson:
+      type: object
+      properties:
+        detail:
+          type: string
+        entityName:
+          type: string
+          description: The name of the entity within the error has occurred
+        errorKey:
+          type: string
+          description: A unique identifier of the error
+        fieldErrors:
+          type: array
+          description: Field constraint violation errors
+          items:
+            $ref: '#/components/schemas/FieldError'
+        message:
+          type: string
+          description: A unique identifier in format of 'error.{errorKey}'
+        params:
+          type: array
+          description: Further information related to the actual error
+          items:
+            type: object
+            additionalProperties:
+              type: object
+        path:
+          type: string
+          description: Request URI
+        status:
+          type: integer
+          description: Status code
+          format: int32
+        title:
+          type: string
+      description: Based on [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807)
+    PageMetadata:
+      type: object
+      properties:
+        number:
+          type: integer
+          format: int64
+        size:
+          type: integer
+          format: int64
+        totalElements:
+          type: integer
+          format: int64
+        totalPages:
+          type: integer
+          format: int64
+    PagedModelOrganizationPolicyResponse:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrganizationPolicyResponse'
+        page:
+          $ref: '#/components/schemas/PageMetadata'
+    OnlyIdResponse:
+      type: object
+      properties:
+        id:
+          type: string
+    OrganizationPolicyResponsePolicies:
+      type: object
+      properties:
+        adaptiveMFA:
+          $ref: '#/components/schemas/NameAndId'
+        brand:
+          $ref: '#/components/schemas/NameAndId'
+        identityProofing:
+          $ref: '#/components/schemas/NameAndId'
+        notificationPolicy:
+          $ref: '#/components/schemas/NameAndId'
+        selfServicePolicy:
+          $ref: '#/components/schemas/NameAndId'
+    IdReferenceRequest_OrganizationPolicy:
+      required:
+      - id
+      type: object
+      properties:
+        id:
+          pattern: ^[a-zA-Z0-9-]{1,36}$
+          type: string
+          description: ID of the represented entity
+    OrganizationPolicyResponseLoginProviders:
+      type: object
+      properties:
+        enterpriseLoginProviders:
+          uniqueItems: true
+          type: array
+          items:
+            $ref: '#/components/schemas/IdReferenceResponse'
+        forwardToExternalProviderEnabled:
+          type: boolean
+        localLoginProviderEnabled:
+          type: boolean
+        socialLoginProviders:
+          uniqueItems: true
+          type: array
+          items:
+            $ref: '#/components/schemas/IdReferenceResponse'
+    Policies_OrganizationPolicy:
+      type: object
+      properties:
+        adaptiveMFA:
+          $ref: '#/components/schemas/IdReferenceRequest_OrganizationPolicy'
+        brand:
+          $ref: '#/components/schemas/IdReferenceRequest_OrganizationPolicy'
+        identityProofing:
+          $ref: '#/components/schemas/IdReferenceRequest_OrganizationPolicy'
+        notificationPolicy:
+          $ref: '#/components/schemas/IdReferenceRequest_OrganizationPolicy'
+        selfServicePolicy:
+          $ref: '#/components/schemas/IdReferenceRequest_OrganizationPolicy'
+      description: Defines which policy to override for an application. If any of them is set to `null`, that policy won't be overridden by the organization.
+    OrganizationPolicyResponse_OrganizationPolicy:
+      type: object
+      properties:
+        loginProviders:
+          $ref: '#/components/schemas/OrganizationPolicyResponseLoginProviders_OrganizationPolicy'
+        organization:
+          $ref: '#/components/schemas/OnlyIdResponse_OrganizationPolicy'
+        policies:
+          $ref: '#/components/schemas/OrganizationPolicyResponsePolicies_OrganizationPolicy'
+    OrganizationPolicyResponseLoginProviders_OrganizationPolicy:
+      type: object
+      properties:
+        enterpriseLoginProviders:
+          uniqueItems: true
+          type: array
+          items:
+            $ref: '#/components/schemas/IdReferenceResponse_OrganizationPolicy'
+        forwardToExternalProviderEnabled:
+          type: boolean
+        localLoginProviderEnabled:
+          type: boolean
+        socialLoginProviders:
+          uniqueItems: true
+          type: array
+          items:
+            $ref: '#/components/schemas/IdReferenceResponse_OrganizationPolicy'
+    OnlyIdResponse_OrganizationPolicy:
+      type: object
+      properties:
+        id:
+          type: string
+    OrganizationPolicyResponse:
+      type: object
+      properties:
+        loginProviders:
+          $ref: '#/components/schemas/OrganizationPolicyResponseLoginProviders'
+        organization:
+          $ref: '#/components/schemas/OnlyIdResponse'
+        policies:
+          $ref: '#/components/schemas/OrganizationPolicyResponsePolicies'
+    LoginProviders_OrganizationPolicy:
+      required:
+      - enterpriseLoginProviders
+      - socialLoginProviders
+      type: object
+      properties:
+        enterpriseLoginProviders:
+          type: array
+          items:
+            $ref: '#/components/schemas/IdReferenceRequest_OrganizationPolicy'
+        forwardToExternalProviderEnabled:
+          type: boolean
+          default: false
+        localLoginProviderEnabled:
+          type: boolean
+          default: false
+        socialLoginProviders:
+          type: array
+          items:
+            $ref: '#/components/schemas/IdReferenceRequest_OrganizationPolicy'
+      description: Represents both social and enterprise login providers.
+    IdReferenceResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID of the represented entity
+    FieldError:
+      type: object
+      properties:
+        field:
+          type: string
+        message:
+          type: string
+        objectName:
+          type: string
+    NameAndId:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID of the represented entity
+    OrganizationPolicyResponsePolicies_OrganizationPolicy:
+      type: object
+      properties:
+        adaptiveMFA:
+          $ref: '#/components/schemas/NameAndId_OrganizationPolicy'
+        brand:
+          $ref: '#/components/schemas/NameAndId_OrganizationPolicy'
+        identityProofing:
+          $ref: '#/components/schemas/NameAndId_OrganizationPolicy'
+        notificationPolicy:
+          $ref: '#/components/schemas/NameAndId_OrganizationPolicy'
+        selfServicePolicy:
+          $ref: '#/components/schemas/NameAndId_OrganizationPolicy'
+    IdReferenceResponse_OrganizationPolicy:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID of the represented entity
+    OrganizationPolicyUpsertRequest_OrganizationPolicy:
+      required:
+      - organization
+      type: object
+      properties:
+        loginProviders:
+          $ref: '#/components/schemas/LoginProviders_OrganizationPolicy'
+        organization:
+          $ref: '#/components/schemas/IdReferenceRequest_OrganizationPolicy'
+        policies:
+          $ref: '#/components/schemas/Policies_OrganizationPolicy'
+    NameAndId_OrganizationPolicy:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID of the represented entity
+  securitySchemes:
+    securityScheme:
+      scheme: bearer
+      type: http

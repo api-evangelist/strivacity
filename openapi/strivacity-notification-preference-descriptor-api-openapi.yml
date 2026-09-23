@@ -1,0 +1,43 @@
+openapi: 3.2.0
+info:
+  description: API documentation of Admin Portal
+  title: Admin Portal Notification Preference Descriptor API
+  version: v0.0.1
+servers:
+- url: https://{tenant}
+  variables:
+    tenant:
+      default: example.strivacity.com
+      description: Your Strivacity tenant
+tags:
+- name: Notification Preference Descriptor
+paths:
+  /admin/api/v1/notificationPreferences/descriptor:
+    get:
+      description: You can list the possible descriptors for notification preferences by calling this endpoint.
+      operationId: getNotificationPreferencesDescriptor
+      responses:
+        '200':
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DisplayNameAndIdResponse'
+          description: OK
+      summary: List descriptors for notification preferences
+      tags:
+      - Notification Preference Descriptor
+components:
+  schemas:
+    DisplayNameAndIdResponse:
+      type: object
+      properties:
+        displayName:
+          type: string
+        id:
+          type: string
+  securitySchemes:
+    securityScheme:
+      scheme: bearer
+      type: http

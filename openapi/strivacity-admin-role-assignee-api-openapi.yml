@@ -1,0 +1,613 @@
+openapi: 3.2.0
+info:
+  description: API documentation of Admin Portal - Admin Management
+  title: Admin Portal - Admin Management Admin Role Assignee API
+  version: v0.0.1
+servers:
+- url: https://{tenant}
+  variables:
+    tenant:
+      default: example.strivacity.com
+      description: Your Strivacity tenant
+tags:
+- name: Admin Role Assignee
+paths:
+  /admin/api/v1/admin/identityStore/roles/{roleId}/assignees:
+    get:
+      description: 'You can list the admin role assignees by calling this endpoint. To use this endpoint, both `read:admin_account` and `read:config_identity_store` scopes should be granted.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | read:admin_account |
+
+        | read:config_admin_identity_store |'
+      operationId: listRoleAssignees
+      parameters:
+      - in: path
+        name: roleId
+        required: true
+        schema:
+          type: string
+      - description: Account ID
+        in: query
+        name: id
+        schema:
+          type: string
+      - description: Login identifier (username, email or phone). Start with `@` to search by email domain. When searching by domain, only email addresses belonging to that domain or its subdomains are returned.
+        in: query
+        name: loginIdentifier
+        schema:
+          type: string
+      - description: Attribute mapped to the Email native claim. Start with `@` to search by domain. When searching by domain, only email addresses belonging to that domain or its subdomains are returned.
+        in: query
+        name: emailNativeClaim
+        schema:
+          type: string
+      - description: User name in account info
+        in: query
+        name: userNameNativeClaim
+        schema:
+          type: string
+      - description: Account is enabled or not
+        in: query
+        name: enabled
+        schema:
+          type: boolean
+      - description: Start date used for filtering based on updatedAt field. Accepted formats are an ISO 8061 timestamp or an ISO 8061 duration with a +/- prefix.
+        in: query
+        name: updatedAtStartDate
+        schema:
+          type: string
+          format: date-time
+      - description: End date used for filtering based on updatedAt field. Accepted formats are an ISO 8061 timestamp or an ISO 8061 duration with a +/- prefix.
+        in: query
+        name: updatedAtEndDate
+        schema:
+          type: string
+          format: date-time
+      - description: Start date used for filtering based on createdAt field. Accepted formats are an ISO 8061 timestamp or an ISO 8061 duration with a +/- prefix.
+        in: query
+        name: createdAtStartDate
+        schema:
+          type: string
+          format: date-time
+      - description: End date used for filtering based on createdAt field. Accepted formats are an ISO 8061 timestamp or an ISO 8061 duration with a +/- prefix.
+        in: query
+        name: createdAtEndDate
+        schema:
+          type: string
+          format: date-time
+      - description: Start date used for filtering based on disabledAt field. Accepted formats are an ISO 8061 timestamp or an ISO 8061 duration with a +/- prefix.
+        in: query
+        name: disabledAtStartDate
+        schema:
+          type: string
+          format: date-time
+      - description: End date used for filtering based on disabledAt field. Accepted formats are an ISO 8061 timestamp or an ISO 8061 duration with a +/- prefix.
+        in: query
+        name: disabledAtEndDate
+        schema:
+          type: string
+          format: date-time
+      - description: Start date used for filtering based on lastLoggedIn field. Must not be provided if `neverLoggedIn` is true. Accepted formats are an ISO 8061 timestamp or an ISO 8061 duration with a +/- prefix.
+        in: query
+        name: lastLoginAtStartDate
+        schema:
+          type: string
+          format: date-time
+      - description: End date used for filtering based on lastLoggedIn field. Must not be provided if `neverLoggedIn` is true. Accepted formats are an ISO 8061 timestamp or an ISO 8061 duration with a +/- prefix.
+        in: query
+        name: lastLoginAtEndDate
+        schema:
+          type: string
+          format: date-time
+      - description: Flag to filter for accounts that have never logged in.
+        in: query
+        name: neverLoggedIn
+        schema:
+          type: boolean
+      - description: Start date used for filtering based on lastAuthenticationActivity field. Must not be provided if `neverLoggedIn` is true. Accepted formats are an ISO 8061 timestamp or an ISO 8061 duration with a +/- prefix.
+        in: query
+        name: lastAuthenticationActivityAtStartDate
+        schema:
+          type: string
+          format: date-time
+      - description: End date used for filtering based on lastAuthenticationActivity field. Must not be provided if `neverLoggedIn` is true. Accepted formats are an ISO 8061 timestamp or an ISO 8061 duration with a +/- prefix.
+        in: query
+        name: lastAuthenticationActivityAtEndDate
+        schema:
+          type: string
+          format: date-time
+      - description: Zero-based page index (0..N)
+        in: query
+        name: page
+        schema:
+          type: integer
+          format: int64
+          default: 0
+      - description: The size of the page to be returned
+        in: query
+        name: size
+        schema:
+          type: integer
+          format: int64
+          default: 20
+      - description: 'Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported.'
+        in: query
+        name: sort
+        schema:
+          type: array
+          items:
+            type: string
+      responses:
+        '200':
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AccountResponse_Account'
+          description: OK
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+        '404':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Not Found
+      security:
+      - securityScheme:
+        - read:admin_account
+        - read:config_admin_identity_store
+      summary: List role assignees
+      tags:
+      - Admin Role Assignee
+    post:
+      description: 'You can assign an admin account to a role by calling this endpoint. To use this endpoint, both `write:admin_account` and `read:config_identity_store` scopes should be granted.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | write:admin_account |
+
+        | read:config_admin_identity_store |'
+      operationId: assignRole
+      parameters:
+      - in: path
+        name: roleId
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminAccountAssignee_Account'
+        required: true
+      responses:
+        '204':
+          description: No Content
+        '400':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Bad Request
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+        '404':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Not Found
+      security:
+      - securityScheme:
+        - write:admin_account
+        - read:config_admin_identity_store
+      summary: Assign an admin account to a role
+      tags:
+      - Admin Role Assignee
+  /admin/api/v1/admin/identityStore/roles/{roleId}/assignees/{accountId}:
+    delete:
+      description: 'You can unassign a role from an admin account by calling this endpoint. To use this endpoint, both `write:admin_account` and `read:config_identity_store` scopes should be granted. The Admin role cannot be unassigned from the last admin account.
+
+
+        | REQUIRED API PERMISSION |
+
+        |:------------------------|
+
+        | write:admin_account |
+
+        | read:config_admin_identity_store |'
+      operationId: removeRole
+      parameters:
+      - in: path
+        name: roleId
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: accountId
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: No Content
+        '400':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Bad Request
+        '401':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Unauthorized
+        '403':
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Forbidden
+        '404':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: Not Found
+        '409':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+          description: The Admin role cannot be unassigned from the last admin account.
+      security:
+      - securityScheme:
+        - write:admin_account
+        - read:config_admin_identity_store
+      summary: Remove an admin account from a role
+      tags:
+      - Admin Role Assignee
+components:
+  schemas:
+    FeatureResponse_Account:
+      type: object
+      properties:
+        geometry:
+          $ref: '#/components/schemas/GeometryResponse_Account'
+        properties:
+          type: object
+          additionalProperties:
+            type: string
+        type:
+          type: string
+      description: Represents a feature object according to the [RFC 7946](https://www.rfc-editor.org/rfc/rfc7946#section-3.2) standard
+    ProblemJson:
+      type: object
+      properties:
+        detail:
+          type: string
+        entityName:
+          type: string
+          description: The name of the entity within the error has occurred
+        errorKey:
+          type: string
+          description: A unique identifier of the error
+        fieldErrors:
+          type: array
+          description: Field constraint violation errors
+          items:
+            $ref: '#/components/schemas/FieldError'
+        message:
+          type: string
+          description: A unique identifier in format of 'error.{errorKey}'
+        params:
+          type: array
+          description: Further information related to the actual error
+          items:
+            type: object
+            additionalProperties:
+              type: object
+        path:
+          type: string
+          description: Request URI
+        status:
+          type: integer
+          description: Status code
+          format: int32
+        title:
+          type: string
+      description: Based on [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807)
+    AccountResponse_Account:
+      type: object
+      properties:
+        accountInfo:
+          type: object
+          additionalProperties:
+            type: object
+            description: Contains metadata for an account
+          description: Contains metadata for an account
+        accountLockout:
+          $ref: '#/components/schemas/AccountLockout_Account'
+        accountProofings:
+          type: array
+          items:
+            $ref: '#/components/schemas/AccountProofingWithNameAndDeletedResponse_Account'
+        authenticators:
+          $ref: '#/components/schemas/AuthenticatorsResponse_Account'
+        consents:
+          type: array
+          items:
+            $ref: '#/components/schemas/ConsentResponse_Account'
+        createdAt:
+          type: string
+          format: date-time
+        disabledAt:
+          type: string
+          format: date-time
+        enabled:
+          type: boolean
+        groups:
+          type: array
+          items:
+            $ref: '#/components/schemas/IdReferenceRequest_Account'
+        id:
+          type: string
+        identities:
+          type: object
+          additionalProperties:
+            type: object
+            description: Contains identities for an account, like email, username and local metadata
+          description: Contains identities for an account, like email, username and local metadata
+        language:
+          type: string
+        lastAuthenticationActivity:
+          $ref: '#/components/schemas/LastLoginResponse_Account'
+        lastLogin:
+          $ref: '#/components/schemas/LastLoginResponse_Account'
+        notificationPreferences:
+          $ref: '#/components/schemas/NotificationPreferencesResponse_Account'
+        numberOfLogins:
+          type: integer
+          format: int64
+        organization:
+          type: string
+          description: ID of the represented organization. If the value is null, the account is non-organizational.
+        roles:
+          type: array
+          items:
+            $ref: '#/components/schemas/AccountRole_Account'
+        store:
+          type: string
+          description: Name of the represented identity store
+        updatedAt:
+          type: string
+          format: date-time
+    GeometryResponse_Account:
+      type: object
+      properties:
+        coordinates:
+          type: array
+          items:
+            type: number
+            format: double
+        type:
+          type: string
+      description: Represents a geometry object according to the [RFC 7946](https://www.rfc-editor.org/rfc/rfc7946#section-3.1) standard
+    AuthenticatorsResponse_Account:
+      type: object
+      properties:
+        methods:
+          type: array
+          items:
+            $ref: '#/components/schemas/AuthenticatorResponse_Account'
+      description: Represents the authenticators for an account
+    AccountProofingWithNameAndDeletedResponse_Account:
+      type: object
+      properties:
+        attempts:
+          type: integer
+          format: int64
+        deleted:
+          type: boolean
+        id:
+          type: string
+          format: uuid
+        invalidatedAt:
+          type: string
+          format: date-time
+        policyId:
+          type: string
+        proofedAt:
+          type: string
+          format: date-time
+    LastLoginResponse_Account:
+      type: object
+      properties:
+        ip:
+          type: string
+        location:
+          $ref: '#/components/schemas/FeatureResponse_Account'
+        time:
+          type: string
+          format: date-time
+      description: Represents the last login by IP address and time of login
+    AccountLockout_Account:
+      type: object
+      properties:
+        failedPasscodeAttemptCount:
+          type: integer
+          format: int32
+        failedPasscodeAttemptCountPermanentLock:
+          type: integer
+          format: int32
+        failedPasswordAttemptCount:
+          type: integer
+          format: int32
+        failedPasswordAttemptCountPermanentLock:
+          type: integer
+          format: int32
+        locks:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/AccountLock_Account'
+      description: Represents the account lockout details
+    AccountRole_Account:
+      required:
+      - id
+      - organization
+      type: object
+      properties:
+        id:
+          minLength: 1
+          type: string
+          description: ID of the represented role
+        organization:
+          minLength: 1
+          type: string
+          description: ID of the represented organization
+      description: Represents an organization-role assignment
+    FieldError:
+      type: object
+      properties:
+        field:
+          type: string
+        message:
+          type: string
+        objectName:
+          type: string
+    ConsentResponse_Account:
+      type: object
+      properties:
+        consentId:
+          type: string
+        consentVersion:
+          type: integer
+          format: int32
+        id:
+          type: string
+        optIn:
+          type: string
+          format: date-time
+        optOut:
+          type: string
+          format: date-time
+    AccountLock_Account:
+      type: object
+      properties:
+        until:
+          type: string
+          description: null in case of permanent lock, otherwise temporary lock
+          format: date-time
+      description: Represents a lock on the account
+    AdminAccountAssignee_Account:
+      required:
+      - id
+      type: object
+      properties:
+        id:
+          pattern: ^[a-zA-Z0-9-]{1,36}$
+          type: string
+          description: Admin account ID
+      description: Represents an admin account
+    IdReferenceRequest_Account:
+      required:
+      - id
+      type: object
+      properties:
+        id:
+          pattern: ^[a-zA-Z0-9-]{1,36}$
+          type: string
+          description: ID of the represented entity
+    NotificationPreferencesResponse_Account:
+      type: object
+      properties:
+        accountAttributeUpdate:
+          type: boolean
+        accountDeletion:
+          type: boolean
+        accountLockout:
+          type: boolean
+        mfaMethodChange:
+          type: boolean
+        passwordResetSuccess:
+          type: boolean
+      description: Contains which types of notifications are enabled or not for an account
+    AuthenticatorResponse_Account:
+      type: object
+      properties:
+        createdAt:
+          type: string
+          description: Creation time of the authenticator
+          format: date-time
+        id:
+          type: string
+        lastUsedAt:
+          type: string
+          description: Last usage time of the authenticator
+          format: date-time
+        methods:
+          type: array
+          items:
+            type: string
+            description: 'Authenticator method that defines how the authentication can be done. Possible values: `passcode`, `magicLink`, `voice` and `publicKey`.'
+            example: passcode
+        publicMetadata:
+          type: object
+          additionalProperties:
+            type: object
+            description: Authenticator public metadata
+          description: Authenticator public metadata
+        subType:
+          type: string
+          description: ID of Additional factor used for MFA
+        target:
+          type: string
+          description: Authenticator target, to where the MFA will be requested for
+          example: '+36301234567'
+        type:
+          type: string
+          description: Authenticator type used for MFA
+          enum:
+          - phone
+          - email
+          - softToken
+          - webAuthnSecurityKey
+          - webAuthnDeviceBiometrics
+          - passkey
+          - custom
+      description: Represents an authenticator for an account
+  securitySchemes:
+    securityScheme:
+      scheme: bearer
+      type: http
