@@ -284,6 +284,82 @@ paths:
       - Web Analytics
 components:
   schemas:
+    WebAnalytics_WebAnalytics:
+      required:
+      - apiKey
+      - configuration
+      - id
+      type: object
+      properties:
+        apiKey:
+          maxLength: 512
+          minLength: 1
+          type: string
+        configuration:
+          maxLength: 256000
+          minLength: 1
+          type: string
+          description: Provider specific configuration in raw text format.
+        enabled:
+          type: boolean
+          default: true
+        id:
+          type: string
+          enum:
+          - googleAnalytics
+          - googleTagManager
+          - mixpanel
+          - amplitude
+      description: Represents web analytics configuration.
+    PageMetadata:
+      type: object
+      properties:
+        number:
+          type: integer
+          format: int64
+        size:
+          type: integer
+          format: int64
+        totalElements:
+          type: integer
+          format: int64
+        totalPages:
+          type: integer
+          format: int64
+    WebAnalyticsResponse_WebAnalytics:
+      type: object
+      properties:
+        apiKey:
+          type: string
+        configuration:
+          type: string
+        enabled:
+          type: boolean
+        id:
+          type: string
+          enum:
+          - googleAnalytics
+          - googleTagManager
+          - mixpanel
+          - amplitude
+    FieldError:
+      type: object
+      properties:
+        field:
+          type: string
+        message:
+          type: string
+        objectName:
+          type: string
+    PagedModelWebAnalyticsResponse:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/WebAnalyticsResponse'
+        page:
+          $ref: '#/components/schemas/PageMetadata'
     ProblemJson:
       type: object
       properties:
@@ -320,83 +396,7 @@ components:
         title:
           type: string
       description: Based on [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807)
-    WebAnalytics_WebAnalytics:
-      required:
-      - apiKey
-      - configuration
-      - id
-      type: object
-      properties:
-        apiKey:
-          maxLength: 512
-          minLength: 1
-          type: string
-        configuration:
-          maxLength: 256000
-          minLength: 1
-          type: string
-          description: Provider specific configuration in raw text format.
-        enabled:
-          type: boolean
-          default: true
-        id:
-          type: string
-          enum:
-          - googleAnalytics
-          - googleTagManager
-          - mixpanel
-          - amplitude
-      description: Represents web analytics configuration.
-    FieldError:
-      type: object
-      properties:
-        field:
-          type: string
-        message:
-          type: string
-        objectName:
-          type: string
-    PageMetadata:
-      type: object
-      properties:
-        number:
-          type: integer
-          format: int64
-        size:
-          type: integer
-          format: int64
-        totalElements:
-          type: integer
-          format: int64
-        totalPages:
-          type: integer
-          format: int64
     WebAnalyticsResponse:
-      type: object
-      properties:
-        apiKey:
-          type: string
-        configuration:
-          type: string
-        enabled:
-          type: boolean
-        id:
-          type: string
-          enum:
-          - googleAnalytics
-          - googleTagManager
-          - mixpanel
-          - amplitude
-    PagedModelWebAnalyticsResponse:
-      type: object
-      properties:
-        content:
-          type: array
-          items:
-            $ref: '#/components/schemas/WebAnalyticsResponse'
-        page:
-          $ref: '#/components/schemas/PageMetadata'
-    WebAnalyticsResponse_WebAnalytics:
       type: object
       properties:
         apiKey:

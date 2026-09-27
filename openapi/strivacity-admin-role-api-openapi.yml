@@ -340,6 +340,126 @@ paths:
       - Admin Role
 components:
   schemas:
+    AdminRoleResponse:
+      type: object
+      properties:
+        description:
+          type: string
+        id:
+          type: string
+        name:
+          type: string
+        scopes:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+    AdminRole_InsertRequest:
+      required:
+      - name
+      - scopes
+      type: object
+      properties:
+        description:
+          maxLength: 1024
+          minLength: 0
+          type: string
+        name:
+          maxLength: 64
+          minLength: 3
+          pattern: ^$|^[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°]([\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*° ]*[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°])?$
+          type: string
+        scopes:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+    AdminRoleResponse_AdminRole:
+      type: object
+      properties:
+        description:
+          type: string
+        id:
+          type: string
+        name:
+          type: string
+        scopes:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+    PageMetadata:
+      type: object
+      properties:
+        number:
+          type: integer
+          format: int64
+        size:
+          type: integer
+          format: int64
+        totalElements:
+          type: integer
+          format: int64
+        totalPages:
+          type: integer
+          format: int64
+    FieldError:
+      type: object
+      properties:
+        field:
+          type: string
+        message:
+          type: string
+        objectName:
+          type: string
+    PagedModelAdminRoleResponse:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/AdminRoleResponse'
+        page:
+          $ref: '#/components/schemas/PageMetadata'
+    AdminRoleUpsertRequest_AdminRole:
+      required:
+      - id
+      - name
+      - scopes
+      type: object
+      properties:
+        description:
+          maxLength: 1024
+          minLength: 0
+          type: string
+        id:
+          type: string
+        name:
+          maxLength: 64
+          minLength: 3
+          pattern: ^$|^[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°]([\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*° ]*[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°])?$
+          type: string
+        scopes:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+    ScopeAdminResponse_AdminRole:
+      type: object
+      properties:
+        category:
+          type: string
+        delete:
+          type: string
+          description: Scope to delete the specified entity. The field is missing when there is no such scope.
+        name:
+          type: string
+        read:
+          type: string
+          description: Scope to read the specified entity. The field is missing when there is no such scope.
+        write:
+          type: string
+          description: Scope to write the specified entity. The field is missing when there is no such scope.
     ProblemJson:
       type: object
       properties:
@@ -376,126 +496,6 @@ components:
         title:
           type: string
       description: Based on [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807)
-    AdminRoleResponse:
-      type: object
-      properties:
-        description:
-          type: string
-        id:
-          type: string
-        name:
-          type: string
-        scopes:
-          uniqueItems: true
-          type: array
-          items:
-            type: string
-    ScopeAdminResponse_AdminRole:
-      type: object
-      properties:
-        category:
-          type: string
-        delete:
-          type: string
-          description: Scope to delete the specified entity. The field is missing when there is no such scope.
-        name:
-          type: string
-        read:
-          type: string
-          description: Scope to read the specified entity. The field is missing when there is no such scope.
-        write:
-          type: string
-          description: Scope to write the specified entity. The field is missing when there is no such scope.
-    PageMetadata:
-      type: object
-      properties:
-        number:
-          type: integer
-          format: int64
-        size:
-          type: integer
-          format: int64
-        totalElements:
-          type: integer
-          format: int64
-        totalPages:
-          type: integer
-          format: int64
-    FieldError:
-      type: object
-      properties:
-        field:
-          type: string
-        message:
-          type: string
-        objectName:
-          type: string
-    AdminRole_InsertRequest:
-      required:
-      - name
-      - scopes
-      type: object
-      properties:
-        description:
-          maxLength: 1024
-          minLength: 0
-          type: string
-        name:
-          maxLength: 64
-          minLength: 3
-          pattern: ^$|^[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°]([\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*° ]*[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°])?$
-          type: string
-        scopes:
-          uniqueItems: true
-          type: array
-          items:
-            type: string
-    AdminRoleUpsertRequest_AdminRole:
-      required:
-      - id
-      - name
-      - scopes
-      type: object
-      properties:
-        description:
-          maxLength: 1024
-          minLength: 0
-          type: string
-        id:
-          type: string
-        name:
-          maxLength: 64
-          minLength: 3
-          pattern: ^$|^[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°]([\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*° ]*[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°])?$
-          type: string
-        scopes:
-          uniqueItems: true
-          type: array
-          items:
-            type: string
-    PagedModelAdminRoleResponse:
-      type: object
-      properties:
-        content:
-          type: array
-          items:
-            $ref: '#/components/schemas/AdminRoleResponse'
-        page:
-          $ref: '#/components/schemas/PageMetadata'
-    AdminRoleResponse_AdminRole:
-      type: object
-      properties:
-        description:
-          type: string
-        id:
-          type: string
-        name:
-          type: string
-        scopes:
-          uniqueItems: true
-          type: array
-          items:
-            type: string
   securitySchemes:
     securityScheme:
       scheme: bearer

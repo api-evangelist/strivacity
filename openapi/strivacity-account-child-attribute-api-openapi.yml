@@ -364,6 +364,311 @@ paths:
       - Account Child Attribute
 components:
   schemas:
+    EmailChildAccountAttribute:
+      required:
+      - displayName
+      - id
+      - indexing
+      - name
+      - type
+      type: object
+      description: Represents an email type attribute
+      allOf:
+      - $ref: '#/components/schemas/ChildAccountAttribute'
+      - type: object
+        properties:
+          displayName:
+            maxLength: 128
+            minLength: 1
+            pattern: ^$|^[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°]([\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*° ]*[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°])?$
+            type: string
+          enabled:
+            type: boolean
+            default: false
+          indexing:
+            type: string
+            description: 'Defines searchability for an attribute. Possible values: `none` - Not searchable, `searchOnly` - Searchable, `searchUnique` - Searchable and unique to identity store, `searchUniqueInOrganization` - Searchable and unique to organization'
+            enum:
+            - none
+            - searchOnly
+            - searchUnique
+            - searchUniqueInOrganization
+          name:
+            maxLength: 64
+            minLength: 1
+            pattern: ^[a-zA-Z][a-zA-Z0-9_]*$
+            type: string
+          path:
+            maxLength: 128
+            minLength: 0
+            pattern: ^(?:[a-zA-Z][a-zA-Z0-9_]*(?:\.[a-zA-Z][a-zA-Z0-9_]*)*)?$
+            type: string
+            description: Default value is an empty string
+          required:
+            type: boolean
+            default: false
+    StringValidator:
+      type: object
+      properties:
+        errorMessage:
+          maxLength: 512
+          minLength: 0
+          type: string
+        max:
+          maximum: 10000
+          minimum: 1
+          type: integer
+          format: int32
+          default: 512
+        min:
+          maximum: 512
+          minimum: 0
+          type: integer
+          format: int32
+          default: 0
+        regex:
+          maxLength: 512
+          minLength: 0
+          type: string
+      description: Represents a string validator
+    StringChildAccountAttribute:
+      required:
+      - displayName
+      - id
+      - indexing
+      - name
+      - type
+      type: object
+      description: Represents a string type attribute
+      allOf:
+      - $ref: '#/components/schemas/ChildAccountAttribute'
+      - type: object
+        properties:
+          autocomplete:
+            maxLength: 64
+            minLength: 0
+            type: string
+            description: Provides automated assistance in filling out form field values
+          default:
+            type: string
+          displayName:
+            maxLength: 128
+            minLength: 1
+            pattern: ^$|^[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°]([\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*° ]*[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°])?$
+            type: string
+          enabled:
+            type: boolean
+            default: false
+          indexing:
+            type: string
+            description: 'Defines searchability for an attribute. Possible values: `none` - Not searchable, `searchOnly` - Searchable, `searchUnique` - Searchable and unique to identity store, `searchUniqueInOrganization` - Searchable and unique to organization'
+            enum:
+            - none
+            - searchOnly
+            - searchUnique
+            - searchUniqueInOrganization
+          name:
+            maxLength: 64
+            minLength: 1
+            pattern: ^[a-zA-Z][a-zA-Z0-9_]*$
+            type: string
+          path:
+            maxLength: 128
+            minLength: 0
+            pattern: ^(?:[a-zA-Z][a-zA-Z0-9_]*(?:\.[a-zA-Z][a-zA-Z0-9_]*)*)?$
+            type: string
+            description: Default value is an empty string
+          required:
+            type: boolean
+            default: false
+          validator:
+            $ref: '#/components/schemas/StringValidator'
+    SelectChildAccountAttribute:
+      required:
+      - displayName
+      - id
+      - indexing
+      - name
+      - type
+      type: object
+      description: Represents a select type attribute
+      allOf:
+      - $ref: '#/components/schemas/ChildAccountAttribute'
+      - type: object
+        properties:
+          default:
+            type: string
+          displayName:
+            maxLength: 128
+            minLength: 1
+            pattern: ^$|^[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°]([\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*° ]*[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°])?$
+            type: string
+          enabled:
+            type: boolean
+            default: false
+          indexing:
+            type: string
+            description: 'Defines searchability for an attribute. Possible values: `none` - Not searchable, `searchOnly` - Searchable, `searchUnique` - Searchable and unique to identity store, `searchUniqueInOrganization` - Searchable and unique to organization'
+            enum:
+            - none
+            - searchOnly
+            - searchUnique
+            - searchUniqueInOrganization
+          name:
+            maxLength: 64
+            minLength: 1
+            pattern: ^[a-zA-Z][a-zA-Z0-9_]*$
+            type: string
+          path:
+            maxLength: 128
+            minLength: 0
+            pattern: ^(?:[a-zA-Z][a-zA-Z0-9_]*(?:\.[a-zA-Z][a-zA-Z0-9_]*)*)?$
+            type: string
+            description: Default value is an empty string
+          renderType:
+            type: string
+            description: Defines how a select input field should be rendered. When set to `native`, the select appears as the browser default, when set `radio` the select appears as radio buttons.
+            enum:
+            - native
+            - radio
+            default: native
+          required:
+            type: boolean
+            default: false
+          values:
+            type: array
+            description: Defines the possible options to be selected on a select input field
+            items:
+              $ref: '#/components/schemas/SelectValue'
+    ChildAccountAttribute:
+      type: object
+      properties:
+        displayName:
+          type: string
+        enabled:
+          type: boolean
+        id:
+          type: string
+        name:
+          type: string
+        path:
+          type: string
+        required:
+          type: boolean
+        type:
+          type: string
+          enum:
+          - STRING
+          - CHECKBOX
+          - SELECT
+          - PHONE_NUMBER
+          - EMAIL
+          - DATE
+          - PASSWORD
+          - USERNAME_IDENTIFIER
+          - EMAIL_IDENTIFIER
+          - PHONE_IDENTIFIER
+          - STRING_LIST
+          - SELECT_LIST
+          - PHONE_NUMBER_LIST
+          - EMAIL_LIST
+          - DATE_LIST
+          - COMPLEX_LIST
+        uniqueInTheList:
+          type: boolean
+      description: Represents a child account attribute
+      discriminator:
+        propertyName: type
+    FieldError:
+      type: object
+      properties:
+        field:
+          type: string
+        message:
+          type: string
+        objectName:
+          type: string
+    CheckboxChildAccountAttribute:
+      required:
+      - displayName
+      - id
+      - name
+      - type
+      type: object
+      description: Represents a checkbox type attribute
+      allOf:
+      - $ref: '#/components/schemas/ChildAccountAttribute'
+      - type: object
+        properties:
+          default:
+            type: boolean
+            default: false
+          displayName:
+            maxLength: 128
+            minLength: 1
+            pattern: ^$|^[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°]([\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*° ]*[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°])?$
+            type: string
+          enabled:
+            type: boolean
+            default: false
+          name:
+            maxLength: 64
+            minLength: 1
+            pattern: ^[a-zA-Z][a-zA-Z0-9_]*$
+            type: string
+          path:
+            maxLength: 128
+            minLength: 0
+            pattern: ^(?:[a-zA-Z][a-zA-Z0-9_]*(?:\.[a-zA-Z][a-zA-Z0-9_]*)*)?$
+            type: string
+            description: Default value is an empty string
+          required:
+            type: boolean
+            default: false
+    SelectValue:
+      required:
+      - displayName
+      - value
+      type: object
+      properties:
+        displayName:
+          maxLength: 64
+          minLength: 1
+          type: string
+        value:
+          maxLength: 64
+          minLength: 1
+          type: string
+      description: Represents a select value
+    IdReferenceRequest:
+      required:
+      - id
+      type: object
+      properties:
+        id:
+          pattern: ^[a-zA-Z0-9-]{1,36}$
+          type: string
+          description: ID of the represented entity
+    DateValidator:
+      type: object
+      properties:
+        notAfter:
+          type: string
+          description: Default value is null
+          format: date
+        notAfterRelativeDays:
+          type: integer
+          description: Default value is null
+          format: int32
+        notBefore:
+          type: string
+          description: Default value is null
+          format: date
+        notBeforeRelativeDays:
+          type: integer
+          description: Default value is null
+          format: int32
+      description: Represents a date validator
     ProblemJson:
       type: object
       properties:
@@ -452,160 +757,6 @@ components:
             default: false
           validator:
             $ref: '#/components/schemas/DateValidator'
-    ChildAccountAttribute:
-      type: object
-      properties:
-        displayName:
-          type: string
-        enabled:
-          type: boolean
-        id:
-          type: string
-        name:
-          type: string
-        path:
-          type: string
-        required:
-          type: boolean
-        type:
-          type: string
-          enum:
-          - STRING
-          - CHECKBOX
-          - SELECT
-          - PHONE_NUMBER
-          - EMAIL
-          - DATE
-          - PASSWORD
-          - USERNAME_IDENTIFIER
-          - EMAIL_IDENTIFIER
-          - PHONE_IDENTIFIER
-          - STRING_LIST
-          - SELECT_LIST
-          - PHONE_NUMBER_LIST
-          - EMAIL_LIST
-          - DATE_LIST
-          - COMPLEX_LIST
-        uniqueInTheList:
-          type: boolean
-      description: Represents a child account attribute
-      discriminator:
-        propertyName: type
-    DateValidator:
-      type: object
-      properties:
-        notAfter:
-          type: string
-          description: Default value is null
-          format: date
-        notAfterRelativeDays:
-          type: integer
-          description: Default value is null
-          format: int32
-        notBefore:
-          type: string
-          description: Default value is null
-          format: date
-        notBeforeRelativeDays:
-          type: integer
-          description: Default value is null
-          format: int32
-      description: Represents a date validator
-    StringChildAccountAttribute:
-      required:
-      - displayName
-      - id
-      - indexing
-      - name
-      - type
-      type: object
-      description: Represents a string type attribute
-      allOf:
-      - $ref: '#/components/schemas/ChildAccountAttribute'
-      - type: object
-        properties:
-          autocomplete:
-            maxLength: 64
-            minLength: 0
-            type: string
-            description: Provides automated assistance in filling out form field values
-          default:
-            type: string
-          displayName:
-            maxLength: 128
-            minLength: 1
-            pattern: ^$|^[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°]([\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*° ]*[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°])?$
-            type: string
-          enabled:
-            type: boolean
-            default: false
-          indexing:
-            type: string
-            description: 'Defines searchability for an attribute. Possible values: `none` - Not searchable, `searchOnly` - Searchable, `searchUnique` - Searchable and unique to identity store, `searchUniqueInOrganization` - Searchable and unique to organization'
-            enum:
-            - none
-            - searchOnly
-            - searchUnique
-            - searchUniqueInOrganization
-          name:
-            maxLength: 64
-            minLength: 1
-            pattern: ^[a-zA-Z][a-zA-Z0-9_]*$
-            type: string
-          path:
-            maxLength: 128
-            minLength: 0
-            pattern: ^(?:[a-zA-Z][a-zA-Z0-9_]*(?:\.[a-zA-Z][a-zA-Z0-9_]*)*)?$
-            type: string
-            description: Default value is an empty string
-          required:
-            type: boolean
-            default: false
-          validator:
-            $ref: '#/components/schemas/StringValidator'
-    EmailChildAccountAttribute:
-      required:
-      - displayName
-      - id
-      - indexing
-      - name
-      - type
-      type: object
-      description: Represents an email type attribute
-      allOf:
-      - $ref: '#/components/schemas/ChildAccountAttribute'
-      - type: object
-        properties:
-          displayName:
-            maxLength: 128
-            minLength: 1
-            pattern: ^$|^[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°]([\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*° ]*[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°])?$
-            type: string
-          enabled:
-            type: boolean
-            default: false
-          indexing:
-            type: string
-            description: 'Defines searchability for an attribute. Possible values: `none` - Not searchable, `searchOnly` - Searchable, `searchUnique` - Searchable and unique to identity store, `searchUniqueInOrganization` - Searchable and unique to organization'
-            enum:
-            - none
-            - searchOnly
-            - searchUnique
-            - searchUniqueInOrganization
-          name:
-            maxLength: 64
-            minLength: 1
-            pattern: ^[a-zA-Z][a-zA-Z0-9_]*$
-            type: string
-          path:
-            maxLength: 128
-            minLength: 0
-            pattern: ^(?:[a-zA-Z][a-zA-Z0-9_]*(?:\.[a-zA-Z][a-zA-Z0-9_]*)*)?$
-            type: string
-            description: Default value is an empty string
-          required:
-            type: boolean
-            default: false
     PhoneNumberChildAccountAttribute:
       required:
       - displayName
@@ -635,157 +786,6 @@ components:
             - searchOnly
             - searchUnique
             - searchUniqueInOrganization
-          name:
-            maxLength: 64
-            minLength: 1
-            pattern: ^[a-zA-Z][a-zA-Z0-9_]*$
-            type: string
-          path:
-            maxLength: 128
-            minLength: 0
-            pattern: ^(?:[a-zA-Z][a-zA-Z0-9_]*(?:\.[a-zA-Z][a-zA-Z0-9_]*)*)?$
-            type: string
-            description: Default value is an empty string
-          required:
-            type: boolean
-            default: false
-    StringValidator:
-      type: object
-      properties:
-        errorMessage:
-          maxLength: 512
-          minLength: 0
-          type: string
-        max:
-          maximum: 10000
-          minimum: 1
-          type: integer
-          format: int32
-          default: 512
-        min:
-          maximum: 512
-          minimum: 0
-          type: integer
-          format: int32
-          default: 0
-        regex:
-          maxLength: 512
-          minLength: 0
-          type: string
-      description: Represents a string validator
-    FieldError:
-      type: object
-      properties:
-        field:
-          type: string
-        message:
-          type: string
-        objectName:
-          type: string
-    SelectChildAccountAttribute:
-      required:
-      - displayName
-      - id
-      - indexing
-      - name
-      - type
-      type: object
-      description: Represents a select type attribute
-      allOf:
-      - $ref: '#/components/schemas/ChildAccountAttribute'
-      - type: object
-        properties:
-          default:
-            type: string
-          displayName:
-            maxLength: 128
-            minLength: 1
-            pattern: ^$|^[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°]([\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*° ]*[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°])?$
-            type: string
-          enabled:
-            type: boolean
-            default: false
-          indexing:
-            type: string
-            description: 'Defines searchability for an attribute. Possible values: `none` - Not searchable, `searchOnly` - Searchable, `searchUnique` - Searchable and unique to identity store, `searchUniqueInOrganization` - Searchable and unique to organization'
-            enum:
-            - none
-            - searchOnly
-            - searchUnique
-            - searchUniqueInOrganization
-          name:
-            maxLength: 64
-            minLength: 1
-            pattern: ^[a-zA-Z][a-zA-Z0-9_]*$
-            type: string
-          path:
-            maxLength: 128
-            minLength: 0
-            pattern: ^(?:[a-zA-Z][a-zA-Z0-9_]*(?:\.[a-zA-Z][a-zA-Z0-9_]*)*)?$
-            type: string
-            description: Default value is an empty string
-          renderType:
-            type: string
-            description: Defines how a select input field should be rendered. When set to `native`, the select appears as the browser default, when set `radio` the select appears as radio buttons.
-            enum:
-            - native
-            - radio
-            default: native
-          required:
-            type: boolean
-            default: false
-          values:
-            type: array
-            description: Defines the possible options to be selected on a select input field
-            items:
-              $ref: '#/components/schemas/SelectValue'
-    SelectValue:
-      required:
-      - displayName
-      - value
-      type: object
-      properties:
-        displayName:
-          maxLength: 64
-          minLength: 1
-          type: string
-        value:
-          maxLength: 64
-          minLength: 1
-          type: string
-      description: Represents a select value
-    IdReferenceRequest:
-      required:
-      - id
-      type: object
-      properties:
-        id:
-          pattern: ^[a-zA-Z0-9-]{1,36}$
-          type: string
-          description: ID of the represented entity
-    CheckboxChildAccountAttribute:
-      required:
-      - displayName
-      - id
-      - name
-      - type
-      type: object
-      description: Represents a checkbox type attribute
-      allOf:
-      - $ref: '#/components/schemas/ChildAccountAttribute'
-      - type: object
-        properties:
-          default:
-            type: boolean
-            default: false
-          displayName:
-            maxLength: 128
-            minLength: 1
-            pattern: ^$|^[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°]([\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*° ]*[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°])?$
-            type: string
-          enabled:
-            type: boolean
-            default: false
           name:
             maxLength: 64
             minLength: 1

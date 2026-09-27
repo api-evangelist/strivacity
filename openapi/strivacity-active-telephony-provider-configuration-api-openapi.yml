@@ -205,6 +205,18 @@ paths:
       - Active Telephony Provider Configuration
 components:
   schemas:
+    TelephonyProvider_IdReference_InsertRequest:
+      type: object
+      properties: {}
+    FieldError:
+      type: object
+      properties:
+        field:
+          type: string
+        message:
+          type: string
+        objectName:
+          type: string
     ProblemJson:
       type: object
       properties:
@@ -251,18 +263,6 @@ components:
           - voice
         id:
           type: string
-    FieldError:
-      type: object
-      properties:
-        field:
-          type: string
-        message:
-          type: string
-        objectName:
-          type: string
-    TelephonyProvider_IdReference_InsertRequest:
-      type: object
-      properties: {}
   securitySchemes:
     securityScheme:
       scheme: bearer

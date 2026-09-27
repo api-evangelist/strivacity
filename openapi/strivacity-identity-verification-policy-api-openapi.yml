@@ -297,6 +297,218 @@ paths:
       - Identity Verification Policy
 components:
   schemas:
+    DisplayTextResponse_IdentityProofing:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+        text:
+          type: string
+    ProofingNotificationResponse_IdentityProofing:
+      type: object
+      properties:
+        consentItem:
+          $ref: '#/components/schemas/NameAndIdResponse_IdentityProofing'
+        consentType:
+          type: string
+          enum:
+          - mandatory
+          - mandatoryHidden
+        displayText:
+          $ref: '#/components/schemas/DisplayTextResponse_IdentityProofing'
+        implicit:
+          type: boolean
+    ProofingDataStepConfiguration:
+      type: object
+      properties:
+        name:
+          type: string
+    FailureMessage_IdentityProofing:
+      required:
+      - displayText
+      type: object
+      properties:
+        displayText:
+          maxLength: 2048
+          minLength: 0
+          pattern: ^((?![<>]).)*$
+          type: string
+      description: Represents a text to display on failed identity verification
+    PageMetadata:
+      type: object
+      properties:
+        number:
+          type: integer
+          format: int64
+        size:
+          type: integer
+          format: int64
+        totalElements:
+          type: integer
+          format: int64
+        totalPages:
+          type: integer
+          format: int64
+    ProofingNotification_IdentityProofing:
+      required:
+      - consentItem
+      - consentType
+      - displayText
+      type: object
+      properties:
+        consentItem:
+          $ref: '#/components/schemas/OnlyIdRequest_IdentityProofing'
+        consentType:
+          type: string
+          enum:
+          - mandatory
+          - mandatoryHidden
+        displayText:
+          $ref: '#/components/schemas/DisplayText_IdentityProofing'
+        implicit:
+          type: boolean
+          default: false
+    FailureMessageResponse_IdentityProofing:
+      type: object
+      properties:
+        displayText:
+          type: string
+    IdentityProofing_InsertRequest:
+      required:
+      - failureMessage
+      - name
+      - proofingNotification
+      type: object
+      properties:
+        description:
+          maxLength: 1024
+          minLength: 0
+          type: string
+        failureMessage:
+          $ref: '#/components/schemas/FailureMessage_IdentityProofing'
+        name:
+          maxLength: 64
+          minLength: 3
+          pattern: ^$|^[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°]([\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*° ]*[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°])?$
+          type: string
+        policyTag:
+          pattern: ^[a-z0-9_]{2,32}$
+          type: string
+          description: Must be an existing policy tag name
+        proofingNotification:
+          $ref: '#/components/schemas/ProofingNotification_IdentityProofing'
+    FieldError:
+      type: object
+      properties:
+        field:
+          type: string
+        message:
+          type: string
+        objectName:
+          type: string
+    IdentityProofingListResponse:
+      type: object
+      properties:
+        description:
+          type: string
+        id:
+          type: string
+        name:
+          type: string
+        policyTag:
+          type: string
+        steps:
+          type: array
+          items:
+            $ref: '#/components/schemas/IdentityProofingStepDTO'
+    DisplayText_IdentityProofing:
+      required:
+      - text
+      type: object
+      properties:
+        enabled:
+          type: boolean
+          default: false
+        text:
+          maxLength: 2048
+          minLength: 0
+          pattern: ^((?![<>]).)*$
+          type: string
+    IdentityProofingStepDTO:
+      type: object
+      properties:
+        configuration:
+          $ref: '#/components/schemas/ProofingDataStepConfiguration'
+        id:
+          type: string
+        type:
+          type: string
+          enum:
+          - addressRiskEvaluation
+          - documentVerification
+          - knowledgeBasedVerification
+          - phoneNumberRiskEvaluation
+          - phoneBasedIdentityAffirmation
+          - proofingData
+    PagedModelIdentityProofingListResponse:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/IdentityProofingListResponse'
+        page:
+          $ref: '#/components/schemas/PageMetadata'
+    IdentityProofingUpsertRequest_IdentityProofing:
+      required:
+      - failureMessage
+      - id
+      - name
+      - proofingNotification
+      type: object
+      properties:
+        description:
+          maxLength: 1024
+          minLength: 0
+          type: string
+        failureMessage:
+          $ref: '#/components/schemas/FailureMessage_IdentityProofing'
+        id:
+          type: string
+        name:
+          maxLength: 64
+          minLength: 3
+          pattern: ^$|^[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°]([\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*° ]*[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°])?$
+          type: string
+        policyTag:
+          pattern: ^[a-z0-9_]{2,32}$
+          type: string
+          description: Must be an existing policy tag name
+        proofingNotification:
+          $ref: '#/components/schemas/ProofingNotification_IdentityProofing'
+    IdentityProofingResponse_IdentityProofing:
+      type: object
+      properties:
+        description:
+          type: string
+        failureMessage:
+          $ref: '#/components/schemas/FailureMessageResponse_IdentityProofing'
+        id:
+          type: string
+        name:
+          type: string
+        policyTag:
+          type: string
+        proofingNotification:
+          $ref: '#/components/schemas/ProofingNotificationResponse_IdentityProofing'
+    OnlyIdRequest_IdentityProofing:
+      required:
+      - id
+      type: object
+      properties:
+        id:
+          pattern: ^[a-zA-Z0-9-]{1,36}$
+          type: string
     ProblemJson:
       type: object
       properties:
@@ -333,224 +545,12 @@ components:
         title:
           type: string
       description: Based on [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807)
-    IdentityProofingUpsertRequest_IdentityProofing:
-      required:
-      - failureMessage
-      - id
-      - name
-      - proofingNotification
-      type: object
-      properties:
-        description:
-          maxLength: 1024
-          minLength: 0
-          type: string
-        failureMessage:
-          $ref: '#/components/schemas/FailureMessage_IdentityProofing'
-        id:
-          type: string
-        name:
-          maxLength: 64
-          minLength: 3
-          pattern: ^$|^[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°]([\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*° ]*[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°])?$
-          type: string
-        policyTag:
-          pattern: ^[a-z0-9_]{2,32}$
-          type: string
-          description: Must be an existing policy tag name
-        proofingNotification:
-          $ref: '#/components/schemas/ProofingNotification_IdentityProofing'
-    FailureMessage_IdentityProofing:
-      required:
-      - displayText
-      type: object
-      properties:
-        displayText:
-          maxLength: 2048
-          minLength: 0
-          pattern: ^((?![<>]).)*$
-          type: string
-      description: Represents a text to display on failed identity verification
-    PagedModelIdentityProofingListResponse:
-      type: object
-      properties:
-        content:
-          type: array
-          items:
-            $ref: '#/components/schemas/IdentityProofingListResponse'
-        page:
-          $ref: '#/components/schemas/PageMetadata'
-    PageMetadata:
-      type: object
-      properties:
-        number:
-          type: integer
-          format: int64
-        size:
-          type: integer
-          format: int64
-        totalElements:
-          type: integer
-          format: int64
-        totalPages:
-          type: integer
-          format: int64
-    ProofingDataStepConfiguration:
-      type: object
-      properties:
-        name:
-          type: string
-    FieldError:
-      type: object
-      properties:
-        field:
-          type: string
-        message:
-          type: string
-        objectName:
-          type: string
     NameAndIdResponse_IdentityProofing:
       type: object
       properties:
         id:
           type: string
           description: ID of the represented entity
-    ProofingNotificationResponse_IdentityProofing:
-      type: object
-      properties:
-        consentItem:
-          $ref: '#/components/schemas/NameAndIdResponse_IdentityProofing'
-        consentType:
-          type: string
-          enum:
-          - mandatory
-          - mandatoryHidden
-        displayText:
-          $ref: '#/components/schemas/DisplayTextResponse_IdentityProofing'
-        implicit:
-          type: boolean
-    IdentityProofingStepDTO:
-      type: object
-      properties:
-        configuration:
-          $ref: '#/components/schemas/ProofingDataStepConfiguration'
-        id:
-          type: string
-        type:
-          type: string
-          enum:
-          - addressRiskEvaluation
-          - documentVerification
-          - knowledgeBasedVerification
-          - phoneNumberRiskEvaluation
-          - phoneBasedIdentityAffirmation
-          - proofingData
-    DisplayText_IdentityProofing:
-      required:
-      - text
-      type: object
-      properties:
-        enabled:
-          type: boolean
-          default: false
-        text:
-          maxLength: 2048
-          minLength: 0
-          pattern: ^((?![<>]).)*$
-          type: string
-    FailureMessageResponse_IdentityProofing:
-      type: object
-      properties:
-        displayText:
-          type: string
-    DisplayTextResponse_IdentityProofing:
-      type: object
-      properties:
-        enabled:
-          type: boolean
-        text:
-          type: string
-    ProofingNotification_IdentityProofing:
-      required:
-      - consentItem
-      - consentType
-      - displayText
-      type: object
-      properties:
-        consentItem:
-          $ref: '#/components/schemas/OnlyIdRequest_IdentityProofing'
-        consentType:
-          type: string
-          enum:
-          - mandatory
-          - mandatoryHidden
-        displayText:
-          $ref: '#/components/schemas/DisplayText_IdentityProofing'
-        implicit:
-          type: boolean
-          default: false
-    IdentityProofingListResponse:
-      type: object
-      properties:
-        description:
-          type: string
-        id:
-          type: string
-        name:
-          type: string
-        policyTag:
-          type: string
-        steps:
-          type: array
-          items:
-            $ref: '#/components/schemas/IdentityProofingStepDTO'
-    IdentityProofing_InsertRequest:
-      required:
-      - failureMessage
-      - name
-      - proofingNotification
-      type: object
-      properties:
-        description:
-          maxLength: 1024
-          minLength: 0
-          type: string
-        failureMessage:
-          $ref: '#/components/schemas/FailureMessage_IdentityProofing'
-        name:
-          maxLength: 64
-          minLength: 3
-          pattern: ^$|^[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°]([\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*° ]*[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°])?$
-          type: string
-        policyTag:
-          pattern: ^[a-z0-9_]{2,32}$
-          type: string
-          description: Must be an existing policy tag name
-        proofingNotification:
-          $ref: '#/components/schemas/ProofingNotification_IdentityProofing'
-    IdentityProofingResponse_IdentityProofing:
-      type: object
-      properties:
-        description:
-          type: string
-        failureMessage:
-          $ref: '#/components/schemas/FailureMessageResponse_IdentityProofing'
-        id:
-          type: string
-        name:
-          type: string
-        policyTag:
-          type: string
-        proofingNotification:
-          $ref: '#/components/schemas/ProofingNotificationResponse_IdentityProofing'
-    OnlyIdRequest_IdentityProofing:
-      required:
-      - id
-      type: object
-      properties:
-        id:
-          pattern: ^[a-zA-Z0-9-]{1,36}$
-          type: string
   securitySchemes:
     securityScheme:
       scheme: bearer

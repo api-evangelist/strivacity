@@ -632,6 +632,105 @@ paths:
       - Statistics
 components:
   schemas:
+    Metrics_Stats:
+      type: object
+      properties:
+        errorCount:
+          type: integer
+          format: int64
+        identitiesCached:
+          type: integer
+          format: int64
+        identitiesCreated:
+          type: integer
+          format: int64
+        identitiesDeleted:
+          type: integer
+          format: int64
+        identitiesUpdated:
+          type: integer
+          format: int64
+        rowsProcessed:
+          type: integer
+          format: int64
+    StatsResponse_Stats:
+      type: object
+      properties:
+        links:
+          $ref: '#/components/schemas/LinksResponse_Stats'
+        values:
+          type: array
+          items:
+            $ref: '#/components/schemas/StatsResponseValue_Stats'
+    LinksResponse_Stats:
+      type: object
+      properties:
+        self:
+          $ref: '#/components/schemas/Link_Stats'
+    FieldError:
+      type: object
+      properties:
+        field:
+          type: string
+        message:
+          type: string
+        objectName:
+          type: string
+    ConnectorJobResponse_Stats:
+      type: object
+      properties:
+        end:
+          type: string
+          format: date-time
+        id:
+          type: string
+        inboundConnectionId:
+          type: string
+        lastSeen:
+          type: string
+          format: date-time
+        metrics:
+          $ref: '#/components/schemas/Metrics_Stats'
+        start:
+          type: string
+          format: date-time
+        status:
+          type: string
+    ConnectorUptimeEventResponse_Stats:
+      type: object
+      properties:
+        end:
+          type: string
+          format: date-time
+        start:
+          type: string
+          format: date-time
+        type:
+          type: string
+    StatsResponseValue_Stats:
+      type: object
+      properties:
+        groups:
+          type: object
+          additionalProperties:
+            type: string
+        time:
+          type: string
+          format: date-time
+        value:
+          type: number
+          format: double
+      description: Represents a time-group-value triplet.
+    Link_Stats:
+      type: object
+      properties:
+        href:
+          type: string
+        meta:
+          type: object
+          additionalProperties:
+            type: string
+      description: Represents a single link for statistics
     ProblemJson:
       type: object
       properties:
@@ -668,105 +767,6 @@ components:
         title:
           type: string
       description: Based on [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807)
-    Link_Stats:
-      type: object
-      properties:
-        href:
-          type: string
-        meta:
-          type: object
-          additionalProperties:
-            type: string
-      description: Represents a single link for statistics
-    FieldError:
-      type: object
-      properties:
-        field:
-          type: string
-        message:
-          type: string
-        objectName:
-          type: string
-    LinksResponse_Stats:
-      type: object
-      properties:
-        self:
-          $ref: '#/components/schemas/Link_Stats'
-    ConnectorUptimeEventResponse_Stats:
-      type: object
-      properties:
-        end:
-          type: string
-          format: date-time
-        start:
-          type: string
-          format: date-time
-        type:
-          type: string
-    StatsResponseValue_Stats:
-      type: object
-      properties:
-        groups:
-          type: object
-          additionalProperties:
-            type: string
-        time:
-          type: string
-          format: date-time
-        value:
-          type: number
-          format: double
-      description: Represents a time-group-value triplet.
-    Metrics_Stats:
-      type: object
-      properties:
-        errorCount:
-          type: integer
-          format: int64
-        identitiesCached:
-          type: integer
-          format: int64
-        identitiesCreated:
-          type: integer
-          format: int64
-        identitiesDeleted:
-          type: integer
-          format: int64
-        identitiesUpdated:
-          type: integer
-          format: int64
-        rowsProcessed:
-          type: integer
-          format: int64
-    StatsResponse_Stats:
-      type: object
-      properties:
-        links:
-          $ref: '#/components/schemas/LinksResponse_Stats'
-        values:
-          type: array
-          items:
-            $ref: '#/components/schemas/StatsResponseValue_Stats'
-    ConnectorJobResponse_Stats:
-      type: object
-      properties:
-        end:
-          type: string
-          format: date-time
-        id:
-          type: string
-        inboundConnectionId:
-          type: string
-        lastSeen:
-          type: string
-          format: date-time
-        metrics:
-          $ref: '#/components/schemas/Metrics_Stats'
-        start:
-          type: string
-          format: date-time
-        status:
-          type: string
   securitySchemes:
     securityScheme:
       scheme: bearer

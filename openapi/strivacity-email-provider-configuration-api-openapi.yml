@@ -382,6 +382,265 @@ paths:
       - Email Provider Configuration
 components:
   schemas:
+    SmtpEmailInsertRequestConfiguration:
+      required:
+      - password
+      - username
+      type: object
+      properties:
+        connectionType:
+          pattern: ^SMTPS|StartTLS$
+          type:
+          - string
+          - 'null'
+          enum:
+          - SMTPS
+          - StartTLS
+        password:
+          maxLength: 255
+          minLength: 1
+          type: string
+        port:
+          maximum: 65535
+          minimum: 1
+          type: integer
+          format: int32
+        server:
+          maxLength: 255
+          minLength: 1
+          type: string
+          description: Should not be null when enabled.
+        username:
+          maxLength: 255
+          minLength: 1
+          type: string
+    PagedModelEmailProviderListResponse:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/EmailProviderListResponse'
+        page:
+          $ref: '#/components/schemas/PageMetadata'
+    PageMetadata:
+      type: object
+      properties:
+        number:
+          type: integer
+          format: int64
+        size:
+          type: integer
+          format: int64
+        totalElements:
+          type: integer
+          format: int64
+        totalPages:
+          type: integer
+          format: int64
+    CustomEmailUpdateRequestConfiguration:
+      required:
+      - packageDependencies
+      type: object
+      properties:
+        code:
+          maxLength: 256000
+          minLength: 0
+          type: string
+          description: Code of the custom email provider, if not specified it's generated automatically for each type
+          default: '*example code*'
+        packageDependencies:
+          type: object
+          additionalProperties:
+            type: string
+            description: Dependencies used for the event hook function
+          description: Dependencies used for the event hook function
+    CustomEmailUpdateRequest:
+      required:
+      - configuration
+      - id
+      - name
+      - type
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/EmailProviderUpdateRequest'
+      - type: object
+        properties:
+          configuration:
+            $ref: '#/components/schemas/CustomEmailUpdateRequestConfiguration'
+    EmailProviderResponse:
+      type: object
+      properties:
+        configuration:
+          type: object
+        customSenderDomain:
+          type: string
+        description:
+          type: string
+        id:
+          type: string
+        name:
+          type: string
+        type:
+          type: string
+          enum:
+          - smtp
+          - custom
+          - strivacity
+    FieldError:
+      type: object
+      properties:
+        field:
+          type: string
+        message:
+          type: string
+        objectName:
+          type: string
+    OnlyIdResponse:
+      type: object
+      properties:
+        id:
+          type: string
+    SmtpEmailUpdateRequest:
+      required:
+      - configuration
+      - id
+      - name
+      - type
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/EmailProviderUpdateRequest'
+      - type: object
+        properties:
+          configuration:
+            $ref: '#/components/schemas/SmtpEmailUpdateRequestConfiguration'
+    EmailProviderUpdateRequest:
+      required:
+      - id
+      - name
+      - type
+      type: object
+      properties:
+        customSenderDomain:
+          maxLength: 512
+          minLength: 3
+          type: string
+          description: Override sender email domain with a custom value
+        description:
+          maxLength: 1024
+          minLength: 0
+          type: string
+        id:
+          type: string
+        name:
+          maxLength: 64
+          minLength: 3
+          pattern: ^$|^[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°]([\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*° ]*[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°])?$
+          type: string
+        type:
+          type: string
+          description: This field cannot be altered
+          enum:
+          - smtp
+          - custom
+      discriminator:
+        propertyName: type
+    EmailProvider_IdReference_InsertRequest:
+      type: object
+      properties: {}
+    CustomEmailInsertRequest:
+      required:
+      - configuration
+      - name
+      - type
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/EmailProviderInsertRequest'
+      - type: object
+        properties:
+          configuration:
+            $ref: '#/components/schemas/CustomEmailInsertRequestConfiguration'
+    CustomEmailInsertRequestConfiguration:
+      required:
+      - packageDependencies
+      type: object
+      properties:
+        code:
+          maxLength: 256000
+          minLength: 0
+          type: string
+          description: Code of the custom email provider, if not specified it's generated automatically for each type
+          default: '*example code*'
+        packageDependencies:
+          type: object
+          additionalProperties:
+            type: string
+            description: Dependencies used for the event hook function
+          description: Dependencies used for the event hook function
+    EmailProviderListResponse:
+      type: object
+      properties:
+        customSenderDomain:
+          type: string
+        description:
+          type: string
+        id:
+          type: string
+        name:
+          type: string
+        type:
+          type: string
+          enum:
+          - smtp
+          - custom
+          - strivacity
+    SmtpEmailInsertRequest:
+      required:
+      - configuration
+      - name
+      - type
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/EmailProviderInsertRequest'
+      - type: object
+        properties:
+          configuration:
+            $ref: '#/components/schemas/SmtpEmailInsertRequestConfiguration'
+    SmtpEmailUpdateRequestConfiguration:
+      required:
+      - username
+      type: object
+      properties:
+        connectionType:
+          pattern: ^SMTPS|StartTLS$
+          type:
+          - string
+          - 'null'
+          description: Should not be null when enabled.
+          enum:
+          - SMTPS
+          - StartTLS
+          - 'null'
+        password:
+          maxLength: 255
+          minLength: 1
+          type: string
+          description: If `password` field was previously set then it will not be overridden unless provided.
+        port:
+          maximum: 65535
+          minimum: 1
+          type: integer
+          format: int32
+          default: 0
+        server:
+          maxLength: 255
+          minLength: 1
+          type: string
+          description: Should not be null when enabled.
+        username:
+          maxLength: 255
+          minLength: 1
+          type: string
     ProblemJson:
       type: object
       properties:
@@ -418,200 +677,6 @@ components:
         title:
           type: string
       description: Based on [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807)
-    SmtpEmailUpdateRequest:
-      required:
-      - configuration
-      - id
-      - name
-      - type
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/EmailProviderUpdateRequest'
-      - type: object
-        properties:
-          configuration:
-            $ref: '#/components/schemas/SmtpEmailUpdateRequestConfiguration'
-    PageMetadata:
-      type: object
-      properties:
-        number:
-          type: integer
-          format: int64
-        size:
-          type: integer
-          format: int64
-        totalElements:
-          type: integer
-          format: int64
-        totalPages:
-          type: integer
-          format: int64
-    EmailProviderListResponse:
-      type: object
-      properties:
-        customSenderDomain:
-          type: string
-        description:
-          type: string
-        id:
-          type: string
-        name:
-          type: string
-        type:
-          type: string
-          enum:
-          - smtp
-          - custom
-          - strivacity
-    EmailProviderUpdateRequest:
-      required:
-      - id
-      - name
-      - type
-      type: object
-      properties:
-        customSenderDomain:
-          maxLength: 512
-          minLength: 3
-          type: string
-          description: Override sender email domain with a custom value
-        description:
-          maxLength: 1024
-          minLength: 0
-          type: string
-        id:
-          type: string
-        name:
-          maxLength: 64
-          minLength: 3
-          pattern: ^$|^[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°]([\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*° ]*[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°])?$
-          type: string
-        type:
-          type: string
-          description: This field cannot be altered
-          enum:
-          - smtp
-          - custom
-      discriminator:
-        propertyName: type
-    EmailProvider_IdReference_InsertRequest:
-      type: object
-      properties: {}
-    SmtpEmailInsertRequest:
-      required:
-      - configuration
-      - name
-      - type
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/EmailProviderInsertRequest'
-      - type: object
-        properties:
-          configuration:
-            $ref: '#/components/schemas/SmtpEmailInsertRequestConfiguration'
-    FieldError:
-      type: object
-      properties:
-        field:
-          type: string
-        message:
-          type: string
-        objectName:
-          type: string
-    OnlyIdResponse:
-      type: object
-      properties:
-        id:
-          type: string
-    SmtpEmailUpdateRequestConfiguration:
-      required:
-      - username
-      type: object
-      properties:
-        connectionType:
-          pattern: ^SMTPS|StartTLS$
-          type:
-          - string
-          - 'null'
-          description: Should not be null when enabled.
-          enum:
-          - SMTPS
-          - StartTLS
-          - 'null'
-        password:
-          maxLength: 255
-          minLength: 1
-          type: string
-          description: If `password` field was previously set then it will not be overridden unless provided.
-        port:
-          maximum: 65535
-          minimum: 1
-          type: integer
-          format: int32
-          default: 0
-        server:
-          maxLength: 255
-          minLength: 1
-          type: string
-          description: Should not be null when enabled.
-        username:
-          maxLength: 255
-          minLength: 1
-          type: string
-    PagedModelEmailProviderListResponse:
-      type: object
-      properties:
-        content:
-          type: array
-          items:
-            $ref: '#/components/schemas/EmailProviderListResponse'
-        page:
-          $ref: '#/components/schemas/PageMetadata'
-    CustomEmailUpdateRequest:
-      required:
-      - configuration
-      - id
-      - name
-      - type
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/EmailProviderUpdateRequest'
-      - type: object
-        properties:
-          configuration:
-            $ref: '#/components/schemas/CustomEmailUpdateRequestConfiguration'
-    SmtpEmailInsertRequestConfiguration:
-      required:
-      - password
-      - username
-      type: object
-      properties:
-        connectionType:
-          pattern: ^SMTPS|StartTLS$
-          type:
-          - string
-          - 'null'
-          enum:
-          - SMTPS
-          - StartTLS
-        password:
-          maxLength: 255
-          minLength: 1
-          type: string
-        port:
-          maximum: 65535
-          minimum: 1
-          type: integer
-          format: int32
-        server:
-          maxLength: 255
-          minLength: 1
-          type: string
-          description: Should not be null when enabled.
-        username:
-          maxLength: 255
-          minLength: 1
-          type: string
     EmailProviderInsertRequest:
       required:
       - name
@@ -639,71 +704,6 @@ components:
           - custom
       discriminator:
         propertyName: type
-    CustomEmailInsertRequest:
-      required:
-      - configuration
-      - name
-      - type
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/EmailProviderInsertRequest'
-      - type: object
-        properties:
-          configuration:
-            $ref: '#/components/schemas/CustomEmailInsertRequestConfiguration'
-    EmailProviderResponse:
-      type: object
-      properties:
-        configuration:
-          type: object
-        customSenderDomain:
-          type: string
-        description:
-          type: string
-        id:
-          type: string
-        name:
-          type: string
-        type:
-          type: string
-          enum:
-          - smtp
-          - custom
-          - strivacity
-    CustomEmailInsertRequestConfiguration:
-      required:
-      - packageDependencies
-      type: object
-      properties:
-        code:
-          maxLength: 256000
-          minLength: 0
-          type: string
-          description: Code of the custom email provider, if not specified it's generated automatically for each type
-          default: '*example code*'
-        packageDependencies:
-          type: object
-          additionalProperties:
-            type: string
-            description: Dependencies used for the event hook function
-          description: Dependencies used for the event hook function
-    CustomEmailUpdateRequestConfiguration:
-      required:
-      - packageDependencies
-      type: object
-      properties:
-        code:
-          maxLength: 256000
-          minLength: 0
-          type: string
-          description: Code of the custom email provider, if not specified it's generated automatically for each type
-          default: '*example code*'
-        packageDependencies:
-          type: object
-          additionalProperties:
-            type: string
-            description: Dependencies used for the event hook function
-          description: Dependencies used for the event hook function
   securitySchemes:
     securityScheme:
       scheme: bearer

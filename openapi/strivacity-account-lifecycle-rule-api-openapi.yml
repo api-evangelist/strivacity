@@ -300,42 +300,53 @@ paths:
       - Account Lifecycle Rule
 components:
   schemas:
-    ProblemJson:
+    LifecycleRuleListResponse:
       type: object
       properties:
-        detail:
-          type: string
-        entityName:
-          type: string
-          description: The name of the entity within the error has occurred
-        errorKey:
-          type: string
-          description: A unique identifier of the error
-        fieldErrors:
+        actions:
           type: array
-          description: Field constraint violation errors
           items:
-            $ref: '#/components/schemas/FieldError'
+            oneOf:
+            - $ref: '#/components/schemas/LifecycleAction'
+            - $ref: '#/components/schemas/LifecycleActionWithGroupTarget'
+            - $ref: '#/components/schemas/LifecycleActionWithRoleTarget'
+        description:
+          type: string
+        enabled:
+          type: boolean
+        filter:
+          $ref: '#/components/schemas/Filter'
+        id:
+          type: string
+        lastExecution:
+          $ref: '#/components/schemas/ExecutionStatus'
+        name:
+          type: string
+    ExecutionStatus:
+      type: object
+      properties:
+        affectedAccount:
+          type: integer
+          format: int32
+        end:
+          type: string
+          format: date-time
+        error:
+          type: string
+        start:
+          type: string
+          format: date-time
+        status:
+          type: string
+    FieldError:
+      type: object
+      properties:
+        field:
+          type: string
         message:
           type: string
-          description: A unique identifier in format of 'error.{errorKey}'
-        params:
-          type: array
-          description: Further information related to the actual error
-          items:
-            type: object
-            additionalProperties:
-              type: object
-        path:
+        objectName:
           type: string
-          description: Request URI
-        status:
-          type: integer
-          description: Status code
-          format: int32
-        title:
-          type: string
-      description: Based on [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807)
     LifecycleActionWithRoleTargetRequest:
       required:
       - action
@@ -374,133 +385,6 @@ components:
           $ref: '#/components/schemas/ExecutionStatus'
         name:
           type: string
-    FilterRequest:
-      type: object
-      properties:
-        createdAtEndDate:
-          type: string
-        createdAtStartDate:
-          type: string
-        disabledAtEndDate:
-          type: string
-        disabledAtStartDate:
-          type: string
-        enabled:
-          type: boolean
-        groups:
-          type: string
-        groupsFilter:
-          type: string
-          enum:
-          - include
-          - exclude
-        lastAuthenticationActivityAtEndDate:
-          type: string
-        lastAuthenticationActivityAtStartDate:
-          type: string
-        lastLoginAtEndDate:
-          type: string
-        lastLoginAtStartDate:
-          type: string
-        neverLoggedIn:
-          type: boolean
-        organization:
-          type: string
-        roles:
-          type: string
-        rolesFilter:
-          type: string
-          enum:
-          - include
-          - exclude
-        updatedAtEndDate:
-          type: string
-        updatedAtStartDate:
-          type: string
-      description: Represents a filter that targets accounts affected by this rule
-    FieldError:
-      type: object
-      properties:
-        field:
-          type: string
-        message:
-          type: string
-        objectName:
-          type: string
-    LifecycleRuleUpdateRequest:
-      required:
-      - actions
-      - filter
-      - id
-      - name
-      type: object
-      properties:
-        actions:
-          maxItems: 1
-          minItems: 0
-          type: array
-          items:
-            oneOf:
-            - $ref: '#/components/schemas/LifecycleActionRequest'
-            - $ref: '#/components/schemas/LifecycleActionWithGroupTargetRequest'
-            - $ref: '#/components/schemas/LifecycleActionWithRoleTargetRequest'
-        description:
-          maxLength: 1024
-          minLength: 0
-          type: string
-        enabled:
-          type: boolean
-          default: false
-        filter:
-          $ref: '#/components/schemas/FilterRequest'
-        id:
-          pattern: ^[a-zA-Z0-9-]{1,36}$
-          type: string
-        name:
-          maxLength: 64
-          minLength: 1
-          pattern: ^$|^[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°]([\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*° ]*[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°])?$
-          type: string
-    ExecutionStatus:
-      type: object
-      properties:
-        affectedAccount:
-          type: integer
-          format: int32
-        end:
-          type: string
-          format: date-time
-        error:
-          type: string
-        start:
-          type: string
-          format: date-time
-        status:
-          type: string
-    LifecycleActionWithRoleTarget:
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/LifecycleAction'
-      - type: object
-        properties:
-          organization:
-            type: string
-          role:
-            type: string
-    LifecycleAction:
-      type: object
-      properties:
-        action:
-          type: string
-          enum:
-          - deleteAccount
-          - disableAccount
-          - assignGroup
-          - removeGroup
-          - assignOrganizationRole
-          - deleteOrganizationRole
-      discriminator:
-        propertyName: action
     Filter:
       type: object
       properties:
@@ -548,6 +432,16 @@ components:
           type: string
         updatedAtStartDate:
           type: string
+    LifecycleActionWithRoleTarget:
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/LifecycleAction'
+      - type: object
+        properties:
+          organization:
+            type: string
+          role:
+            type: string
     LifecycleActionRequest:
       required:
       - action
@@ -564,6 +458,154 @@ components:
           - deleteOrganizationRole
       discriminator:
         propertyName: action
+    LifecycleAction:
+      type: object
+      properties:
+        action:
+          type: string
+          enum:
+          - deleteAccount
+          - disableAccount
+          - assignGroup
+          - removeGroup
+          - assignOrganizationRole
+          - deleteOrganizationRole
+      discriminator:
+        propertyName: action
+    LifecycleActionWithGroupTarget:
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/LifecycleAction'
+      - type: object
+        properties:
+          group:
+            type: string
+    LifecycleRuleUpdateRequest:
+      required:
+      - actions
+      - filter
+      - id
+      - name
+      type: object
+      properties:
+        actions:
+          maxItems: 1
+          minItems: 0
+          type: array
+          items:
+            oneOf:
+            - $ref: '#/components/schemas/LifecycleActionRequest'
+            - $ref: '#/components/schemas/LifecycleActionWithGroupTargetRequest'
+            - $ref: '#/components/schemas/LifecycleActionWithRoleTargetRequest'
+        description:
+          maxLength: 1024
+          minLength: 0
+          type: string
+        enabled:
+          type: boolean
+          default: false
+        filter:
+          $ref: '#/components/schemas/FilterRequest'
+        id:
+          pattern: ^[a-zA-Z0-9-]{1,36}$
+          type: string
+        name:
+          maxLength: 64
+          minLength: 1
+          pattern: ^$|^[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°]([\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*° ]*[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°])?$
+          type: string
+    LifecycleActionWithGroupTargetRequest:
+      required:
+      - action
+      - group
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/LifecycleActionRequest'
+      - type: object
+        properties:
+          group:
+            minLength: 1
+            type: string
+    ProblemJson:
+      type: object
+      properties:
+        detail:
+          type: string
+        entityName:
+          type: string
+          description: The name of the entity within the error has occurred
+        errorKey:
+          type: string
+          description: A unique identifier of the error
+        fieldErrors:
+          type: array
+          description: Field constraint violation errors
+          items:
+            $ref: '#/components/schemas/FieldError'
+        message:
+          type: string
+          description: A unique identifier in format of 'error.{errorKey}'
+        params:
+          type: array
+          description: Further information related to the actual error
+          items:
+            type: object
+            additionalProperties:
+              type: object
+        path:
+          type: string
+          description: Request URI
+        status:
+          type: integer
+          description: Status code
+          format: int32
+        title:
+          type: string
+      description: Based on [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807)
+    FilterRequest:
+      type: object
+      properties:
+        createdAtEndDate:
+          type: string
+        createdAtStartDate:
+          type: string
+        disabledAtEndDate:
+          type: string
+        disabledAtStartDate:
+          type: string
+        enabled:
+          type: boolean
+        groups:
+          type: string
+        groupsFilter:
+          type: string
+          enum:
+          - include
+          - exclude
+        lastAuthenticationActivityAtEndDate:
+          type: string
+        lastAuthenticationActivityAtStartDate:
+          type: string
+        lastLoginAtEndDate:
+          type: string
+        lastLoginAtStartDate:
+          type: string
+        neverLoggedIn:
+          type: boolean
+        organization:
+          type: string
+        roles:
+          type: string
+        rolesFilter:
+          type: string
+          enum:
+          - include
+          - exclude
+        updatedAtEndDate:
+          type: string
+        updatedAtStartDate:
+          type: string
+      description: Represents a filter that targets accounts affected by this rule
     LifecycleRuleInsertRequest:
       required:
       - actions
@@ -594,48 +636,6 @@ components:
           minLength: 1
           pattern: ^$|^[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°]([\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*° ]*[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°])?$
           type: string
-    LifecycleActionWithGroupTarget:
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/LifecycleAction'
-      - type: object
-        properties:
-          group:
-            type: string
-    LifecycleRuleListResponse:
-      type: object
-      properties:
-        actions:
-          type: array
-          items:
-            oneOf:
-            - $ref: '#/components/schemas/LifecycleAction'
-            - $ref: '#/components/schemas/LifecycleActionWithGroupTarget'
-            - $ref: '#/components/schemas/LifecycleActionWithRoleTarget'
-        description:
-          type: string
-        enabled:
-          type: boolean
-        filter:
-          $ref: '#/components/schemas/Filter'
-        id:
-          type: string
-        lastExecution:
-          $ref: '#/components/schemas/ExecutionStatus'
-        name:
-          type: string
-    LifecycleActionWithGroupTargetRequest:
-      required:
-      - action
-      - group
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/LifecycleActionRequest'
-      - type: object
-        properties:
-          group:
-            minLength: 1
-            type: string
   securitySchemes:
     securityScheme:
       scheme: bearer

@@ -397,6 +397,29 @@ paths:
           description: Your Strivacity tenant
 components:
   schemas:
+    AdminNotificationPolicyUpdateRequest:
+      required:
+      - sender
+      type: object
+      properties:
+        sender:
+          maxLength: 64
+          minLength: 0
+          pattern: "([a-z0-9!#$%&'*+/=?^_`{|}~\x80-\uFFFF-]+|\"([a-z0-9!#$%&'*.(),<>\\[\\]:; @+/=?^_`{|}~\x80-\uFFFF-]|\\\\\\\\|\\\\\")+\")(\\.([a-z0-9!#$%&'*+/=?^_`{|}~\x80-\uFFFF-]+|\"([a-z0-9!#$%&'*.(),<>\\[\\]:; @+/=?^_`{|}~\x80-\uFFFF-]|\\\\\\\\|\\\\\")+\"))*"
+          type: string
+        senderDisplayName:
+          maxLength: 255
+          minLength: 1
+          type: string
+    FieldError:
+      type: object
+      properties:
+        field:
+          type: string
+        message:
+          type: string
+        objectName:
+          type: string
     ProblemJson:
       type: object
       properties:
@@ -433,11 +456,44 @@ components:
         title:
           type: string
       description: Based on [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807)
-    AdminNotificationPolicyUpdateRequest:
+    AdminNotificationPolicyResponse:
+      type: object
+      properties:
+        sender:
+          type: string
+        senderDisplayName:
+          type: string
+    PagedModelNotificationPolicyResponse:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/NotificationPolicyResponse'
+        page:
+          $ref: '#/components/schemas/PageMetadata'
+    NotificationPolicyUpsertRequest_NotificationPolicy:
       required:
+      - id
+      - name
       - sender
       type: object
       properties:
+        description:
+          maxLength: 1024
+          minLength: 0
+          type: string
+        id:
+          type: string
+        name:
+          maxLength: 255
+          minLength: 1
+          pattern: ^$|^[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°]([\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*° ]*[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°])?$
+          type: string
+        policyTag:
+          pattern: ^[a-z0-9_]{2,32}$
+          type: string
+          description: Must be an existing policy tag name
         sender:
           maxLength: 64
           minLength: 0
@@ -447,21 +503,20 @@ components:
           maxLength: 255
           minLength: 1
           type: string
-    AdminNotificationPolicyResponse:
+    NotificationPolicyResponse:
       type: object
       properties:
+        description:
+          type: string
+        id:
+          type: string
+        name:
+          type: string
+        policyTag:
+          type: string
         sender:
           type: string
         senderDisplayName:
-          type: string
-    FieldError:
-      type: object
-      properties:
-        field:
-          type: string
-        message:
-          type: string
-        objectName:
           type: string
     PageMetadata:
       type: object
@@ -521,61 +576,6 @@ components:
           type: string
         senderDisplayName:
           type: string
-    NotificationPolicyUpsertRequest_NotificationPolicy:
-      required:
-      - id
-      - name
-      - sender
-      type: object
-      properties:
-        description:
-          maxLength: 1024
-          minLength: 0
-          type: string
-        id:
-          type: string
-        name:
-          maxLength: 255
-          minLength: 1
-          pattern: ^$|^[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°]([\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*° ]*[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°])?$
-          type: string
-        policyTag:
-          pattern: ^[a-z0-9_]{2,32}$
-          type: string
-          description: Must be an existing policy tag name
-        sender:
-          maxLength: 64
-          minLength: 0
-          pattern: "([a-z0-9!#$%&'*+/=?^_`{|}~\x80-\uFFFF-]+|\"([a-z0-9!#$%&'*.(),<>\\[\\]:; @+/=?^_`{|}~\x80-\uFFFF-]|\\\\\\\\|\\\\\")+\")(\\.([a-z0-9!#$%&'*+/=?^_`{|}~\x80-\uFFFF-]+|\"([a-z0-9!#$%&'*.(),<>\\[\\]:; @+/=?^_`{|}~\x80-\uFFFF-]|\\\\\\\\|\\\\\")+\"))*"
-          type: string
-        senderDisplayName:
-          maxLength: 255
-          minLength: 1
-          type: string
-    NotificationPolicyResponse:
-      type: object
-      properties:
-        description:
-          type: string
-        id:
-          type: string
-        name:
-          type: string
-        policyTag:
-          type: string
-        sender:
-          type: string
-        senderDisplayName:
-          type: string
-    PagedModelNotificationPolicyResponse:
-      type: object
-      properties:
-        content:
-          type: array
-          items:
-            $ref: '#/components/schemas/NotificationPolicyResponse'
-        page:
-          $ref: '#/components/schemas/PageMetadata'
   securitySchemes:
     securityScheme:
       scheme: bearer

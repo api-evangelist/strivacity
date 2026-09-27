@@ -187,6 +187,88 @@ paths:
       - Audit entry
 components:
   schemas:
+    PagedModelAuditEntry:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/AuditEntry'
+        page:
+          $ref: '#/components/schemas/PageMetadata'
+    AuditEntry:
+      required:
+      - id
+      type: object
+      properties:
+        action:
+          type: string
+        actor:
+          $ref: '#/components/schemas/Actor'
+        actorClient:
+          $ref: '#/components/schemas/ActorClient'
+        date:
+          type: string
+          format: date-time
+        entityType:
+          type: string
+        id:
+          type: string
+        method:
+          type: string
+        name:
+          type: string
+        request:
+          type: string
+        response:
+          type: string
+        url:
+          type: string
+        version:
+          type: integer
+          format: int32
+    PageMetadata:
+      type: object
+      properties:
+        number:
+          type: integer
+          format: int64
+        size:
+          type: integer
+          format: int64
+        totalElements:
+          type: integer
+          format: int64
+        totalPages:
+          type: integer
+          format: int64
+    ActorClient:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+    FieldError:
+      type: object
+      properties:
+        field:
+          type: string
+        message:
+          type: string
+        objectName:
+          type: string
+    Actor:
+      type: object
+      properties:
+        accountId:
+          type: string
+        ip:
+          type: string
+        userAgent:
+          type: string
+        userName:
+          type: string
     ProblemJson:
       type: object
       properties:
@@ -223,88 +305,6 @@ components:
         title:
           type: string
       description: Based on [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807)
-    PageMetadata:
-      type: object
-      properties:
-        number:
-          type: integer
-          format: int64
-        size:
-          type: integer
-          format: int64
-        totalElements:
-          type: integer
-          format: int64
-        totalPages:
-          type: integer
-          format: int64
-    FieldError:
-      type: object
-      properties:
-        field:
-          type: string
-        message:
-          type: string
-        objectName:
-          type: string
-    PagedModelAuditEntry:
-      type: object
-      properties:
-        content:
-          type: array
-          items:
-            $ref: '#/components/schemas/AuditEntry'
-        page:
-          $ref: '#/components/schemas/PageMetadata'
-    ActorClient:
-      type: object
-      properties:
-        id:
-          type: string
-        name:
-          type: string
-    Actor:
-      type: object
-      properties:
-        accountId:
-          type: string
-        ip:
-          type: string
-        userAgent:
-          type: string
-        userName:
-          type: string
-    AuditEntry:
-      required:
-      - id
-      type: object
-      properties:
-        action:
-          type: string
-        actor:
-          $ref: '#/components/schemas/Actor'
-        actorClient:
-          $ref: '#/components/schemas/ActorClient'
-        date:
-          type: string
-          format: date-time
-        entityType:
-          type: string
-        id:
-          type: string
-        method:
-          type: string
-        name:
-          type: string
-        request:
-          type: string
-        response:
-          type: string
-        url:
-          type: string
-        version:
-          type: integer
-          format: int32
   securitySchemes:
     securityScheme:
       scheme: bearer

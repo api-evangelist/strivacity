@@ -98,7 +98,7 @@ paths:
 
 
         To use this endpoint, the "Allow customers to download their data" option must be turned on in the Self-service policy settings.'
-      operationId: getPersonalData
+      operationId: getMyaccountApiV1MePersonalData
       parameters:
       - in: query
         name: fileType
@@ -145,6 +145,8 @@ paths:
       summary: Download account information
       tags:
       - Personal Data
+      x-operation-id-source: normalized
+      x-operation-id-original: getPersonalData
     servers:
     - url: https://{tenant}
       variables:
@@ -153,6 +155,15 @@ paths:
           description: Your Strivacity tenant
 components:
   schemas:
+    FieldError:
+      type: object
+      properties:
+        field:
+          type: string
+        message:
+          type: string
+        objectName:
+          type: string
     ProblemJson:
       type: object
       properties:
@@ -189,15 +200,6 @@ components:
         title:
           type: string
       description: Based on [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807)
-    FieldError:
-      type: object
-      properties:
-        field:
-          type: string
-        message:
-          type: string
-        objectName:
-          type: string
   securitySchemes:
     securityScheme:
       scheme: bearer

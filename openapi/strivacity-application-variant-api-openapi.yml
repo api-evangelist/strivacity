@@ -395,43 +395,21 @@ paths:
       - Application Variant
 components:
   schemas:
-    ProblemJson:
+    NoValueRequest:
+      required:
+      - name
+      - type
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/VariableOverrideUpsertRequest'
+    NullableIdReferenceRequest:
       type: object
       properties:
-        detail:
+        id:
+          pattern: ^[a-zA-Z0-9-]{1,36}$
           type: string
-        entityName:
-          type: string
-          description: The name of the entity within the error has occurred
-        errorKey:
-          type: string
-          description: A unique identifier of the error
-        fieldErrors:
-          type: array
-          description: Field constraint violation errors
-          items:
-            $ref: '#/components/schemas/FieldError'
-        message:
-          type: string
-          description: A unique identifier in format of 'error.{errorKey}'
-        params:
-          type: array
-          description: Further information related to the actual error
-          items:
-            type: object
-            additionalProperties:
-              type: object
-        path:
-          type: string
-          description: Request URI
-        status:
-          type: integer
-          description: Status code
-          format: int32
-        title:
-          type: string
-      description: Based on [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807)
-    StaticVariableRequest:
+          description: ID of the represented entity (nullable)
+    VariableReferenceRequest:
       required:
       - name
       - type
@@ -442,105 +420,57 @@ components:
       - type: object
         properties:
           value:
-            maxLength: 8192
+            maxLength: 36
             minLength: 0
             type: string
-    HookOverrideUpsertRequest:
-      type: object
-      properties:
-        id:
-          pattern: ^[a-zA-Z0-9-]{1,36}$
-          type: string
-          description: ID of the represented entity (nullable)
-        variableOverrides:
-          type: array
-          items:
-            oneOf:
-            - $ref: '#/components/schemas/VariableOverrideUpsertRequest'
-            - $ref: '#/components/schemas/NoValueRequest'
-            - $ref: '#/components/schemas/StaticSecretRequest'
-            - $ref: '#/components/schemas/StaticVariableRequest'
-            - $ref: '#/components/schemas/VariableReferenceRequest'
-      description: 'Defines lifecycle event hook overrides for the variant.
-
-        Alternative hook configuration for a specific hook type: `"HOOK_TYPE" : {"id" : "<hook-uuid>"}`
-
-        Remove hook: `"HOOK_TYPE" : {"id" : null}`'
-    IdReferenceRequest:
-      required:
-      - id
-      type: object
-      properties:
-        id:
-          pattern: ^[a-zA-Z0-9-]{1,36}$
-          type: string
-          description: ID of the represented entity
-    ApplicationVariantResponse:
-      type: object
-      properties:
-        id:
-          type: string
-        name:
-          type: string
-        variants:
-          type: array
-          items:
-            $ref: '#/components/schemas/NameAndIdResponse'
-    PolicyOverrides:
-      type: object
-      properties:
-        adaptiveMFA:
-          $ref: '#/components/schemas/IdReferenceRequest'
-        brand:
-          $ref: '#/components/schemas/IdReferenceRequest'
-        identityProofing:
-          $ref: '#/components/schemas/NullableIdReferenceRequest'
-        notificationPolicy:
-          $ref: '#/components/schemas/IdReferenceRequest'
-        selfServicePolicy:
-          $ref: '#/components/schemas/IdReferenceRequest'
-      description: 'Defines policy overrides for the variant.
-
-        If any of them is set to `null`, the policy will be inherited.
-
-        Identity proofing policy can be unset to ''No verification policy'' option by `"identityProofing" : { "id": null }`'
-    NullableIdReferenceRequest:
-      type: object
-      properties:
-        id:
-          pattern: ^[a-zA-Z0-9-]{1,36}$
-          type: string
-          description: ID of the represented entity (nullable)
-    NoValueRequest:
+    StaticSecretRequest:
       required:
       - name
       - type
       type: object
       allOf:
       - $ref: '#/components/schemas/VariableOverrideUpsertRequest'
-    Policies:
+      - type: object
+        properties:
+          secretValue:
+            maxLength: 8192
+            minLength: 0
+            type: string
+    FieldError:
       type: object
       properties:
-        adaptiveMFA:
-          $ref: '#/components/schemas/IdReferenceResponse'
-        brand:
-          $ref: '#/components/schemas/IdReferenceResponse'
-        identityProofing:
-          $ref: '#/components/schemas/IdReferenceResponse'
-        notificationPolicy:
-          $ref: '#/components/schemas/IdReferenceResponse'
-        selfServicePolicy:
-          $ref: '#/components/schemas/IdReferenceResponse'
-    EventHookOverride:
+        field:
+          type: string
+        message:
+          type: string
+        objectName:
+          type: string
+    ConsentOverride:
+      required:
+      - consent
       type: object
       properties:
+        consent:
+          $ref: '#/components/schemas/IdReferenceRequest'
+        type:
+          type: string
+          enum:
+          - optional
+          - mandatory
+          - mandatoryHidden
+    VariantListResponse:
+      type: object
+      properties:
+        description:
+          type: string
+        enabled:
+          type: boolean
         id:
           type: string
-        variableOverrides:
-          uniqueItems: true
-          type: array
-          items:
-            $ref: '#/components/schemas/VariableOverrideResponse'
+        name:
+          type: string
+        target:
+          $ref: '#/components/schemas/BooleanExpressionResponse'
     VariantInsertRequest:
       required:
       - consentOverrides
@@ -590,56 +520,24 @@ components:
           $ref: '#/components/schemas/PolicyOverrides'
         target:
           $ref: '#/components/schemas/BooleanExpressionInsert'
-    BooleanExpressionInsert:
+    VariableOverrideResponse:
       type: object
       properties:
-        operator:
-          type: string
-    VariantListResponse:
-      type: object
-      properties:
-        description:
-          type: string
-        enabled:
-          type: boolean
-        id:
-          type: string
         name:
           type: string
-        target:
-          $ref: '#/components/schemas/BooleanExpressionResponse'
-    StaticSecretRequest:
-      required:
-      - name
-      - type
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/VariableOverrideUpsertRequest'
-      - type: object
-        properties:
-          secretValue:
-            maxLength: 8192
-            minLength: 0
-            type: string
+        type:
+          type: string
+          enum:
+          - noValue
+          - variableReference
+          - staticVariable
+          - staticSecret
+        value:
+          type: string
     BooleanExpressionResponse:
       type: object
       properties:
         operator:
-          type: string
-    IdReferenceResponse:
-      type: object
-      properties:
-        id:
-          type: string
-          description: ID of the represented entity
-    FieldError:
-      type: object
-      properties:
-        field:
-          type: string
-        message:
-          type: string
-        objectName:
           type: string
     NameAndIdResponse:
       type: object
@@ -651,6 +549,74 @@ components:
           type: string
           description: Name of the represented entity
           example: Entity name
+    PolicyOverrides:
+      type: object
+      properties:
+        adaptiveMFA:
+          $ref: '#/components/schemas/IdReferenceRequest'
+        brand:
+          $ref: '#/components/schemas/IdReferenceRequest'
+        identityProofing:
+          $ref: '#/components/schemas/NullableIdReferenceRequest'
+        notificationPolicy:
+          $ref: '#/components/schemas/IdReferenceRequest'
+        selfServicePolicy:
+          $ref: '#/components/schemas/IdReferenceRequest'
+      description: 'Defines policy overrides for the variant.
+
+        If any of them is set to `null`, the policy will be inherited.
+
+        Identity proofing policy can be unset to ''No verification policy'' option by `"identityProofing" : { "id": null }`'
+    VariableOverrideUpsertRequest:
+      required:
+      - name
+      - type
+      type: object
+      properties:
+        name:
+          type: string
+        type:
+          type: string
+          enum:
+          - noValue
+          - variableReference
+          - staticVariable
+          - staticSecret
+      discriminator:
+        propertyName: type
+    EventHookOverride:
+      type: object
+      properties:
+        id:
+          type: string
+        variableOverrides:
+          uniqueItems: true
+          type: array
+          items:
+            $ref: '#/components/schemas/VariableOverrideResponse'
+    VariantResponse:
+      type: object
+      properties:
+        consentOverrides:
+          type: array
+          items:
+            $ref: '#/components/schemas/VariantConsentResponse'
+        description:
+          type: string
+        enabled:
+          type: boolean
+        hookOverrides:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/EventHookOverride'
+        id:
+          type: string
+        name:
+          type: string
+        policyOverrides:
+          $ref: '#/components/schemas/Policies'
+        target:
+          $ref: '#/components/schemas/BooleanExpressionResponse'
     VariantUpdateRequest:
       required:
       - consentOverrides
@@ -704,61 +670,38 @@ components:
           $ref: '#/components/schemas/PolicyOverrides'
         target:
           $ref: '#/components/schemas/BooleanExpressionInsert'
-    VariableOverrideUpsertRequest:
+    IdReferenceResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID of the represented entity
+    IdReferenceRequest:
       required:
-      - name
-      - type
+      - id
       type: object
       properties:
-        name:
+        id:
+          pattern: ^[a-zA-Z0-9-]{1,36}$
           type: string
-        type:
-          type: string
-          enum:
-          - noValue
-          - variableReference
-          - staticVariable
-          - staticSecret
-      discriminator:
-        propertyName: type
-    VariantResponse:
+          description: ID of the represented entity
+    BooleanExpressionInsert:
       type: object
       properties:
-        consentOverrides:
-          type: array
-          items:
-            $ref: '#/components/schemas/VariantConsentResponse'
-        description:
+        operator:
           type: string
-        enabled:
-          type: boolean
-        hookOverrides:
-          type: object
-          additionalProperties:
-            $ref: '#/components/schemas/EventHookOverride'
+    ApplicationVariantResponse:
+      type: object
+      properties:
         id:
           type: string
         name:
           type: string
-        policyOverrides:
-          $ref: '#/components/schemas/Policies'
-        target:
-          $ref: '#/components/schemas/BooleanExpressionResponse'
-    VariableOverrideResponse:
-      type: object
-      properties:
-        name:
-          type: string
-        type:
-          type: string
-          enum:
-          - noValue
-          - variableReference
-          - staticVariable
-          - staticSecret
-        value:
-          type: string
-    VariableReferenceRequest:
+        variants:
+          type: array
+          items:
+            $ref: '#/components/schemas/NameAndIdResponse'
+    StaticVariableRequest:
       required:
       - name
       - type
@@ -769,22 +712,79 @@ components:
       - type: object
         properties:
           value:
-            maxLength: 36
+            maxLength: 8192
             minLength: 0
             type: string
-    ConsentOverride:
-      required:
-      - consent
+    Policies:
       type: object
       properties:
-        consent:
-          $ref: '#/components/schemas/IdReferenceRequest'
-        type:
+        adaptiveMFA:
+          $ref: '#/components/schemas/IdReferenceResponse'
+        brand:
+          $ref: '#/components/schemas/IdReferenceResponse'
+        identityProofing:
+          $ref: '#/components/schemas/IdReferenceResponse'
+        notificationPolicy:
+          $ref: '#/components/schemas/IdReferenceResponse'
+        selfServicePolicy:
+          $ref: '#/components/schemas/IdReferenceResponse'
+    HookOverrideUpsertRequest:
+      type: object
+      properties:
+        id:
+          pattern: ^[a-zA-Z0-9-]{1,36}$
           type: string
-          enum:
-          - optional
-          - mandatory
-          - mandatoryHidden
+          description: ID of the represented entity (nullable)
+        variableOverrides:
+          type: array
+          items:
+            oneOf:
+            - $ref: '#/components/schemas/VariableOverrideUpsertRequest'
+            - $ref: '#/components/schemas/NoValueRequest'
+            - $ref: '#/components/schemas/StaticSecretRequest'
+            - $ref: '#/components/schemas/StaticVariableRequest'
+            - $ref: '#/components/schemas/VariableReferenceRequest'
+      description: 'Defines lifecycle event hook overrides for the variant.
+
+        Alternative hook configuration for a specific hook type: `"HOOK_TYPE" : {"id" : "<hook-uuid>"}`
+
+        Remove hook: `"HOOK_TYPE" : {"id" : null}`'
+    ProblemJson:
+      type: object
+      properties:
+        detail:
+          type: string
+        entityName:
+          type: string
+          description: The name of the entity within the error has occurred
+        errorKey:
+          type: string
+          description: A unique identifier of the error
+        fieldErrors:
+          type: array
+          description: Field constraint violation errors
+          items:
+            $ref: '#/components/schemas/FieldError'
+        message:
+          type: string
+          description: A unique identifier in format of 'error.{errorKey}'
+        params:
+          type: array
+          description: Further information related to the actual error
+          items:
+            type: object
+            additionalProperties:
+              type: object
+        path:
+          type: string
+          description: Request URI
+        status:
+          type: integer
+          description: Status code
+          format: int32
+        title:
+          type: string
+      description: Based on [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807)
     VariantConsentResponse:
       type: object
       properties:

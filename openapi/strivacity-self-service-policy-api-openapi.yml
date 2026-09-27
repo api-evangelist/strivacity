@@ -296,15 +296,6 @@ paths:
       - Self Service Policy
 components:
   schemas:
-    SelfServicePolicyResponseOptionsAccountDeletion_SelfServicePolicy:
-      type: object
-      properties:
-        enabled:
-          type: boolean
-        linkMaxAgeHours:
-          type: integer
-          format: int32
-      description: Represents account deletion options for self service policy
     SelfServicePolicyResponseOptionsPasswordReset:
       type: object
       properties:
@@ -320,6 +311,162 @@ components:
           type: integer
           format: int32
       description: Represents password reset options for self service policy
+    SelfServicePolicyRequestOptionsPasswordChange_SelfServicePolicy:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+          default: true
+      description: Represents password change options for self service policy
+    SelfServicePolicyResponseOptionsApplicationLauncher_SelfServicePolicy:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+    SelfServicePolicyResponseOptionsManageConsents:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+      description: Represents manage consents options for self service policy
+    SelfServicePolicyResponseOptionsManagePersonalInformation_SelfServicePolicy:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+      description: Represents manage personal information options for self service policy
+    FieldError:
+      type: object
+      properties:
+        field:
+          type: string
+        message:
+          type: string
+        objectName:
+          type: string
+    SelfServicePolicyResponse_SelfServicePolicy:
+      type: object
+      properties:
+        description:
+          type: string
+        id:
+          type: string
+        name:
+          type: string
+        options:
+          $ref: '#/components/schemas/SelfServicePolicyResponseOptions_SelfServicePolicy'
+        policyTag:
+          type: string
+    SelfServicePolicyResponseOptionsLockout:
+      type: object
+      properties:
+        allowSelfPasswordUnlock:
+          type: boolean
+    SelfServicePolicyResponseOptionsPasskey:
+      type: object
+      properties:
+        promotionAtLogin:
+          type: boolean
+        promotionAtPasswordChange:
+          type: boolean
+        promotionAtRegistration:
+          type: boolean
+    SelfServicePolicyResponseOptionsManageNotificationPreferences:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+      description: Represents manage notification preferences options for self service policy
+    SelfServicePolicyRequestOptionsAccountInvitation_SelfServicePolicy:
+      type: object
+      properties:
+        allowEmailMismatch:
+          type: boolean
+          default: false
+        enabled:
+          type: boolean
+          default: true
+        forceUsingExternalLogin:
+          type: boolean
+          default: false
+        linkMaxAgeHours:
+          maximum: 720
+          minimum: 1
+          type: integer
+          format: int32
+          default: 72
+    SelfServicePolicyResponseOptionsManageConsents_SelfServicePolicy:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+      description: Represents manage consents options for self service policy
+    SelfServicePolicyResponseOptionsForgottenUsernameReminder_SelfServicePolicy:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+      description: Represents forgotten username reminder options for self service policy
+    SelfServicePolicyResponseOptionsRegistration:
+      type: object
+      properties:
+        accountLinking:
+          type: boolean
+        activation:
+          type: boolean
+        enabled:
+          type: boolean
+        linkMaxAgeHours:
+          type: integer
+          format: int32
+        passcodeMaxAgeMinutes:
+          type: integer
+          format: int32
+        verificationOption:
+          type: string
+          enum:
+          - magicLink
+          - passcode
+      description: Represents registration options for self service policy
+    SelfServicePolicyResponseOptionsPersonalData:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+      description: Represents personal data options for self service policy
+    SelfServicePolicyResponseOptionsManagePersonalInformation:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+      description: Represents manage personal information options for self service policy
+    SelfServicePolicyRequestOptionsPasswordInput_SelfServicePolicy:
+      type: object
+      properties:
+        defer:
+          type: boolean
+          default: false
+    SelfServicePolicyResponseOptionsRegistration_SelfServicePolicy:
+      type: object
+      properties:
+        accountLinking:
+          type: boolean
+        activation:
+          type: boolean
+        enabled:
+          type: boolean
+        linkMaxAgeHours:
+          type: integer
+          format: int32
+        passcodeMaxAgeMinutes:
+          type: integer
+          format: int32
+        verificationOption:
+          type: string
+          enum:
+          - magicLink
+          - passcode
+      description: Represents registration options for self service policy
     SelfServicePolicy_InsertRequest:
       required:
       - name
@@ -341,63 +488,165 @@ components:
           pattern: ^[a-z0-9_]{2,32}$
           type: string
           description: Must be an existing policy tag name
-    ProblemJson:
+    SelfServicePolicyRequestOptionsManageNotificationPreferences_SelfServicePolicy:
       type: object
       properties:
-        detail:
-          type: string
-        entityName:
-          type: string
-          description: The name of the entity within the error has occurred
-        errorKey:
-          type: string
-          description: A unique identifier of the error
-        fieldErrors:
-          type: array
-          description: Field constraint violation errors
-          items:
-            $ref: '#/components/schemas/FieldError'
-        message:
-          type: string
-          description: A unique identifier in format of 'error.{errorKey}'
-        params:
-          type: array
-          description: Further information related to the actual error
-          items:
-            type: object
-            additionalProperties:
-              type: object
-        path:
-          type: string
-          description: Request URI
-        status:
+        enabled:
+          type: boolean
+          default: true
+      description: Represents manage notification preferences options for self service policy
+    SelfServicePolicyResponseOptionsAccountDeletion_SelfServicePolicy:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+        linkMaxAgeHours:
           type: integer
-          description: Status code
           format: int32
-        title:
+      description: Represents account deletion options for self service policy
+    SelfServicePolicyResponseOptionsPasswordReset_SelfServicePolicy:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+        linkMaxAgeMinutes:
+          type: integer
+          format: int32
+        passcodeLength:
+          type: integer
+          format: int32
+        passcodeMaxAgeMinutes:
+          type: integer
+          format: int32
+      description: Represents password reset options for self service policy
+    SelfServicePolicyResponseOptionsPersonalData_SelfServicePolicy:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+      description: Represents personal data options for self service policy
+    SelfServicePolicyRequestOptionsAccountDeletion_SelfServicePolicy:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+          default: true
+        linkMaxAgeHours:
+          maximum: 120
+          minimum: 1
+          type: integer
+          format: int32
+          default: 24
+      description: Represents account deletion options for self service policy
+    SelfServicePolicyRequestOptionsPasswordReset_SelfServicePolicy:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+        linkMaxAgeMinutes:
+          maximum: 1440
+          minimum: 5
+          type: integer
+          format: int32
+          default: 60
+        passcodeLength:
+          maximum: 8
+          minimum: 6
+          type: integer
+          format: int32
+          default: 6
+        passcodeMaxAgeMinutes:
+          maximum: 30
+          minimum: 1
+          type: integer
+          format: int32
+          default: 6
+      description: Represents password reset options for self service policy
+    SelfServicePolicyRequestOptionsPasskey_SelfServicePolicy:
+      type: object
+      properties:
+        promotionAtLogin:
+          type: boolean
+          default: true
+        promotionAtPasswordChange:
+          type: boolean
+          default: true
+        promotionAtRegistration:
+          type: boolean
+          default: true
+    SelfServicePolicyResponseOptions:
+      type: object
+      properties:
+        accountDeletion:
+          $ref: '#/components/schemas/SelfServicePolicyResponseOptionsAccountDeletion'
+        accountInvitation:
+          $ref: '#/components/schemas/SelfServicePolicyResponseOptionsAccountInvitation'
+        applicationLauncher:
+          $ref: '#/components/schemas/SelfServicePolicyResponseOptionsApplicationLauncher'
+        forgottenUsernameReminder:
+          $ref: '#/components/schemas/SelfServicePolicyResponseOptionsForgottenUsernameReminder'
+        lockout:
+          $ref: '#/components/schemas/SelfServicePolicyResponseOptionsLockout'
+        manageConsents:
+          $ref: '#/components/schemas/SelfServicePolicyResponseOptionsManageConsents'
+        manageNotificationPreferences:
+          $ref: '#/components/schemas/SelfServicePolicyResponseOptionsManageNotificationPreferences'
+        managePersonalInformation:
+          $ref: '#/components/schemas/SelfServicePolicyResponseOptionsManagePersonalInformation'
+        passkey:
+          $ref: '#/components/schemas/SelfServicePolicyResponseOptionsPasskey'
+        passwordChange:
+          $ref: '#/components/schemas/SelfServicePolicyResponseOptionsPasswordChange'
+        passwordInput:
+          $ref: '#/components/schemas/SelfServicePolicyResponseOptionsPasswordInput'
+        passwordReset:
+          $ref: '#/components/schemas/SelfServicePolicyResponseOptionsPasswordReset'
+        personalData:
+          $ref: '#/components/schemas/SelfServicePolicyResponseOptionsPersonalData'
+        registration:
+          $ref: '#/components/schemas/SelfServicePolicyResponseOptionsRegistration'
+      description: Represents self service policy options
+    SelfServicePolicyResponseOptionsPasswordInput_SelfServicePolicy:
+      type: object
+      properties:
+        defer:
+          type: boolean
+    SelfServicePolicyResponseOptionsPasswordChange:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+      description: Represents password change options for self service policy
+    SelfServicePolicyResponse:
+      type: object
+      properties:
+        description:
           type: string
-      description: Based on [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807)
+        id:
+          type: string
+        name:
+          type: string
+        options:
+          $ref: '#/components/schemas/SelfServicePolicyResponseOptions'
+        policyTag:
+          type: string
+    SelfServicePolicyResponseOptionsPasswordInput:
+      type: object
+      properties:
+        defer:
+          type: boolean
     SelfServicePolicyResponseOptionsManageNotificationPreferences_SelfServicePolicy:
       type: object
       properties:
         enabled:
           type: boolean
       description: Represents manage notification preferences options for self service policy
-    PageMetadata:
+    SelfServicePolicyRequestOptionsLockout_SelfServicePolicy:
       type: object
       properties:
-        number:
-          type: integer
-          format: int64
-        size:
-          type: integer
-          format: int64
-        totalElements:
-          type: integer
-          format: int64
-        totalPages:
-          type: integer
-          format: int64
+        allowSelfPasswordUnlock:
+          type: boolean
+          default: false
     SelfServicePolicyRequestOptionsRegistration_SelfServicePolicy:
       required:
       - verificationOption
@@ -431,120 +680,13 @@ components:
           - passcode
           default: magicLink
       description: Represents registration options for self service policy
-    SelfServicePolicyResponseOptionsAccountInvitation_SelfServicePolicy:
-      type: object
-      properties:
-        allowEmailMismatch:
-          type: boolean
-        enabled:
-          type: boolean
-        forceUsingExternalLogin:
-          type: boolean
-        linkMaxAgeHours:
-          type: integer
-          format: int32
-    SelfServicePolicyResponseOptionsRegistration:
-      type: object
-      properties:
-        accountLinking:
-          type: boolean
-        activation:
-          type: boolean
-        enabled:
-          type: boolean
-        linkMaxAgeHours:
-          type: integer
-          format: int32
-        passcodeMaxAgeMinutes:
-          type: integer
-          format: int32
-        verificationOption:
-          type: string
-          enum:
-          - magicLink
-          - passcode
-      description: Represents registration options for self service policy
-    SelfServicePolicyResponseOptionsManagePersonalInformation:
+    SelfServicePolicyRequestOptionsManagePersonalInformation_SelfServicePolicy:
       type: object
       properties:
         enabled:
           type: boolean
+          default: true
       description: Represents manage personal information options for self service policy
-    SelfServicePolicyRequestOptionsForgottenUsernameReminder_SelfServicePolicy:
-      type: object
-      properties:
-        enabled:
-          type: boolean
-          default: true
-      description: Represents forgotten username reminder options for self service policy
-    SelfServicePolicyResponseOptionsPersonalData:
-      type: object
-      properties:
-        enabled:
-          type: boolean
-      description: Represents personal data options for self service policy
-    SelfServicePolicyResponseOptionsManageConsents:
-      type: object
-      properties:
-        enabled:
-          type: boolean
-      description: Represents manage consents options for self service policy
-    SelfServicePolicyResponseOptionsApplicationLauncher_SelfServicePolicy:
-      type: object
-      properties:
-        enabled:
-          type: boolean
-    SelfServicePolicyRequestOptionsPasswordChange_SelfServicePolicy:
-      type: object
-      properties:
-        enabled:
-          type: boolean
-          default: true
-      description: Represents password change options for self service policy
-    SelfServicePolicyResponseOptionsAccountDeletion:
-      type: object
-      properties:
-        enabled:
-          type: boolean
-        linkMaxAgeHours:
-          type: integer
-          format: int32
-      description: Represents account deletion options for self service policy
-    SelfServicePolicyResponseOptionsManageNotificationPreferences:
-      type: object
-      properties:
-        enabled:
-          type: boolean
-      description: Represents manage notification preferences options for self service policy
-    SelfServicePolicyRequestOptionsPasswordReset_SelfServicePolicy:
-      type: object
-      properties:
-        enabled:
-          type: boolean
-        linkMaxAgeMinutes:
-          maximum: 1440
-          minimum: 5
-          type: integer
-          format: int32
-          default: 60
-        passcodeLength:
-          maximum: 8
-          minimum: 6
-          type: integer
-          format: int32
-          default: 6
-        passcodeMaxAgeMinutes:
-          maximum: 30
-          minimum: 1
-          type: integer
-          format: int32
-          default: 6
-      description: Represents password reset options for self service policy
-    SelfServicePolicyResponseOptionsLockout:
-      type: object
-      properties:
-        allowSelfPasswordUnlock:
-          type: boolean
     SelfServicePolicyRequestOptions_SelfServicePolicy:
       required:
       - accountDeletion
@@ -592,47 +734,25 @@ components:
         registration:
           $ref: '#/components/schemas/SelfServicePolicyRequestOptionsRegistration_SelfServicePolicy'
       description: Represents self service policy options
-    SelfServicePolicyResponseOptionsApplicationLauncher:
-      type: object
-      properties:
-        enabled:
-          type: boolean
-    SelfServicePolicyResponseOptionsPasswordInput_SelfServicePolicy:
-      type: object
-      properties:
-        defer:
-          type: boolean
-    SelfServicePolicyResponseOptionsPasswordChange_SelfServicePolicy:
-      type: object
-      properties:
-        enabled:
-          type: boolean
-      description: Represents password change options for self service policy
-    SelfServicePolicyRequestOptionsManagePersonalInformation_SelfServicePolicy:
+    SelfServicePolicyRequestOptionsPersonalData_SelfServicePolicy:
       type: object
       properties:
         enabled:
           type: boolean
           default: true
-      description: Represents manage personal information options for self service policy
-    SelfServicePolicyRequestOptionsAccountInvitation_SelfServicePolicy:
+      description: Represents personal data options for self service policy
+    SelfServicePolicyRequestOptionsForgottenUsernameReminder_SelfServicePolicy:
       type: object
       properties:
-        allowEmailMismatch:
-          type: boolean
-          default: false
         enabled:
           type: boolean
           default: true
-        forceUsingExternalLogin:
+      description: Represents forgotten username reminder options for self service policy
+    SelfServicePolicyResponseOptionsLockout_SelfServicePolicy:
+      type: object
+      properties:
+        allowSelfPasswordUnlock:
           type: boolean
-          default: false
-        linkMaxAgeHours:
-          maximum: 720
-          minimum: 1
-          type: integer
-          format: int32
-          default: 72
     PagedModelSelfServicePolicyResponse:
       type: object
       properties:
@@ -642,111 +762,15 @@ components:
             $ref: '#/components/schemas/SelfServicePolicyResponse'
         page:
           $ref: '#/components/schemas/PageMetadata'
-    SelfServicePolicyResponseOptionsPasswordChange:
+    SelfServicePolicyResponseOptionsAccountDeletion:
       type: object
       properties:
-        enabled:
-          type: boolean
-      description: Represents password change options for self service policy
-    SelfServicePolicyResponseOptionsManagePersonalInformation_SelfServicePolicy:
-      type: object
-      properties:
-        enabled:
-          type: boolean
-      description: Represents manage personal information options for self service policy
-    SelfServicePolicyResponseOptionsLockout_SelfServicePolicy:
-      type: object
-      properties:
-        allowSelfPasswordUnlock:
-          type: boolean
-    SelfServicePolicyRequestOptionsManageConsents_SelfServicePolicy:
-      type: object
-      properties:
-        enabled:
-          type: boolean
-          default: true
-      description: Represents manage consents options for self service policy
-    SelfServicePolicyResponseOptionsRegistration_SelfServicePolicy:
-      type: object
-      properties:
-        accountLinking:
-          type: boolean
-        activation:
-          type: boolean
         enabled:
           type: boolean
         linkMaxAgeHours:
           type: integer
           format: int32
-        passcodeMaxAgeMinutes:
-          type: integer
-          format: int32
-        verificationOption:
-          type: string
-          enum:
-          - magicLink
-          - passcode
-      description: Represents registration options for self service policy
-    SelfServicePolicyResponseOptionsPasswordReset_SelfServicePolicy:
-      type: object
-      properties:
-        enabled:
-          type: boolean
-        linkMaxAgeMinutes:
-          type: integer
-          format: int32
-        passcodeLength:
-          type: integer
-          format: int32
-        passcodeMaxAgeMinutes:
-          type: integer
-          format: int32
-      description: Represents password reset options for self service policy
-    SelfServicePolicyResponseOptionsPasskey_SelfServicePolicy:
-      type: object
-      properties:
-        promotionAtLogin:
-          type: boolean
-        promotionAtPasswordChange:
-          type: boolean
-        promotionAtRegistration:
-          type: boolean
-    SelfServicePolicyResponse:
-      type: object
-      properties:
-        description:
-          type: string
-        id:
-          type: string
-        name:
-          type: string
-        options:
-          $ref: '#/components/schemas/SelfServicePolicyResponseOptions'
-        policyTag:
-          type: string
-    SelfServicePolicyResponseOptionsPasskey:
-      type: object
-      properties:
-        promotionAtLogin:
-          type: boolean
-        promotionAtPasswordChange:
-          type: boolean
-        promotionAtRegistration:
-          type: boolean
-    FieldError:
-      type: object
-      properties:
-        field:
-          type: string
-        message:
-          type: string
-        objectName:
-          type: string
-    SelfServicePolicyResponseOptionsPasswordInput:
-      type: object
-      properties:
-        defer:
-          type: boolean
+      description: Represents account deletion options for self service policy
     SelfServicePolicyResponseOptionsAccountInvitation:
       type: object
       properties:
@@ -759,137 +783,32 @@ components:
         linkMaxAgeHours:
           type: integer
           format: int32
-    SelfServicePolicyResponseOptions:
-      type: object
-      properties:
-        accountDeletion:
-          $ref: '#/components/schemas/SelfServicePolicyResponseOptionsAccountDeletion'
-        accountInvitation:
-          $ref: '#/components/schemas/SelfServicePolicyResponseOptionsAccountInvitation'
-        applicationLauncher:
-          $ref: '#/components/schemas/SelfServicePolicyResponseOptionsApplicationLauncher'
-        forgottenUsernameReminder:
-          $ref: '#/components/schemas/SelfServicePolicyResponseOptionsForgottenUsernameReminder'
-        lockout:
-          $ref: '#/components/schemas/SelfServicePolicyResponseOptionsLockout'
-        manageConsents:
-          $ref: '#/components/schemas/SelfServicePolicyResponseOptionsManageConsents'
-        manageNotificationPreferences:
-          $ref: '#/components/schemas/SelfServicePolicyResponseOptionsManageNotificationPreferences'
-        managePersonalInformation:
-          $ref: '#/components/schemas/SelfServicePolicyResponseOptionsManagePersonalInformation'
-        passkey:
-          $ref: '#/components/schemas/SelfServicePolicyResponseOptionsPasskey'
-        passwordChange:
-          $ref: '#/components/schemas/SelfServicePolicyResponseOptionsPasswordChange'
-        passwordInput:
-          $ref: '#/components/schemas/SelfServicePolicyResponseOptionsPasswordInput'
-        passwordReset:
-          $ref: '#/components/schemas/SelfServicePolicyResponseOptionsPasswordReset'
-        personalData:
-          $ref: '#/components/schemas/SelfServicePolicyResponseOptionsPersonalData'
-        registration:
-          $ref: '#/components/schemas/SelfServicePolicyResponseOptionsRegistration'
-      description: Represents self service policy options
-    SelfServicePolicyResponseOptionsForgottenUsernameReminder_SelfServicePolicy:
+    SelfServicePolicyResponseOptionsApplicationLauncher:
       type: object
       properties:
         enabled:
           type: boolean
-      description: Represents forgotten username reminder options for self service policy
-    SelfServicePolicyRequestOptionsPasskey_SelfServicePolicy:
+    PageMetadata:
       type: object
       properties:
-        promotionAtLogin:
-          type: boolean
-          default: true
-        promotionAtPasswordChange:
-          type: boolean
-          default: true
-        promotionAtRegistration:
-          type: boolean
-          default: true
-    SelfServicePolicyUpsertRequest_SelfServicePolicy:
-      required:
-      - id
-      - name
-      - options
-      type: object
-      properties:
-        description:
-          maxLength: 1024
-          minLength: 0
-          type: string
-        id:
-          type: string
-        name:
-          maxLength: 64
-          minLength: 3
-          pattern: ^$|^[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°]([\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*° ]*[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°])?$
-          type: string
-        options:
-          $ref: '#/components/schemas/SelfServicePolicyRequestOptions_SelfServicePolicy'
-        policyTag:
-          pattern: ^[a-z0-9_]{2,32}$
-          type: string
-          description: Must be an existing policy tag name
-    SelfServicePolicyResponse_SelfServicePolicy:
-      type: object
-      properties:
-        description:
-          type: string
-        id:
-          type: string
-        name:
-          type: string
-        options:
-          $ref: '#/components/schemas/SelfServicePolicyResponseOptions_SelfServicePolicy'
-        policyTag:
-          type: string
-    SelfServicePolicyRequestOptionsPersonalData_SelfServicePolicy:
-      type: object
-      properties:
-        enabled:
-          type: boolean
-          default: true
-      description: Represents personal data options for self service policy
-    SelfServicePolicyRequestOptionsPasswordInput_SelfServicePolicy:
-      type: object
-      properties:
-        defer:
-          type: boolean
-          default: false
-    SelfServicePolicyRequestOptionsManageNotificationPreferences_SelfServicePolicy:
-      type: object
-      properties:
-        enabled:
-          type: boolean
-          default: true
-      description: Represents manage notification preferences options for self service policy
+        number:
+          type: integer
+          format: int64
+        size:
+          type: integer
+          format: int64
+        totalElements:
+          type: integer
+          format: int64
+        totalPages:
+          type: integer
+          format: int64
     SelfServicePolicyRequestOptionsApplicationLauncher_SelfServicePolicy:
       type: object
       properties:
         enabled:
           type: boolean
           default: true
-    SelfServicePolicyResponseOptionsManageConsents_SelfServicePolicy:
-      type: object
-      properties:
-        enabled:
-          type: boolean
-      description: Represents manage consents options for self service policy
-    SelfServicePolicyResponseOptionsPersonalData_SelfServicePolicy:
-      type: object
-      properties:
-        enabled:
-          type: boolean
-      description: Represents personal data options for self service policy
-    SelfServicePolicyResponseOptionsForgottenUsernameReminder:
-      type: object
-      properties:
-        enabled:
-          type: boolean
-      description: Represents forgotten username reminder options for self service policy
     SelfServicePolicyResponseOptions_SelfServicePolicy:
       type: object
       properties:
@@ -922,25 +841,106 @@ components:
         registration:
           $ref: '#/components/schemas/SelfServicePolicyResponseOptionsRegistration_SelfServicePolicy'
       description: Represents self service policy options
-    SelfServicePolicyRequestOptionsAccountDeletion_SelfServicePolicy:
+    SelfServicePolicyRequestOptionsManageConsents_SelfServicePolicy:
       type: object
       properties:
         enabled:
           type: boolean
           default: true
-        linkMaxAgeHours:
-          maximum: 120
-          minimum: 1
-          type: integer
-          format: int32
-          default: 24
-      description: Represents account deletion options for self service policy
-    SelfServicePolicyRequestOptionsLockout_SelfServicePolicy:
+      description: Represents manage consents options for self service policy
+    SelfServicePolicyResponseOptionsPasswordChange_SelfServicePolicy:
       type: object
       properties:
-        allowSelfPasswordUnlock:
+        enabled:
           type: boolean
-          default: false
+      description: Represents password change options for self service policy
+    SelfServicePolicyUpsertRequest_SelfServicePolicy:
+      required:
+      - id
+      - name
+      - options
+      type: object
+      properties:
+        description:
+          maxLength: 1024
+          minLength: 0
+          type: string
+        id:
+          type: string
+        name:
+          maxLength: 64
+          minLength: 3
+          pattern: ^$|^[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°]([\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*° ]*[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°])?$
+          type: string
+        options:
+          $ref: '#/components/schemas/SelfServicePolicyRequestOptions_SelfServicePolicy'
+        policyTag:
+          pattern: ^[a-z0-9_]{2,32}$
+          type: string
+          description: Must be an existing policy tag name
+    SelfServicePolicyResponseOptionsPasskey_SelfServicePolicy:
+      type: object
+      properties:
+        promotionAtLogin:
+          type: boolean
+        promotionAtPasswordChange:
+          type: boolean
+        promotionAtRegistration:
+          type: boolean
+    SelfServicePolicyResponseOptionsForgottenUsernameReminder:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+      description: Represents forgotten username reminder options for self service policy
+    ProblemJson:
+      type: object
+      properties:
+        detail:
+          type: string
+        entityName:
+          type: string
+          description: The name of the entity within the error has occurred
+        errorKey:
+          type: string
+          description: A unique identifier of the error
+        fieldErrors:
+          type: array
+          description: Field constraint violation errors
+          items:
+            $ref: '#/components/schemas/FieldError'
+        message:
+          type: string
+          description: A unique identifier in format of 'error.{errorKey}'
+        params:
+          type: array
+          description: Further information related to the actual error
+          items:
+            type: object
+            additionalProperties:
+              type: object
+        path:
+          type: string
+          description: Request URI
+        status:
+          type: integer
+          description: Status code
+          format: int32
+        title:
+          type: string
+      description: Based on [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807)
+    SelfServicePolicyResponseOptionsAccountInvitation_SelfServicePolicy:
+      type: object
+      properties:
+        allowEmailMismatch:
+          type: boolean
+        enabled:
+          type: boolean
+        forceUsingExternalLogin:
+          type: boolean
+        linkMaxAgeHours:
+          type: integer
+          format: int32
   securitySchemes:
     securityScheme:
       scheme: bearer

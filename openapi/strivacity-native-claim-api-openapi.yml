@@ -285,42 +285,6 @@ paths:
       - Native Claim
 components:
   schemas:
-    ProblemJson:
-      type: object
-      properties:
-        detail:
-          type: string
-        entityName:
-          type: string
-          description: The name of the entity within the error has occurred
-        errorKey:
-          type: string
-          description: A unique identifier of the error
-        fieldErrors:
-          type: array
-          description: Field constraint violation errors
-          items:
-            $ref: '#/components/schemas/FieldError'
-        message:
-          type: string
-          description: A unique identifier in format of 'error.{errorKey}'
-        params:
-          type: array
-          description: Further information related to the actual error
-          items:
-            type: object
-            additionalProperties:
-              type: object
-        path:
-          type: string
-          description: Request URI
-        status:
-          type: integer
-          description: Status code
-          format: int32
-        title:
-          type: string
-      description: Based on [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807)
     PageMetadata:
       type: object
       properties:
@@ -365,41 +329,6 @@ components:
         readonly:
           type: boolean
           readOnly: true
-    NativeClaim_InsertRequest:
-      required:
-      - displayName
-      - name
-      type: object
-      properties:
-        description:
-          maxLength: 1024
-          minLength: 0
-          type: string
-        dialectUri:
-          type: string
-          default: http://strivacity.com/claims
-        displayName:
-          maxLength: 64
-          minLength: 3
-          pattern: ^$|^[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°]([\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*° ]*[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°])?$
-          type: string
-        name:
-          maxLength: 256
-          minLength: 1
-          pattern: ^[a-zA-Z][a-zA-Z0-9_!#$&'()*+,\/:;=?@\[\].]*$
-          type: string
-        readonly:
-          type: boolean
-          readOnly: true
-    PagedModelNativeClaimResponse:
-      type: object
-      properties:
-        content:
-          type: array
-          items:
-            $ref: '#/components/schemas/NativeClaimResponse'
-        page:
-          $ref: '#/components/schemas/PageMetadata'
     FieldError:
       type: object
       properties:
@@ -443,6 +372,77 @@ components:
           type: boolean
         targetReadonly:
           type: boolean
+    ProblemJson:
+      type: object
+      properties:
+        detail:
+          type: string
+        entityName:
+          type: string
+          description: The name of the entity within the error has occurred
+        errorKey:
+          type: string
+          description: A unique identifier of the error
+        fieldErrors:
+          type: array
+          description: Field constraint violation errors
+          items:
+            $ref: '#/components/schemas/FieldError'
+        message:
+          type: string
+          description: A unique identifier in format of 'error.{errorKey}'
+        params:
+          type: array
+          description: Further information related to the actual error
+          items:
+            type: object
+            additionalProperties:
+              type: object
+        path:
+          type: string
+          description: Request URI
+        status:
+          type: integer
+          description: Status code
+          format: int32
+        title:
+          type: string
+      description: Based on [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807)
+    PagedModelNativeClaimResponse:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/NativeClaimResponse'
+        page:
+          $ref: '#/components/schemas/PageMetadata'
+    NativeClaim_InsertRequest:
+      required:
+      - displayName
+      - name
+      type: object
+      properties:
+        description:
+          maxLength: 1024
+          minLength: 0
+          type: string
+        dialectUri:
+          type: string
+          default: http://strivacity.com/claims
+        displayName:
+          maxLength: 64
+          minLength: 3
+          pattern: ^$|^[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°]([\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*° ]*[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°])?$
+          type: string
+        name:
+          maxLength: 256
+          minLength: 1
+          pattern: ^[a-zA-Z][a-zA-Z0-9_!#$&'()*+,\/:;=?@\[\].]*$
+          type: string
+        readonly:
+          type: boolean
+          readOnly: true
   securitySchemes:
     securityScheme:
       scheme: bearer

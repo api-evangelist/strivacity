@@ -320,6 +320,93 @@ paths:
       - Bridge Policy
 components:
   schemas:
+    BridgePolicyResponse.Header_ApplicationConfig:
+      type: object
+      properties:
+        idTokenClaim:
+          type: string
+        key:
+          type: string
+      description: Forwards a value to upstream server from id_token under the specified key
+    BridgePolicyUpsertRequest_ApplicationConfig:
+      required:
+      - apiAccessPolicy
+      - headers
+      - upstreamUrls
+      type: object
+      properties:
+        apiAccessPolicy:
+          $ref: '#/components/schemas/IdReferenceRequest_ApplicationConfig'
+        headers:
+          uniqueItems: true
+          type: array
+          items:
+            $ref: '#/components/schemas/BridgePolicyUpsertRequest.Header_ApplicationConfig'
+        healthMonitoringPath:
+          maxLength: 1024
+          minLength: 0
+          type: string
+          description: Must start with `/`. Expect a HTTP 200 OK response on this path on the upstream server.
+        upstreamUrlPath:
+          maxLength: 1024
+          minLength: 0
+          type: string
+          description: Must start with `/` and must not end with `/`.
+        upstreamUrls:
+          type: array
+          items:
+            maxLength: 1024
+            minLength: 0
+            type: string
+            description: Must start with `http(s)://` and must not contain path, query or fragment part. An optional port can be specified.
+    BridgePolicyResponse_ApplicationConfig:
+      type: object
+      properties:
+        apiAccessPolicy:
+          $ref: '#/components/schemas/IdReferenceResponse_ApplicationConfig'
+        headers:
+          uniqueItems: true
+          type: array
+          items:
+            $ref: '#/components/schemas/BridgePolicyResponse.Header_ApplicationConfig'
+        healthMonitoringPath:
+          type: string
+        upstreamUrlPath:
+          type: string
+        upstreamUrls:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+    BridgePolicyUpsertRequest.Header_ApplicationConfig:
+      required:
+      - idTokenClaim
+      - key
+      type: object
+      properties:
+        idTokenClaim:
+          type: string
+        key:
+          type: string
+      description: Forwards a value to upstream server from id_token under the specified key
+    FieldError:
+      type: object
+      properties:
+        field:
+          type: string
+        message:
+          type: string
+        objectName:
+          type: string
+    IdReferenceRequest_ApplicationConfig:
+      required:
+      - id
+      type: object
+      properties:
+        id:
+          pattern: ^[a-zA-Z0-9-]{1,36}$
+          type: string
+          description: ID of the represented entity
     ProblemJson:
       type: object
       properties:
@@ -356,93 +443,6 @@ components:
         title:
           type: string
       description: Based on [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807)
-    BridgePolicyResponse_ApplicationConfig:
-      type: object
-      properties:
-        apiAccessPolicy:
-          $ref: '#/components/schemas/IdReferenceResponse_ApplicationConfig'
-        headers:
-          uniqueItems: true
-          type: array
-          items:
-            $ref: '#/components/schemas/BridgePolicyResponse.Header_ApplicationConfig'
-        healthMonitoringPath:
-          type: string
-        upstreamUrlPath:
-          type: string
-        upstreamUrls:
-          uniqueItems: true
-          type: array
-          items:
-            type: string
-    BridgePolicyUpsertRequest_ApplicationConfig:
-      required:
-      - apiAccessPolicy
-      - headers
-      - upstreamUrls
-      type: object
-      properties:
-        apiAccessPolicy:
-          $ref: '#/components/schemas/IdReferenceRequest_ApplicationConfig'
-        headers:
-          uniqueItems: true
-          type: array
-          items:
-            $ref: '#/components/schemas/BridgePolicyUpsertRequest.Header_ApplicationConfig'
-        healthMonitoringPath:
-          maxLength: 1024
-          minLength: 0
-          type: string
-          description: Must start with `/`. Expect a HTTP 200 OK response on this path on the upstream server.
-        upstreamUrlPath:
-          maxLength: 1024
-          minLength: 0
-          type: string
-          description: Must start with `/` and must not end with `/`.
-        upstreamUrls:
-          type: array
-          items:
-            maxLength: 1024
-            minLength: 0
-            type: string
-            description: Must start with `http(s)://` and must not contain path, query or fragment part. An optional port can be specified.
-    BridgePolicyUpsertRequest.Header_ApplicationConfig:
-      required:
-      - idTokenClaim
-      - key
-      type: object
-      properties:
-        idTokenClaim:
-          type: string
-        key:
-          type: string
-      description: Forwards a value to upstream server from id_token under the specified key
-    IdReferenceRequest_ApplicationConfig:
-      required:
-      - id
-      type: object
-      properties:
-        id:
-          pattern: ^[a-zA-Z0-9-]{1,36}$
-          type: string
-          description: ID of the represented entity
-    FieldError:
-      type: object
-      properties:
-        field:
-          type: string
-        message:
-          type: string
-        objectName:
-          type: string
-    BridgePolicyResponse.Header_ApplicationConfig:
-      type: object
-      properties:
-        idTokenClaim:
-          type: string
-        key:
-          type: string
-      description: Forwards a value to upstream server from id_token under the specified key
     IdReferenceResponse_ApplicationConfig:
       type: object
       properties:

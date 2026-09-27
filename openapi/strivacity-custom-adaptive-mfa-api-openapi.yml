@@ -261,125 +261,6 @@ paths:
       - Custom Adaptive MFA
 components:
   schemas:
-    ProblemJson:
-      type: object
-      properties:
-        detail:
-          type: string
-        entityName:
-          type: string
-          description: The name of the entity within the error has occurred
-        errorKey:
-          type: string
-          description: A unique identifier of the error
-        fieldErrors:
-          type: array
-          description: Field constraint violation errors
-          items:
-            $ref: '#/components/schemas/FieldError'
-        message:
-          type: string
-          description: A unique identifier in format of 'error.{errorKey}'
-        params:
-          type: array
-          description: Further information related to the actual error
-          items:
-            type: object
-            additionalProperties:
-              type: object
-        path:
-          type: string
-          description: Request URI
-        status:
-          type: integer
-          description: Status code
-          format: int32
-        title:
-          type: string
-      description: Based on [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807)
-    CustomMfaResponse_CustomMfa:
-      type: object
-      properties:
-        code:
-          type: string
-        description:
-          type: string
-        iconUrl:
-          type: string
-        id:
-          type: string
-        methods:
-          type: array
-          items:
-            type: string
-        name:
-          type: string
-        packageDependencies:
-          type: object
-          additionalProperties:
-            type: string
-    FieldError:
-      type: object
-      properties:
-        field:
-          type: string
-        message:
-          type: string
-        objectName:
-          type: string
-    CustomMfaInsertRequest_CustomMfa:
-      required:
-      - methods
-      - name
-      - packageDependencies
-      type: object
-      properties:
-        code:
-          maxLength: 256000
-          minLength: 1
-          type: string
-          description: Code of the custom mfa, if not specified it's generated automatically for each type
-          default: '*example code*'
-        description:
-          type: string
-        iconUrl:
-          maxLength: 1024
-          minLength: 1
-          pattern: ^$|^\S(.*\S)?$
-          type: string
-        methods:
-          maxItems: 1
-          minItems: 1
-          type: array
-          items:
-            pattern: ^(passcode|magicLink)$
-            type: string
-        name:
-          maxLength: 255
-          minLength: 1
-          pattern: ^$|^[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°]([\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*° ]*[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°])?$
-          type: string
-        packageDependencies:
-          type: object
-          additionalProperties:
-            type: string
-            description: Dependencies used for the event hook function
-          description: Dependencies used for the event hook function
-    CustomMfaListResponse_CustomMfa:
-      type: object
-      properties:
-        description:
-          type: string
-        iconUrl:
-          type: string
-        id:
-          type: string
-        methods:
-          type: array
-          items:
-            type: string
-        name:
-          type: string
     CustomMfaUpdateRequest_CustomMfa:
       required:
       - id
@@ -421,6 +302,125 @@ components:
             type: string
             description: Dependencies used for the event hook function
           description: Dependencies used for the event hook function
+    CustomMfaListResponse_CustomMfa:
+      type: object
+      properties:
+        description:
+          type: string
+        iconUrl:
+          type: string
+        id:
+          type: string
+        methods:
+          type: array
+          items:
+            type: string
+        name:
+          type: string
+    FieldError:
+      type: object
+      properties:
+        field:
+          type: string
+        message:
+          type: string
+        objectName:
+          type: string
+    CustomMfaResponse_CustomMfa:
+      type: object
+      properties:
+        code:
+          type: string
+        description:
+          type: string
+        iconUrl:
+          type: string
+        id:
+          type: string
+        methods:
+          type: array
+          items:
+            type: string
+        name:
+          type: string
+        packageDependencies:
+          type: object
+          additionalProperties:
+            type: string
+    CustomMfaInsertRequest_CustomMfa:
+      required:
+      - methods
+      - name
+      - packageDependencies
+      type: object
+      properties:
+        code:
+          maxLength: 256000
+          minLength: 1
+          type: string
+          description: Code of the custom mfa, if not specified it's generated automatically for each type
+          default: '*example code*'
+        description:
+          type: string
+        iconUrl:
+          maxLength: 1024
+          minLength: 1
+          pattern: ^$|^\S(.*\S)?$
+          type: string
+        methods:
+          maxItems: 1
+          minItems: 1
+          type: array
+          items:
+            pattern: ^(passcode|magicLink)$
+            type: string
+        name:
+          maxLength: 255
+          minLength: 1
+          pattern: ^$|^[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°]([\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*° ]*[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°])?$
+          type: string
+        packageDependencies:
+          type: object
+          additionalProperties:
+            type: string
+            description: Dependencies used for the event hook function
+          description: Dependencies used for the event hook function
+    ProblemJson:
+      type: object
+      properties:
+        detail:
+          type: string
+        entityName:
+          type: string
+          description: The name of the entity within the error has occurred
+        errorKey:
+          type: string
+          description: A unique identifier of the error
+        fieldErrors:
+          type: array
+          description: Field constraint violation errors
+          items:
+            $ref: '#/components/schemas/FieldError'
+        message:
+          type: string
+          description: A unique identifier in format of 'error.{errorKey}'
+        params:
+          type: array
+          description: Further information related to the actual error
+          items:
+            type: object
+            additionalProperties:
+              type: object
+        path:
+          type: string
+          description: Request URI
+        status:
+          type: integer
+          description: Status code
+          format: int32
+        title:
+          type: string
+      description: Based on [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807)
   securitySchemes:
     securityScheme:
       scheme: bearer

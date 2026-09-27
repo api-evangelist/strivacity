@@ -311,42 +311,6 @@ paths:
       - Variables
 components:
   schemas:
-    ProblemJson:
-      type: object
-      properties:
-        detail:
-          type: string
-        entityName:
-          type: string
-          description: The name of the entity within the error has occurred
-        errorKey:
-          type: string
-          description: A unique identifier of the error
-        fieldErrors:
-          type: array
-          description: Field constraint violation errors
-          items:
-            $ref: '#/components/schemas/FieldError'
-        message:
-          type: string
-          description: A unique identifier in format of 'error.{errorKey}'
-        params:
-          type: array
-          description: Further information related to the actual error
-          items:
-            type: object
-            additionalProperties:
-              type: object
-        path:
-          type: string
-          description: Request URI
-        status:
-          type: integer
-          description: Status code
-          format: int32
-        title:
-          type: string
-      description: Based on [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807)
     VariableUpdateRequest:
       required:
       - id
@@ -391,20 +355,6 @@ components:
         totalPages:
           type: integer
           format: int64
-    SecretVariableInsertRequest:
-      required:
-      - name
-      - secretValue
-      - type
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/VariableInsertRequest'
-      - type: object
-        properties:
-          secretValue:
-            maxLength: 8192
-            minLength: 0
-            type: string
     VariableVariableInsertRequest:
       required:
       - name
@@ -419,50 +369,6 @@ components:
             maxLength: 8192
             minLength: 0
             type: string
-    FieldError:
-      type: object
-      properties:
-        field:
-          type: string
-        message:
-          type: string
-        objectName:
-          type: string
-    VariableInsertRequest:
-      required:
-      - name
-      - type
-      type: object
-      properties:
-        description:
-          maxLength: 1024
-          minLength: 0
-          type: string
-        name:
-          maxLength: 64
-          minLength: 3
-          pattern: ^$|^[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°]([\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*° ]*[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°])?$
-          type: string
-        policyTag:
-          pattern: ^[a-z0-9_]{2,32}$
-          type: string
-          description: Must be an existing policy tag name
-        type:
-          type: string
-          enum:
-          - variable
-          - secret
-      discriminator:
-        propertyName: type
-    PagedModelVariableListResponse:
-      type: object
-      properties:
-        content:
-          type: array
-          items:
-            $ref: '#/components/schemas/VariableListResponse'
-        page:
-          $ref: '#/components/schemas/PageMetadata'
     SecretVariableUpdateRequest:
       required:
       - id
@@ -478,25 +384,15 @@ components:
             minLength: 0
             type: string
             description: It will not be overridden unless provided.
-    VariableListResponse:
+    FieldError:
       type: object
       properties:
-        description:
+        field:
           type: string
-        id:
+        message:
           type: string
-        name:
+        objectName:
           type: string
-        policyTag:
-          type: string
-        type:
-          type: string
-          enum:
-          - variable
-          - secret
-        valueUpdatedAt:
-          type: string
-          format: date-time
     VariableVariableUpdateRequest:
       required:
       - id
@@ -533,6 +429,110 @@ components:
         valueUpdatedAt:
           type: string
           format: date-time
+    PagedModelVariableListResponse:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/VariableListResponse'
+        page:
+          $ref: '#/components/schemas/PageMetadata'
+    SecretVariableInsertRequest:
+      required:
+      - name
+      - secretValue
+      - type
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/VariableInsertRequest'
+      - type: object
+        properties:
+          secretValue:
+            maxLength: 8192
+            minLength: 0
+            type: string
+    VariableInsertRequest:
+      required:
+      - name
+      - type
+      type: object
+      properties:
+        description:
+          maxLength: 1024
+          minLength: 0
+          type: string
+        name:
+          maxLength: 64
+          minLength: 3
+          pattern: ^$|^[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°]([\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*° ]*[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°])?$
+          type: string
+        policyTag:
+          pattern: ^[a-z0-9_]{2,32}$
+          type: string
+          description: Must be an existing policy tag name
+        type:
+          type: string
+          enum:
+          - variable
+          - secret
+      discriminator:
+        propertyName: type
+    VariableListResponse:
+      type: object
+      properties:
+        description:
+          type: string
+        id:
+          type: string
+        name:
+          type: string
+        policyTag:
+          type: string
+        type:
+          type: string
+          enum:
+          - variable
+          - secret
+        valueUpdatedAt:
+          type: string
+          format: date-time
+    ProblemJson:
+      type: object
+      properties:
+        detail:
+          type: string
+        entityName:
+          type: string
+          description: The name of the entity within the error has occurred
+        errorKey:
+          type: string
+          description: A unique identifier of the error
+        fieldErrors:
+          type: array
+          description: Field constraint violation errors
+          items:
+            $ref: '#/components/schemas/FieldError'
+        message:
+          type: string
+          description: A unique identifier in format of 'error.{errorKey}'
+        params:
+          type: array
+          description: Further information related to the actual error
+          items:
+            type: object
+            additionalProperties:
+              type: object
+        path:
+          type: string
+          description: Request URI
+        status:
+          type: integer
+          description: Status code
+          format: int32
+        title:
+          type: string
+      description: Based on [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807)
   securitySchemes:
     securityScheme:
       scheme: bearer

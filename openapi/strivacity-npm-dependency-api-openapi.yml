@@ -112,6 +112,58 @@ paths:
       - NPM Dependency
 components:
   schemas:
+    NpmPackageSuggestionsRequest_Npm:
+      required:
+      - query
+      type: object
+      properties:
+        query:
+          minLength: 1
+          type: string
+          description: Query string to match for NPM dependencies
+      description: Represents a query to match for NPM dependencies
+    AvailableVersion_Npm:
+      type: object
+      properties:
+        version:
+          type: string
+          example: 1.0.0
+    FieldError:
+      type: object
+      properties:
+        field:
+          type: string
+        message:
+          type: string
+        objectName:
+          type: string
+    NpmPackage_Npm:
+      type: object
+      properties:
+        packument:
+          $ref: '#/components/schemas/Packument_Npm'
+      description: Represents an NPM package
+    NpmPackageSuggestion_Npm:
+      type: object
+      properties:
+        description:
+          type: string
+        name:
+          type: string
+        version:
+          type: string
+          example: 1.0.0
+      description: Represents an NPM package suggestion based on a prefix search
+    NpmPackageRequest_Npm:
+      required:
+      - name
+      type: object
+      properties:
+        name:
+          minLength: 1
+          type: string
+          description: Name of the NPM dependency
+      description: Represents a package by its name for fetching available package versions
     ProblemJson:
       type: object
       properties:
@@ -148,58 +200,6 @@ components:
         title:
           type: string
       description: Based on [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807)
-    NpmPackage_Npm:
-      type: object
-      properties:
-        packument:
-          $ref: '#/components/schemas/Packument_Npm'
-      description: Represents an NPM package
-    FieldError:
-      type: object
-      properties:
-        field:
-          type: string
-        message:
-          type: string
-        objectName:
-          type: string
-    NpmPackageSuggestionsRequest_Npm:
-      required:
-      - query
-      type: object
-      properties:
-        query:
-          minLength: 1
-          type: string
-          description: Query string to match for NPM dependencies
-      description: Represents a query to match for NPM dependencies
-    NpmPackageSuggestion_Npm:
-      type: object
-      properties:
-        description:
-          type: string
-        name:
-          type: string
-        version:
-          type: string
-          example: 1.0.0
-      description: Represents an NPM package suggestion based on a prefix search
-    NpmPackageRequest_Npm:
-      required:
-      - name
-      type: object
-      properties:
-        name:
-          minLength: 1
-          type: string
-          description: Name of the NPM dependency
-      description: Represents a package by its name for fetching available package versions
-    AvailableVersion_Npm:
-      type: object
-      properties:
-        version:
-          type: string
-          example: 1.0.0
     Packument_Npm:
       type: object
       properties:

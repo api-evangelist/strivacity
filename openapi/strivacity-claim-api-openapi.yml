@@ -319,6 +319,39 @@ paths:
       - Claim
 components:
   schemas:
+    IdReferenceRequest_Claim:
+      required:
+      - id
+      type: object
+      properties:
+        id:
+          pattern: ^[a-zA-Z0-9-]{1,36}$
+          type: string
+          description: ID of the represented entity
+    PageMetadata:
+      type: object
+      properties:
+        number:
+          type: integer
+          format: int64
+        size:
+          type: integer
+          format: int64
+        totalElements:
+          type: integer
+          format: int64
+        totalPages:
+          type: integer
+          format: int64
+    FieldError:
+      type: object
+      properties:
+        field:
+          type: string
+        message:
+          type: string
+        objectName:
+          type: string
     NameIdAndDisplayName_Claim:
       type: object
       properties:
@@ -331,6 +364,67 @@ components:
         name:
           type: string
           description: Name of the represented entity
+    PagedModelClaimResponse:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/ClaimResponse'
+        page:
+          $ref: '#/components/schemas/PageMetadata'
+    NameIdAndDisplayName:
+      type: object
+      properties:
+        displayName:
+          type: string
+          description: Display name of the represented entity
+        id:
+          type: string
+          description: ID of the represented entity
+        name:
+          type: string
+          description: Name of the represented entity
+    ClaimUpdateRequest_Claim:
+      required:
+      - id
+      - name
+      - nativeClaim
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          maxLength: 256
+          minLength: 1
+          pattern: ^[a-zA-Z][a-zA-Z0-9_!#$&'()*+,\/:;=?@\[\].]*$
+          type: string
+        nativeClaim:
+          $ref: '#/components/schemas/IdReferenceRequest_Claim'
+    ClaimResponse:
+      type: object
+      properties:
+        dialectUri:
+          type: string
+        id:
+          type: string
+        name:
+          type: string
+        nativeClaim:
+          $ref: '#/components/schemas/NameIdAndDisplayName'
+    ClaimInsertRequest_Claim:
+      required:
+      - name
+      - nativeClaim
+      type: object
+      properties:
+        name:
+          maxLength: 256
+          minLength: 1
+          pattern: ^[a-zA-Z][a-zA-Z0-9_!#$&'()*+,\/:;=?@\[\].]*$
+          type: string
+        nativeClaim:
+          $ref: '#/components/schemas/IdReferenceRequest_Claim'
     ProblemJson:
       type: object
       properties:
@@ -367,61 +461,6 @@ components:
         title:
           type: string
       description: Based on [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807)
-    PagedModelClaimResponse:
-      type: object
-      properties:
-        content:
-          type: array
-          items:
-            $ref: '#/components/schemas/ClaimResponse'
-        page:
-          $ref: '#/components/schemas/PageMetadata'
-    ClaimInsertRequest_Claim:
-      required:
-      - name
-      - nativeClaim
-      type: object
-      properties:
-        name:
-          maxLength: 256
-          minLength: 1
-          pattern: ^[a-zA-Z][a-zA-Z0-9_!#$&'()*+,\/:;=?@\[\].]*$
-          type: string
-        nativeClaim:
-          $ref: '#/components/schemas/IdReferenceRequest_Claim'
-    IdReferenceRequest_Claim:
-      required:
-      - id
-      type: object
-      properties:
-        id:
-          pattern: ^[a-zA-Z0-9-]{1,36}$
-          type: string
-          description: ID of the represented entity
-    PageMetadata:
-      type: object
-      properties:
-        number:
-          type: integer
-          format: int64
-        size:
-          type: integer
-          format: int64
-        totalElements:
-          type: integer
-          format: int64
-        totalPages:
-          type: integer
-          format: int64
-    FieldError:
-      type: object
-      properties:
-        field:
-          type: string
-        message:
-          type: string
-        objectName:
-          type: string
     ClaimResponse_Claim:
       type: object
       properties:
@@ -433,45 +472,6 @@ components:
           type: string
         nativeClaim:
           $ref: '#/components/schemas/NameIdAndDisplayName_Claim'
-    ClaimUpdateRequest_Claim:
-      required:
-      - id
-      - name
-      - nativeClaim
-      type: object
-      properties:
-        id:
-          type: string
-        name:
-          maxLength: 256
-          minLength: 1
-          pattern: ^[a-zA-Z][a-zA-Z0-9_!#$&'()*+,\/:;=?@\[\].]*$
-          type: string
-        nativeClaim:
-          $ref: '#/components/schemas/IdReferenceRequest_Claim'
-    NameIdAndDisplayName:
-      type: object
-      properties:
-        displayName:
-          type: string
-          description: Display name of the represented entity
-        id:
-          type: string
-          description: ID of the represented entity
-        name:
-          type: string
-          description: Name of the represented entity
-    ClaimResponse:
-      type: object
-      properties:
-        dialectUri:
-          type: string
-        id:
-          type: string
-        name:
-          type: string
-        nativeClaim:
-          $ref: '#/components/schemas/NameIdAndDisplayName'
   securitySchemes:
     securityScheme:
       scheme: bearer

@@ -310,6 +310,74 @@ paths:
       - Tag Based Permission
 components:
   schemas:
+    TagBasedPermissionUpdateRequest:
+      required:
+      - policyTags
+      - scopes
+      type: object
+      properties:
+        id:
+          type: string
+        policyTags:
+          maxItems: 2147483647
+          minItems: 1
+          uniqueItems: true
+          type: array
+          items:
+            pattern: ^[a-z0-9_]{2,32}$
+            type: string
+        scopes:
+          maxItems: 2147483647
+          minItems: 1
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+    FieldError:
+      type: object
+      properties:
+        field:
+          type: string
+        message:
+          type: string
+        objectName:
+          type: string
+    TagBasedPermissionResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        policyTags:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+        scopes:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+    TagBasedPermissionInsertRequest:
+      required:
+      - policyTags
+      - scopes
+      type: object
+      properties:
+        policyTags:
+          maxItems: 2147483647
+          minItems: 1
+          uniqueItems: true
+          type: array
+          items:
+            pattern: ^[a-z0-9_]{2,32}$
+            type: string
+        scopes:
+          maxItems: 2147483647
+          minItems: 1
+          uniqueItems: true
+          type: array
+          items:
+            type: string
     ProblemJson:
       type: object
       properties:
@@ -346,74 +414,6 @@ components:
         title:
           type: string
       description: Based on [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807)
-    FieldError:
-      type: object
-      properties:
-        field:
-          type: string
-        message:
-          type: string
-        objectName:
-          type: string
-    TagBasedPermissionResponse:
-      type: object
-      properties:
-        id:
-          type: string
-        policyTags:
-          uniqueItems: true
-          type: array
-          items:
-            type: string
-        scopes:
-          uniqueItems: true
-          type: array
-          items:
-            type: string
-    TagBasedPermissionUpdateRequest:
-      required:
-      - policyTags
-      - scopes
-      type: object
-      properties:
-        id:
-          type: string
-        policyTags:
-          maxItems: 2147483647
-          minItems: 1
-          uniqueItems: true
-          type: array
-          items:
-            pattern: ^[a-z0-9_]{2,32}$
-            type: string
-        scopes:
-          maxItems: 2147483647
-          minItems: 1
-          uniqueItems: true
-          type: array
-          items:
-            type: string
-    TagBasedPermissionInsertRequest:
-      required:
-      - policyTags
-      - scopes
-      type: object
-      properties:
-        policyTags:
-          maxItems: 2147483647
-          minItems: 1
-          uniqueItems: true
-          type: array
-          items:
-            pattern: ^[a-z0-9_]{2,32}$
-            type: string
-        scopes:
-          maxItems: 2147483647
-          minItems: 1
-          uniqueItems: true
-          type: array
-          items:
-            type: string
   securitySchemes:
     securityScheme:
       scheme: bearer

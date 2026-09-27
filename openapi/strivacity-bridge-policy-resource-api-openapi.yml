@@ -405,88 +405,6 @@ paths:
       - Bridge Policy Resource
 components:
   schemas:
-    ProblemJson:
-      type: object
-      properties:
-        detail:
-          type: string
-        entityName:
-          type: string
-          description: The name of the entity within the error has occurred
-        errorKey:
-          type: string
-          description: A unique identifier of the error
-        fieldErrors:
-          type: array
-          description: Field constraint violation errors
-          items:
-            $ref: '#/components/schemas/FieldError'
-        message:
-          type: string
-          description: A unique identifier in format of 'error.{errorKey}'
-        params:
-          type: array
-          description: Further information related to the actual error
-          items:
-            type: object
-            additionalProperties:
-              type: object
-        path:
-          type: string
-          description: Request URI
-        status:
-          type: integer
-          description: Status code
-          format: int32
-        title:
-          type: string
-      description: Based on [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807)
-    IdReferenceRequest_ApplicationConfig:
-      required:
-      - id
-      type: object
-      properties:
-        id:
-          pattern: ^[a-zA-Z0-9-]{1,36}$
-          type: string
-          description: ID of the represented entity
-    FieldError:
-      type: object
-      properties:
-        field:
-          type: string
-        message:
-          type: string
-        objectName:
-          type: string
-    BridgePolicyResourceRequest.Authentication_ApplicationConfig:
-      required:
-      - authorizationScopes
-      type: object
-      properties:
-        authorizationScopes:
-          type: array
-          items:
-            $ref: '#/components/schemas/IdReferenceRequest_ApplicationConfig'
-        required:
-          type: boolean
-          default: true
-    IdReferenceResponse_ApplicationConfig:
-      type: object
-      properties:
-        id:
-          type: string
-          description: ID of the represented entity
-    BridgePolicyResourceResponse.Authentication_ApplicationConfig:
-      type: object
-      properties:
-        authorizationScopes:
-          uniqueItems: true
-          type: array
-          items:
-            $ref: '#/components/schemas/IdReferenceResponse_ApplicationConfig'
-        required:
-          type: boolean
     BridgePolicyResourceInsertRequest_ApplicationConfig:
       required:
       - authentication
@@ -530,6 +448,34 @@ components:
           maxLength: 1024
           minLength: 0
           type: string
+    FieldError:
+      type: object
+      properties:
+        field:
+          type: string
+        message:
+          type: string
+        objectName:
+          type: string
+    IdReferenceRequest_ApplicationConfig:
+      required:
+      - id
+      type: object
+      properties:
+        id:
+          pattern: ^[a-zA-Z0-9-]{1,36}$
+          type: string
+          description: ID of the represented entity
+    BridgePolicyResourceResponse.Authentication_ApplicationConfig:
+      type: object
+      properties:
+        authorizationScopes:
+          uniqueItems: true
+          type: array
+          items:
+            $ref: '#/components/schemas/IdReferenceResponse_ApplicationConfig'
+        required:
+          type: boolean
     BridgePolicyResourceResponse_ApplicationConfig:
       type: object
       properties:
@@ -544,6 +490,60 @@ components:
             type: string
         pathPattern:
           type: string
+    ProblemJson:
+      type: object
+      properties:
+        detail:
+          type: string
+        entityName:
+          type: string
+          description: The name of the entity within the error has occurred
+        errorKey:
+          type: string
+          description: A unique identifier of the error
+        fieldErrors:
+          type: array
+          description: Field constraint violation errors
+          items:
+            $ref: '#/components/schemas/FieldError'
+        message:
+          type: string
+          description: A unique identifier in format of 'error.{errorKey}'
+        params:
+          type: array
+          description: Further information related to the actual error
+          items:
+            type: object
+            additionalProperties:
+              type: object
+        path:
+          type: string
+          description: Request URI
+        status:
+          type: integer
+          description: Status code
+          format: int32
+        title:
+          type: string
+      description: Based on [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807)
+    IdReferenceResponse_ApplicationConfig:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID of the represented entity
+    BridgePolicyResourceRequest.Authentication_ApplicationConfig:
+      required:
+      - authorizationScopes
+      type: object
+      properties:
+        authorizationScopes:
+          type: array
+          items:
+            $ref: '#/components/schemas/IdReferenceRequest_ApplicationConfig'
+        required:
+          type: boolean
+          default: true
   securitySchemes:
     securityScheme:
       scheme: bearer

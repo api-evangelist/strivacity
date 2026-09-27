@@ -67,42 +67,96 @@ paths:
       - Admin Account Attribute
 components:
   schemas:
-    ProblemJson:
+    SelectAccountAttribute_AccountAttribute:
+      required:
+      - displayName
+      - frontendHook
+      - id
+      - indexing
+      - name
+      - type
+      type: object
+      description: Represents a select type attribute
+      allOf:
+      - $ref: '#/components/schemas/AccountAttribute_AccountAttribute'
+      - type: object
+        properties:
+          default:
+            type: string
+          indexing:
+            type: string
+            description: 'Defines searchability for an attribute. Possible values: `none` - Not searchable, `searchOnly` - Searchable, `searchUnique` - Searchable and unique to identity store, `searchUniqueInOrganization` - Searchable and unique to organization'
+            enum:
+            - none
+            - searchOnly
+            - searchUnique
+            - searchUniqueInOrganization
+          renderType:
+            type: string
+            description: Defines how a select input field should be rendered. When set to `native`, the select appears as the browser default, when set `radio` the select appears as radio buttons.
+            enum:
+            - native
+            - radio
+            default: native
+          values:
+            type: array
+            description: Defines the possible options to be selected on a select input field
+            items:
+              $ref: '#/components/schemas/SelectValue_AccountAttribute'
+    EmailAccountAttribute_AccountAttribute:
+      required:
+      - displayName
+      - frontendHook
+      - id
+      - indexing
+      - name
+      - type
+      type: object
+      description: Represents an email type attribute
+      allOf:
+      - $ref: '#/components/schemas/AccountAttribute_AccountAttribute'
+      - type: object
+        properties:
+          indexing:
+            type: string
+            description: 'Defines searchability for an attribute. Possible values: `none` - Not searchable, `searchOnly` - Searchable, `searchUnique` - Searchable and unique to identity store, `searchUniqueInOrganization` - Searchable and unique to organization'
+            enum:
+            - none
+            - searchOnly
+            - searchUnique
+            - searchUniqueInOrganization
+    FieldError:
       type: object
       properties:
-        detail:
+        field:
           type: string
-        entityName:
-          type: string
-          description: The name of the entity within the error has occurred
-        errorKey:
-          type: string
-          description: A unique identifier of the error
-        fieldErrors:
-          type: array
-          description: Field constraint violation errors
-          items:
-            $ref: '#/components/schemas/FieldError'
         message:
           type: string
-          description: A unique identifier in format of 'error.{errorKey}'
-        params:
-          type: array
-          description: Further information related to the actual error
-          items:
-            type: object
-            additionalProperties:
-              type: object
-        path:
+        objectName:
           type: string
-          description: Request URI
-        status:
-          type: integer
-          description: Status code
-          format: int32
-        title:
-          type: string
-      description: Based on [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807)
+    PhoneNumberListAccountAttribute_AccountAttribute:
+      required:
+      - displayName
+      - id
+      - indexing
+      - name
+      - type
+      type: object
+      description: Represents a phone number list attribute
+      allOf:
+      - $ref: '#/components/schemas/AccountAttribute_AccountAttribute'
+      - type: object
+        properties:
+          indexing:
+            type: string
+            description: 'Defines searchability for an attribute. Possible values: `none` - Not searchable, `searchOnly` - Searchable, `searchUnique` - Searchable and unique to identity store, `searchUniqueInOrganization` - Searchable and unique to organization'
+            enum:
+            - none
+            - searchOnly
+            - searchUnique
+            - searchUniqueInOrganization
+          listValidator:
+            $ref: '#/components/schemas/ListValidator_AccountAttribute'
     SelectListAccountAttribute_AccountAttribute:
       required:
       - displayName
@@ -138,34 +192,6 @@ components:
             description: Defines the possible options to be selected on a select input field
             items:
               $ref: '#/components/schemas/SelectValue_AccountAttribute'
-    UsernameIdentifierAttributeDTO_AccountAttribute:
-      required:
-      - displayName
-      - frontendHook
-      - id
-      - type
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/AccountAttribute_AccountAttribute'
-      - type: object
-        properties:
-          displayOnInvitation:
-            type: boolean
-            default: false
-          requiredOnAdminConsole:
-            type: boolean
-            default: false
-          requiredOnInvitation:
-            type: boolean
-            default: false
-          requiredOnOrganizationPortal:
-            type: boolean
-            default: false
-          requiredOnRegistration:
-            type: boolean
-            default: false
-          validator:
-            $ref: '#/components/schemas/UsernameIdentifierValidator_AccountAttribute'
     FrontendHook_AccountAttribute:
       type: object
       properties:
@@ -177,26 +203,25 @@ components:
           type: boolean
           default: false
       description: Represents a frontend hook
-    DateValidator_AccountAttribute:
+    NativeClaim_AccountAttribute:
+      required:
+      - displayName
+      - id
+      - name
       type: object
       properties:
-        notAfter:
+        displayName:
+          maxLength: 64
+          minLength: 3
+          pattern: ^$|^[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°]([\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*° ]*[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°])?$
           type: string
-          description: Default value is null
-          format: date
-        notAfterRelativeDays:
-          type: integer
-          description: Default value is null
-          format: int32
-        notBefore:
+        id:
           type: string
-          description: Default value is null
-          format: date
-        notBeforeRelativeDays:
-          type: integer
-          description: Default value is null
-          format: int32
-      description: Represents a date validator
+        name:
+          maxLength: 256
+          minLength: 1
+          pattern: ^[a-zA-Z][a-zA-Z0-9_!#$&'()*+,\/:;=?@\[\].]*$
+          type: string
     StringAccountAttribute_AccountAttribute:
       required:
       - displayName
@@ -228,29 +253,33 @@ components:
             - searchUniqueInOrganization
           validator:
             $ref: '#/components/schemas/StringValidator_AccountAttribute'
-    ComplexListAccountAttribute_AccountAttribute:
+    PasswordAccountAttribute_AccountAttribute:
       required:
       - displayName
       - id
-      - name
       - type
       type: object
-      description: Represents a complex list attribute
+      description: Represents an password type attribute
       allOf:
       - $ref: '#/components/schemas/AccountAttribute_AccountAttribute'
-      - type: object
-        properties:
-          listValidator:
-            $ref: '#/components/schemas/ListValidator_AccountAttribute'
-    StringListAccountAttribute_AccountAttribute:
+    AccountAttributeConnector_AccountAttribute:
+      type: object
+      properties:
+        readFromPath:
+          maxLength: 256
+          minLength: 1
+          type: string
+      description: Represents the connector related configurations
+    DateListAccountAttribute_AccountAttribute:
       required:
       - displayName
       - id
       - indexing
       - name
+      - renderType
       - type
       type: object
-      description: Represents a string list attribute
+      description: Represents a date list attribute
       allOf:
       - $ref: '#/components/schemas/AccountAttribute_AccountAttribute'
       - type: object
@@ -265,8 +294,74 @@ components:
             - searchUniqueInOrganization
           listValidator:
             $ref: '#/components/schemas/ListValidator_AccountAttribute'
+          renderType:
+            type: string
+            description: Defines how a date input field should be rendered. When set to `native`, the date picker appears as the browser default, `fieldSet` is ensuring that the year, month and day fields are separate inputs.
+            enum:
+            - native
+            - fieldSet
           validator:
-            $ref: '#/components/schemas/StringValidator_AccountAttribute'
+            $ref: '#/components/schemas/DateValidator_AccountAttribute'
+    StringValidator_AccountAttribute:
+      type: object
+      properties:
+        errorMessage:
+          maxLength: 512
+          minLength: 0
+          type: string
+        max:
+          maximum: 10000
+          minimum: 1
+          type: integer
+          format: int32
+          default: 512
+        min:
+          maximum: 512
+          minimum: 0
+          type: integer
+          format: int32
+          default: 0
+        regex:
+          maxLength: 512
+          minLength: 0
+          type: string
+      description: Represents a string validator
+    ListValidator_AccountAttribute:
+      type: object
+      properties:
+        max:
+          maximum: 10000
+          minimum: 1
+          type: integer
+          format: int32
+          default: 512
+        min:
+          maximum: 512
+          minimum: 0
+          type: integer
+          format: int32
+          default: 0
+      description: Represents a list validator
+    DateValidator_AccountAttribute:
+      type: object
+      properties:
+        notAfter:
+          type: string
+          description: Default value is null
+          format: date
+        notAfterRelativeDays:
+          type: integer
+          description: Default value is null
+          format: int32
+        notBefore:
+          type: string
+          description: Default value is null
+          format: date
+        notBeforeRelativeDays:
+          type: integer
+          description: Default value is null
+          format: int32
+      description: Represents a date validator
     UsernameIdentifierValidator_AccountAttribute:
       type: object
       properties:
@@ -290,30 +385,61 @@ components:
           maxLength: 512
           minLength: 0
           type: string
-    PasswordAccountAttribute_AccountAttribute:
+    UsernameIdentifierAttributeDTO_AccountAttribute:
       required:
       - displayName
+      - frontendHook
       - id
       - type
       type: object
-      description: Represents an password type attribute
       allOf:
       - $ref: '#/components/schemas/AccountAttribute_AccountAttribute'
-    SelectValue_AccountAttribute:
+      - type: object
+        properties:
+          displayOnInvitation:
+            type: boolean
+            default: false
+          requiredOnAdminConsole:
+            type: boolean
+            default: false
+          requiredOnInvitation:
+            type: boolean
+            default: false
+          requiredOnOrganizationPortal:
+            type: boolean
+            default: false
+          requiredOnRegistration:
+            type: boolean
+            default: false
+          validator:
+            $ref: '#/components/schemas/UsernameIdentifierValidator_AccountAttribute'
+    IdentifierAccountAttribute_AccountAttribute:
       required:
       - displayName
-      - value
+      - frontendHook
+      - id
+      - type
       type: object
-      properties:
-        displayName:
-          maxLength: 64
-          minLength: 1
-          type: string
-        value:
-          maxLength: 64
-          minLength: 1
-          type: string
-      description: Represents a select value
+      description: Represents an identifier type attribute
+      allOf:
+      - $ref: '#/components/schemas/AccountAttribute_AccountAttribute'
+      - type: object
+        properties:
+          displayOnInvitation:
+            type: boolean
+            default: false
+          requiredOnAdminConsole:
+            type: boolean
+            default: false
+          requiredOnInvitation:
+            type: boolean
+            default: false
+          requiredOnOrganizationPortal:
+            type: boolean
+            default: false
+          requiredOnRegistration:
+            type: boolean
+            default: false
     CheckboxAccountAttribute_AccountAttribute:
       required:
       - displayName
@@ -330,6 +456,21 @@ components:
           default:
             type: boolean
             default: false
+    SelectValue_AccountAttribute:
+      required:
+      - displayName
+      - value
+      type: object
+      properties:
+        displayName:
+          maxLength: 64
+          minLength: 1
+          type: string
+        value:
+          maxLength: 64
+          minLength: 1
+          type: string
+      description: Represents a select value
     AccountAttribute_AccountAttribute:
       required:
       - displayName
@@ -412,16 +553,15 @@ components:
       description: Represents an account attribute
       discriminator:
         propertyName: type
-    DateListAccountAttribute_AccountAttribute:
+    EmailListAccountAttribute_AccountAttribute:
       required:
       - displayName
       - id
       - indexing
       - name
-      - renderType
       - type
       type: object
-      description: Represents a date list attribute
+      description: Represents an email list attribute
       allOf:
       - $ref: '#/components/schemas/AccountAttribute_AccountAttribute'
       - type: object
@@ -436,122 +576,31 @@ components:
             - searchUniqueInOrganization
           listValidator:
             $ref: '#/components/schemas/ListValidator_AccountAttribute'
-          renderType:
+    StringListAccountAttribute_AccountAttribute:
+      required:
+      - displayName
+      - id
+      - indexing
+      - name
+      - type
+      type: object
+      description: Represents a string list attribute
+      allOf:
+      - $ref: '#/components/schemas/AccountAttribute_AccountAttribute'
+      - type: object
+        properties:
+          indexing:
             type: string
-            description: Defines how a date input field should be rendered. When set to `native`, the date picker appears as the browser default, `fieldSet` is ensuring that the year, month and day fields are separate inputs.
+            description: 'Defines searchability for an attribute. Possible values: `none` - Not searchable, `searchOnly` - Searchable, `searchUnique` - Searchable and unique to identity store, `searchUniqueInOrganization` - Searchable and unique to organization'
             enum:
-            - native
-            - fieldSet
+            - none
+            - searchOnly
+            - searchUnique
+            - searchUniqueInOrganization
+          listValidator:
+            $ref: '#/components/schemas/ListValidator_AccountAttribute'
           validator:
-            $ref: '#/components/schemas/DateValidator_AccountAttribute'
-    PhoneNumberListAccountAttribute_AccountAttribute:
-      required:
-      - displayName
-      - id
-      - indexing
-      - name
-      - type
-      type: object
-      description: Represents a phone number list attribute
-      allOf:
-      - $ref: '#/components/schemas/AccountAttribute_AccountAttribute'
-      - type: object
-        properties:
-          indexing:
-            type: string
-            description: 'Defines searchability for an attribute. Possible values: `none` - Not searchable, `searchOnly` - Searchable, `searchUnique` - Searchable and unique to identity store, `searchUniqueInOrganization` - Searchable and unique to organization'
-            enum:
-            - none
-            - searchOnly
-            - searchUnique
-            - searchUniqueInOrganization
-          listValidator:
-            $ref: '#/components/schemas/ListValidator_AccountAttribute'
-    EmailAccountAttribute_AccountAttribute:
-      required:
-      - displayName
-      - frontendHook
-      - id
-      - indexing
-      - name
-      - type
-      type: object
-      description: Represents an email type attribute
-      allOf:
-      - $ref: '#/components/schemas/AccountAttribute_AccountAttribute'
-      - type: object
-        properties:
-          indexing:
-            type: string
-            description: 'Defines searchability for an attribute. Possible values: `none` - Not searchable, `searchOnly` - Searchable, `searchUnique` - Searchable and unique to identity store, `searchUniqueInOrganization` - Searchable and unique to organization'
-            enum:
-            - none
-            - searchOnly
-            - searchUnique
-            - searchUniqueInOrganization
-    PhoneNumberAccountAttribute_AccountAttribute:
-      required:
-      - displayName
-      - frontendHook
-      - id
-      - indexing
-      - name
-      - type
-      type: object
-      description: Represents a phone number type attribute
-      allOf:
-      - $ref: '#/components/schemas/AccountAttribute_AccountAttribute'
-      - type: object
-        properties:
-          indexing:
-            type: string
-            description: 'Defines searchability for an attribute. Possible values: `none` - Not searchable, `searchOnly` - Searchable, `searchUnique` - Searchable and unique to identity store, `searchUniqueInOrganization` - Searchable and unique to organization'
-            enum:
-            - none
-            - searchOnly
-            - searchUnique
-            - searchUniqueInOrganization
-    StringValidator_AccountAttribute:
-      type: object
-      properties:
-        errorMessage:
-          maxLength: 512
-          minLength: 0
-          type: string
-        max:
-          maximum: 10000
-          minimum: 1
-          type: integer
-          format: int32
-          default: 512
-        min:
-          maximum: 512
-          minimum: 0
-          type: integer
-          format: int32
-          default: 0
-        regex:
-          maxLength: 512
-          minLength: 0
-          type: string
-      description: Represents a string validator
-    FieldError:
-      type: object
-      properties:
-        field:
-          type: string
-        message:
-          type: string
-        objectName:
-          type: string
-    AccountAttributeConnector_AccountAttribute:
-      type: object
-      properties:
-        readFromPath:
-          maxLength: 256
-          minLength: 1
-          type: string
-      description: Represents the connector related configurations
+            $ref: '#/components/schemas/StringValidator_AccountAttribute'
     DateAccountAttribute_AccountAttribute:
       required:
       - displayName
@@ -583,127 +632,78 @@ components:
             - fieldSet
           validator:
             $ref: '#/components/schemas/DateValidator_AccountAttribute'
-    ListValidator_AccountAttribute:
-      type: object
-      properties:
-        max:
-          maximum: 10000
-          minimum: 1
-          type: integer
-          format: int32
-          default: 512
-        min:
-          maximum: 512
-          minimum: 0
-          type: integer
-          format: int32
-          default: 0
-      description: Represents a list validator
-    NativeClaim_AccountAttribute:
+    ComplexListAccountAttribute_AccountAttribute:
       required:
       - displayName
       - id
       - name
-      type: object
-      properties:
-        displayName:
-          maxLength: 64
-          minLength: 3
-          pattern: ^$|^[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°]([\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*° ]*[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°])?$
-          type: string
-        id:
-          type: string
-        name:
-          maxLength: 256
-          minLength: 1
-          pattern: ^[a-zA-Z][a-zA-Z0-9_!#$&'()*+,\/:;=?@\[\].]*$
-          type: string
-    IdentifierAccountAttribute_AccountAttribute:
-      required:
-      - displayName
-      - frontendHook
-      - id
       - type
       type: object
-      description: Represents an identifier type attribute
+      description: Represents a complex list attribute
       allOf:
       - $ref: '#/components/schemas/AccountAttribute_AccountAttribute'
       - type: object
         properties:
-          displayOnInvitation:
-            type: boolean
-            default: false
-          requiredOnAdminConsole:
-            type: boolean
-            default: false
-          requiredOnInvitation:
-            type: boolean
-            default: false
-          requiredOnOrganizationPortal:
-            type: boolean
-            default: false
-          requiredOnRegistration:
-            type: boolean
-            default: false
-    SelectAccountAttribute_AccountAttribute:
-      required:
-      - displayName
-      - frontendHook
-      - id
-      - indexing
-      - name
-      - type
-      type: object
-      description: Represents a select type attribute
-      allOf:
-      - $ref: '#/components/schemas/AccountAttribute_AccountAttribute'
-      - type: object
-        properties:
-          default:
-            type: string
-          indexing:
-            type: string
-            description: 'Defines searchability for an attribute. Possible values: `none` - Not searchable, `searchOnly` - Searchable, `searchUnique` - Searchable and unique to identity store, `searchUniqueInOrganization` - Searchable and unique to organization'
-            enum:
-            - none
-            - searchOnly
-            - searchUnique
-            - searchUniqueInOrganization
-          renderType:
-            type: string
-            description: Defines how a select input field should be rendered. When set to `native`, the select appears as the browser default, when set `radio` the select appears as radio buttons.
-            enum:
-            - native
-            - radio
-            default: native
-          values:
-            type: array
-            description: Defines the possible options to be selected on a select input field
-            items:
-              $ref: '#/components/schemas/SelectValue_AccountAttribute'
-    EmailListAccountAttribute_AccountAttribute:
-      required:
-      - displayName
-      - id
-      - indexing
-      - name
-      - type
-      type: object
-      description: Represents an email list attribute
-      allOf:
-      - $ref: '#/components/schemas/AccountAttribute_AccountAttribute'
-      - type: object
-        properties:
-          indexing:
-            type: string
-            description: 'Defines searchability for an attribute. Possible values: `none` - Not searchable, `searchOnly` - Searchable, `searchUnique` - Searchable and unique to identity store, `searchUniqueInOrganization` - Searchable and unique to organization'
-            enum:
-            - none
-            - searchOnly
-            - searchUnique
-            - searchUniqueInOrganization
           listValidator:
             $ref: '#/components/schemas/ListValidator_AccountAttribute'
+    PhoneNumberAccountAttribute_AccountAttribute:
+      required:
+      - displayName
+      - frontendHook
+      - id
+      - indexing
+      - name
+      - type
+      type: object
+      description: Represents a phone number type attribute
+      allOf:
+      - $ref: '#/components/schemas/AccountAttribute_AccountAttribute'
+      - type: object
+        properties:
+          indexing:
+            type: string
+            description: 'Defines searchability for an attribute. Possible values: `none` - Not searchable, `searchOnly` - Searchable, `searchUnique` - Searchable and unique to identity store, `searchUniqueInOrganization` - Searchable and unique to organization'
+            enum:
+            - none
+            - searchOnly
+            - searchUnique
+            - searchUniqueInOrganization
+    ProblemJson:
+      type: object
+      properties:
+        detail:
+          type: string
+        entityName:
+          type: string
+          description: The name of the entity within the error has occurred
+        errorKey:
+          type: string
+          description: A unique identifier of the error
+        fieldErrors:
+          type: array
+          description: Field constraint violation errors
+          items:
+            $ref: '#/components/schemas/FieldError'
+        message:
+          type: string
+          description: A unique identifier in format of 'error.{errorKey}'
+        params:
+          type: array
+          description: Further information related to the actual error
+          items:
+            type: object
+            additionalProperties:
+              type: object
+        path:
+          type: string
+          description: Request URI
+        status:
+          type: integer
+          description: Status code
+          format: int32
+        title:
+          type: string
+      description: Based on [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807)
   securitySchemes:
     securityScheme:
       scheme: bearer

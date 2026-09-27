@@ -378,167 +378,6 @@ paths:
       - Identity Store
 components:
   schemas:
-    ProblemJson:
-      type: object
-      properties:
-        detail:
-          type: string
-        entityName:
-          type: string
-          description: The name of the entity within the error has occurred
-        errorKey:
-          type: string
-          description: A unique identifier of the error
-        fieldErrors:
-          type: array
-          description: Field constraint violation errors
-          items:
-            $ref: '#/components/schemas/FieldError'
-        message:
-          type: string
-          description: A unique identifier in format of 'error.{errorKey}'
-        params:
-          type: array
-          description: Further information related to the actual error
-          items:
-            type: object
-            additionalProperties:
-              type: object
-        path:
-          type: string
-          description: Request URI
-        status:
-          type: integer
-          description: Status code
-          format: int32
-        title:
-          type: string
-      description: Based on [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807)
-    PageMetadata:
-      type: object
-      properties:
-        number:
-          type: integer
-          format: int64
-        size:
-          type: integer
-          format: int64
-        totalElements:
-          type: integer
-          format: int64
-        totalPages:
-          type: integer
-          format: int64
-    VariableOverrideUpsertRequest_IdentityStore:
-      required:
-      - name
-      - type
-      type: object
-      properties:
-        name:
-          type: string
-        type:
-          type: string
-          enum:
-          - noValue
-          - variableReference
-          - staticVariable
-          - staticSecret
-      discriminator:
-        propertyName: type
-    StaticVariableRequest_IdentityStore:
-      required:
-      - name
-      - type
-      - value
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/VariableOverrideUpsertRequest_IdentityStore'
-      - type: object
-        properties:
-          value:
-            maxLength: 8192
-            minLength: 0
-            type: string
-    IdReferenceRequest_IdentityStore:
-      required:
-      - id
-      type: object
-      properties:
-        id:
-          pattern: ^[a-zA-Z0-9-]{1,36}$
-          type: string
-          description: ID of the represented entity
-    NoValueRequest_IdentityStore:
-      required:
-      - name
-      - type
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/VariableOverrideUpsertRequest_IdentityStore'
-    IdentityStoreUpsertRequest_Connector_IdentityStore:
-      type: object
-      properties:
-        cachePassword:
-          type: boolean
-          default: true
-        enabled:
-          type: boolean
-          default: false
-        syncPasswordToRemote:
-          type: boolean
-          default: false
-    IdentityStoreListResponse:
-      type: object
-      properties:
-        accountEventTTL:
-          type: integer
-          format: int32
-        description:
-          type: string
-        name:
-          type: string
-          example: Default
-        organizationRegistrationEnabled:
-          type: boolean
-        passwordHashApiEnabled:
-          type: boolean
-        passwordPolicy:
-          $ref: '#/components/schemas/NameAndId'
-        policyTag:
-          type: string
-    NameAndId_IdentityStore:
-      type: object
-      properties:
-        id:
-          type: string
-          description: ID of the represented entity
-    PagedModelIdentityStoreListResponse:
-      type: object
-      properties:
-        content:
-          type: array
-          items:
-            $ref: '#/components/schemas/IdentityStoreListResponse'
-        page:
-          $ref: '#/components/schemas/PageMetadata'
-    NativeClaimResponse:
-      type: object
-      properties:
-        description:
-          type: string
-        dialectUri:
-          type: string
-        displayName:
-          type: string
-        id:
-          type: string
-        name:
-          type: string
-        readonly:
-          type: boolean
-        targetReadonly:
-          type: boolean
     AssignedEventHookFunctionResponse:
       type: object
       properties:
@@ -577,29 +416,21 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/VariableOverrideResponse'
-    Credentials:
+    Credentials_IdentityStore:
       type: object
       properties:
         clientId:
           type: string
         clientSecret:
           type: string
-    IdentityStoreResponse_IdentityStore:
+    IdentityStoreListResponse:
       type: object
       properties:
         accountEventTTL:
           type: integer
           format: int32
-        connector:
-          $ref: '#/components/schemas/IdentityStoreResponse_Connector_IdentityStore'
         description:
           type: string
-        eventHookFunctions:
-          uniqueItems: true
-          type: array
-          description: Event hook functions assigned to the identity store
-          items:
-            $ref: '#/components/schemas/AssignedEventHookFunctionResponse_IdentityStore'
         name:
           type: string
           example: Default
@@ -608,7 +439,7 @@ components:
         passwordHashApiEnabled:
           type: boolean
         passwordPolicy:
-          $ref: '#/components/schemas/NameAndId_IdentityStore'
+          $ref: '#/components/schemas/NameAndId'
         policyTag:
           type: string
     FieldError:
@@ -619,30 +450,6 @@ components:
         message:
           type: string
         objectName:
-          type: string
-    NameAndId:
-      type: object
-      properties:
-        id:
-          type: string
-          description: ID of the represented entity
-    IdentityStoreResponse_Connector_IdentityStore:
-      type: object
-      properties:
-        cachePassword:
-          type: boolean
-        credentials:
-          $ref: '#/components/schemas/Credentials_IdentityStore'
-        enabled:
-          type: boolean
-        syncPasswordToRemote:
-          type: boolean
-    Credentials_IdentityStore:
-      type: object
-      properties:
-        clientId:
-          type: string
-        clientSecret:
           type: string
     AssignedEventHookFunctionResponse_IdentityStore:
       type: object
@@ -682,17 +489,77 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/VariableOverrideResponse_IdentityStore'
-    IdentityStoreResponse_Connector:
+    IdentityStoreResponse_Connector_IdentityStore:
       type: object
       properties:
         cachePassword:
           type: boolean
         credentials:
-          $ref: '#/components/schemas/Credentials'
+          $ref: '#/components/schemas/Credentials_IdentityStore'
         enabled:
           type: boolean
         syncPasswordToRemote:
           type: boolean
+    PagedModelIdentityStoreListResponse:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/IdentityStoreListResponse'
+        page:
+          $ref: '#/components/schemas/PageMetadata'
+    VariableOverrideUpsertRequest_IdentityStore:
+      required:
+      - name
+      - type
+      type: object
+      properties:
+        name:
+          type: string
+        type:
+          type: string
+          enum:
+          - noValue
+          - variableReference
+          - staticVariable
+          - staticSecret
+      discriminator:
+        propertyName: type
+    StaticVariableRequest_IdentityStore:
+      required:
+      - name
+      - type
+      - value
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/VariableOverrideUpsertRequest_IdentityStore'
+      - type: object
+        properties:
+          value:
+            maxLength: 8192
+            minLength: 0
+            type: string
+    NameAndId:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID of the represented entity
+    VariableOverrideResponse_IdentityStore:
+      type: object
+      properties:
+        name:
+          type: string
+        type:
+          type: string
+          enum:
+          - noValue
+          - variableReference
+          - staticVariable
+          - staticSecret
+        value:
+          type: string
     VariableOverrideResponse:
       type: object
       properties:
@@ -707,6 +574,93 @@ components:
           - staticSecret
         value:
           type: string
+    IdentityStoreResponse_Connector:
+      type: object
+      properties:
+        cachePassword:
+          type: boolean
+        credentials:
+          $ref: '#/components/schemas/Credentials'
+        enabled:
+          type: boolean
+        syncPasswordToRemote:
+          type: boolean
+    IdReferenceRequest_IdentityStore:
+      required:
+      - id
+      type: object
+      properties:
+        id:
+          pattern: ^[a-zA-Z0-9-]{1,36}$
+          type: string
+          description: ID of the represented entity
+    NativeClaimResponse:
+      type: object
+      properties:
+        description:
+          type: string
+        dialectUri:
+          type: string
+        displayName:
+          type: string
+        id:
+          type: string
+        name:
+          type: string
+        readonly:
+          type: boolean
+        targetReadonly:
+          type: boolean
+    ProblemJson:
+      type: object
+      properties:
+        detail:
+          type: string
+        entityName:
+          type: string
+          description: The name of the entity within the error has occurred
+        errorKey:
+          type: string
+          description: A unique identifier of the error
+        fieldErrors:
+          type: array
+          description: Field constraint violation errors
+          items:
+            $ref: '#/components/schemas/FieldError'
+        message:
+          type: string
+          description: A unique identifier in format of 'error.{errorKey}'
+        params:
+          type: array
+          description: Further information related to the actual error
+          items:
+            type: object
+            additionalProperties:
+              type: object
+        path:
+          type: string
+          description: Request URI
+        status:
+          type: integer
+          description: Status code
+          format: int32
+        title:
+          type: string
+      description: Based on [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807)
+    VariableReferenceRequest_IdentityStore:
+      required:
+      - name
+      - type
+      - value
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/VariableOverrideUpsertRequest_IdentityStore'
+      - type: object
+        properties:
+          value:
+            maxLength: 36
+            minLength: 0
+            type: string
     StaticSecretRequest_IdentityStore:
       required:
       - name
@@ -720,6 +674,53 @@ components:
             maxLength: 8192
             minLength: 0
             type: string
+    EventHookAssignmentUpsertRequest_IdentityStore:
+      required:
+      - hook
+      - id
+      type: object
+      properties:
+        hook:
+          type: string
+          description: Type of the eventhook
+          enum:
+          - DENY_AUTHENTICATION
+          - UNIDENTIFIED_USER
+          - POST_ACCOUNT_LOGIN
+          - POST_CONSENT_UPDATE
+          - POST_ID_PROOFING
+          - POST_IDENTIFICATION
+          - POST_MFA_FACTOR_CHANGE
+          - POST_REGISTRATION
+          - POST_EXTERNAL_LOGIN
+          - POST_TOKEN_REFRESH
+          - PRE_ID_PROOFING
+          - PRE_ID_TOKEN_GENERATION
+          - PRE_SAML2_ASSERTION_GENERATION
+          - PRE_PROGRESSIVE_PROFILING
+          - PRE_REGISTRATION
+          - PRE_PASSWORD
+          - PRE_PASSWORD_RESET
+          - PRE_MULTI_STAGE_REGISTRATION
+          - PRE_EXTERNAL_REGISTRATION
+          - PRE_AUTHENTICATOR_ENROLLMENT
+          - PRE_PASSWORD_PERSIST
+          - PRE_CONTACT_UPDATE
+          - POST_ACCOUNT_DELETION
+          - POST_ACCOUNT_UPDATE
+        id:
+          pattern: ^[a-zA-Z0-9-]{1,36}$
+          type: string
+          description: ID of the represented entity
+        variableOverrides:
+          type: array
+          items:
+            oneOf:
+            - $ref: '#/components/schemas/VariableOverrideUpsertRequest_IdentityStore'
+            - $ref: '#/components/schemas/NoValueRequest_IdentityStore'
+            - $ref: '#/components/schemas/StaticSecretRequest_IdentityStore'
+            - $ref: '#/components/schemas/StaticVariableRequest_IdentityStore'
+            - $ref: '#/components/schemas/VariableReferenceRequest_IdentityStore'
     IdentityStoreResponse:
       type: object
       properties:
@@ -747,6 +748,80 @@ components:
           $ref: '#/components/schemas/NameAndId'
         policyTag:
           type: string
+    IdentityStoreResponse_IdentityStore:
+      type: object
+      properties:
+        accountEventTTL:
+          type: integer
+          format: int32
+        connector:
+          $ref: '#/components/schemas/IdentityStoreResponse_Connector_IdentityStore'
+        description:
+          type: string
+        eventHookFunctions:
+          uniqueItems: true
+          type: array
+          description: Event hook functions assigned to the identity store
+          items:
+            $ref: '#/components/schemas/AssignedEventHookFunctionResponse_IdentityStore'
+        name:
+          type: string
+          example: Default
+        organizationRegistrationEnabled:
+          type: boolean
+        passwordHashApiEnabled:
+          type: boolean
+        passwordPolicy:
+          $ref: '#/components/schemas/NameAndId_IdentityStore'
+        policyTag:
+          type: string
+    NoValueRequest_IdentityStore:
+      required:
+      - name
+      - type
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/VariableOverrideUpsertRequest_IdentityStore'
+    IdentityStoreUpsertRequest_Connector_IdentityStore:
+      type: object
+      properties:
+        cachePassword:
+          type: boolean
+          default: true
+        enabled:
+          type: boolean
+          default: false
+        syncPasswordToRemote:
+          type: boolean
+          default: false
+    PageMetadata:
+      type: object
+      properties:
+        number:
+          type: integer
+          format: int64
+        size:
+          type: integer
+          format: int64
+        totalElements:
+          type: integer
+          format: int64
+        totalPages:
+          type: integer
+          format: int64
+    Credentials:
+      type: object
+      properties:
+        clientId:
+          type: string
+        clientSecret:
+          type: string
+    NameAndId_IdentityStore:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID of the represented entity
     IdentityStoreUpsertRequest_IdentityStore:
       required:
       - eventHookFunctions
@@ -800,81 +875,6 @@ components:
           pattern: ^[a-z0-9_]{2,32}$
           type: string
           description: Must be an existing policy tag name
-    VariableOverrideResponse_IdentityStore:
-      type: object
-      properties:
-        name:
-          type: string
-        type:
-          type: string
-          enum:
-          - noValue
-          - variableReference
-          - staticVariable
-          - staticSecret
-        value:
-          type: string
-    EventHookAssignmentUpsertRequest_IdentityStore:
-      required:
-      - hook
-      - id
-      type: object
-      properties:
-        hook:
-          type: string
-          description: Type of the eventhook
-          enum:
-          - DENY_AUTHENTICATION
-          - UNIDENTIFIED_USER
-          - POST_ACCOUNT_LOGIN
-          - POST_CONSENT_UPDATE
-          - POST_ID_PROOFING
-          - POST_IDENTIFICATION
-          - POST_MFA_FACTOR_CHANGE
-          - POST_REGISTRATION
-          - POST_EXTERNAL_LOGIN
-          - POST_TOKEN_REFRESH
-          - PRE_ID_PROOFING
-          - PRE_ID_TOKEN_GENERATION
-          - PRE_SAML2_ASSERTION_GENERATION
-          - PRE_PROGRESSIVE_PROFILING
-          - PRE_REGISTRATION
-          - PRE_PASSWORD
-          - PRE_PASSWORD_RESET
-          - PRE_MULTI_STAGE_REGISTRATION
-          - PRE_EXTERNAL_REGISTRATION
-          - PRE_AUTHENTICATOR_ENROLLMENT
-          - PRE_PASSWORD_PERSIST
-          - PRE_CONTACT_UPDATE
-          - POST_ACCOUNT_DELETION
-          - POST_ACCOUNT_UPDATE
-        id:
-          pattern: ^[a-zA-Z0-9-]{1,36}$
-          type: string
-          description: ID of the represented entity
-        variableOverrides:
-          type: array
-          items:
-            oneOf:
-            - $ref: '#/components/schemas/VariableOverrideUpsertRequest_IdentityStore'
-            - $ref: '#/components/schemas/NoValueRequest_IdentityStore'
-            - $ref: '#/components/schemas/StaticSecretRequest_IdentityStore'
-            - $ref: '#/components/schemas/StaticVariableRequest_IdentityStore'
-            - $ref: '#/components/schemas/VariableReferenceRequest_IdentityStore'
-    VariableReferenceRequest_IdentityStore:
-      required:
-      - name
-      - type
-      - value
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/VariableOverrideUpsertRequest_IdentityStore'
-      - type: object
-        properties:
-          value:
-            maxLength: 36
-            minLength: 0
-            type: string
   securitySchemes:
     securityScheme:
       scheme: bearer

@@ -332,6 +332,89 @@ paths:
       - Group Member
 components:
   schemas:
+    AccountLockout_Account:
+      type: object
+      properties:
+        failedPasscodeAttemptCount:
+          type: integer
+          format: int32
+        failedPasscodeAttemptCountPermanentLock:
+          type: integer
+          format: int32
+        failedPasswordAttemptCount:
+          type: integer
+          format: int32
+        failedPasswordAttemptCountPermanentLock:
+          type: integer
+          format: int32
+        locks:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/AccountLock_Account'
+      description: Represents the account lockout details
+    AccountLock_Account:
+      type: object
+      properties:
+        until:
+          type: string
+          description: null in case of permanent lock, otherwise temporary lock
+          format: date-time
+      description: Represents a lock on the account
+    AccountRole_Account:
+      required:
+      - id
+      - organization
+      type: object
+      properties:
+        id:
+          minLength: 1
+          type: string
+          description: ID of the represented role
+        organization:
+          minLength: 1
+          type: string
+          description: ID of the represented organization
+      description: Represents an organization-role assignment
+    AuthenticatorsResponse_Account:
+      type: object
+      properties:
+        methods:
+          type: array
+          items:
+            $ref: '#/components/schemas/AuthenticatorResponse_Account'
+      description: Represents the authenticators for an account
+    NotificationPreferencesResponse_Account:
+      type: object
+      properties:
+        accountAttributeUpdate:
+          type: boolean
+        accountDeletion:
+          type: boolean
+        accountLockout:
+          type: boolean
+        mfaMethodChange:
+          type: boolean
+        passwordResetSuccess:
+          type: boolean
+      description: Contains which types of notifications are enabled or not for an account
+    IdReferenceRequest_Account:
+      required:
+      - id
+      type: object
+      properties:
+        id:
+          pattern: ^[a-zA-Z0-9-]{1,36}$
+          type: string
+          description: ID of the represented entity
+    FieldError:
+      type: object
+      properties:
+        field:
+          type: string
+        message:
+          type: string
+        objectName:
+          type: string
     FeatureResponse_Account:
       type: object
       properties:
@@ -344,6 +427,107 @@ components:
         type:
           type: string
       description: Represents a feature object according to the [RFC 7946](https://www.rfc-editor.org/rfc/rfc7946#section-3.2) standard
+    AccountProofingWithNameAndDeletedResponse_Account:
+      type: object
+      properties:
+        attempts:
+          type: integer
+          format: int64
+        deleted:
+          type: boolean
+        id:
+          type: string
+          format: uuid
+        invalidatedAt:
+          type: string
+          format: date-time
+        policyId:
+          type: string
+        proofedAt:
+          type: string
+          format: date-time
+    ConsentResponse_Account:
+      type: object
+      properties:
+        consentId:
+          type: string
+        consentVersion:
+          type: integer
+          format: int32
+        id:
+          type: string
+        optIn:
+          type: string
+          format: date-time
+        optOut:
+          type: string
+          format: date-time
+    AuthenticatorResponse_Account:
+      type: object
+      properties:
+        createdAt:
+          type: string
+          description: Creation time of the authenticator
+          format: date-time
+        id:
+          type: string
+        lastUsedAt:
+          type: string
+          description: Last usage time of the authenticator
+          format: date-time
+        methods:
+          type: array
+          items:
+            type: string
+            description: 'Authenticator method that defines how the authentication can be done. Possible values: `passcode`, `magicLink`, `voice` and `publicKey`.'
+            example: passcode
+        publicMetadata:
+          type: object
+          additionalProperties:
+            type: object
+            description: Authenticator public metadata
+          description: Authenticator public metadata
+        subType:
+          type: string
+          description: ID of Additional factor used for MFA
+        target:
+          type: string
+          description: Authenticator target, to where the MFA will be requested for
+          example: '+36301234567'
+        type:
+          type: string
+          description: Authenticator type used for MFA
+          enum:
+          - phone
+          - email
+          - softToken
+          - webAuthnSecurityKey
+          - webAuthnDeviceBiometrics
+          - passkey
+          - custom
+      description: Represents an authenticator for an account
+    LastLoginResponse_Account:
+      type: object
+      properties:
+        ip:
+          type: string
+        location:
+          $ref: '#/components/schemas/FeatureResponse_Account'
+        time:
+          type: string
+          format: date-time
+      description: Represents the last login by IP address and time of login
+    GeometryResponse_Account:
+      type: object
+      properties:
+        coordinates:
+          type: array
+          items:
+            type: number
+            format: double
+        type:
+          type: string
+      description: Represents a geometry object according to the [RFC 7946](https://www.rfc-editor.org/rfc/rfc7946#section-3.1) standard
     ProblemJson:
       type: object
       properties:
@@ -445,90 +629,6 @@ components:
         updatedAt:
           type: string
           format: date-time
-    GeometryResponse_Account:
-      type: object
-      properties:
-        coordinates:
-          type: array
-          items:
-            type: number
-            format: double
-        type:
-          type: string
-      description: Represents a geometry object according to the [RFC 7946](https://www.rfc-editor.org/rfc/rfc7946#section-3.1) standard
-    AccountProofingWithNameAndDeletedResponse_Account:
-      type: object
-      properties:
-        attempts:
-          type: integer
-          format: int64
-        deleted:
-          type: boolean
-        id:
-          type: string
-          format: uuid
-        invalidatedAt:
-          type: string
-          format: date-time
-        policyId:
-          type: string
-        proofedAt:
-          type: string
-          format: date-time
-    AuthenticatorsResponse_Account:
-      type: object
-      properties:
-        methods:
-          type: array
-          items:
-            $ref: '#/components/schemas/AuthenticatorResponse_Account'
-      description: Represents the authenticators for an account
-    LastLoginResponse_Account:
-      type: object
-      properties:
-        ip:
-          type: string
-        location:
-          $ref: '#/components/schemas/FeatureResponse_Account'
-        time:
-          type: string
-          format: date-time
-      description: Represents the last login by IP address and time of login
-    AccountLockout_Account:
-      type: object
-      properties:
-        failedPasscodeAttemptCount:
-          type: integer
-          format: int32
-        failedPasscodeAttemptCountPermanentLock:
-          type: integer
-          format: int32
-        failedPasswordAttemptCount:
-          type: integer
-          format: int32
-        failedPasswordAttemptCountPermanentLock:
-          type: integer
-          format: int32
-        locks:
-          type: object
-          additionalProperties:
-            $ref: '#/components/schemas/AccountLock_Account'
-      description: Represents the account lockout details
-    AccountRole_Account:
-      required:
-      - id
-      - organization
-      type: object
-      properties:
-        id:
-          minLength: 1
-          type: string
-          description: ID of the represented role
-        organization:
-          minLength: 1
-          type: string
-          description: ID of the represented organization
-      description: Represents an organization-role assignment
     GroupMemberInsertRequest_Account:
       required:
       - id
@@ -537,106 +637,6 @@ components:
         id:
           type: string
           description: ID of the represented account
-    FieldError:
-      type: object
-      properties:
-        field:
-          type: string
-        message:
-          type: string
-        objectName:
-          type: string
-    ConsentResponse_Account:
-      type: object
-      properties:
-        consentId:
-          type: string
-        consentVersion:
-          type: integer
-          format: int32
-        id:
-          type: string
-        optIn:
-          type: string
-          format: date-time
-        optOut:
-          type: string
-          format: date-time
-    AccountLock_Account:
-      type: object
-      properties:
-        until:
-          type: string
-          description: null in case of permanent lock, otherwise temporary lock
-          format: date-time
-      description: Represents a lock on the account
-    IdReferenceRequest_Account:
-      required:
-      - id
-      type: object
-      properties:
-        id:
-          pattern: ^[a-zA-Z0-9-]{1,36}$
-          type: string
-          description: ID of the represented entity
-    NotificationPreferencesResponse_Account:
-      type: object
-      properties:
-        accountAttributeUpdate:
-          type: boolean
-        accountDeletion:
-          type: boolean
-        accountLockout:
-          type: boolean
-        mfaMethodChange:
-          type: boolean
-        passwordResetSuccess:
-          type: boolean
-      description: Contains which types of notifications are enabled or not for an account
-    AuthenticatorResponse_Account:
-      type: object
-      properties:
-        createdAt:
-          type: string
-          description: Creation time of the authenticator
-          format: date-time
-        id:
-          type: string
-        lastUsedAt:
-          type: string
-          description: Last usage time of the authenticator
-          format: date-time
-        methods:
-          type: array
-          items:
-            type: string
-            description: 'Authenticator method that defines how the authentication can be done. Possible values: `passcode`, `magicLink`, `voice` and `publicKey`.'
-            example: passcode
-        publicMetadata:
-          type: object
-          additionalProperties:
-            type: object
-            description: Authenticator public metadata
-          description: Authenticator public metadata
-        subType:
-          type: string
-          description: ID of Additional factor used for MFA
-        target:
-          type: string
-          description: Authenticator target, to where the MFA will be requested for
-          example: '+36301234567'
-        type:
-          type: string
-          description: Authenticator type used for MFA
-          enum:
-          - phone
-          - email
-          - softToken
-          - webAuthnSecurityKey
-          - webAuthnDeviceBiometrics
-          - passkey
-          - custom
-      description: Represents an authenticator for an account
   securitySchemes:
     securityScheme:
       scheme: bearer

@@ -313,6 +313,206 @@ paths:
       - Organization Policy
 components:
   schemas:
+    OrganizationPolicyResponsePolicies:
+      type: object
+      properties:
+        adaptiveMFA:
+          $ref: '#/components/schemas/NameAndId'
+        brand:
+          $ref: '#/components/schemas/NameAndId'
+        identityProofing:
+          $ref: '#/components/schemas/NameAndId'
+        notificationPolicy:
+          $ref: '#/components/schemas/NameAndId'
+        selfServicePolicy:
+          $ref: '#/components/schemas/NameAndId'
+    OrganizationPolicyResponseLoginProviders:
+      type: object
+      properties:
+        enterpriseLoginProviders:
+          uniqueItems: true
+          type: array
+          items:
+            $ref: '#/components/schemas/IdReferenceResponse'
+        forwardToExternalProviderEnabled:
+          type: boolean
+        localLoginProviderEnabled:
+          type: boolean
+        socialLoginProviders:
+          uniqueItems: true
+          type: array
+          items:
+            $ref: '#/components/schemas/IdReferenceResponse'
+    FieldError:
+      type: object
+      properties:
+        field:
+          type: string
+        message:
+          type: string
+        objectName:
+          type: string
+    OrganizationPolicyResponse_OrganizationPolicy:
+      type: object
+      properties:
+        loginProviders:
+          $ref: '#/components/schemas/OrganizationPolicyResponseLoginProviders_OrganizationPolicy'
+        organization:
+          $ref: '#/components/schemas/OnlyIdResponse_OrganizationPolicy'
+        policies:
+          $ref: '#/components/schemas/OrganizationPolicyResponsePolicies_OrganizationPolicy'
+    OrganizationPolicyResponse:
+      type: object
+      properties:
+        loginProviders:
+          $ref: '#/components/schemas/OrganizationPolicyResponseLoginProviders'
+        organization:
+          $ref: '#/components/schemas/OnlyIdResponse'
+        policies:
+          $ref: '#/components/schemas/OrganizationPolicyResponsePolicies'
+    PagedModelOrganizationPolicyResponse:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrganizationPolicyResponse'
+        page:
+          $ref: '#/components/schemas/PageMetadata'
+    OrganizationPolicyResponseLoginProviders_OrganizationPolicy:
+      type: object
+      properties:
+        enterpriseLoginProviders:
+          uniqueItems: true
+          type: array
+          items:
+            $ref: '#/components/schemas/IdReferenceResponse_OrganizationPolicy'
+        forwardToExternalProviderEnabled:
+          type: boolean
+        localLoginProviderEnabled:
+          type: boolean
+        socialLoginProviders:
+          uniqueItems: true
+          type: array
+          items:
+            $ref: '#/components/schemas/IdReferenceResponse_OrganizationPolicy'
+    OrganizationPolicyResponsePolicies_OrganizationPolicy:
+      type: object
+      properties:
+        adaptiveMFA:
+          $ref: '#/components/schemas/NameAndId_OrganizationPolicy'
+        brand:
+          $ref: '#/components/schemas/NameAndId_OrganizationPolicy'
+        identityProofing:
+          $ref: '#/components/schemas/NameAndId_OrganizationPolicy'
+        notificationPolicy:
+          $ref: '#/components/schemas/NameAndId_OrganizationPolicy'
+        selfServicePolicy:
+          $ref: '#/components/schemas/NameAndId_OrganizationPolicy'
+    LoginProviders_OrganizationPolicy:
+      required:
+      - enterpriseLoginProviders
+      - socialLoginProviders
+      type: object
+      properties:
+        enterpriseLoginProviders:
+          type: array
+          items:
+            $ref: '#/components/schemas/IdReferenceRequest_OrganizationPolicy'
+        forwardToExternalProviderEnabled:
+          type: boolean
+          default: false
+        localLoginProviderEnabled:
+          type: boolean
+          default: false
+        socialLoginProviders:
+          type: array
+          items:
+            $ref: '#/components/schemas/IdReferenceRequest_OrganizationPolicy'
+      description: Represents both social and enterprise login providers.
+    NameAndId:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID of the represented entity
+    IdReferenceResponse_OrganizationPolicy:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID of the represented entity
+    OnlyIdResponse:
+      type: object
+      properties:
+        id:
+          type: string
+    IdReferenceResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID of the represented entity
+    NameAndId_OrganizationPolicy:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID of the represented entity
+    OrganizationPolicyUpsertRequest_OrganizationPolicy:
+      required:
+      - organization
+      type: object
+      properties:
+        loginProviders:
+          $ref: '#/components/schemas/LoginProviders_OrganizationPolicy'
+        organization:
+          $ref: '#/components/schemas/IdReferenceRequest_OrganizationPolicy'
+        policies:
+          $ref: '#/components/schemas/Policies_OrganizationPolicy'
+    IdReferenceRequest_OrganizationPolicy:
+      required:
+      - id
+      type: object
+      properties:
+        id:
+          pattern: ^[a-zA-Z0-9-]{1,36}$
+          type: string
+          description: ID of the represented entity
+    OnlyIdResponse_OrganizationPolicy:
+      type: object
+      properties:
+        id:
+          type: string
+    Policies_OrganizationPolicy:
+      type: object
+      properties:
+        adaptiveMFA:
+          $ref: '#/components/schemas/IdReferenceRequest_OrganizationPolicy'
+        brand:
+          $ref: '#/components/schemas/IdReferenceRequest_OrganizationPolicy'
+        identityProofing:
+          $ref: '#/components/schemas/IdReferenceRequest_OrganizationPolicy'
+        notificationPolicy:
+          $ref: '#/components/schemas/IdReferenceRequest_OrganizationPolicy'
+        selfServicePolicy:
+          $ref: '#/components/schemas/IdReferenceRequest_OrganizationPolicy'
+      description: Defines which policy to override for an application. If any of them is set to `null`, that policy won't be overridden by the organization.
+    PageMetadata:
+      type: object
+      properties:
+        number:
+          type: integer
+          format: int64
+        size:
+          type: integer
+          format: int64
+        totalElements:
+          type: integer
+          format: int64
+        totalPages:
+          type: integer
+          format: int64
     ProblemJson:
       type: object
       properties:
@@ -349,206 +549,6 @@ components:
         title:
           type: string
       description: Based on [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807)
-    PageMetadata:
-      type: object
-      properties:
-        number:
-          type: integer
-          format: int64
-        size:
-          type: integer
-          format: int64
-        totalElements:
-          type: integer
-          format: int64
-        totalPages:
-          type: integer
-          format: int64
-    PagedModelOrganizationPolicyResponse:
-      type: object
-      properties:
-        content:
-          type: array
-          items:
-            $ref: '#/components/schemas/OrganizationPolicyResponse'
-        page:
-          $ref: '#/components/schemas/PageMetadata'
-    OnlyIdResponse:
-      type: object
-      properties:
-        id:
-          type: string
-    OrganizationPolicyResponsePolicies:
-      type: object
-      properties:
-        adaptiveMFA:
-          $ref: '#/components/schemas/NameAndId'
-        brand:
-          $ref: '#/components/schemas/NameAndId'
-        identityProofing:
-          $ref: '#/components/schemas/NameAndId'
-        notificationPolicy:
-          $ref: '#/components/schemas/NameAndId'
-        selfServicePolicy:
-          $ref: '#/components/schemas/NameAndId'
-    IdReferenceRequest_OrganizationPolicy:
-      required:
-      - id
-      type: object
-      properties:
-        id:
-          pattern: ^[a-zA-Z0-9-]{1,36}$
-          type: string
-          description: ID of the represented entity
-    OrganizationPolicyResponseLoginProviders:
-      type: object
-      properties:
-        enterpriseLoginProviders:
-          uniqueItems: true
-          type: array
-          items:
-            $ref: '#/components/schemas/IdReferenceResponse'
-        forwardToExternalProviderEnabled:
-          type: boolean
-        localLoginProviderEnabled:
-          type: boolean
-        socialLoginProviders:
-          uniqueItems: true
-          type: array
-          items:
-            $ref: '#/components/schemas/IdReferenceResponse'
-    Policies_OrganizationPolicy:
-      type: object
-      properties:
-        adaptiveMFA:
-          $ref: '#/components/schemas/IdReferenceRequest_OrganizationPolicy'
-        brand:
-          $ref: '#/components/schemas/IdReferenceRequest_OrganizationPolicy'
-        identityProofing:
-          $ref: '#/components/schemas/IdReferenceRequest_OrganizationPolicy'
-        notificationPolicy:
-          $ref: '#/components/schemas/IdReferenceRequest_OrganizationPolicy'
-        selfServicePolicy:
-          $ref: '#/components/schemas/IdReferenceRequest_OrganizationPolicy'
-      description: Defines which policy to override for an application. If any of them is set to `null`, that policy won't be overridden by the organization.
-    OrganizationPolicyResponse_OrganizationPolicy:
-      type: object
-      properties:
-        loginProviders:
-          $ref: '#/components/schemas/OrganizationPolicyResponseLoginProviders_OrganizationPolicy'
-        organization:
-          $ref: '#/components/schemas/OnlyIdResponse_OrganizationPolicy'
-        policies:
-          $ref: '#/components/schemas/OrganizationPolicyResponsePolicies_OrganizationPolicy'
-    OrganizationPolicyResponseLoginProviders_OrganizationPolicy:
-      type: object
-      properties:
-        enterpriseLoginProviders:
-          uniqueItems: true
-          type: array
-          items:
-            $ref: '#/components/schemas/IdReferenceResponse_OrganizationPolicy'
-        forwardToExternalProviderEnabled:
-          type: boolean
-        localLoginProviderEnabled:
-          type: boolean
-        socialLoginProviders:
-          uniqueItems: true
-          type: array
-          items:
-            $ref: '#/components/schemas/IdReferenceResponse_OrganizationPolicy'
-    OnlyIdResponse_OrganizationPolicy:
-      type: object
-      properties:
-        id:
-          type: string
-    OrganizationPolicyResponse:
-      type: object
-      properties:
-        loginProviders:
-          $ref: '#/components/schemas/OrganizationPolicyResponseLoginProviders'
-        organization:
-          $ref: '#/components/schemas/OnlyIdResponse'
-        policies:
-          $ref: '#/components/schemas/OrganizationPolicyResponsePolicies'
-    LoginProviders_OrganizationPolicy:
-      required:
-      - enterpriseLoginProviders
-      - socialLoginProviders
-      type: object
-      properties:
-        enterpriseLoginProviders:
-          type: array
-          items:
-            $ref: '#/components/schemas/IdReferenceRequest_OrganizationPolicy'
-        forwardToExternalProviderEnabled:
-          type: boolean
-          default: false
-        localLoginProviderEnabled:
-          type: boolean
-          default: false
-        socialLoginProviders:
-          type: array
-          items:
-            $ref: '#/components/schemas/IdReferenceRequest_OrganizationPolicy'
-      description: Represents both social and enterprise login providers.
-    IdReferenceResponse:
-      type: object
-      properties:
-        id:
-          type: string
-          description: ID of the represented entity
-    FieldError:
-      type: object
-      properties:
-        field:
-          type: string
-        message:
-          type: string
-        objectName:
-          type: string
-    NameAndId:
-      type: object
-      properties:
-        id:
-          type: string
-          description: ID of the represented entity
-    OrganizationPolicyResponsePolicies_OrganizationPolicy:
-      type: object
-      properties:
-        adaptiveMFA:
-          $ref: '#/components/schemas/NameAndId_OrganizationPolicy'
-        brand:
-          $ref: '#/components/schemas/NameAndId_OrganizationPolicy'
-        identityProofing:
-          $ref: '#/components/schemas/NameAndId_OrganizationPolicy'
-        notificationPolicy:
-          $ref: '#/components/schemas/NameAndId_OrganizationPolicy'
-        selfServicePolicy:
-          $ref: '#/components/schemas/NameAndId_OrganizationPolicy'
-    IdReferenceResponse_OrganizationPolicy:
-      type: object
-      properties:
-        id:
-          type: string
-          description: ID of the represented entity
-    OrganizationPolicyUpsertRequest_OrganizationPolicy:
-      required:
-      - organization
-      type: object
-      properties:
-        loginProviders:
-          $ref: '#/components/schemas/LoginProviders_OrganizationPolicy'
-        organization:
-          $ref: '#/components/schemas/IdReferenceRequest_OrganizationPolicy'
-        policies:
-          $ref: '#/components/schemas/Policies_OrganizationPolicy'
-    NameAndId_OrganizationPolicy:
-      type: object
-      properties:
-        id:
-          type: string
-          description: ID of the represented entity
   securitySchemes:
     securityScheme:
       scheme: bearer

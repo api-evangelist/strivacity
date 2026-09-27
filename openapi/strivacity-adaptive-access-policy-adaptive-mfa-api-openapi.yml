@@ -510,69 +510,24 @@ paths:
           description: Your Strivacity tenant
 components:
   schemas:
-    ProblemJson:
+    IdReferenceRequest_AdaptiveMFA:
+      required:
+      - id
       type: object
       properties:
-        detail:
+        id:
+          pattern: ^[a-zA-Z0-9-]{1,36}$
           type: string
-        entityName:
+          description: ID of the represented entity
+    FieldError:
+      type: object
+      properties:
+        field:
           type: string
-          description: The name of the entity within the error has occurred
-        errorKey:
-          type: string
-          description: A unique identifier of the error
-        fieldErrors:
-          type: array
-          description: Field constraint violation errors
-          items:
-            $ref: '#/components/schemas/FieldError'
         message:
           type: string
-          description: A unique identifier in format of 'error.{errorKey}'
-        params:
-          type: array
-          description: Further information related to the actual error
-          items:
-            type: object
-            additionalProperties:
-              type: object
-        path:
+        objectName:
           type: string
-          description: Request URI
-        status:
-          type: integer
-          description: Status code
-          format: int32
-        title:
-          type: string
-      description: Based on [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807)
-    TemporaryLockoutResponse_AdaptiveMFA:
-      type: object
-      properties:
-        enabled:
-          type: boolean
-        lockoutDurationMinutes:
-          type: integer
-          format: int32
-        maxFailedAttempts:
-          type: integer
-          format: int32
-      description: Represents temporary lockout settings.
-    PermanentLockout_AdaptiveMFA:
-      type: object
-      properties:
-        enabled:
-          type: boolean
-        maxFailedAttempts:
-          maximum: 99
-          minimum: 1
-          type: integer
-          format: int32
-    PasskeyFactorResponse_AdaptiveMFA:
-      type: object
-      properties:
-        enabled:
-          type: boolean
     RememberMyDeviceRequest_AdaptiveMFA:
       type: object
       properties:
@@ -589,52 +544,39 @@ components:
           format: int32
           default: 30
       description: Device recognition rules to be used for an adaptive access policy
-    OutOfBandFactorResponse_AdaptiveMFA:
+    ConfigurationResponse_AdaptiveMFA:
       type: object
       properties:
-        enabled:
-          type: boolean
-        magicLinkEnabled:
-          type: boolean
-        mandatory:
-          type: boolean
-        passcodeEnabled:
-          type: boolean
-        restrictedToExisting:
-          type: boolean
-      description: Represents an out-of-band factor for MFA. At least `passcodeEnabled` or `magicLinkEnabled` must be true.
-    PermanentLockoutResponse_AdaptiveMFA:
+        maxFailedAttempts:
+          type: integer
+          format: int32
+      description: Session termination settings response
+    PermanentLockout_AdaptiveMFA:
       type: object
       properties:
         enabled:
           type: boolean
         maxFailedAttempts:
+          maximum: 99
+          minimum: 1
           type: integer
           format: int32
-      description: Represents permanent lockout settings.
-    FactorResponse_AdaptiveMFA:
+    BlockingRulesResponse_AdaptiveMFA:
       type: object
       properties:
-        enabled:
+        anonymousProxy:
           type: boolean
-        mandatory:
-          type: boolean
-      description: Represents a factor used for MFA
-    IpAddressResponse_AdaptiveMFA:
-      type: object
-      properties:
-        type:
+        botDetectionLevel:
           type: string
-          description: Represents a type of inclusion
           enum:
-          - include
-          - exclude
-        values:
-          type: array
-          description: Represents a list of IP addresses
-          items:
-            type: string
-      description: Configuration of including or excluding a list of IP addresses
+          - 'off'
+          - low
+          - high
+        ipAddress:
+          $ref: '#/components/schemas/IpAddressResponse_AdaptiveMFA'
+        location:
+          $ref: '#/components/schemas/AdaptiveAccessPolicyLocationResponse_AdaptiveMFA'
+      description: Defines when to block login and registration by a set of rules
     AdaptiveAccessPolicyLocationRequest_AdaptiveMFA:
       type: object
       properties:
@@ -651,58 +593,89 @@ components:
             $ref: '#/components/schemas/LocationValueRequest_AdaptiveMFA'
           default: []
       description: Location rules to be used for an adaptive access policy
-    AdaptiveAccessPolicyMFAResponse_AdaptiveMFA:
-      type: object
-      properties:
-        customMfaAssignments:
-          type: array
-          items:
-            $ref: '#/components/schemas/IdReferenceResponse_AdaptiveMFA'
-        email:
-          $ref: '#/components/schemas/OutOfBandFactorResponse_AdaptiveMFA'
-        enforceSecondFactor:
-          type: boolean
-        magicLinkLifetimeMinutes:
-          type: integer
-          format: int32
-        passcodeLength:
-          type: integer
-          format: int32
-        passcodeLifetimeMinutes:
-          type: integer
-          format: int32
-        passkey:
-          $ref: '#/components/schemas/PasskeyFactorResponse_AdaptiveMFA'
-        phone:
-          $ref: '#/components/schemas/OutOfBandFactorResponse_AdaptiveMFA'
-        skipAuthenticatorSelectEnrollScreen:
-          type: boolean
-        skipMethodSelectionEnabled:
-          type: boolean
-        softToken:
-          $ref: '#/components/schemas/SoftTokenFactorResponse_AdaptiveMFA'
-        webAuthnDeviceBiometrics:
-          $ref: '#/components/schemas/FactorResponse_AdaptiveMFA'
-        webAuthnSecurityKey:
-          $ref: '#/components/schemas/FactorResponse_AdaptiveMFA'
-      description: Represents an adaptive access policy configuration
-    SoftTokenFactorResponse_AdaptiveMFA:
+    PermanentLockoutResponse_AdaptiveMFA:
       type: object
       properties:
         enabled:
           type: boolean
-        label:
-          type: string
-        mandatory:
-          type: boolean
-      description: Represents a soft token factor used for MFA
-    ConfigurationResponse_AdaptiveMFA:
-      type: object
-      properties:
         maxFailedAttempts:
           type: integer
           format: int32
-      description: Session termination settings response
+      description: Represents permanent lockout settings.
+    PasskeyFactorResponse_AdaptiveMFA:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+    IpAddressResponse_AdaptiveMFA:
+      type: object
+      properties:
+        type:
+          type: string
+          description: Represents a type of inclusion
+          enum:
+          - include
+          - exclude
+        values:
+          type: array
+          description: Represents a list of IP addresses
+          items:
+            type: string
+      description: Configuration of including or excluding a list of IP addresses
+    AccountLockoutResponse_AdaptiveMFA:
+      type: object
+      properties:
+        passcode:
+          $ref: '#/components/schemas/LockoutResponse_AdaptiveMFA'
+        password:
+          $ref: '#/components/schemas/LockoutResponse_AdaptiveMFA'
+      description: Represents account lockout object.
+    AccountLockout_AdaptiveMFA:
+      required:
+      - passcode
+      - password
+      type: object
+      properties:
+        passcode:
+          $ref: '#/components/schemas/Lockout_AdaptiveMFA'
+        password:
+          $ref: '#/components/schemas/Lockout_AdaptiveMFA'
+      description: Represents the account lockout configuration
+    SoftTokenFactorRequest_AdaptiveMFA:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+          default: false
+        label:
+          maxLength: 255
+          minLength: 1
+          type: string
+          description: Display label used in soft token authenticator apps
+        mandatory:
+          type: boolean
+          default: false
+      description: Configuration of a soft token factor used for MFA
+    TemporaryLockoutResponse_AdaptiveMFA:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+        lockoutDurationMinutes:
+          type: integer
+          format: int32
+        maxFailedAttempts:
+          type: integer
+          format: int32
+      description: Represents temporary lockout settings.
+    BehaviorAnalyticsResponse_AdaptiveMFA:
+      type: object
+      properties:
+        useLocation:
+          type: boolean
+        useTime:
+          type: boolean
+      description: Configuration of behavior analytics
     SessionTermination_AdaptiveMFA:
       required:
       - identifier
@@ -717,6 +690,166 @@ components:
         password:
           $ref: '#/components/schemas/SessionTerminationConfiguration_AdaptiveMFA'
       description: Represents the session termination configuration
+    SessionTerminationConfiguration_AdaptiveMFA:
+      type: object
+      properties:
+        maxFailedAttempts:
+          maximum: 10
+          minimum: 2
+          type: integer
+          format: int32
+      description: Session termination settings
+    RememberMyDeviceResponse_AdaptiveMFA:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+        enabledByDefault:
+          type: boolean
+        numberOfDays:
+          type: integer
+          format: int32
+      description: Configuration of device recognition
+    AdaptiveAccessPolicyLocationResponse_AdaptiveMFA:
+      type: object
+      properties:
+        type:
+          type: string
+          description: Represents a type of inclusion
+          enum:
+          - include
+          - exclude
+        values:
+          type: array
+          description: Represents a list of locations
+          items:
+            $ref: '#/components/schemas/LocationValueResponse_AdaptiveMFA'
+      description: Location rules defined for an adaptive access policy
+    OutOfBandFactorRequest_AdaptiveMFA:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+          default: false
+        magicLinkEnabled:
+          type: boolean
+          default: false
+        mandatory:
+          type: boolean
+          default: false
+        passcodeEnabled:
+          type: boolean
+          default: true
+        restrictedToExisting:
+          type: boolean
+          default: false
+      description: Represents an out-of-band factor for MFA. At least `passcodeEnabled` or `magicLinkEnabled` must be true.
+    BlockingRulesRequest_AdaptiveMFA:
+      type: object
+      properties:
+        anonymousProxy:
+          type: boolean
+          default: false
+        botDetectionLevel:
+          type: string
+          enum:
+          - 'off'
+          - low
+          - high
+          default: 'off'
+        ipAddress:
+          $ref: '#/components/schemas/IpAddressRequest_AdaptiveMFA'
+        location:
+          $ref: '#/components/schemas/AdaptiveAccessPolicyLocationRequest_AdaptiveMFA'
+      description: Defines when to block login and registration by a set of rules
+    RulesResponse_AdaptiveMFA:
+      type: object
+      properties:
+        blockingRules:
+          $ref: '#/components/schemas/BlockingRulesResponse_AdaptiveMFA'
+        stepDownRules:
+          $ref: '#/components/schemas/StepDownRulesResponse_AdaptiveMFA'
+        stepUpRules:
+          $ref: '#/components/schemas/StepUpRulesResponse_AdaptiveMFA'
+      description: Configuration of different rules under an adaptive access policy
+    AdminAdaptiveAccessPolicyUpdateRequest_AdaptiveMFA:
+      required:
+      - mfa
+      - workflow
+      type: object
+      properties:
+        accountLockout:
+          $ref: '#/components/schemas/AccountLockout_AdaptiveMFA'
+        exposeAttempts:
+          type: boolean
+          default: false
+        externalLoginsMFAEnabled:
+          type: boolean
+          default: false
+        mfa:
+          $ref: '#/components/schemas/MfaRequest_AdaptiveMFA'
+        rules:
+          $ref: '#/components/schemas/RulesRequest_AdaptiveMFA'
+        sessionTermination:
+          $ref: '#/components/schemas/SessionTermination_AdaptiveMFA'
+        workflow:
+          type: array
+          description: Defines each step in the login flow to be performed in a specific order
+          example:
+          - username
+          - mfa
+          - password
+          items:
+            type: string
+            description: Represents a step in the login flow
+            enum:
+            - username
+            - password
+            - mfa
+          enum:
+          - '["username", "mfa", "password"]'
+          - '["username", "password", "mfa"]'
+          - '["username", "mfa"]'
+          - '["username", "password"]'
+    SessionTerminationResponse_AdaptiveMFA:
+      type: object
+      properties:
+        identifier:
+          $ref: '#/components/schemas/ConfigurationResponse_AdaptiveMFA'
+        passcode:
+          $ref: '#/components/schemas/ConfigurationResponse_AdaptiveMFA'
+        password:
+          $ref: '#/components/schemas/ConfigurationResponse_AdaptiveMFA'
+      description: Session termination settings response
+    FactorResponse_AdaptiveMFA:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+        mandatory:
+          type: boolean
+      description: Represents a factor used for MFA
+    Lockout_AdaptiveMFA:
+      required:
+      - permanent
+      - temporary
+      type: object
+      properties:
+        permanent:
+          $ref: '#/components/schemas/PermanentLockout_AdaptiveMFA'
+        temporary:
+          $ref: '#/components/schemas/TemporaryLockout_AdaptiveMFA'
+      description: Account lockout settings
+    LocationValueResponse_AdaptiveMFA:
+      type: object
+      properties:
+        city:
+          type: string
+        country:
+          type: string
+        state:
+          type: string
+      description: Represents a location by its regional properties
     StepUpRulesRequest_AdaptiveMFA:
       type: object
       properties:
@@ -747,95 +880,6 @@ components:
           type: string
         state:
           type: string
-    SessionTerminationResponse_AdaptiveMFA:
-      type: object
-      properties:
-        identifier:
-          $ref: '#/components/schemas/ConfigurationResponse_AdaptiveMFA'
-        passcode:
-          $ref: '#/components/schemas/ConfigurationResponse_AdaptiveMFA'
-        password:
-          $ref: '#/components/schemas/ConfigurationResponse_AdaptiveMFA'
-      description: Session termination settings response
-    IdReferenceRequest_AdaptiveMFA:
-      required:
-      - id
-      type: object
-      properties:
-        id:
-          pattern: ^[a-zA-Z0-9-]{1,36}$
-          type: string
-          description: ID of the represented entity
-    IdReferenceResponse_AdaptiveMFA:
-      type: object
-      properties:
-        id:
-          type: string
-          description: ID of the represented entity
-    StepDownRulesRequest_AdaptiveMFA:
-      type: object
-      properties:
-        behaviorAnalytics:
-          $ref: '#/components/schemas/BehaviorAnalytics_AdaptiveMFA'
-        ipAddress:
-          $ref: '#/components/schemas/IpAddressRequest_AdaptiveMFA'
-        location:
-          $ref: '#/components/schemas/AdaptiveAccessPolicyLocationRequest_AdaptiveMFA'
-        rememberMyDevice:
-          $ref: '#/components/schemas/RememberMyDeviceRequest_AdaptiveMFA'
-      description: Defines when to skip MFA for login by a set of rules
-    OutOfBandFactorRequest_AdaptiveMFA:
-      type: object
-      properties:
-        enabled:
-          type: boolean
-          default: false
-        magicLinkEnabled:
-          type: boolean
-          default: false
-        mandatory:
-          type: boolean
-          default: false
-        passcodeEnabled:
-          type: boolean
-          default: true
-        restrictedToExisting:
-          type: boolean
-          default: false
-      description: Represents an out-of-band factor for MFA. At least `passcodeEnabled` or `magicLinkEnabled` must be true.
-    PasskeyFactorRequest_AdaptiveMFA:
-      type: object
-      properties:
-        enabled:
-          type: boolean
-    BlockingRulesResponse_AdaptiveMFA:
-      type: object
-      properties:
-        anonymousProxy:
-          type: boolean
-        botDetectionLevel:
-          type: string
-          enum:
-          - 'off'
-          - low
-          - high
-        ipAddress:
-          $ref: '#/components/schemas/IpAddressResponse_AdaptiveMFA'
-        location:
-          $ref: '#/components/schemas/AdaptiveAccessPolicyLocationResponse_AdaptiveMFA'
-      description: Defines when to block login and registration by a set of rules
-    LocationValueRequest_AdaptiveMFA:
-      required:
-      - country
-      type: object
-      properties:
-        city:
-          type: string
-        country:
-          type: string
-        state:
-          type: string
-      description: Represents a location by its regional properties
     MfaRequest_AdaptiveMFA:
       required:
       - email
@@ -883,139 +927,6 @@ components:
           $ref: '#/components/schemas/FactorRequest_AdaptiveMFA'
         webAuthnSecurityKey:
           $ref: '#/components/schemas/FactorRequest_AdaptiveMFA'
-    LocationValueResponse_AdaptiveMFA:
-      type: object
-      properties:
-        city:
-          type: string
-        country:
-          type: string
-        state:
-          type: string
-      description: Represents a location by its regional properties
-    StepUpRulesResponse_AdaptiveMFA:
-      type: object
-      properties:
-        anonymousProxy:
-          type: boolean
-          default: false
-        botDetectionLevel:
-          type: string
-          enum:
-          - 'off'
-          - low
-          - high
-        improbableTravelEventDetection:
-          type: boolean
-          default: false
-        ipAddress:
-          $ref: '#/components/schemas/IpAddressResponse_AdaptiveMFA'
-        location:
-          $ref: '#/components/schemas/AdaptiveAccessPolicyLocationResponse_AdaptiveMFA'
-      description: Defines when to require MFA for login by a set of rules
-    FieldError:
-      type: object
-      properties:
-        field:
-          type: string
-        message:
-          type: string
-        objectName:
-          type: string
-    Lockout_AdaptiveMFA:
-      required:
-      - permanent
-      - temporary
-      type: object
-      properties:
-        permanent:
-          $ref: '#/components/schemas/PermanentLockout_AdaptiveMFA'
-        temporary:
-          $ref: '#/components/schemas/TemporaryLockout_AdaptiveMFA'
-      description: Account lockout settings
-    BlockingRulesRequest_AdaptiveMFA:
-      type: object
-      properties:
-        anonymousProxy:
-          type: boolean
-          default: false
-        botDetectionLevel:
-          type: string
-          enum:
-          - 'off'
-          - low
-          - high
-          default: 'off'
-        ipAddress:
-          $ref: '#/components/schemas/IpAddressRequest_AdaptiveMFA'
-        location:
-          $ref: '#/components/schemas/AdaptiveAccessPolicyLocationRequest_AdaptiveMFA'
-      description: Defines when to block login and registration by a set of rules
-    AdaptiveAccessPolicyLocationResponse_AdaptiveMFA:
-      type: object
-      properties:
-        type:
-          type: string
-          description: Represents a type of inclusion
-          enum:
-          - include
-          - exclude
-        values:
-          type: array
-          description: Represents a list of locations
-          items:
-            $ref: '#/components/schemas/LocationValueResponse_AdaptiveMFA'
-      description: Location rules defined for an adaptive access policy
-    SoftTokenFactorRequest_AdaptiveMFA:
-      type: object
-      properties:
-        enabled:
-          type: boolean
-          default: false
-        label:
-          maxLength: 255
-          minLength: 1
-          type: string
-          description: Display label used in soft token authenticator apps
-        mandatory:
-          type: boolean
-          default: false
-      description: Configuration of a soft token factor used for MFA
-    BehaviorAnalyticsResponse_AdaptiveMFA:
-      type: object
-      properties:
-        useLocation:
-          type: boolean
-        useTime:
-          type: boolean
-      description: Configuration of behavior analytics
-    IpAddressRequest_AdaptiveMFA:
-      type: object
-      properties:
-        type:
-          type: string
-          description: Represents a type of inclusion
-          enum:
-          - include
-          - exclude
-          default: include
-        values:
-          type: array
-          description: 'Represents a list of subnet ranges (CIDR). See: [RFC 4632](https://www.rfc-editor.org/rfc/rfc4632)'
-          items:
-            type: string
-            example: 1.1.1.1/32
-          default: []
-      description: IP address rules to be used for an adaptive access policy
-    SessionTerminationConfiguration_AdaptiveMFA:
-      type: object
-      properties:
-        maxFailedAttempts:
-          maximum: 10
-          minimum: 2
-          type: integer
-          format: int32
-      description: Session termination settings
     AdminAdaptiveAccessPolicyResponse_AdaptiveMFA:
       type: object
       properties:
@@ -1036,17 +947,48 @@ components:
           description: Defines each step in the login flow to be performed in a specific order
           items:
             type: string
-    RememberMyDeviceResponse_AdaptiveMFA:
+    IdReferenceResponse_AdaptiveMFA:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID of the represented entity
+    SoftTokenFactorResponse_AdaptiveMFA:
       type: object
       properties:
         enabled:
           type: boolean
-        enabledByDefault:
+        label:
+          type: string
+        mandatory:
           type: boolean
-        numberOfDays:
-          type: integer
-          format: int32
-      description: Configuration of device recognition
+      description: Represents a soft token factor used for MFA
+    StepDownRulesRequest_AdaptiveMFA:
+      type: object
+      properties:
+        behaviorAnalytics:
+          $ref: '#/components/schemas/BehaviorAnalytics_AdaptiveMFA'
+        ipAddress:
+          $ref: '#/components/schemas/IpAddressRequest_AdaptiveMFA'
+        location:
+          $ref: '#/components/schemas/AdaptiveAccessPolicyLocationRequest_AdaptiveMFA'
+        rememberMyDevice:
+          $ref: '#/components/schemas/RememberMyDeviceRequest_AdaptiveMFA'
+      description: Defines when to skip MFA for login by a set of rules
+    OutOfBandFactorResponse_AdaptiveMFA:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+        magicLinkEnabled:
+          type: boolean
+        mandatory:
+          type: boolean
+        passcodeEnabled:
+          type: boolean
+        restrictedToExisting:
+          type: boolean
+      description: Represents an out-of-band factor for MFA. At least `passcodeEnabled` or `magicLinkEnabled` must be true.
     TemporaryLockout_AdaptiveMFA:
       type: object
       properties:
@@ -1062,46 +1004,6 @@ components:
           minimum: 1
           type: integer
           format: int32
-    RulesRequest_AdaptiveMFA:
-      type: object
-      properties:
-        blockingRules:
-          $ref: '#/components/schemas/BlockingRulesRequest_AdaptiveMFA'
-        stepDownRules:
-          $ref: '#/components/schemas/StepDownRulesRequest_AdaptiveMFA'
-        stepUpRules:
-          $ref: '#/components/schemas/StepUpRulesRequest_AdaptiveMFA'
-      description: Rules defined for an adaptive access policy
-    AccountLockout_AdaptiveMFA:
-      required:
-      - passcode
-      - password
-      type: object
-      properties:
-        passcode:
-          $ref: '#/components/schemas/Lockout_AdaptiveMFA'
-        password:
-          $ref: '#/components/schemas/Lockout_AdaptiveMFA'
-      description: Represents the account lockout configuration
-    FactorRequest_AdaptiveMFA:
-      type: object
-      properties:
-        enabled:
-          type: boolean
-        mandatory:
-          type: boolean
-          default: false
-      description: Represents a factor used for MFA
-    RulesResponse_AdaptiveMFA:
-      type: object
-      properties:
-        blockingRules:
-          $ref: '#/components/schemas/BlockingRulesResponse_AdaptiveMFA'
-        stepDownRules:
-          $ref: '#/components/schemas/StepDownRulesResponse_AdaptiveMFA'
-        stepUpRules:
-          $ref: '#/components/schemas/StepUpRulesResponse_AdaptiveMFA'
-      description: Configuration of different rules under an adaptive access policy
     BehaviorAnalytics_AdaptiveMFA:
       type: object
       properties:
@@ -1112,53 +1014,78 @@ components:
           type: boolean
           default: false
       description: Defines rules to use machine learning for step down rules
-    LockoutResponse_AdaptiveMFA:
+    PasskeyFactorRequest_AdaptiveMFA:
       type: object
       properties:
-        permanent:
-          $ref: '#/components/schemas/PermanentLockoutResponse_AdaptiveMFA'
-        temporary:
-          $ref: '#/components/schemas/TemporaryLockoutResponse_AdaptiveMFA'
-      description: Represents lockout settings.
-    AdminAdaptiveAccessPolicyUpdateRequest_AdaptiveMFA:
-      required:
-      - mfa
-      - workflow
+        enabled:
+          type: boolean
+    StepUpRulesResponse_AdaptiveMFA:
       type: object
       properties:
-        accountLockout:
-          $ref: '#/components/schemas/AccountLockout_AdaptiveMFA'
-        exposeAttempts:
+        anonymousProxy:
           type: boolean
           default: false
-        externalLoginsMFAEnabled:
-          type: boolean
-          default: false
-        mfa:
-          $ref: '#/components/schemas/MfaRequest_AdaptiveMFA'
-        rules:
-          $ref: '#/components/schemas/RulesRequest_AdaptiveMFA'
-        sessionTermination:
-          $ref: '#/components/schemas/SessionTermination_AdaptiveMFA'
-        workflow:
-          type: array
-          description: Defines each step in the login flow to be performed in a specific order
-          example:
-          - username
-          - mfa
-          - password
-          items:
-            type: string
-            description: Represents a step in the login flow
-            enum:
-            - username
-            - password
-            - mfa
+        botDetectionLevel:
+          type: string
           enum:
-          - '["username", "mfa", "password"]'
-          - '["username", "password", "mfa"]'
-          - '["username", "mfa"]'
-          - '["username", "password"]'
+          - 'off'
+          - low
+          - high
+        improbableTravelEventDetection:
+          type: boolean
+          default: false
+        ipAddress:
+          $ref: '#/components/schemas/IpAddressResponse_AdaptiveMFA'
+        location:
+          $ref: '#/components/schemas/AdaptiveAccessPolicyLocationResponse_AdaptiveMFA'
+      description: Defines when to require MFA for login by a set of rules
+    AdaptiveAccessPolicyMFAResponse_AdaptiveMFA:
+      type: object
+      properties:
+        customMfaAssignments:
+          type: array
+          items:
+            $ref: '#/components/schemas/IdReferenceResponse_AdaptiveMFA'
+        email:
+          $ref: '#/components/schemas/OutOfBandFactorResponse_AdaptiveMFA'
+        enforceSecondFactor:
+          type: boolean
+        magicLinkLifetimeMinutes:
+          type: integer
+          format: int32
+        passcodeLength:
+          type: integer
+          format: int32
+        passcodeLifetimeMinutes:
+          type: integer
+          format: int32
+        passkey:
+          $ref: '#/components/schemas/PasskeyFactorResponse_AdaptiveMFA'
+        phone:
+          $ref: '#/components/schemas/OutOfBandFactorResponse_AdaptiveMFA'
+        skipAuthenticatorSelectEnrollScreen:
+          type: boolean
+        skipMethodSelectionEnabled:
+          type: boolean
+        softToken:
+          $ref: '#/components/schemas/SoftTokenFactorResponse_AdaptiveMFA'
+        webAuthnDeviceBiometrics:
+          $ref: '#/components/schemas/FactorResponse_AdaptiveMFA'
+        webAuthnSecurityKey:
+          $ref: '#/components/schemas/FactorResponse_AdaptiveMFA'
+      description: Represents an adaptive access policy configuration
+    LocationValueRequest_AdaptiveMFA:
+      required:
+      - country
+      type: object
+      properties:
+        city:
+          type: string
+        country:
+          type: string
+        state:
+          type: string
+      description: Represents a location by its regional properties
     StepDownRulesResponse_AdaptiveMFA:
       type: object
       properties:
@@ -1171,68 +1098,99 @@ components:
         rememberMyDevice:
           $ref: '#/components/schemas/RememberMyDeviceResponse_AdaptiveMFA'
       description: Defines when to skip MFA for login by a set of rules
-    AccountLockoutResponse_AdaptiveMFA:
+    LockoutResponse_AdaptiveMFA:
       type: object
       properties:
-        passcode:
-          $ref: '#/components/schemas/LockoutResponse_AdaptiveMFA'
-        password:
-          $ref: '#/components/schemas/LockoutResponse_AdaptiveMFA'
-      description: Represents account lockout object.
-    TemporaryLockoutResponse:
+        permanent:
+          $ref: '#/components/schemas/PermanentLockoutResponse_AdaptiveMFA'
+        temporary:
+          $ref: '#/components/schemas/TemporaryLockoutResponse_AdaptiveMFA'
+      description: Represents lockout settings.
+    FactorRequest_AdaptiveMFA:
       type: object
       properties:
         enabled:
           type: boolean
-        lockoutDurationMinutes:
-          type: integer
-          format: int32
-        maxFailedAttempts:
-          type: integer
-          format: int32
-      description: Represents temporary lockout settings.
-    PageMetadata:
+        mandatory:
+          type: boolean
+          default: false
+      description: Represents a factor used for MFA
+    IpAddressRequest_AdaptiveMFA:
       type: object
       properties:
-        number:
-          type: integer
-          format: int64
-        size:
-          type: integer
-          format: int64
-        totalElements:
-          type: integer
-          format: int64
-        totalPages:
-          type: integer
-          format: int64
-    AccountLockoutResponse:
-      type: object
-      properties:
-        passcode:
-          $ref: '#/components/schemas/LockoutResponse'
-        password:
-          $ref: '#/components/schemas/LockoutResponse'
-      description: Represents account lockout object.
-    PagedModelAdaptiveAccessPolicyResponse:
-      type: object
-      properties:
-        content:
+        type:
+          type: string
+          description: Represents a type of inclusion
+          enum:
+          - include
+          - exclude
+          default: include
+        values:
           type: array
+          description: 'Represents a list of subnet ranges (CIDR). See: [RFC 4632](https://www.rfc-editor.org/rfc/rfc4632)'
           items:
-            $ref: '#/components/schemas/AdaptiveAccessPolicyResponse'
-        page:
-          $ref: '#/components/schemas/PageMetadata'
-    LocationValueResponse:
+            type: string
+            example: 1.1.1.1/32
+          default: []
+      description: IP address rules to be used for an adaptive access policy
+    RulesRequest_AdaptiveMFA:
       type: object
       properties:
-        city:
+        blockingRules:
+          $ref: '#/components/schemas/BlockingRulesRequest_AdaptiveMFA'
+        stepDownRules:
+          $ref: '#/components/schemas/StepDownRulesRequest_AdaptiveMFA'
+        stepUpRules:
+          $ref: '#/components/schemas/StepUpRulesRequest_AdaptiveMFA'
+      description: Rules defined for an adaptive access policy
+    ProblemJson:
+      type: object
+      properties:
+        detail:
           type: string
-        country:
+        entityName:
           type: string
-        state:
+          description: The name of the entity within the error has occurred
+        errorKey:
           type: string
-      description: Represents a location by its regional properties
+          description: A unique identifier of the error
+        fieldErrors:
+          type: array
+          description: Field constraint violation errors
+          items:
+            $ref: '#/components/schemas/FieldError'
+        message:
+          type: string
+          description: A unique identifier in format of 'error.{errorKey}'
+        params:
+          type: array
+          description: Further information related to the actual error
+          items:
+            type: object
+            additionalProperties:
+              type: object
+        path:
+          type: string
+          description: Request URI
+        status:
+          type: integer
+          description: Status code
+          format: int32
+        title:
+          type: string
+      description: Based on [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807)
+    StepDownRulesResponse:
+      type: object
+      properties:
+        behaviorAnalytics:
+          $ref: '#/components/schemas/BehaviorAnalyticsResponse'
+        ipAddress:
+          $ref: '#/components/schemas/IpAddressResponse'
+        location:
+          $ref: '#/components/schemas/AdaptiveAccessPolicyLocationResponse'
+        rememberMyDevice:
+          $ref: '#/components/schemas/RememberMyDeviceResponse'
+      description: Defines when to skip MFA for login by a set of rules
     OutOfBandFactorResponse:
       type: object
       properties:
@@ -1247,24 +1205,14 @@ components:
         restrictedToExisting:
           type: boolean
       description: Represents an out-of-band factor for MFA. At least `passcodeEnabled` or `magicLinkEnabled` must be true.
-    ConfigurationResponse:
+    LockoutResponse:
       type: object
       properties:
-        maxFailedAttempts:
-          type: integer
-          format: int32
-      description: Session termination settings response
-    RememberMyDeviceResponse:
-      type: object
-      properties:
-        enabled:
-          type: boolean
-        enabledByDefault:
-          type: boolean
-        numberOfDays:
-          type: integer
-          format: int32
-      description: Configuration of device recognition
+        permanent:
+          $ref: '#/components/schemas/PermanentLockoutResponse'
+        temporary:
+          $ref: '#/components/schemas/TemporaryLockoutResponse'
+      description: Represents lockout settings.
     AdaptiveAccessPolicyRequest_AdaptiveMFA:
       required:
       - id
@@ -1332,45 +1280,6 @@ components:
           - '["username", "password", "mfa"]'
           - '["username", "mfa"]'
           - '["username", "password"]'
-    PasskeyFactorResponse:
-      type: object
-      properties:
-        enabled:
-          type: boolean
-    LockoutResponse:
-      type: object
-      properties:
-        permanent:
-          $ref: '#/components/schemas/PermanentLockoutResponse'
-        temporary:
-          $ref: '#/components/schemas/TemporaryLockoutResponse'
-      description: Represents lockout settings.
-    IdReferenceResponse:
-      type: object
-      properties:
-        id:
-          type: string
-          description: ID of the represented entity
-    StepUpRulesResponse:
-      type: object
-      properties:
-        anonymousProxy:
-          type: boolean
-          default: false
-        botDetectionLevel:
-          type: string
-          enum:
-          - 'off'
-          - low
-          - high
-        improbableTravelEventDetection:
-          type: boolean
-          default: false
-        ipAddress:
-          $ref: '#/components/schemas/IpAddressResponse'
-        location:
-          $ref: '#/components/schemas/AdaptiveAccessPolicyLocationResponse'
-      description: Defines when to require MFA for login by a set of rules
     BlockingRulesResponse:
       type: object
       properties:
@@ -1387,6 +1296,110 @@ components:
         location:
           $ref: '#/components/schemas/AdaptiveAccessPolicyLocationResponse'
       description: Defines when to block login and registration by a set of rules
+    TemporaryLockoutResponse:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+        lockoutDurationMinutes:
+          type: integer
+          format: int32
+        maxFailedAttempts:
+          type: integer
+          format: int32
+      description: Represents temporary lockout settings.
+    PermanentLockoutResponse:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+        maxFailedAttempts:
+          type: integer
+          format: int32
+      description: Represents permanent lockout settings.
+    ConfigurationResponse:
+      type: object
+      properties:
+        maxFailedAttempts:
+          type: integer
+          format: int32
+      description: Session termination settings response
+    AdaptiveAccessPolicyMFAResponse:
+      type: object
+      properties:
+        customMfaAssignments:
+          type: array
+          items:
+            $ref: '#/components/schemas/IdReferenceResponse'
+        email:
+          $ref: '#/components/schemas/OutOfBandFactorResponse'
+        enforceSecondFactor:
+          type: boolean
+        magicLinkLifetimeMinutes:
+          type: integer
+          format: int32
+        passcodeLength:
+          type: integer
+          format: int32
+        passcodeLifetimeMinutes:
+          type: integer
+          format: int32
+        passkey:
+          $ref: '#/components/schemas/PasskeyFactorResponse'
+        phone:
+          $ref: '#/components/schemas/OutOfBandFactorResponse'
+        skipAuthenticatorSelectEnrollScreen:
+          type: boolean
+        skipMethodSelectionEnabled:
+          type: boolean
+        softToken:
+          $ref: '#/components/schemas/SoftTokenFactorResponse'
+        webAuthnDeviceBiometrics:
+          $ref: '#/components/schemas/FactorResponse'
+        webAuthnSecurityKey:
+          $ref: '#/components/schemas/FactorResponse'
+      description: Represents an adaptive access policy configuration
+    FactorResponse:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+        mandatory:
+          type: boolean
+      description: Represents a factor used for MFA
+    PasskeyFactorResponse:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+    RulesResponse:
+      type: object
+      properties:
+        blockingRules:
+          $ref: '#/components/schemas/BlockingRulesResponse'
+        stepDownRules:
+          $ref: '#/components/schemas/StepDownRulesResponse'
+        stepUpRules:
+          $ref: '#/components/schemas/StepUpRulesResponse'
+      description: Configuration of different rules under an adaptive access policy
+    AccountLockoutResponse:
+      type: object
+      properties:
+        passcode:
+          $ref: '#/components/schemas/LockoutResponse'
+        password:
+          $ref: '#/components/schemas/LockoutResponse'
+      description: Represents account lockout object.
+    SoftTokenFactorResponse:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+        label:
+          type: string
+        mandatory:
+          type: boolean
+      description: Represents a soft token factor used for MFA
     BehaviorAnalyticsResponse:
       type: object
       properties:
@@ -1395,6 +1408,46 @@ components:
         useTime:
           type: boolean
       description: Configuration of behavior analytics
+    AdaptiveAccessPolicyResponse:
+      type: object
+      properties:
+        accountLockout:
+          $ref: '#/components/schemas/AccountLockoutResponse'
+        allowLehToSuppressPasswords:
+          type: boolean
+        allowPasswordResetWithEmailAttribute:
+          type: boolean
+        allowPasswordResetWithPhoneAttribute:
+          type: boolean
+        description:
+          type: string
+        exposeAttempts:
+          type: boolean
+        externalLoginsMFAEnabled:
+          type: boolean
+        id:
+          type: string
+        mfa:
+          $ref: '#/components/schemas/AdaptiveAccessPolicyMFAResponse'
+        name:
+          type: string
+        policyTag:
+          type: string
+        rules:
+          $ref: '#/components/schemas/RulesResponse'
+        sessionTermination:
+          $ref: '#/components/schemas/SessionTerminationResponse'
+        workflow:
+          type: array
+          description: Defines each step in the login flow to be performed in a specific order
+          items:
+            type: string
+            description: Represents a step in the login flow
+            enum:
+            - username
+            - password
+            - mfa
+      description: Represents an adaptive access policy
     AdaptiveAccessPolicyResponse_AdaptiveMFA:
       type: object
       properties:
@@ -1435,6 +1488,22 @@ components:
             - password
             - mfa
       description: Represents an adaptive access policy
+    IdReferenceResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID of the represented entity
+    LocationValueResponse:
+      type: object
+      properties:
+        city:
+          type: string
+        country:
+          type: string
+        state:
+          type: string
+      description: Represents a location by its regional properties
     AdaptiveAccessPolicy_InsertRequest:
       required:
       - mfa
@@ -1499,133 +1568,42 @@ components:
           - '["username", "password", "mfa"]'
           - '["username", "mfa"]'
           - '["username", "password"]'
-    FactorResponse:
+    SessionTerminationResponse:
+      type: object
+      properties:
+        identifier:
+          $ref: '#/components/schemas/ConfigurationResponse'
+        passcode:
+          $ref: '#/components/schemas/ConfigurationResponse'
+        password:
+          $ref: '#/components/schemas/ConfigurationResponse'
+      description: Session termination settings response
+    RememberMyDeviceResponse:
       type: object
       properties:
         enabled:
           type: boolean
-        mandatory:
+        enabledByDefault:
           type: boolean
-      description: Represents a factor used for MFA
-    PermanentLockoutResponse:
-      type: object
-      properties:
-        enabled:
-          type: boolean
-        maxFailedAttempts:
+        numberOfDays:
           type: integer
           format: int32
-      description: Represents permanent lockout settings.
-    AdaptiveAccessPolicyMFAResponse:
+      description: Configuration of device recognition
+    PageMetadata:
       type: object
       properties:
-        customMfaAssignments:
-          type: array
-          items:
-            $ref: '#/components/schemas/IdReferenceResponse'
-        email:
-          $ref: '#/components/schemas/OutOfBandFactorResponse'
-        enforceSecondFactor:
-          type: boolean
-        magicLinkLifetimeMinutes:
+        number:
           type: integer
-          format: int32
-        passcodeLength:
+          format: int64
+        size:
           type: integer
-          format: int32
-        passcodeLifetimeMinutes:
+          format: int64
+        totalElements:
           type: integer
-          format: int32
-        passkey:
-          $ref: '#/components/schemas/PasskeyFactorResponse'
-        phone:
-          $ref: '#/components/schemas/OutOfBandFactorResponse'
-        skipAuthenticatorSelectEnrollScreen:
-          type: boolean
-        skipMethodSelectionEnabled:
-          type: boolean
-        softToken:
-          $ref: '#/components/schemas/SoftTokenFactorResponse'
-        webAuthnDeviceBiometrics:
-          $ref: '#/components/schemas/FactorResponse'
-        webAuthnSecurityKey:
-          $ref: '#/components/schemas/FactorResponse'
-      description: Represents an adaptive access policy configuration
-    IpAddressResponse:
-      type: object
-      properties:
-        type:
-          type: string
-          description: Represents a type of inclusion
-          enum:
-          - include
-          - exclude
-        values:
-          type: array
-          description: Represents a list of IP addresses
-          items:
-            type: string
-      description: Configuration of including or excluding a list of IP addresses
-    SoftTokenFactorResponse:
-      type: object
-      properties:
-        enabled:
-          type: boolean
-        label:
-          type: string
-        mandatory:
-          type: boolean
-      description: Represents a soft token factor used for MFA
-    RulesResponse:
-      type: object
-      properties:
-        blockingRules:
-          $ref: '#/components/schemas/BlockingRulesResponse'
-        stepDownRules:
-          $ref: '#/components/schemas/StepDownRulesResponse'
-        stepUpRules:
-          $ref: '#/components/schemas/StepUpRulesResponse'
-      description: Configuration of different rules under an adaptive access policy
-    AdaptiveAccessPolicyResponse:
-      type: object
-      properties:
-        accountLockout:
-          $ref: '#/components/schemas/AccountLockoutResponse'
-        allowLehToSuppressPasswords:
-          type: boolean
-        allowPasswordResetWithEmailAttribute:
-          type: boolean
-        allowPasswordResetWithPhoneAttribute:
-          type: boolean
-        description:
-          type: string
-        exposeAttempts:
-          type: boolean
-        externalLoginsMFAEnabled:
-          type: boolean
-        id:
-          type: string
-        mfa:
-          $ref: '#/components/schemas/AdaptiveAccessPolicyMFAResponse'
-        name:
-          type: string
-        policyTag:
-          type: string
-        rules:
-          $ref: '#/components/schemas/RulesResponse'
-        sessionTermination:
-          $ref: '#/components/schemas/SessionTerminationResponse'
-        workflow:
-          type: array
-          description: Defines each step in the login flow to be performed in a specific order
-          items:
-            type: string
-            description: Represents a step in the login flow
-            enum:
-            - username
-            - password
-            - mfa
-      description: Represents an adaptive access policy
+          format: int64
+        totalPages:
+          type: integer
+          format: int64
     AdaptiveAccessPolicyLocationResponse:
       type: object
       properties:
@@ -1641,28 +1619,50 @@ components:
           items:
             $ref: '#/components/schemas/LocationValueResponse'
       description: Location rules defined for an adaptive access policy
-    StepDownRulesResponse:
+    PagedModelAdaptiveAccessPolicyResponse:
       type: object
       properties:
-        behaviorAnalytics:
-          $ref: '#/components/schemas/BehaviorAnalyticsResponse'
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/AdaptiveAccessPolicyResponse'
+        page:
+          $ref: '#/components/schemas/PageMetadata'
+    StepUpRulesResponse:
+      type: object
+      properties:
+        anonymousProxy:
+          type: boolean
+          default: false
+        botDetectionLevel:
+          type: string
+          enum:
+          - 'off'
+          - low
+          - high
+        improbableTravelEventDetection:
+          type: boolean
+          default: false
         ipAddress:
           $ref: '#/components/schemas/IpAddressResponse'
         location:
           $ref: '#/components/schemas/AdaptiveAccessPolicyLocationResponse'
-        rememberMyDevice:
-          $ref: '#/components/schemas/RememberMyDeviceResponse'
-      description: Defines when to skip MFA for login by a set of rules
-    SessionTerminationResponse:
+      description: Defines when to require MFA for login by a set of rules
+    IpAddressResponse:
       type: object
       properties:
-        identifier:
-          $ref: '#/components/schemas/ConfigurationResponse'
-        passcode:
-          $ref: '#/components/schemas/ConfigurationResponse'
-        password:
-          $ref: '#/components/schemas/ConfigurationResponse'
-      description: Session termination settings response
+        type:
+          type: string
+          description: Represents a type of inclusion
+          enum:
+          - include
+          - exclude
+        values:
+          type: array
+          description: Represents a list of IP addresses
+          items:
+            type: string
+      description: Configuration of including or excluding a list of IP addresses
   securitySchemes:
     securityScheme:
       scheme: bearer

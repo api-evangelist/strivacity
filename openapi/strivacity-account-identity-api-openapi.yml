@@ -206,6 +206,53 @@ components:
             description: Represents metadata for account information
           description: Represents metadata for account information
       description: Represents the local metadata for an account
+    FieldError:
+      type: object
+      properties:
+        field:
+          type: string
+        message:
+          type: string
+        objectName:
+          type: string
+    IdentitiesResponse_Identities:
+      type: object
+      description: Represents the identities of an account
+      oneOf:
+      - $ref: '#/components/schemas/IdentitiesResponse.Local_Identities'
+      - $ref: '#/components/schemas/IdentitiesResponse.Email_Identities'
+      - $ref: '#/components/schemas/IdentitiesResponse.Phone_Identities'
+      - $ref: '#/components/schemas/IdentitiesResponse.External_Identities'
+    IdentitiesResponse.External_Identities:
+      type: object
+      properties:
+        display:
+          type: string
+        id:
+          type: string
+          description: Represents an external identifier
+        metadata:
+          type: object
+          additionalProperties:
+            type: object
+    IdentitiesResponse.Phone_Identities:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Represents the phone identifier
+        verified:
+          type: boolean
+    IdentitiesResponse.Email_Identities:
+      type: object
+      properties:
+        display:
+          type: string
+        id:
+          type: string
+          description: Represents the email identifier
+        verified:
+          type: boolean
     ProblemJson:
       type: object
       properties:
@@ -242,53 +289,6 @@ components:
         title:
           type: string
       description: Based on [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807)
-    IdentitiesResponse_Identities:
-      type: object
-      description: Represents the identities of an account
-      oneOf:
-      - $ref: '#/components/schemas/IdentitiesResponse.Local_Identities'
-      - $ref: '#/components/schemas/IdentitiesResponse.Email_Identities'
-      - $ref: '#/components/schemas/IdentitiesResponse.Phone_Identities'
-      - $ref: '#/components/schemas/IdentitiesResponse.External_Identities'
-    FieldError:
-      type: object
-      properties:
-        field:
-          type: string
-        message:
-          type: string
-        objectName:
-          type: string
-    IdentitiesResponse.External_Identities:
-      type: object
-      properties:
-        display:
-          type: string
-        id:
-          type: string
-          description: Represents an external identifier
-        metadata:
-          type: object
-          additionalProperties:
-            type: object
-    IdentitiesResponse.Phone_Identities:
-      type: object
-      properties:
-        id:
-          type: string
-          description: Represents the phone identifier
-        verified:
-          type: boolean
-    IdentitiesResponse.Email_Identities:
-      type: object
-      properties:
-        display:
-          type: string
-        id:
-          type: string
-          description: Represents the email identifier
-        verified:
-          type: boolean
   securitySchemes:
     securityScheme:
       scheme: bearer

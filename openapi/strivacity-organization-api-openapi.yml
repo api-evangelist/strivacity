@@ -361,51 +361,6 @@ paths:
       - Organization
 components:
   schemas:
-    ProblemJson:
-      type: object
-      properties:
-        detail:
-          type: string
-        entityName:
-          type: string
-          description: The name of the entity within the error has occurred
-        errorKey:
-          type: string
-          description: A unique identifier of the error
-        fieldErrors:
-          type: array
-          description: Field constraint violation errors
-          items:
-            $ref: '#/components/schemas/FieldError'
-        message:
-          type: string
-          description: A unique identifier in format of 'error.{errorKey}'
-        params:
-          type: array
-          description: Further information related to the actual error
-          items:
-            type: object
-            additionalProperties:
-              type: object
-        path:
-          type: string
-          description: Request URI
-        status:
-          type: integer
-          description: Status code
-          format: int32
-        title:
-          type: string
-      description: Based on [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807)
-    FieldError:
-      type: object
-      properties:
-        field:
-          type: string
-        message:
-          type: string
-        objectName:
-          type: string
     OrganizationConfigurationRequest:
       type: object
       properties:
@@ -421,84 +376,7 @@ components:
           type: boolean
           default: false
       description: Represents an organization configuration
-    Organization_InsertRequest:
-      required:
-      - name
-      - routes
-      type: object
-      properties:
-        configuration:
-          $ref: '#/components/schemas/OrganizationConfigurationRequest'
-        description:
-          maxLength: 1024
-          minLength: 0
-          type: string
-        metadata:
-          maxProperties: 50
-          type: object
-          additionalProperties:
-            maxProperties: 50
-            type: string
-            description: 'Key-value metadata. Max 50 entries. Keys: 1–64 chars, pattern [a-z\d\-_.]+. Values: max 512 chars.'
-          description: 'Key-value metadata. Max 50 entries. Keys: 1–64 chars, pattern [a-z\d\-_.]+. Values: max 512 chars.'
-        name:
-          maxLength: 64
-          minLength: 3
-          pattern: ^$|^[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°]([\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*° ]*[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°])?$
-          type: string
-        parent:
-          $ref: '#/components/schemas/OnlyIdRequest'
-        routes:
-          maxItems: 2147483647
-          minItems: 1
-          type: array
-          items:
-            maxLength: 63
-            minLength: 1
-            pattern: ^|[a-z0-9]([-a-z0-9]*[a-z0-9])?$
-            type: string
-    NameAndIdResponse:
-      type: object
-      properties:
-        id:
-          type: string
-          description: ID of the represented entity
-        name:
-          type: string
-          description: Name of the represented entity
-          example: Entity name
-    OrganizationListResponse:
-      type: object
-      properties:
-        configuration:
-          $ref: '#/components/schemas/OrganizationConfigurationResponse'
-        description:
-          type: string
-        id:
-          type: string
-        name:
-          type: string
-        parent:
-          $ref: '#/components/schemas/NameAndIdResponse'
-        routes:
-          uniqueItems: true
-          type: array
-          items:
-            type: string
-    OrganizationConfigurationResponse:
-      type: object
-      properties:
-        brand:
-          $ref: '#/components/schemas/OrganizationConfigurationBrandResponse'
-        organizationRegistrationEnabled:
-          type: boolean
-        selfRegistrationEnabled:
-          type: boolean
-        uniqueIdentifier:
-          type: boolean
-        uniqueIdentifierRoot:
-          type: string
-    OrganizationConfigurationBrandRequest:
+    OrganizationConfigurationBrandResponse:
       type: object
       properties:
         backgroundColor:
@@ -508,6 +386,15 @@ components:
         logoUrl:
           type: string
         primaryColor:
+          type: string
+    FieldError:
+      type: object
+      properties:
+        field:
+          type: string
+        message:
+          type: string
+        objectName:
           type: string
     OrganizationUpsertRequest:
       required:
@@ -548,7 +435,7 @@ components:
             minLength: 1
             pattern: ^|[a-z0-9]([-a-z0-9]*[a-z0-9])?$
             type: string
-    OrganizationConfigurationBrandResponse:
+    OrganizationConfigurationBrandRequest:
       type: object
       properties:
         backgroundColor:
@@ -589,6 +476,119 @@ components:
           type: array
           items:
             type: string
+    OrganizationListResponse:
+      type: object
+      properties:
+        configuration:
+          $ref: '#/components/schemas/OrganizationConfigurationResponse'
+        description:
+          type: string
+        id:
+          type: string
+        name:
+          type: string
+        parent:
+          $ref: '#/components/schemas/NameAndIdResponse'
+        routes:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+    Organization_InsertRequest:
+      required:
+      - name
+      - routes
+      type: object
+      properties:
+        configuration:
+          $ref: '#/components/schemas/OrganizationConfigurationRequest'
+        description:
+          maxLength: 1024
+          minLength: 0
+          type: string
+        metadata:
+          maxProperties: 50
+          type: object
+          additionalProperties:
+            maxProperties: 50
+            type: string
+            description: 'Key-value metadata. Max 50 entries. Keys: 1–64 chars, pattern [a-z\d\-_.]+. Values: max 512 chars.'
+          description: 'Key-value metadata. Max 50 entries. Keys: 1–64 chars, pattern [a-z\d\-_.]+. Values: max 512 chars.'
+        name:
+          maxLength: 64
+          minLength: 3
+          pattern: ^$|^[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°]([\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*° ]*[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°])?$
+          type: string
+        parent:
+          $ref: '#/components/schemas/OnlyIdRequest'
+        routes:
+          maxItems: 2147483647
+          minItems: 1
+          type: array
+          items:
+            maxLength: 63
+            minLength: 1
+            pattern: ^|[a-z0-9]([-a-z0-9]*[a-z0-9])?$
+            type: string
+    OrganizationConfigurationResponse:
+      type: object
+      properties:
+        brand:
+          $ref: '#/components/schemas/OrganizationConfigurationBrandResponse'
+        organizationRegistrationEnabled:
+          type: boolean
+        selfRegistrationEnabled:
+          type: boolean
+        uniqueIdentifier:
+          type: boolean
+        uniqueIdentifierRoot:
+          type: string
+    NameAndIdResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID of the represented entity
+        name:
+          type: string
+          description: Name of the represented entity
+          example: Entity name
+    ProblemJson:
+      type: object
+      properties:
+        detail:
+          type: string
+        entityName:
+          type: string
+          description: The name of the entity within the error has occurred
+        errorKey:
+          type: string
+          description: A unique identifier of the error
+        fieldErrors:
+          type: array
+          description: Field constraint violation errors
+          items:
+            $ref: '#/components/schemas/FieldError'
+        message:
+          type: string
+          description: A unique identifier in format of 'error.{errorKey}'
+        params:
+          type: array
+          description: Further information related to the actual error
+          items:
+            type: object
+            additionalProperties:
+              type: object
+        path:
+          type: string
+          description: Request URI
+        status:
+          type: integer
+          description: Status code
+          format: int32
+        title:
+          type: string
+      description: Based on [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807)
   securitySchemes:
     securityScheme:
       scheme: bearer

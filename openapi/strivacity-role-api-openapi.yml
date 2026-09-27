@@ -358,6 +358,83 @@ components:
           type: array
           items:
             type: string
+    PageMetadata:
+      type: object
+      properties:
+        number:
+          type: integer
+          format: int64
+        size:
+          type: integer
+          format: int64
+        totalElements:
+          type: integer
+          format: int64
+        totalPages:
+          type: integer
+          format: int64
+    RoleResponse:
+      type: object
+      properties:
+        defaultAdminRole:
+          type: boolean
+        defaultRole:
+          type: boolean
+        description:
+          type: string
+        id:
+          type: string
+        name:
+          type: string
+        scopes:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+    FieldError:
+      type: object
+      properties:
+        field:
+          type: string
+        message:
+          type: string
+        objectName:
+          type: string
+    Role_InsertRequest:
+      required:
+      - name
+      - scopes
+      type: object
+      properties:
+        defaultAdminRole:
+          type: boolean
+          default: false
+        defaultRole:
+          type: boolean
+          default: false
+        description:
+          maxLength: 1024
+          minLength: 0
+          type: string
+        name:
+          maxLength: 64
+          minLength: 3
+          pattern: ^$|^[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°]([\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*° ]*[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°])?$
+          type: string
+        scopes:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+    PagedModelRoleResponse:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/RoleResponse'
+        page:
+          $ref: '#/components/schemas/PageMetadata'
     ProblemJson:
       type: object
       properties:
@@ -394,65 +471,6 @@ components:
         title:
           type: string
       description: Based on [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807)
-    PagedModelRoleResponse:
-      type: object
-      properties:
-        content:
-          type: array
-          items:
-            $ref: '#/components/schemas/RoleResponse'
-        page:
-          $ref: '#/components/schemas/PageMetadata'
-    PageMetadata:
-      type: object
-      properties:
-        number:
-          type: integer
-          format: int64
-        size:
-          type: integer
-          format: int64
-        totalElements:
-          type: integer
-          format: int64
-        totalPages:
-          type: integer
-          format: int64
-    FieldError:
-      type: object
-      properties:
-        field:
-          type: string
-        message:
-          type: string
-        objectName:
-          type: string
-    Role_InsertRequest:
-      required:
-      - name
-      - scopes
-      type: object
-      properties:
-        defaultAdminRole:
-          type: boolean
-          default: false
-        defaultRole:
-          type: boolean
-          default: false
-        description:
-          maxLength: 1024
-          minLength: 0
-          type: string
-        name:
-          maxLength: 64
-          minLength: 3
-          pattern: ^$|^[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°]([\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*° ]*[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°])?$
-          type: string
-        scopes:
-          uniqueItems: true
-          type: array
-          items:
-            type: string
     RoleUpsertRequest_Role:
       required:
       - id
@@ -476,24 +494,6 @@ components:
           maxLength: 64
           minLength: 3
           pattern: ^$|^[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°]([\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*° ]*[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°])?$
-          type: string
-        scopes:
-          uniqueItems: true
-          type: array
-          items:
-            type: string
-    RoleResponse:
-      type: object
-      properties:
-        defaultAdminRole:
-          type: boolean
-        defaultRole:
-          type: boolean
-        description:
-          type: string
-        id:
-          type: string
-        name:
           type: string
         scopes:
           uniqueItems: true

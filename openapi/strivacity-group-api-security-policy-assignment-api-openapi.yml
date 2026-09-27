@@ -320,6 +320,25 @@ paths:
       - Group API Security Policy Assignment
 components:
   schemas:
+    GroupApiSecurityPolicyAssignmentResponse:
+      type: object
+      properties:
+        apiAccessPolicy:
+          $ref: '#/components/schemas/NameAndIdResponse'
+        scopes:
+          type: array
+          items:
+            $ref: '#/components/schemas/NameAndIdResponse'
+      description: Represents a group API security policy assignment
+    FieldError:
+      type: object
+      properties:
+        field:
+          type: string
+        message:
+          type: string
+        objectName:
+          type: string
     GroupApiSecurityPolicyAssignmentRequest:
       required:
       - apiAccessPolicy
@@ -334,6 +353,24 @@ components:
           items:
             $ref: '#/components/schemas/OnlyIdRequest'
       description: Represents a group API security policy assignment to be inserted or updated
+    OnlyIdRequest:
+      required:
+      - id
+      type: object
+      properties:
+        id:
+          pattern: ^[a-zA-Z0-9-]{1,36}$
+          type: string
+    NameAndIdResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID of the represented entity
+        name:
+          type: string
+          description: Name of the represented entity
+          example: Entity name
     ProblemJson:
       type: object
       properties:
@@ -370,43 +407,6 @@ components:
         title:
           type: string
       description: Based on [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807)
-    FieldError:
-      type: object
-      properties:
-        field:
-          type: string
-        message:
-          type: string
-        objectName:
-          type: string
-    NameAndIdResponse:
-      type: object
-      properties:
-        id:
-          type: string
-          description: ID of the represented entity
-        name:
-          type: string
-          description: Name of the represented entity
-          example: Entity name
-    GroupApiSecurityPolicyAssignmentResponse:
-      type: object
-      properties:
-        apiAccessPolicy:
-          $ref: '#/components/schemas/NameAndIdResponse'
-        scopes:
-          type: array
-          items:
-            $ref: '#/components/schemas/NameAndIdResponse'
-      description: Represents a group API security policy assignment
-    OnlyIdRequest:
-      required:
-      - id
-      type: object
-      properties:
-        id:
-          pattern: ^[a-zA-Z0-9-]{1,36}$
-          type: string
   securitySchemes:
     securityScheme:
       scheme: bearer

@@ -330,6 +330,115 @@ paths:
       - Plugin Library
 components:
   schemas:
+    Journey:
+      type: object
+      properties:
+        code:
+          type: string
+        name:
+          type: string
+    EventHookSnippetCode:
+      type: object
+      properties:
+        code:
+          type: string
+        packageDependencies:
+          type: object
+          additionalProperties:
+            type: string
+      description: Represents the code of the snippet
+    JourneyIntegrationListResponse:
+      type: object
+      properties:
+        categories:
+          type: array
+          items:
+            type: string
+        description:
+          type: string
+        displayName:
+          type: string
+        logoUrl:
+          type: string
+        maintainer:
+          type: string
+        summary:
+          type: string
+    FieldError:
+      type: object
+      properties:
+        field:
+          type: string
+        message:
+          type: string
+        objectName:
+          type: string
+    EventHookIntegrationListResponse:
+      type: object
+      properties:
+        categories:
+          type: array
+          items:
+            type: string
+        description:
+          type: string
+        displayName:
+          type: string
+        logoUrl:
+          type: string
+        maintainer:
+          type: string
+        summary:
+          type: string
+    JourneyIntegrationResponse:
+      type: object
+      properties:
+        categories:
+          type: array
+          items:
+            type: string
+        description:
+          type: string
+        displayName:
+          type: string
+        journeys:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/Journey'
+        logoUrl:
+          type: string
+        maintainer:
+          type: string
+        summary:
+          type: string
+    LifecycleEventHook:
+      type: object
+      properties:
+        code:
+          type: string
+        name:
+          type: string
+        packageDependencies:
+          type: object
+          additionalProperties:
+            type: string
+    EventHookSnippet:
+      type: object
+      properties:
+        description:
+          type: string
+        id:
+          type: string
+        name:
+          type: string
+      description: Represents a snippet for an event hook
+    CategoryResponse:
+      type: object
+      properties:
+        displayName:
+          type: string
+        name:
+          type: string
     ProblemJson:
       type: object
       properties:
@@ -366,56 +475,6 @@ components:
         title:
           type: string
       description: Based on [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807)
-    EventHookSnippet:
-      type: object
-      properties:
-        description:
-          type: string
-        id:
-          type: string
-        name:
-          type: string
-      description: Represents a snippet for an event hook
-    JourneyIntegrationListResponse:
-      type: object
-      properties:
-        categories:
-          type: array
-          items:
-            type: string
-        description:
-          type: string
-        displayName:
-          type: string
-        logoUrl:
-          type: string
-        maintainer:
-          type: string
-        summary:
-          type: string
-    FieldError:
-      type: object
-      properties:
-        field:
-          type: string
-        message:
-          type: string
-        objectName:
-          type: string
-    CategoryResponse:
-      type: object
-      properties:
-        displayName:
-          type: string
-        name:
-          type: string
-    Journey:
-      type: object
-      properties:
-        code:
-          type: string
-        name:
-          type: string
     EventHookIntegrationResponse:
       type: object
       properties:
@@ -437,65 +496,6 @@ components:
           type: string
         summary:
           type: string
-    JourneyIntegrationResponse:
-      type: object
-      properties:
-        categories:
-          type: array
-          items:
-            type: string
-        description:
-          type: string
-        displayName:
-          type: string
-        journeys:
-          type: object
-          additionalProperties:
-            $ref: '#/components/schemas/Journey'
-        logoUrl:
-          type: string
-        maintainer:
-          type: string
-        summary:
-          type: string
-    EventHookIntegrationListResponse:
-      type: object
-      properties:
-        categories:
-          type: array
-          items:
-            type: string
-        description:
-          type: string
-        displayName:
-          type: string
-        logoUrl:
-          type: string
-        maintainer:
-          type: string
-        summary:
-          type: string
-    EventHookSnippetCode:
-      type: object
-      properties:
-        code:
-          type: string
-        packageDependencies:
-          type: object
-          additionalProperties:
-            type: string
-      description: Represents the code of the snippet
-    LifecycleEventHook:
-      type: object
-      properties:
-        code:
-          type: string
-        name:
-          type: string
-        packageDependencies:
-          type: object
-          additionalProperties:
-            type: string
   securitySchemes:
     securityScheme:
       scheme: bearer

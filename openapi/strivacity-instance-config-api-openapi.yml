@@ -137,6 +137,75 @@ paths:
       - Instance Config
 components:
   schemas:
+    InstanceConfig_InsertRequest:
+      required:
+      - companyName
+      type: object
+      properties:
+        companyName:
+          maxLength: 48
+          minLength: 2
+          pattern: ^[- a-zA-Z0-9@£$¥èéùìòÇØøÅåΔ_ΦΓΛΩΠΨΣΘΞÆæßÉ!"#¤%&'()*+,.\/:;<=>?¡ÄÖÑÜ§¿äöñüà]*$
+          type: string
+        ipAllowedList:
+          maxItems: 32
+          minItems: 0
+          type: array
+          description: 'This represents a list of subnet ranges (CIDR). See: [RFC 4632](https://www.rfc-editor.org/rfc/rfc4632). Private addresses are not allowed.'
+          items:
+            type: string
+            example: 1.1.1.1/32
+    FieldError:
+      type: object
+      properties:
+        field:
+          type: string
+        message:
+          type: string
+        objectName:
+          type: string
+    InstanceConfigResponse_ClusterPauseConfiguration_InstanceConfig:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+        keepAliveDurationInHours:
+          type: integer
+          format: int32
+        pauseThresholdInHours:
+          type: integer
+          format: int32
+        warningThresholdInHours:
+          type: integer
+          format: int32
+      description: Contains information about cluster pause configurations
+    InstanceConfigResponse_InstanceConfig:
+      type: object
+      properties:
+        clusterPauseConfiguration:
+          $ref: '#/components/schemas/InstanceConfigResponse_ClusterPauseConfiguration_InstanceConfig'
+        companyName:
+          type: string
+        hostingRegion:
+          type: string
+        instanceAddress:
+          $ref: '#/components/schemas/InstanceAddress_InstanceConfig'
+        ipAllowedList:
+          type: array
+          items:
+            type: string
+        releaseVersion:
+          type: string
+    InstanceAddress_InstanceConfig:
+      type: object
+      properties:
+        additional:
+          type: array
+          items:
+            type: string
+        default:
+          type: string
+      description: Represents an instance address
     ProblemJson:
       type: object
       properties:
@@ -173,75 +242,6 @@ components:
         title:
           type: string
       description: Based on [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807)
-    FieldError:
-      type: object
-      properties:
-        field:
-          type: string
-        message:
-          type: string
-        objectName:
-          type: string
-    InstanceConfig_InsertRequest:
-      required:
-      - companyName
-      type: object
-      properties:
-        companyName:
-          maxLength: 48
-          minLength: 2
-          pattern: ^[- a-zA-Z0-9@£$¥èéùìòÇØøÅåΔ_ΦΓΛΩΠΨΣΘΞÆæßÉ!"#¤%&'()*+,.\/:;<=>?¡ÄÖÑÜ§¿äöñüà]*$
-          type: string
-        ipAllowedList:
-          maxItems: 32
-          minItems: 0
-          type: array
-          description: 'This represents a list of subnet ranges (CIDR). See: [RFC 4632](https://www.rfc-editor.org/rfc/rfc4632). Private addresses are not allowed.'
-          items:
-            type: string
-            example: 1.1.1.1/32
-    InstanceConfigResponse_InstanceConfig:
-      type: object
-      properties:
-        clusterPauseConfiguration:
-          $ref: '#/components/schemas/InstanceConfigResponse_ClusterPauseConfiguration_InstanceConfig'
-        companyName:
-          type: string
-        hostingRegion:
-          type: string
-        instanceAddress:
-          $ref: '#/components/schemas/InstanceAddress_InstanceConfig'
-        ipAllowedList:
-          type: array
-          items:
-            type: string
-        releaseVersion:
-          type: string
-    InstanceAddress_InstanceConfig:
-      type: object
-      properties:
-        additional:
-          type: array
-          items:
-            type: string
-        default:
-          type: string
-      description: Represents an instance address
-    InstanceConfigResponse_ClusterPauseConfiguration_InstanceConfig:
-      type: object
-      properties:
-        enabled:
-          type: boolean
-        keepAliveDurationInHours:
-          type: integer
-          format: int32
-        pauseThresholdInHours:
-          type: integer
-          format: int32
-        warningThresholdInHours:
-          type: integer
-          format: int32
-      description: Contains information about cluster pause configurations
   securitySchemes:
     securityScheme:
       scheme: bearer

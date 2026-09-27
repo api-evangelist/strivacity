@@ -207,6 +207,12 @@ paths:
       - Bulk Operation
 components:
   schemas:
+    JobIdReferenceResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID of the represented entity
     DisableAccountOperationRequest:
       required:
       - accountId
@@ -222,6 +228,89 @@ components:
           type: string
           enum:
           - disableAccount
+    UpdatePersonalDataOperationRequest:
+      required:
+      - accountId
+      - identityStore
+      - operation
+      - value
+      type: object
+      properties:
+        accountId:
+          type: string
+        identityStore:
+          type: string
+        operation:
+          type: string
+          enum:
+          - updatePersonalData
+        value:
+          type: object
+          additionalProperties:
+            type: object
+    FieldError:
+      type: object
+      properties:
+        field:
+          type: string
+        message:
+          type: string
+        objectName:
+          type: string
+    Result:
+      type: object
+      properties:
+        failure:
+          type: integer
+          format: int32
+        success:
+          type: integer
+          format: int32
+        total:
+          type: integer
+          format: int32
+    BulkOperationErrorEntry:
+      type: object
+      properties:
+        error:
+          type: object
+          additionalProperties:
+            type: object
+        line:
+          type: integer
+          format: int32
+        request:
+          type: object
+          additionalProperties:
+            type: object
+    EnableAccountOperationRequest:
+      required:
+      - accountId
+      - identityStore
+      - operation
+      type: object
+      properties:
+        accountId:
+          type: string
+        identityStore:
+          type: string
+        operation:
+          type: string
+          enum:
+          - enableAccount
+    BulkStatus:
+      type: object
+      properties:
+        endDate:
+          type: string
+        id:
+          type: string
+        result:
+          $ref: '#/components/schemas/Result'
+        startDate:
+          type: string
+        status:
+          type: string
     ProblemJson:
       type: object
       properties:
@@ -258,95 +347,6 @@ components:
         title:
           type: string
       description: Based on [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807)
-    EnableAccountOperationRequest:
-      required:
-      - accountId
-      - identityStore
-      - operation
-      type: object
-      properties:
-        accountId:
-          type: string
-        identityStore:
-          type: string
-        operation:
-          type: string
-          enum:
-          - enableAccount
-    UpdatePersonalDataOperationRequest:
-      required:
-      - accountId
-      - identityStore
-      - operation
-      - value
-      type: object
-      properties:
-        accountId:
-          type: string
-        identityStore:
-          type: string
-        operation:
-          type: string
-          enum:
-          - updatePersonalData
-        value:
-          type: object
-          additionalProperties:
-            type: object
-    FieldError:
-      type: object
-      properties:
-        field:
-          type: string
-        message:
-          type: string
-        objectName:
-          type: string
-    BulkStatus:
-      type: object
-      properties:
-        endDate:
-          type: string
-        id:
-          type: string
-        result:
-          $ref: '#/components/schemas/Result'
-        startDate:
-          type: string
-        status:
-          type: string
-    BulkOperationErrorEntry:
-      type: object
-      properties:
-        error:
-          type: object
-          additionalProperties:
-            type: object
-        line:
-          type: integer
-          format: int32
-        request:
-          type: object
-          additionalProperties:
-            type: object
-    JobIdReferenceResponse:
-      type: object
-      properties:
-        id:
-          type: string
-          description: ID of the represented entity
-    Result:
-      type: object
-      properties:
-        failure:
-          type: integer
-          format: int32
-        success:
-          type: integer
-          format: int32
-        total:
-          type: integer
-          format: int32
   securitySchemes:
     securityScheme:
       scheme: bearer

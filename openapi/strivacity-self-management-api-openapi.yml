@@ -392,75 +392,6 @@ paths:
       - Self Management
 components:
   schemas:
-    ProblemJson:
-      type: object
-      properties:
-        detail:
-          type: string
-        entityName:
-          type: string
-          description: The name of the entity within the error has occurred
-        errorKey:
-          type: string
-          description: A unique identifier of the error
-        fieldErrors:
-          type: array
-          description: Field constraint violation errors
-          items:
-            $ref: '#/components/schemas/FieldError'
-        message:
-          type: string
-          description: A unique identifier in format of 'error.{errorKey}'
-        params:
-          type: array
-          description: Further information related to the actual error
-          items:
-            type: object
-            additionalProperties:
-              type: object
-        path:
-          type: string
-          description: Request URI
-        status:
-          type: integer
-          description: Status code
-          format: int32
-        title:
-          type: string
-      description: Based on [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807)
-    NotificationPreferencesResponse:
-      type: object
-      properties:
-        accountAttributeUpdate:
-          type: boolean
-        accountDeletion:
-          type: boolean
-        accountLockout:
-          type: boolean
-        mfaMethodChange:
-          type: boolean
-        passwordResetSuccess:
-          type: boolean
-      description: Contains which types of notifications are enabled or not for an account
-    MyAccountCheckboxAttributeResponseOpenApi_AccountAttribute:
-      type: object
-      properties:
-        autocomplete:
-          type: string
-        default:
-          type: boolean
-        displayName:
-          type: string
-        editable:
-          type: boolean
-        path:
-          type: string
-        required:
-          type: boolean
-        type:
-          type: string
-          enum:
-          - checkbox
     MyAccountPhoneNumberChildAttributeResponse_AccountAttribute:
       type: object
       properties:
@@ -476,6 +407,23 @@ components:
           type: string
         uniqueInTheList:
           type: boolean
+    MyAccountPhoneAttributeResponse_AccountAttribute:
+      type: object
+      properties:
+        autocomplete:
+          type: string
+        displayName:
+          type: string
+        editable:
+          type: boolean
+        path:
+          type: string
+        required:
+          type: boolean
+        type:
+          type: string
+          enum:
+          - phoneNumber
     MyAccountSelectAttributeResponse_AccountAttribute:
       type: object
       properties:
@@ -502,13 +450,11 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/SelectValue_AccountAttribute'
-    MyAccountCheckboxChildAttributeResponse_AccountAttribute:
+    MyAccountEmailChildAttributeResponse_AccountAttribute:
       type: object
       properties:
         autocomplete:
           type: string
-        default:
-          type: boolean
         displayName:
           type: string
         path:
@@ -519,22 +465,48 @@ components:
           type: string
         uniqueInTheList:
           type: boolean
-    DateValidator_AccountAttribute:
+    NotificationPreferencesRequest:
       type: object
       properties:
-        notAfter:
+        accountAttributeUpdate:
+          type: boolean
+        accountDeletion:
+          type: boolean
+        accountLockout:
+          type: boolean
+        mfaMethodChange:
+          type: boolean
+        passwordResetSuccess:
+          type: boolean
+      description: Contains which types of notifications are enabled or not for an account
+    MyAccountStringChildAttributeResponse_AccountAttribute:
+      type: object
+      properties:
+        autocomplete:
           type: string
-          format: date
-        notAfterRelativeDays:
-          type: integer
-          format: int32
-        notBefore:
+        default:
           type: string
-          format: date
-        notBeforeRelativeDays:
-          type: integer
-          format: int32
-      description: Represents a date validator
+        displayName:
+          type: string
+        path:
+          type: string
+        required:
+          type: boolean
+        type:
+          type: string
+        uniqueInTheList:
+          type: boolean
+        validator:
+          $ref: '#/components/schemas/StringValidator_AccountAttribute'
+    FieldError:
+      type: object
+      properties:
+        field:
+          type: string
+        message:
+          type: string
+        objectName:
+          type: string
     MyAccountChildAttributeResponse_AccountAttribute:
       type: object
       oneOf:
@@ -544,35 +516,12 @@ components:
       - $ref: '#/components/schemas/MyAccountEmailChildAttributeResponse_AccountAttribute'
       - $ref: '#/components/schemas/MyAccountPhoneNumberChildAttributeResponse_AccountAttribute'
       - $ref: '#/components/schemas/MyAccountSelectChildAttributeResponse_AccountAttribute'
-    PrincipalResponse_MyAccountPrincipal:
+    ChallengeSentResponse:
       type: object
       properties:
-        email:
-          type: string
-          description: Email address of the account, if the account has an email identifier, it's the email identifier, otherwise it's the email native claim
-        emailVerified:
-          type: boolean
-        name:
-          type: object
-          additionalProperties:
-            type: string
-        organization:
-          $ref: '#/components/schemas/NameReferenceResponse_MyAccountPrincipal'
-        permissions:
-          uniqueItems: true
-          type: array
-          items:
-            type: string
-        phone:
-          type: string
-          description: Phone identifier of the account
-        picture:
-          type: string
-          description: Picture URL of the account
-        portalURL:
-          type: string
-        userName:
-          type: string
+        passcodeLength:
+          type: integer
+          format: int32
     MyAccountComplexListAttributeResponse_AccountAttribute:
       type: object
       properties:
@@ -590,24 +539,7 @@ components:
           type: string
         type:
           type: string
-    MyAccountPhoneAttributeResponse_AccountAttribute:
-      type: object
-      properties:
-        autocomplete:
-          type: string
-        displayName:
-          type: string
-        editable:
-          type: boolean
-        path:
-          type: string
-        required:
-          type: boolean
-        type:
-          type: string
-          enum:
-          - phoneNumber
-    MyAccountEmailListAttributeResponse_AccountAttribute:
+    MyAccountPhoneNumberListAttributeResponse_AccountAttribute:
       required:
       - indexing
       type: object
@@ -652,84 +584,20 @@ components:
           type: string
         validator:
           $ref: '#/components/schemas/DateValidator_AccountAttribute'
-    PasswordChange_SelfManagement:
-      required:
-      - currentPassword
-      - newPassword
+    NotificationPreferencesResponse:
       type: object
       properties:
-        currentPassword:
-          maxLength: 256
-          minLength: 1
-          type: string
-        newPassword:
-          maxLength: 256
-          minLength: 1
-          type: string
-    SelectValue_AccountAttribute:
-      type: object
-      properties:
-        displayName:
-          type: string
-        value:
-          type: string
-      description: Represents a select value
-    MyAccountStringChildAttributeResponse_AccountAttribute:
-      type: object
-      properties:
-        autocomplete:
-          type: string
-        default:
-          type: string
-        displayName:
-          type: string
-        path:
-          type: string
-        required:
+        accountAttributeUpdate:
           type: boolean
-        type:
-          type: string
-        uniqueInTheList:
+        accountDeletion:
           type: boolean
-        validator:
-          $ref: '#/components/schemas/StringValidator_AccountAttribute'
-    MyAccountDateChildAttributeResponse_AccountAttribute:
-      type: object
-      properties:
-        autocomplete:
-          type: string
-        displayName:
-          type: string
-        path:
-          type: string
-        renderType:
-          type: string
-          enum:
-          - native
-          - fieldSet
-        required:
+        accountLockout:
           type: boolean
-        type:
-          type: string
-        uniqueInTheList:
+        mfaMethodChange:
           type: boolean
-        validator:
-          $ref: '#/components/schemas/DateValidator_AccountAttribute'
-    ChallengeSentResponse:
-      type: object
-      properties:
-        passcodeLength:
-          type: integer
-          format: int32
-    FieldError:
-      type: object
-      properties:
-        field:
-          type: string
-        message:
-          type: string
-        objectName:
-          type: string
+        passwordResetSuccess:
+          type: boolean
+      description: Contains which types of notifications are enabled or not for an account
     StringValidator_AccountAttribute:
       type: object
       properties:
@@ -744,6 +612,29 @@ components:
         regex:
           type: string
       description: Represents a string validator
+    MyAccountEmailListAttributeResponse_AccountAttribute:
+      required:
+      - indexing
+      type: object
+      properties:
+        displayName:
+          type: string
+        editable:
+          type: boolean
+        indexing:
+          type: string
+          description: 'Defines searchability for an attribute. Possible values: `none` - Not searchable, `searchOnly` - Searchable, `searchUnique` - Searchable and unique to identity store, `searchUniqueInOrganization` - Searchable and unique to organization'
+          enum:
+          - none
+          - searchOnly
+          - searchUnique
+          - searchUniqueInOrganization
+        listValidator:
+          $ref: '#/components/schemas/ListValidator_AccountAttribute'
+        path:
+          type: string
+        type:
+          type: string
     MyAccountSelectChildAttributeResponse_AccountAttribute:
       type: object
       properties:
@@ -770,6 +661,23 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/SelectValue_AccountAttribute'
+    MyAccountCheckboxChildAttributeResponse_AccountAttribute:
+      type: object
+      properties:
+        autocomplete:
+          type: string
+        default:
+          type: boolean
+        displayName:
+          type: string
+        path:
+          type: string
+        required:
+          type: boolean
+        type:
+          type: string
+        uniqueInTheList:
+          type: boolean
     ListValidator_AccountAttribute:
       type: object
       properties:
@@ -780,6 +688,99 @@ components:
           type: integer
           format: int32
       description: Represents a list validator
+    DateValidator_AccountAttribute:
+      type: object
+      properties:
+        notAfter:
+          type: string
+          format: date
+        notAfterRelativeDays:
+          type: integer
+          format: int32
+        notBefore:
+          type: string
+          format: date
+        notBeforeRelativeDays:
+          type: integer
+          format: int32
+      description: Represents a date validator
+    PrincipalResponse_MyAccountPrincipal:
+      type: object
+      properties:
+        email:
+          type: string
+          description: Email address of the account, if the account has an email identifier, it's the email identifier, otherwise it's the email native claim
+        emailVerified:
+          type: boolean
+        name:
+          type: object
+          additionalProperties:
+            type: string
+        organization:
+          $ref: '#/components/schemas/NameReferenceResponse_MyAccountPrincipal'
+        permissions:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+        phone:
+          type: string
+          description: Phone identifier of the account
+        picture:
+          type: string
+          description: Picture URL of the account
+        portalURL:
+          type: string
+        userName:
+          type: string
+    NameReferenceResponse_MyAccountPrincipal:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Name of the represented entity
+          example: Entity name
+    MyAccountStringListAttributeResponse_AccountAttribute:
+      required:
+      - indexing
+      type: object
+      properties:
+        default:
+          type: string
+        displayName:
+          type: string
+        editable:
+          type: boolean
+        indexing:
+          type: string
+          description: 'Defines searchability for an attribute. Possible values: `none` - Not searchable, `searchOnly` - Searchable, `searchUnique` - Searchable and unique to identity store, `searchUniqueInOrganization` - Searchable and unique to organization'
+          enum:
+          - none
+          - searchOnly
+          - searchUnique
+          - searchUniqueInOrganization
+        listValidator:
+          $ref: '#/components/schemas/ListValidator_AccountAttribute'
+        path:
+          type: string
+        type:
+          type: string
+        validator:
+          $ref: '#/components/schemas/StringValidator_AccountAttribute'
+    PasswordChange_SelfManagement:
+      required:
+      - currentPassword
+      - newPassword
+      type: object
+      properties:
+        currentPassword:
+          maxLength: 256
+          minLength: 1
+          type: string
+        newPassword:
+          maxLength: 256
+          minLength: 1
+          type: string
     DisplayNameAndIdResponse:
       type: object
       properties:
@@ -801,27 +802,55 @@ components:
           - username
           - email
           - phone
-    NotificationPreferencesRequest:
+    MyAccountCheckboxAttributeResponseOpenApi_AccountAttribute:
       type: object
       properties:
-        accountAttributeUpdate:
-          type: boolean
-        accountDeletion:
-          type: boolean
-        accountLockout:
-          type: boolean
-        mfaMethodChange:
-          type: boolean
-        passwordResetSuccess:
-          type: boolean
-      description: Contains which types of notifications are enabled or not for an account
-    NameReferenceResponse_MyAccountPrincipal:
-      type: object
-      properties:
-        name:
+        autocomplete:
           type: string
-          description: Name of the represented entity
-          example: Entity name
+        default:
+          type: boolean
+        displayName:
+          type: string
+        editable:
+          type: boolean
+        path:
+          type: string
+        required:
+          type: boolean
+        type:
+          type: string
+          enum:
+          - checkbox
+    SelectValue_AccountAttribute:
+      type: object
+      properties:
+        displayName:
+          type: string
+        value:
+          type: string
+      description: Represents a select value
+    MyAccountDateChildAttributeResponse_AccountAttribute:
+      type: object
+      properties:
+        autocomplete:
+          type: string
+        displayName:
+          type: string
+        path:
+          type: string
+        renderType:
+          type: string
+          enum:
+          - native
+          - fieldSet
+        required:
+          type: boolean
+        type:
+          type: string
+        uniqueInTheList:
+          type: boolean
+        validator:
+          $ref: '#/components/schemas/DateValidator_AccountAttribute'
     MyAccountStringAttributeResponse_AccountAttribute:
       type: object
       properties:
@@ -850,71 +879,42 @@ components:
           type: string
         value:
           type: string
-    MyAccountPhoneNumberListAttributeResponse_AccountAttribute:
-      required:
-      - indexing
+    ProblemJson:
       type: object
       properties:
-        displayName:
+        detail:
           type: string
-        editable:
-          type: boolean
-        indexing:
+        entityName:
           type: string
-          description: 'Defines searchability for an attribute. Possible values: `none` - Not searchable, `searchOnly` - Searchable, `searchUnique` - Searchable and unique to identity store, `searchUniqueInOrganization` - Searchable and unique to organization'
-          enum:
-          - none
-          - searchOnly
-          - searchUnique
-          - searchUniqueInOrganization
-        listValidator:
-          $ref: '#/components/schemas/ListValidator_AccountAttribute'
+          description: The name of the entity within the error has occurred
+        errorKey:
+          type: string
+          description: A unique identifier of the error
+        fieldErrors:
+          type: array
+          description: Field constraint violation errors
+          items:
+            $ref: '#/components/schemas/FieldError'
+        message:
+          type: string
+          description: A unique identifier in format of 'error.{errorKey}'
+        params:
+          type: array
+          description: Further information related to the actual error
+          items:
+            type: object
+            additionalProperties:
+              type: object
         path:
           type: string
-        type:
+          description: Request URI
+        status:
+          type: integer
+          description: Status code
+          format: int32
+        title:
           type: string
-    MyAccountStringListAttributeResponse_AccountAttribute:
-      required:
-      - indexing
-      type: object
-      properties:
-        default:
-          type: string
-        displayName:
-          type: string
-        editable:
-          type: boolean
-        indexing:
-          type: string
-          description: 'Defines searchability for an attribute. Possible values: `none` - Not searchable, `searchOnly` - Searchable, `searchUnique` - Searchable and unique to identity store, `searchUniqueInOrganization` - Searchable and unique to organization'
-          enum:
-          - none
-          - searchOnly
-          - searchUnique
-          - searchUniqueInOrganization
-        listValidator:
-          $ref: '#/components/schemas/ListValidator_AccountAttribute'
-        path:
-          type: string
-        type:
-          type: string
-        validator:
-          $ref: '#/components/schemas/StringValidator_AccountAttribute'
-    MyAccountEmailChildAttributeResponse_AccountAttribute:
-      type: object
-      properties:
-        autocomplete:
-          type: string
-        displayName:
-          type: string
-        path:
-          type: string
-        required:
-          type: boolean
-        type:
-          type: string
-        uniqueInTheList:
-          type: boolean
+      description: Based on [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807)
   securitySchemes:
     securityScheme:
       scheme: bearer

@@ -323,6 +323,108 @@ paths:
       - Translation
 components:
   schemas:
+    AccountAttributeTranslation:
+      type: object
+      properties:
+        displayName:
+          type: string
+        errorMessage:
+          type: string
+        values:
+          type: object
+          additionalProperties:
+            type: string
+    NotificationPreferenceDescriptor:
+      type: object
+      properties:
+        displayName:
+          type: string
+    BrandTranslationAdditionalContent:
+      type: object
+      properties:
+        html:
+          type: string
+    BrandTranslation:
+      type: object
+      properties:
+        additionalContents:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/BrandTranslationAdditionalContents'
+        additionalTexts:
+          type: object
+          additionalProperties:
+            type: string
+        copyright:
+          type: string
+        supportText:
+          type: string
+    TranslationListResponse:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+        languageCode:
+          type: string
+        primary:
+          type: boolean
+        uploaded:
+          type: boolean
+    FieldError:
+      type: object
+      properties:
+        field:
+          type: string
+        message:
+          type: string
+        objectName:
+          type: string
+    NotificationTemplateTranslation:
+      type: object
+      properties:
+        body:
+          type: string
+        plainTextBody:
+          type: string
+        subject:
+          type: string
+    GenericTranslationResponse:
+      type: object
+      oneOf:
+      - $ref: '#/components/schemas/LanguageCodeListResponse'
+      - $ref: '#/components/schemas/TranslationListResponse'
+    ExternalLoginProviderTranslation:
+      type: object
+      properties:
+        loginButtonText:
+          type: string
+    SystemTranslation:
+      type: object
+      properties:
+        externalLoginProviderUnlinkedNotification:
+          type: string
+        notificationPreferenceDescriptors:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/NotificationPreferenceDescriptor'
+        notificationPreferencesUpdatedNotification:
+          type: string
+    LanguageCodeListResponse:
+      type: object
+      properties:
+        languageCode:
+          type: string
+    BrandTranslationAdditionalContents:
+      type: object
+      properties:
+        footer:
+          $ref: '#/components/schemas/BrandTranslationAdditionalContent'
+        header:
+          $ref: '#/components/schemas/BrandTranslationAdditionalContent'
+        left:
+          $ref: '#/components/schemas/BrandTranslationAdditionalContent'
+        right:
+          $ref: '#/components/schemas/BrandTranslationAdditionalContent'
     ProblemJson:
       type: object
       properties:
@@ -359,71 +461,27 @@ components:
         title:
           type: string
       description: Based on [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807)
-    TranslationListResponse:
-      type: object
-      properties:
-        enabled:
-          type: boolean
-        languageCode:
-          type: string
-        primary:
-          type: boolean
-        uploaded:
-          type: boolean
-    BrandTranslation:
-      type: object
-      properties:
-        additionalContents:
-          type: object
-          additionalProperties:
-            $ref: '#/components/schemas/BrandTranslationAdditionalContents'
-        additionalTexts:
-          type: object
-          additionalProperties:
-            type: string
-        copyright:
-          type: string
-        supportText:
-          type: string
-    NotificationTemplateTranslation:
-      type: object
-      properties:
-        body:
-          type: string
-        plainTextBody:
-          type: string
-        subject:
-          type: string
-    ExternalLoginProviderTranslation:
-      type: object
-      properties:
-        loginButtonText:
-          type: string
-    FieldError:
-      type: object
-      properties:
-        field:
-          type: string
-        message:
-          type: string
-        objectName:
-          type: string
-    NotificationPreferenceDescriptor:
+    IdentityProofingTranslationField:
       type: object
       properties:
         displayName:
           type: string
-    AccountAttributeTranslation:
+    ConsentTranslation:
       type: object
       properties:
-        displayName:
+        displayText:
           type: string
-        errorMessage:
+        selfServiceDisplayText:
           type: string
-        values:
+    IdentityProofingTranslationDataStep:
+      type: object
+      properties:
+        displayText:
+          type: string
+        fields:
           type: object
           additionalProperties:
-            type: string
+            $ref: '#/components/schemas/IdentityProofingTranslationField'
     IdentityProofingTranslation:
       type: object
       properties:
@@ -435,37 +493,6 @@ components:
           type: string
         proofingNotificationDisplayText:
           type: string
-    SystemTranslation:
-      type: object
-      properties:
-        externalLoginProviderUnlinkedNotification:
-          type: string
-        notificationPreferenceDescriptors:
-          type: object
-          additionalProperties:
-            $ref: '#/components/schemas/NotificationPreferenceDescriptor'
-        notificationPreferencesUpdatedNotification:
-          type: string
-    BrandTranslationAdditionalContents:
-      type: object
-      properties:
-        footer:
-          $ref: '#/components/schemas/BrandTranslationAdditionalContent'
-        header:
-          $ref: '#/components/schemas/BrandTranslationAdditionalContent'
-        left:
-          $ref: '#/components/schemas/BrandTranslationAdditionalContent'
-        right:
-          $ref: '#/components/schemas/BrandTranslationAdditionalContent'
-    IdentityProofingTranslationDataStep:
-      type: object
-      properties:
-        displayText:
-          type: string
-        fields:
-          type: object
-          additionalProperties:
-            $ref: '#/components/schemas/IdentityProofingTranslationField'
     TranslationJson:
       required:
       - accountAttribute
@@ -510,33 +537,6 @@ components:
         system:
           $ref: '#/components/schemas/SystemTranslation'
       description: Represents an imported translation
-    ConsentTranslation:
-      type: object
-      properties:
-        displayText:
-          type: string
-        selfServiceDisplayText:
-          type: string
-    LanguageCodeListResponse:
-      type: object
-      properties:
-        languageCode:
-          type: string
-    IdentityProofingTranslationField:
-      type: object
-      properties:
-        displayName:
-          type: string
-    GenericTranslationResponse:
-      type: object
-      oneOf:
-      - $ref: '#/components/schemas/LanguageCodeListResponse'
-      - $ref: '#/components/schemas/TranslationListResponse'
-    BrandTranslationAdditionalContent:
-      type: object
-      properties:
-        html:
-          type: string
   securitySchemes:
     securityScheme:
       scheme: bearer
