@@ -399,140 +399,139 @@ paths:
       - Identity Verification Step
 components:
   schemas:
-    KnowledgeBasedVerificationAttributeResponse:
-      type: object
-      properties:
-        nativeClaim:
-          $ref: '#/components/schemas/NameIdAndDisplayName'
-    IdentityVerificationStepAction:
+    AddressRiskEvaluationPersonal:
       required:
-      - failure
-      - success
+      - familyName
+      - givenName
       type: object
       properties:
-        failure:
-          type: string
-          enum:
-          - nextStep
-          - failureMessage
-          - exitProofing
-        success:
-          type: string
-          enum:
-          - nextStep
-          - exitProofing
-      description: Actions for step result
-    IdentityVerification_KnowledgeBasedStep_InsertRequest:
-      required:
-      - actions
-      - configuration
-      - id
-      - type
-      type: object
-      description: Represents a knowledge based identity verification step
-      allOf:
-      - required:
-        - actions
-        - type
-        type: object
-        properties:
-          actions:
-            $ref: '#/components/schemas/IdentityVerificationStepAction'
-          enabled:
-            type: boolean
-            default: false
-          type:
-            type: string
-            enum:
-            - addressRiskEvaluation
-            - documentVerification
-            - knowledgeBasedVerification
-            - phoneNumberRiskEvaluation
-            - phoneBasedIdentityAffirmation
-            - proofingData
-        description: Represents an identity verification step
-        discriminator:
-          propertyName: type
-      - type: object
-        properties:
-          configuration:
-            $ref: '#/components/schemas/IdentityVerificationKnowledgeBasedStepConfiguration'
-    FieldError:
+        familyName:
+          $ref: '#/components/schemas/IdentityVerificationAddressRiskVerificationAttribute'
+        givenName:
+          $ref: '#/components/schemas/IdentityVerificationAddressRiskVerificationAttribute'
+    DocumentVerificationDocumentResponse:
       type: object
       properties:
-        field:
-          type: string
-        message:
-          type: string
-        objectName:
-          type: string
-    AddressRiskEvaluationStepResponse:
+        className:
+          $ref: '#/components/schemas/DocumentVerificationAttributeResponse'
+        expirationDate:
+          $ref: '#/components/schemas/DocumentVerificationAttributeResponse'
+        issueDate:
+          $ref: '#/components/schemas/DocumentVerificationAttributeResponse'
+        issuerCode:
+          $ref: '#/components/schemas/DocumentVerificationAttributeResponse'
+        issuerName:
+          $ref: '#/components/schemas/DocumentVerificationAttributeResponse'
+        name:
+          $ref: '#/components/schemas/DocumentVerificationAttributeResponse'
+        number:
+          $ref: '#/components/schemas/DocumentVerificationAttributeResponse'
+    PhoneBasedIdentityAffirmationStepResponse:
       type: object
       allOf:
       - $ref: '#/components/schemas/IdentityProofingStepResponse'
       - type: object
         properties:
           configuration:
-            $ref: '#/components/schemas/AddressRiskEvaluationStepConfigurationResponse'
-    IdentityVerificationKnowledgeBasedStep:
+            $ref: '#/components/schemas/PhoneBasedIdentityAffirmationConfigurationResponse'
+    IdentityVerificationDocumentBasedStepConfiguration:
+      required:
+      - address
+      - document
+      - personal
+      type: object
+      properties:
+        address:
+          $ref: '#/components/schemas/DocumentVerificationAddress'
+        document:
+          $ref: '#/components/schemas/DocumentVerificationDocument'
+        personal:
+          $ref: '#/components/schemas/DocumentVerificationPersonal'
+      description: Represents the configuration of a document based identity verification step
+    ClaimManagement:
+      type: object
+      properties:
+        address:
+          $ref: '#/components/schemas/AddressRiskEvaluationAddress'
+        contact:
+          $ref: '#/components/schemas/AddressRiskEvaluationContact'
+        personal:
+          $ref: '#/components/schemas/AddressRiskEvaluationPersonal'
+    IdentityVerificationPhoneBasedStepConfiguration:
+      required:
+      - dataSources
+      - phoneNumber
+      type: object
+      properties:
+        dataSources:
+          $ref: '#/components/schemas/IdentityVerificationPhoneBasedStepConfigurationDataSource'
+        failureCountThreshold:
+          minimum: 1
+          type: integer
+          format: int32
+          default: 1
+        phoneNumber:
+          $ref: '#/components/schemas/IdentityVerificationPhoneBasedStepPhoneNumberAffirmationAttribute'
+      description: Represents the configuration of a phone based identity verification step
+    CompoundAddressFieldConfigurationResponse:
+      type: object
+      properties:
+        address:
+          $ref: '#/components/schemas/ItemResponse'
+        city:
+          $ref: '#/components/schemas/ItemResponse'
+        country:
+          $ref: '#/components/schemas/ItemResponse'
+        postalCode:
+          $ref: '#/components/schemas/ItemResponse'
+        province:
+          $ref: '#/components/schemas/ItemResponse'
+    DocumentVerificationPersonalResponse:
+      type: object
+      properties:
+        dateOfBirth:
+          $ref: '#/components/schemas/DocumentVerificationAttributeResponse'
+        familyName:
+          $ref: '#/components/schemas/DocumentVerificationAttributeResponse'
+        firstName:
+          $ref: '#/components/schemas/DocumentVerificationAttributeResponse'
+        fullName:
+          $ref: '#/components/schemas/DocumentVerificationAttributeResponse'
+        gender:
+          $ref: '#/components/schemas/DocumentVerificationAttributeResponse'
+        givenName:
+          $ref: '#/components/schemas/DocumentVerificationAttributeResponse'
+        middleName:
+          $ref: '#/components/schemas/DocumentVerificationAttributeResponse'
+    DocumentVerificationAddressResponse:
+      type: object
+      properties:
+        address:
+          $ref: '#/components/schemas/DocumentVerificationAttributeResponse'
+        city:
+          $ref: '#/components/schemas/DocumentVerificationAttributeResponse'
+        country:
+          $ref: '#/components/schemas/DocumentVerificationAttributeResponse'
+        postalCode:
+          $ref: '#/components/schemas/DocumentVerificationAttributeResponse'
+        state:
+          $ref: '#/components/schemas/DocumentVerificationAttributeResponse'
+        streetAddress:
+          $ref: '#/components/schemas/DocumentVerificationAttributeResponse'
+    IdentityVerificationAddressRiskEvaluationStep:
       required:
       - actions
       - configuration
       - id
       - type
       type: object
-      description: Represents a knowledge based identity verification step
+      description: Represents an address risk evaluation identity verification step
       allOf:
       - $ref: '#/components/schemas/IdentityVerificationStep'
       - type: object
         properties:
           configuration:
-            $ref: '#/components/schemas/IdentityVerificationKnowledgeBasedStepConfiguration'
-    NameIdAndDisplayName:
-      type: object
-      properties:
-        displayName:
-          type: string
-          description: Display name of the represented entity
-        id:
-          type: string
-          description: ID of the represented entity
-        name:
-          type: string
-          description: Name of the represented entity
-    IdentityProofingStepResponse:
-      type: object
-      properties:
-        actions:
-          $ref: '#/components/schemas/Actions'
-        enabled:
-          type: boolean
-        id:
-          type: string
-        type:
-          type: string
-          enum:
-          - addressRiskEvaluation
-          - documentVerification
-          - knowledgeBasedVerification
-          - phoneNumberRiskEvaluation
-          - phoneBasedIdentityAffirmation
-          - proofingData
-      discriminator:
-        propertyName: type
-    IdentityVerificationAddressRiskVerificationAttribute:
-      type: object
-      properties:
-        nativeClaim:
-          $ref: '#/components/schemas/OnlyIdRequest'
-      description: Represents an address risk verification attribute for address risk verification step
-    IdentityVerificationKnowledgeBasedVerificationStepAttribute:
-      required:
-      - nativeClaim
-      type: object
-      properties:
-        nativeClaim:
-          $ref: '#/components/schemas/OnlyIdRequest'
+            $ref: '#/components/schemas/IdentityVerificationAddressRiskEvaluationStepConfiguration'
     RuleManagement:
       required:
       - attributeRules
@@ -551,171 +550,15 @@ components:
           minimum: 0
           type: integer
           format: int32
-    ProofingDataStepResponse:
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/IdentityProofingStepResponse'
-      - type: object
-        properties:
-          configuration:
-            $ref: '#/components/schemas/ProofingDataStepConfigurationResponse'
-    AddressRiskEvaluationAddress:
-      required:
-      - city
-      - postalCode
-      - state
-      - streetAddress
+    FieldError:
       type: object
       properties:
-        city:
-          $ref: '#/components/schemas/IdentityVerificationAddressRiskVerificationAttribute'
-        postalCode:
-          $ref: '#/components/schemas/IdentityVerificationAddressRiskVerificationAttribute'
-        state:
-          $ref: '#/components/schemas/IdentityVerificationAddressRiskVerificationAttribute'
-        streetAddress:
-          $ref: '#/components/schemas/IdentityVerificationAddressRiskVerificationAttribute'
-    IdReferenceRequest_IdentityProofing:
-      required:
-      - id
-      type: object
-      properties:
-        id:
-          pattern: ^[a-zA-Z0-9-]{1,36}$
+        field:
           type: string
-          description: ID of the represented entity
-    PhoneBasedIdentityAffirmationStepResponse:
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/IdentityProofingStepResponse'
-      - type: object
-        properties:
-          configuration:
-            $ref: '#/components/schemas/PhoneBasedIdentityAffirmationConfigurationResponse'
-    IdentityVerificationDataStepField:
-      required:
-      - id
-      type: object
-      properties:
-        displayName:
-          maxLength: 64
-          minLength: 0
-          pattern: ^$|^[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°]([\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*° ]*[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°])?$
+        message:
           type: string
-        id:
+        objectName:
           type: string
-        type:
-          type: string
-          enum:
-          - nativeClaim
-          - compoundAddress
-      description: Represents a field of an identity verification data step
-      discriminator:
-        propertyName: type
-      oneOf:
-      - $ref: '#/components/schemas/ProofingDataStepCompoundAddressField'
-      - $ref: '#/components/schemas/ProofingDataStepNativeClaimField'
-    IdentityVerificationPhoneBasedStepConfigurationDataSource:
-      required:
-      - city
-      - countryCode
-      - dateOfBirth
-      - familyName
-      - givenName
-      - nationalId
-      - postalCode
-      - state
-      - streetAddress
-      type: object
-      properties:
-        city:
-          $ref: '#/components/schemas/IdentityVerificationPhoneBasedStepIdentityAffirmationAttribute'
-        countryCode:
-          $ref: '#/components/schemas/IdentityVerificationPhoneBasedStepIdentityAffirmationAttribute'
-        dateOfBirth:
-          $ref: '#/components/schemas/IdentityVerificationPhoneBasedStepIdentityAffirmationAttribute'
-        familyName:
-          $ref: '#/components/schemas/IdentityVerificationPhoneBasedStepIdentityAffirmationAttribute'
-        givenName:
-          $ref: '#/components/schemas/IdentityVerificationPhoneBasedStepIdentityAffirmationAttribute'
-        nationalId:
-          $ref: '#/components/schemas/IdentityVerificationPhoneBasedStepIdentityAffirmationAttribute'
-        postalCode:
-          $ref: '#/components/schemas/IdentityVerificationPhoneBasedStepIdentityAffirmationAttribute'
-        state:
-          $ref: '#/components/schemas/IdentityVerificationPhoneBasedStepIdentityAffirmationAttribute'
-        streetAddress:
-          $ref: '#/components/schemas/IdentityVerificationPhoneBasedStepIdentityAffirmationAttribute'
-      description: Represents the data source of a phone based identity verification step
-    OnlyIdRequest:
-      required:
-      - id
-      type: object
-      properties:
-        id:
-          pattern: ^[a-zA-Z0-9-]{1,36}$
-          type: string
-    DocumentVerificationDocumentResponse:
-      type: object
-      properties:
-        className:
-          $ref: '#/components/schemas/DocumentVerificationAttributeResponse'
-        expirationDate:
-          $ref: '#/components/schemas/DocumentVerificationAttributeResponse'
-        issueDate:
-          $ref: '#/components/schemas/DocumentVerificationAttributeResponse'
-        issuerCode:
-          $ref: '#/components/schemas/DocumentVerificationAttributeResponse'
-        issuerName:
-          $ref: '#/components/schemas/DocumentVerificationAttributeResponse'
-        name:
-          $ref: '#/components/schemas/DocumentVerificationAttributeResponse'
-        number:
-          $ref: '#/components/schemas/DocumentVerificationAttributeResponse'
-    AddressRiskEvaluationContactResponse:
-      type: object
-      properties:
-        email:
-          $ref: '#/components/schemas/AddressRiskEvaluationAttributeResponse'
-        phone:
-          $ref: '#/components/schemas/AddressRiskEvaluationAttributeResponse'
-    IdentityVerificationPhoneBasedStep:
-      required:
-      - actions
-      - configuration
-      - id
-      - type
-      type: object
-      description: Represents a phone based identity verification step
-      allOf:
-      - $ref: '#/components/schemas/IdentityVerificationStep'
-      - type: object
-        properties:
-          configuration:
-            $ref: '#/components/schemas/IdentityVerificationPhoneBasedStepConfiguration'
-    ForbiddenPhoneTypesResponse:
-      type: object
-      properties:
-        fixedVoip:
-          type: boolean
-        landLine:
-          type: boolean
-        mobile:
-          type: boolean
-        nonFixedVoip:
-          type: boolean
-        other:
-          type: boolean
-    PhoneBasedIdentityAffirmationConfigurationResponse:
-      type: object
-      properties:
-        dataSources:
-          $ref: '#/components/schemas/DataSources'
-        failureCountThreshold:
-          type: integer
-          format: int32
-        phoneNumber:
-          $ref: '#/components/schemas/PhoneBasedIdentityAffirmationAttributeResponse'
     DataSources:
       type: object
       properties:
@@ -737,6 +580,20 @@ components:
           $ref: '#/components/schemas/DataSourceResponse'
         streetAddress:
           $ref: '#/components/schemas/DataSourceResponse'
+    RuleManagementResponse:
+      type: object
+      properties:
+        attributeRules:
+          type: array
+          items:
+            $ref: '#/components/schemas/RuleResponse'
+        riskRules:
+          type: array
+          items:
+            $ref: '#/components/schemas/RuleResponse'
+        scoreThreshold:
+          type: integer
+          format: int32
     IdentityVerificationStep:
       required:
       - actions
@@ -763,51 +620,184 @@ components:
       description: Represents an identity verification step
       discriminator:
         propertyName: type
-    DocumentVerificationPersonalResponse:
+    AddressRiskEvaluationAddressResponse:
+      type: object
+      properties:
+        city:
+          $ref: '#/components/schemas/AddressRiskEvaluationAttributeResponse'
+        postalCode:
+          $ref: '#/components/schemas/AddressRiskEvaluationAttributeResponse'
+        state:
+          $ref: '#/components/schemas/AddressRiskEvaluationAttributeResponse'
+        streetAddress:
+          $ref: '#/components/schemas/AddressRiskEvaluationAttributeResponse'
+    DataSourceResponse:
+      type: object
+      properties:
+        failureCriteria:
+          type: string
+          enum:
+          - exactMatch
+          - highPartialMatch
+          - partialMatch
+        nativeClaim:
+          $ref: '#/components/schemas/NameIdAndDisplayName'
+        thresholdAction:
+          type: string
+          enum:
+          - none
+          - mandatoryToPass
+          - failureCount
+    ProofingDataStepNativeClaimFieldResponse:
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/ProofingDataStepFieldResponse'
+      - type: object
+        properties:
+          configuration:
+            $ref: '#/components/schemas/NativeClaimFieldConfigurationResponse'
+    IdentityVerificationKnowledgeBasedStepConfiguration:
+      required:
+      - city
+      - countryCode
+      - dateOfBirth
+      - familyName
+      - givenName
+      - phoneNumber
+      - postalCode
+      - state
+      - streetAddress
+      type: object
+      properties:
+        city:
+          $ref: '#/components/schemas/IdentityVerificationKnowledgeBasedVerificationStepAttribute'
+        countryCode:
+          $ref: '#/components/schemas/IdentityVerificationNullableKnowledgeBasedVerificationStepAttribute'
+        dateOfBirth:
+          $ref: '#/components/schemas/IdentityVerificationKnowledgeBasedVerificationStepAttribute'
+        familyName:
+          $ref: '#/components/schemas/IdentityVerificationKnowledgeBasedVerificationStepAttribute'
+        givenName:
+          $ref: '#/components/schemas/IdentityVerificationKnowledgeBasedVerificationStepAttribute'
+        phoneNumber:
+          $ref: '#/components/schemas/IdentityVerificationKnowledgeBasedVerificationStepAttribute'
+        postalCode:
+          $ref: '#/components/schemas/IdentityVerificationKnowledgeBasedVerificationStepAttribute'
+        state:
+          $ref: '#/components/schemas/IdentityVerificationKnowledgeBasedVerificationStepAttribute'
+        streetAddress:
+          $ref: '#/components/schemas/IdentityVerificationKnowledgeBasedVerificationStepAttribute'
+    ProofingDataStepNativeClaimField:
+      required:
+      - configuration
+      - id
+      type: object
+      description: Proofing data step field for Native Claim
+      allOf:
+      - $ref: '#/components/schemas/IdentityVerificationDataStepField'
+      - type: object
+        properties:
+          configuration:
+            $ref: '#/components/schemas/IdentityVerificationDataStepNativeClaimConfiguration'
+    AddressRiskEvaluationStepConfigurationResponse:
+      type: object
+      properties:
+        claimManagement:
+          $ref: '#/components/schemas/ClaimManagementResponse'
+        ruleManagement:
+          $ref: '#/components/schemas/RuleManagementResponse'
+    AddressRiskEvaluationContactResponse:
+      type: object
+      properties:
+        email:
+          $ref: '#/components/schemas/AddressRiskEvaluationAttributeResponse'
+        phone:
+          $ref: '#/components/schemas/AddressRiskEvaluationAttributeResponse'
+    Rule:
+      required:
+      - action
+      - criteria
+      - type
+      type: object
+      properties:
+        action:
+          minLength: 1
+          type: string
+        criteria:
+          minLength: 1
+          type: string
+        type:
+          minLength: 1
+          type: string
+    AddressRiskEvaluationAddress:
+      required:
+      - city
+      - postalCode
+      - state
+      - streetAddress
+      type: object
+      properties:
+        city:
+          $ref: '#/components/schemas/IdentityVerificationAddressRiskVerificationAttribute'
+        postalCode:
+          $ref: '#/components/schemas/IdentityVerificationAddressRiskVerificationAttribute'
+        state:
+          $ref: '#/components/schemas/IdentityVerificationAddressRiskVerificationAttribute'
+        streetAddress:
+          $ref: '#/components/schemas/IdentityVerificationAddressRiskVerificationAttribute'
+    IdentityVerificationDocumentVerificationAttribute:
+      type: object
+      properties:
+        nativeClaim:
+          $ref: '#/components/schemas/OnlyIdRequest'
+      description: Represents a document verification attribute for document verification step
+    DocumentVerificationPersonal:
+      required:
+      - dateOfBirth
+      - familyName
+      - firstName
+      - fullName
+      - gender
+      - givenName
+      - middleName
       type: object
       properties:
         dateOfBirth:
-          $ref: '#/components/schemas/DocumentVerificationAttributeResponse'
+          $ref: '#/components/schemas/IdentityVerificationDocumentVerificationAttribute'
         familyName:
-          $ref: '#/components/schemas/DocumentVerificationAttributeResponse'
+          $ref: '#/components/schemas/IdentityVerificationDocumentVerificationAttribute'
         firstName:
-          $ref: '#/components/schemas/DocumentVerificationAttributeResponse'
+          $ref: '#/components/schemas/IdentityVerificationDocumentVerificationAttribute'
         fullName:
-          $ref: '#/components/schemas/DocumentVerificationAttributeResponse'
+          $ref: '#/components/schemas/IdentityVerificationDocumentVerificationAttribute'
         gender:
-          $ref: '#/components/schemas/DocumentVerificationAttributeResponse'
+          $ref: '#/components/schemas/IdentityVerificationDocumentVerificationAttribute'
         givenName:
-          $ref: '#/components/schemas/DocumentVerificationAttributeResponse'
+          $ref: '#/components/schemas/IdentityVerificationDocumentVerificationAttribute'
         middleName:
-          $ref: '#/components/schemas/DocumentVerificationAttributeResponse'
-    IdentityVerificationDocumentBasedStepConfiguration:
-      required:
-      - address
-      - document
-      - personal
-      type: object
-      properties:
-        address:
-          $ref: '#/components/schemas/DocumentVerificationAddress'
-        document:
-          $ref: '#/components/schemas/DocumentVerificationDocument'
-        personal:
-          $ref: '#/components/schemas/DocumentVerificationPersonal'
-      description: Represents the configuration of a document based identity verification step
-    IdentityVerificationDataStep:
+          $ref: '#/components/schemas/IdentityVerificationDocumentVerificationAttribute'
+    IdentityVerificationKnowledgeBasedStep:
       required:
       - actions
       - configuration
       - id
       - type
       type: object
-      description: Represents an identity verification data step
+      description: Represents a knowledge based identity verification step
       allOf:
       - $ref: '#/components/schemas/IdentityVerificationStep'
       - type: object
         properties:
           configuration:
-            $ref: '#/components/schemas/IdentityVerificationDataStepConfiguration'
+            $ref: '#/components/schemas/IdentityVerificationKnowledgeBasedStepConfiguration'
+    KnowledgeBasedVerificationStepResponse:
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/IdentityProofingStepResponse'
+      - type: object
+        properties:
+          configuration:
+            $ref: '#/components/schemas/KnowledgeBasedVerificationStepConfigurationResponse'
     IdentityVerification_PhoneNumberRiskStep_InsertRequest:
       required:
       - actions
@@ -843,142 +833,25 @@ components:
         properties:
           configuration:
             $ref: '#/components/schemas/IdentityVerificationPhoneNumberRiskStepConfiguration'
-    RuleManagementResponse:
+    DocumentVerificationStepConfigurationResponse:
       type: object
       properties:
-        attributeRules:
-          type: array
-          items:
-            $ref: '#/components/schemas/RuleResponse'
-        riskRules:
-          type: array
-          items:
-            $ref: '#/components/schemas/RuleResponse'
-        scoreThreshold:
+        address:
+          $ref: '#/components/schemas/DocumentVerificationAddressResponse'
+        document:
+          $ref: '#/components/schemas/DocumentVerificationDocumentResponse'
+        personal:
+          $ref: '#/components/schemas/DocumentVerificationPersonalResponse'
+    PhoneBasedIdentityAffirmationConfigurationResponse:
+      type: object
+      properties:
+        dataSources:
+          $ref: '#/components/schemas/DataSources'
+        failureCountThreshold:
           type: integer
           format: int32
-    CompoundAddressItem:
-      type: object
-      properties:
-        nativeClaim:
-          $ref: '#/components/schemas/OnlyIdRequest'
-        required:
-          type: boolean
-    AddressRiskEvaluationStepConfigurationResponse:
-      type: object
-      properties:
-        claimManagement:
-          $ref: '#/components/schemas/ClaimManagementResponse'
-        ruleManagement:
-          $ref: '#/components/schemas/RuleManagementResponse'
-    PhoneNumberRiskStepResponse:
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/IdentityProofingStepResponse'
-      - type: object
-        properties:
-          configuration:
-            $ref: '#/components/schemas/PhoneNumberRiskStepConfigurationResponse'
-    IdentityVerificationNullableKnowledgeBasedVerificationStepAttribute:
-      type: object
-      properties:
-        nativeClaim:
-          $ref: '#/components/schemas/OnlyIdRequest'
-    RuleResponse:
-      type: object
-      properties:
-        action:
-          type: string
-        criteria:
-          type: string
-        type:
-          type: string
-    AddressRiskEvaluationContact:
-      required:
-      - email
-      - phone
-      type: object
-      properties:
-        email:
-          $ref: '#/components/schemas/IdentityVerificationAddressRiskVerificationAttribute'
-        phone:
-          $ref: '#/components/schemas/IdentityVerificationAddressRiskVerificationAttribute'
-    IdentityVerification_AddressRiskEvaluationStep_InsertRequest:
-      required:
-      - actions
-      - configuration
-      - id
-      - type
-      type: object
-      description: Represents an address risk evaluation identity verification step
-      allOf:
-      - required:
-        - actions
-        - type
-        type: object
-        properties:
-          actions:
-            $ref: '#/components/schemas/IdentityVerificationStepAction'
-          enabled:
-            type: boolean
-            default: false
-          type:
-            type: string
-            enum:
-            - addressRiskEvaluation
-            - documentVerification
-            - knowledgeBasedVerification
-            - phoneNumberRiskEvaluation
-            - phoneBasedIdentityAffirmation
-            - proofingData
-        description: Represents an identity verification step
-        discriminator:
-          propertyName: type
-      - type: object
-        properties:
-          configuration:
-            $ref: '#/components/schemas/IdentityVerificationAddressRiskEvaluationStepConfiguration'
-    ItemResponse:
-      type: object
-      properties:
-        nativeClaim:
-          $ref: '#/components/schemas/NameIdAndDisplayName'
-        required:
-          type: boolean
-    AddressRiskEvaluationPersonal:
-      required:
-      - familyName
-      - givenName
-      type: object
-      properties:
-        familyName:
-          $ref: '#/components/schemas/IdentityVerificationAddressRiskVerificationAttribute'
-        givenName:
-          $ref: '#/components/schemas/IdentityVerificationAddressRiskVerificationAttribute'
-    AddressRiskEvaluationAddressResponse:
-      type: object
-      properties:
-        city:
-          $ref: '#/components/schemas/AddressRiskEvaluationAttributeResponse'
-        postalCode:
-          $ref: '#/components/schemas/AddressRiskEvaluationAttributeResponse'
-        state:
-          $ref: '#/components/schemas/AddressRiskEvaluationAttributeResponse'
-        streetAddress:
-          $ref: '#/components/schemas/AddressRiskEvaluationAttributeResponse'
-    IdentityVerificationPhoneNumberRiskStepConfiguration:
-      required:
-      - forbiddenPhoneTypes
-      - phoneNumber
-      type: object
-      properties:
-        forbiddenPhoneTypes:
-          $ref: '#/components/schemas/IdentityVerificationPhoneNumberRiskStepForbiddenPhoneTypes'
-        numberPortingRisk:
-          type: boolean
         phoneNumber:
-          $ref: '#/components/schemas/IdentityVerificationPhoneNumberRiskStepAttribute'
-      description: Represents the configuration of a phone number risk based identity verification step
+          $ref: '#/components/schemas/PhoneBasedIdentityAffirmationAttributeResponse'
     KnowledgeBasedVerificationStepConfigurationResponse:
       type: object
       properties:
@@ -1000,125 +873,97 @@ components:
           $ref: '#/components/schemas/KnowledgeBasedVerificationAttributeResponse'
         streetAddress:
           $ref: '#/components/schemas/KnowledgeBasedVerificationAttributeResponse'
-    IdentityVerificationDocumentBasedStep:
+    AddressRiskEvaluationContact:
       required:
-      - actions
-      - configuration
-      - id
-      - type
+      - email
+      - phone
       type: object
-      description: Represents a document based identity verification step
-      allOf:
-      - $ref: '#/components/schemas/IdentityVerificationStep'
-      - type: object
-        properties:
-          configuration:
-            $ref: '#/components/schemas/IdentityVerificationDocumentBasedStepConfiguration'
-    IdentityVerification_DataStep_InsertRequest:
+      properties:
+        email:
+          $ref: '#/components/schemas/IdentityVerificationAddressRiskVerificationAttribute'
+        phone:
+          $ref: '#/components/schemas/IdentityVerificationAddressRiskVerificationAttribute'
+    IdentityVerificationPhoneNumberRiskStepConfiguration:
       required:
-      - actions
-      - configuration
-      - id
-      - type
-      type: object
-      description: Represents an identity verification data step
-      allOf:
-      - required:
-        - actions
-        - type
-        type: object
-        properties:
-          actions:
-            $ref: '#/components/schemas/IdentityVerificationStepAction'
-          enabled:
-            type: boolean
-            default: false
-          type:
-            type: string
-            enum:
-            - addressRiskEvaluation
-            - documentVerification
-            - knowledgeBasedVerification
-            - phoneNumberRiskEvaluation
-            - phoneBasedIdentityAffirmation
-            - proofingData
-        description: Represents an identity verification step
-        discriminator:
-          propertyName: type
-      - type: object
-        properties:
-          configuration:
-            $ref: '#/components/schemas/IdentityVerificationDataStepConfiguration'
-    PhoneNumberRiskStepConfigurationResponse:
+      - forbiddenPhoneTypes
+      - phoneNumber
       type: object
       properties:
         forbiddenPhoneTypes:
-          $ref: '#/components/schemas/ForbiddenPhoneTypesResponse'
+          $ref: '#/components/schemas/IdentityVerificationPhoneNumberRiskStepForbiddenPhoneTypes'
         numberPortingRisk:
           type: boolean
         phoneNumber:
-          $ref: '#/components/schemas/PhoneNumberRiskAttributeResponse'
-    DocumentVerificationAttributeResponse:
+          $ref: '#/components/schemas/IdentityVerificationPhoneNumberRiskStepAttribute'
+      description: Represents the configuration of a phone number risk based identity verification step
+    IdentityVerificationPhoneBasedStepConfigurationDataSource:
+      required:
+      - city
+      - countryCode
+      - dateOfBirth
+      - familyName
+      - givenName
+      - nationalId
+      - postalCode
+      - state
+      - streetAddress
       type: object
       properties:
-        nativeClaim:
-          $ref: '#/components/schemas/NameIdAndDisplayName'
-    IdentityVerification_PhoneBasedStep_InsertRequest:
+        city:
+          $ref: '#/components/schemas/IdentityVerificationPhoneBasedStepIdentityAffirmationAttribute'
+        countryCode:
+          $ref: '#/components/schemas/IdentityVerificationPhoneBasedStepIdentityAffirmationAttribute'
+        dateOfBirth:
+          $ref: '#/components/schemas/IdentityVerificationPhoneBasedStepIdentityAffirmationAttribute'
+        familyName:
+          $ref: '#/components/schemas/IdentityVerificationPhoneBasedStepIdentityAffirmationAttribute'
+        givenName:
+          $ref: '#/components/schemas/IdentityVerificationPhoneBasedStepIdentityAffirmationAttribute'
+        nationalId:
+          $ref: '#/components/schemas/IdentityVerificationPhoneBasedStepIdentityAffirmationAttribute'
+        postalCode:
+          $ref: '#/components/schemas/IdentityVerificationPhoneBasedStepIdentityAffirmationAttribute'
+        state:
+          $ref: '#/components/schemas/IdentityVerificationPhoneBasedStepIdentityAffirmationAttribute'
+        streetAddress:
+          $ref: '#/components/schemas/IdentityVerificationPhoneBasedStepIdentityAffirmationAttribute'
+      description: Represents the data source of a phone based identity verification step
+    ForbiddenPhoneTypesResponse:
+      type: object
+      properties:
+        fixedVoip:
+          type: boolean
+        landLine:
+          type: boolean
+        mobile:
+          type: boolean
+        nonFixedVoip:
+          type: boolean
+        other:
+          type: boolean
+    IdentityVerificationStep_InsertRequest:
       required:
       - actions
-      - configuration
-      - id
       - type
       type: object
-      description: Represents a phone based identity verification step
-      allOf:
-      - required:
-        - actions
-        - type
-        type: object
-        properties:
-          actions:
-            $ref: '#/components/schemas/IdentityVerificationStepAction'
-          enabled:
-            type: boolean
-            default: false
-          type:
-            type: string
-            enum:
-            - addressRiskEvaluation
-            - documentVerification
-            - knowledgeBasedVerification
-            - phoneNumberRiskEvaluation
-            - phoneBasedIdentityAffirmation
-            - proofingData
-        description: Represents an identity verification step
-        discriminator:
-          propertyName: type
-      - type: object
-        properties:
-          configuration:
-            $ref: '#/components/schemas/IdentityVerificationPhoneBasedStepConfiguration'
-    DocumentVerificationStepConfigurationResponse:
-      type: object
       properties:
-        address:
-          $ref: '#/components/schemas/DocumentVerificationAddressResponse'
-        document:
-          $ref: '#/components/schemas/DocumentVerificationDocumentResponse'
-        personal:
-          $ref: '#/components/schemas/DocumentVerificationPersonalResponse'
-    ProofingDataStepCompoundAddressField:
-      required:
-      - configuration
-      - id
-      type: object
-      description: Proofing data step field for compound address
-      allOf:
-      - $ref: '#/components/schemas/IdentityVerificationDataStepField'
-      - type: object
-        properties:
-          configuration:
-            $ref: '#/components/schemas/CompoundAddressFieldConfigurationUpsertRequest'
+        actions:
+          $ref: '#/components/schemas/IdentityVerificationStepAction'
+        enabled:
+          type: boolean
+          default: false
+        type:
+          type: string
+          enum:
+          - addressRiskEvaluation
+          - documentVerification
+          - knowledgeBasedVerification
+          - phoneNumberRiskEvaluation
+          - phoneBasedIdentityAffirmation
+          - proofingData
+      description: Represents an identity verification step
+      discriminator:
+        propertyName: type
     NativeClaimFieldConfigurationResponse:
       type: object
       properties:
@@ -1132,7 +977,81 @@ components:
           $ref: '#/components/schemas/NameIdAndDisplayName'
         required:
           type: boolean
-    Actions:
+    IdentityVerificationPhoneNumberRiskStepForbiddenPhoneTypes:
+      type: object
+      properties:
+        fixedVoip:
+          type: boolean
+        landLine:
+          type: boolean
+        mobile:
+          type: boolean
+        nonFixedVoip:
+          type: boolean
+        other:
+          type: boolean
+      description: Represents forbidden phone types for a phone number risk based identity verification step
+    AddressRiskEvaluationPersonalResponse:
+      type: object
+      properties:
+        familyName:
+          $ref: '#/components/schemas/AddressRiskEvaluationAttributeResponse'
+        givenName:
+          $ref: '#/components/schemas/AddressRiskEvaluationAttributeResponse'
+    IdentityVerificationKnowledgeBasedVerificationStepAttribute:
+      required:
+      - nativeClaim
+      type: object
+      properties:
+        nativeClaim:
+          $ref: '#/components/schemas/OnlyIdRequest'
+    IdReferenceRequest_IdentityProofing:
+      required:
+      - id
+      type: object
+      properties:
+        id:
+          pattern: ^[a-zA-Z0-9-]{1,36}$
+          type: string
+          description: ID of the represented entity
+    ClaimManagementResponse:
+      type: object
+      properties:
+        address:
+          $ref: '#/components/schemas/AddressRiskEvaluationAddressResponse'
+        contact:
+          $ref: '#/components/schemas/AddressRiskEvaluationContactResponse'
+        personal:
+          $ref: '#/components/schemas/AddressRiskEvaluationPersonalResponse'
+    ProofingDataStepResponse:
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/IdentityProofingStepResponse'
+      - type: object
+        properties:
+          configuration:
+            $ref: '#/components/schemas/ProofingDataStepConfigurationResponse'
+    ProofingDataStepCompoundAddressField:
+      required:
+      - configuration
+      - id
+      type: object
+      description: Proofing data step field for compound address
+      allOf:
+      - $ref: '#/components/schemas/IdentityVerificationDataStepField'
+      - type: object
+        properties:
+          configuration:
+            $ref: '#/components/schemas/CompoundAddressFieldConfigurationUpsertRequest'
+    KnowledgeBasedVerificationAttributeResponse:
+      type: object
+      properties:
+        nativeClaim:
+          $ref: '#/components/schemas/NameIdAndDisplayName'
+    IdentityVerificationStepAction:
+      required:
+      - failure
+      - success
       type: object
       properties:
         failure:
@@ -1146,18 +1065,7 @@ components:
           enum:
           - nextStep
           - exitProofing
-    PhoneBasedIdentityAffirmationAttributeResponse:
-      type: object
-      properties:
-        nativeClaim:
-          $ref: '#/components/schemas/NameIdAndDisplayName'
-    AddressRiskEvaluationPersonalResponse:
-      type: object
-      properties:
-        familyName:
-          $ref: '#/components/schemas/AddressRiskEvaluationAttributeResponse'
-        givenName:
-          $ref: '#/components/schemas/AddressRiskEvaluationAttributeResponse'
+      description: Actions for step result
     ProofingDataStepFieldResponse:
       type: object
       properties:
@@ -1172,23 +1080,6 @@ components:
           - compoundAddress
       discriminator:
         propertyName: type
-    ProofingDataStepConfigurationResponse:
-      type: object
-      properties:
-        description:
-          type: string
-        displayText:
-          type: string
-        fields:
-          uniqueItems: true
-          type: array
-          items:
-            oneOf:
-            - $ref: '#/components/schemas/ProofingDataStepFieldResponse'
-            - $ref: '#/components/schemas/ProofingDataStepCompoundAddressFieldResponse'
-            - $ref: '#/components/schemas/ProofingDataStepNativeClaimFieldResponse'
-        name:
-          type: string
     IdentityVerificationPhoneNumberRiskStepAttribute:
       required:
       - nativeClaim
@@ -1197,135 +1088,32 @@ components:
         nativeClaim:
           $ref: '#/components/schemas/OnlyIdRequest'
       description: Represents an attribute for phone number risk based identity verification step
-    IdentityVerificationPhoneBasedStepIdentityAffirmationAttribute:
-      required:
-      - failureCriteria
-      - thresholdAction
+    IdentityVerificationAddressRiskVerificationAttribute:
       type: object
       properties:
-        failureCriteria:
-          type: string
-          enum:
-          - exactMatch
-          - highPartialMatch
-          - partialMatch
         nativeClaim:
           $ref: '#/components/schemas/OnlyIdRequest'
-        thresholdAction:
-          type: string
-          enum:
-          - none
-          - mandatoryToPass
-          - failureCount
-      description: Represents an identity affirmation attribute for phone based identity verification step
-    DocumentVerificationDocument:
-      required:
-      - className
-      - expirationDate
-      - issueDate
-      - issuerCode
-      - issuerName
-      - name
-      - number
+      description: Represents an address risk verification attribute for address risk verification step
+    DocumentVerificationStepResponse:
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/IdentityProofingStepResponse'
+      - type: object
+        properties:
+          configuration:
+            $ref: '#/components/schemas/DocumentVerificationStepConfigurationResponse'
+    NameIdAndDisplayName:
       type: object
       properties:
-        className:
-          $ref: '#/components/schemas/IdentityVerificationDocumentVerificationAttribute'
-        expirationDate:
-          $ref: '#/components/schemas/IdentityVerificationDocumentVerificationAttribute'
-        issueDate:
-          $ref: '#/components/schemas/IdentityVerificationDocumentVerificationAttribute'
-        issuerCode:
-          $ref: '#/components/schemas/IdentityVerificationDocumentVerificationAttribute'
-        issuerName:
-          $ref: '#/components/schemas/IdentityVerificationDocumentVerificationAttribute'
+        displayName:
+          type: string
+          description: Display name of the represented entity
+        id:
+          type: string
+          description: ID of the represented entity
         name:
-          $ref: '#/components/schemas/IdentityVerificationDocumentVerificationAttribute'
-        number:
-          $ref: '#/components/schemas/IdentityVerificationDocumentVerificationAttribute'
-    PhoneNumberRiskAttributeResponse:
-      type: object
-      properties:
-        nativeClaim:
-          $ref: '#/components/schemas/NameIdAndDisplayName'
-    DocumentVerificationAddress:
-      required:
-      - address
-      - city
-      - country
-      - postalCode
-      - state
-      - streetAddress
-      type: object
-      properties:
-        address:
-          $ref: '#/components/schemas/IdentityVerificationDocumentVerificationAttribute'
-        city:
-          $ref: '#/components/schemas/IdentityVerificationDocumentVerificationAttribute'
-        country:
-          $ref: '#/components/schemas/IdentityVerificationDocumentVerificationAttribute'
-        postalCode:
-          $ref: '#/components/schemas/IdentityVerificationDocumentVerificationAttribute'
-        state:
-          $ref: '#/components/schemas/IdentityVerificationDocumentVerificationAttribute'
-        streetAddress:
-          $ref: '#/components/schemas/IdentityVerificationDocumentVerificationAttribute'
-    ProofingDataStepCompoundAddressFieldResponse:
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/ProofingDataStepFieldResponse'
-      - type: object
-        properties:
-          configuration:
-            $ref: '#/components/schemas/CompoundAddressFieldConfigurationResponse'
-    ClaimManagementResponse:
-      type: object
-      properties:
-        address:
-          $ref: '#/components/schemas/AddressRiskEvaluationAddressResponse'
-        contact:
-          $ref: '#/components/schemas/AddressRiskEvaluationContactResponse'
-        personal:
-          $ref: '#/components/schemas/AddressRiskEvaluationPersonalResponse'
-    Rule:
-      required:
-      - action
-      - criteria
-      - type
-      type: object
-      properties:
-        action:
-          minLength: 1
           type: string
-        criteria:
-          minLength: 1
-          type: string
-        type:
-          minLength: 1
-          type: string
-    IdentityVerificationAddressRiskEvaluationStep:
-      required:
-      - actions
-      - configuration
-      - id
-      - type
-      type: object
-      description: Represents an address risk evaluation identity verification step
-      allOf:
-      - $ref: '#/components/schemas/IdentityVerificationStep'
-      - type: object
-        properties:
-          configuration:
-            $ref: '#/components/schemas/IdentityVerificationAddressRiskEvaluationStepConfiguration'
-    ClaimManagement:
-      type: object
-      properties:
-        address:
-          $ref: '#/components/schemas/AddressRiskEvaluationAddress'
-        contact:
-          $ref: '#/components/schemas/AddressRiskEvaluationContact'
-        personal:
-          $ref: '#/components/schemas/AddressRiskEvaluationPersonal'
+          description: Name of the represented entity
     ProblemJson:
       type: object
       properties:
@@ -1362,6 +1150,110 @@ components:
         title:
           type: string
       description: Based on [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807)
+    DocumentVerificationDocument:
+      required:
+      - className
+      - expirationDate
+      - issueDate
+      - issuerCode
+      - issuerName
+      - name
+      - number
+      type: object
+      properties:
+        className:
+          $ref: '#/components/schemas/IdentityVerificationDocumentVerificationAttribute'
+        expirationDate:
+          $ref: '#/components/schemas/IdentityVerificationDocumentVerificationAttribute'
+        issueDate:
+          $ref: '#/components/schemas/IdentityVerificationDocumentVerificationAttribute'
+        issuerCode:
+          $ref: '#/components/schemas/IdentityVerificationDocumentVerificationAttribute'
+        issuerName:
+          $ref: '#/components/schemas/IdentityVerificationDocumentVerificationAttribute'
+        name:
+          $ref: '#/components/schemas/IdentityVerificationDocumentVerificationAttribute'
+        number:
+          $ref: '#/components/schemas/IdentityVerificationDocumentVerificationAttribute'
+    DocumentVerificationAddress:
+      required:
+      - address
+      - city
+      - country
+      - postalCode
+      - state
+      - streetAddress
+      type: object
+      properties:
+        address:
+          $ref: '#/components/schemas/IdentityVerificationDocumentVerificationAttribute'
+        city:
+          $ref: '#/components/schemas/IdentityVerificationDocumentVerificationAttribute'
+        country:
+          $ref: '#/components/schemas/IdentityVerificationDocumentVerificationAttribute'
+        postalCode:
+          $ref: '#/components/schemas/IdentityVerificationDocumentVerificationAttribute'
+        state:
+          $ref: '#/components/schemas/IdentityVerificationDocumentVerificationAttribute'
+        streetAddress:
+          $ref: '#/components/schemas/IdentityVerificationDocumentVerificationAttribute'
+    RuleResponse:
+      type: object
+      properties:
+        action:
+          type: string
+        criteria:
+          type: string
+        type:
+          type: string
+    ProofingDataStepConfigurationResponse:
+      type: object
+      properties:
+        description:
+          type: string
+        displayText:
+          type: string
+        fields:
+          uniqueItems: true
+          type: array
+          items:
+            oneOf:
+            - $ref: '#/components/schemas/ProofingDataStepFieldResponse'
+            - $ref: '#/components/schemas/ProofingDataStepCompoundAddressFieldResponse'
+            - $ref: '#/components/schemas/ProofingDataStepNativeClaimFieldResponse'
+        name:
+          type: string
+    IdentityVerificationDataStepNativeClaimConfiguration:
+      required:
+      - displayOption
+      - nativeClaim
+      type: object
+      properties:
+        displayOption:
+          type: string
+          enum:
+          - readOnly
+          - readOnlyMasked
+          - readWrite
+        nativeClaim:
+          $ref: '#/components/schemas/OnlyIdRequest'
+        required:
+          type: boolean
+          default: true
+    IdentityVerificationPhoneNumberRiskStep:
+      required:
+      - actions
+      - configuration
+      - id
+      - type
+      type: object
+      description: Represents phone number risk based identity verification step
+      allOf:
+      - $ref: '#/components/schemas/IdentityVerificationStep'
+      - type: object
+        properties:
+          configuration:
+            $ref: '#/components/schemas/IdentityVerificationPhoneNumberRiskStepConfiguration'
     IdentityVerificationPhoneBasedStepPhoneNumberAffirmationAttribute:
       required:
       - nativeClaim
@@ -1370,21 +1262,122 @@ components:
         nativeClaim:
           $ref: '#/components/schemas/OnlyIdRequest'
       description: Represents a phone number affirmation attribute for phone based identity verification step
-    DocumentVerificationAddressResponse:
+    AddressRiskEvaluationStepResponse:
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/IdentityProofingStepResponse'
+      - type: object
+        properties:
+          configuration:
+            $ref: '#/components/schemas/AddressRiskEvaluationStepConfigurationResponse'
+    IdentityVerification_DataStep_InsertRequest:
+      required:
+      - actions
+      - configuration
+      - id
+      - type
+      type: object
+      description: Represents an identity verification data step
+      allOf:
+      - required:
+        - actions
+        - type
+        type: object
+        properties:
+          actions:
+            $ref: '#/components/schemas/IdentityVerificationStepAction'
+          enabled:
+            type: boolean
+            default: false
+          type:
+            type: string
+            enum:
+            - addressRiskEvaluation
+            - documentVerification
+            - knowledgeBasedVerification
+            - phoneNumberRiskEvaluation
+            - phoneBasedIdentityAffirmation
+            - proofingData
+        description: Represents an identity verification step
+        discriminator:
+          propertyName: type
+      - type: object
+        properties:
+          configuration:
+            $ref: '#/components/schemas/IdentityVerificationDataStepConfiguration'
+    IdentityVerificationAddressRiskEvaluationStepConfiguration:
+      required:
+      - claimManagement
+      - ruleManagement
       type: object
       properties:
-        address:
-          $ref: '#/components/schemas/DocumentVerificationAttributeResponse'
-        city:
-          $ref: '#/components/schemas/DocumentVerificationAttributeResponse'
-        country:
-          $ref: '#/components/schemas/DocumentVerificationAttributeResponse'
-        postalCode:
-          $ref: '#/components/schemas/DocumentVerificationAttributeResponse'
-        state:
-          $ref: '#/components/schemas/DocumentVerificationAttributeResponse'
-        streetAddress:
-          $ref: '#/components/schemas/DocumentVerificationAttributeResponse'
+        claimManagement:
+          $ref: '#/components/schemas/ClaimManagement'
+        ruleManagement:
+          $ref: '#/components/schemas/RuleManagement'
+      description: Represents the configuration of a address risk evaluation step configuration
+    IdentityVerificationPhoneBasedStep:
+      required:
+      - actions
+      - configuration
+      - id
+      - type
+      type: object
+      description: Represents a phone based identity verification step
+      allOf:
+      - $ref: '#/components/schemas/IdentityVerificationStep'
+      - type: object
+        properties:
+          configuration:
+            $ref: '#/components/schemas/IdentityVerificationPhoneBasedStepConfiguration'
+    IdentityVerification_PhoneBasedStep_InsertRequest:
+      required:
+      - actions
+      - configuration
+      - id
+      - type
+      type: object
+      description: Represents a phone based identity verification step
+      allOf:
+      - required:
+        - actions
+        - type
+        type: object
+        properties:
+          actions:
+            $ref: '#/components/schemas/IdentityVerificationStepAction'
+          enabled:
+            type: boolean
+            default: false
+          type:
+            type: string
+            enum:
+            - addressRiskEvaluation
+            - documentVerification
+            - knowledgeBasedVerification
+            - phoneNumberRiskEvaluation
+            - phoneBasedIdentityAffirmation
+            - proofingData
+        description: Represents an identity verification step
+        discriminator:
+          propertyName: type
+      - type: object
+        properties:
+          configuration:
+            $ref: '#/components/schemas/IdentityVerificationPhoneBasedStepConfiguration'
+    OnlyIdRequest:
+      required:
+      - id
+      type: object
+      properties:
+        id:
+          pattern: ^[a-zA-Z0-9-]{1,36}$
+          type: string
+    PhoneBasedIdentityAffirmationAttributeResponse:
+      type: object
+      properties:
+        nativeClaim:
+          $ref: '#/components/schemas/NameIdAndDisplayName'
     IdentityVerification_DocumentBasedStep_InsertRequest:
       required:
       - actions
@@ -1420,6 +1413,168 @@ components:
         properties:
           configuration:
             $ref: '#/components/schemas/IdentityVerificationDocumentBasedStepConfiguration'
+    IdentityVerificationDataStepField:
+      required:
+      - id
+      type: object
+      properties:
+        displayName:
+          maxLength: 64
+          minLength: 0
+          pattern: ^$|^[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°]([\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*° ]*[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°])?$
+          type: string
+        id:
+          type: string
+        type:
+          type: string
+          enum:
+          - nativeClaim
+          - compoundAddress
+      description: Represents a field of an identity verification data step
+      discriminator:
+        propertyName: type
+      oneOf:
+      - $ref: '#/components/schemas/ProofingDataStepCompoundAddressField'
+      - $ref: '#/components/schemas/ProofingDataStepNativeClaimField'
+    ItemResponse:
+      type: object
+      properties:
+        nativeClaim:
+          $ref: '#/components/schemas/NameIdAndDisplayName'
+        required:
+          type: boolean
+    IdentityVerification_AddressRiskEvaluationStep_InsertRequest:
+      required:
+      - actions
+      - configuration
+      - id
+      - type
+      type: object
+      description: Represents an address risk evaluation identity verification step
+      allOf:
+      - required:
+        - actions
+        - type
+        type: object
+        properties:
+          actions:
+            $ref: '#/components/schemas/IdentityVerificationStepAction'
+          enabled:
+            type: boolean
+            default: false
+          type:
+            type: string
+            enum:
+            - addressRiskEvaluation
+            - documentVerification
+            - knowledgeBasedVerification
+            - phoneNumberRiskEvaluation
+            - phoneBasedIdentityAffirmation
+            - proofingData
+        description: Represents an identity verification step
+        discriminator:
+          propertyName: type
+      - type: object
+        properties:
+          configuration:
+            $ref: '#/components/schemas/IdentityVerificationAddressRiskEvaluationStepConfiguration'
+    IdentityVerificationDataStep:
+      required:
+      - actions
+      - configuration
+      - id
+      - type
+      type: object
+      description: Represents an identity verification data step
+      allOf:
+      - $ref: '#/components/schemas/IdentityVerificationStep'
+      - type: object
+        properties:
+          configuration:
+            $ref: '#/components/schemas/IdentityVerificationDataStepConfiguration'
+    IdentityVerificationDocumentBasedStep:
+      required:
+      - actions
+      - configuration
+      - id
+      - type
+      type: object
+      description: Represents a document based identity verification step
+      allOf:
+      - $ref: '#/components/schemas/IdentityVerificationStep'
+      - type: object
+        properties:
+          configuration:
+            $ref: '#/components/schemas/IdentityVerificationDocumentBasedStepConfiguration'
+    IdentityVerification_KnowledgeBasedStep_InsertRequest:
+      required:
+      - actions
+      - configuration
+      - id
+      - type
+      type: object
+      description: Represents a knowledge based identity verification step
+      allOf:
+      - required:
+        - actions
+        - type
+        type: object
+        properties:
+          actions:
+            $ref: '#/components/schemas/IdentityVerificationStepAction'
+          enabled:
+            type: boolean
+            default: false
+          type:
+            type: string
+            enum:
+            - addressRiskEvaluation
+            - documentVerification
+            - knowledgeBasedVerification
+            - phoneNumberRiskEvaluation
+            - phoneBasedIdentityAffirmation
+            - proofingData
+        description: Represents an identity verification step
+        discriminator:
+          propertyName: type
+      - type: object
+        properties:
+          configuration:
+            $ref: '#/components/schemas/IdentityVerificationKnowledgeBasedStepConfiguration'
+    IdentityVerificationPhoneBasedStepIdentityAffirmationAttribute:
+      required:
+      - failureCriteria
+      - thresholdAction
+      type: object
+      properties:
+        failureCriteria:
+          type: string
+          enum:
+          - exactMatch
+          - highPartialMatch
+          - partialMatch
+        nativeClaim:
+          $ref: '#/components/schemas/OnlyIdRequest'
+        thresholdAction:
+          type: string
+          enum:
+          - none
+          - mandatoryToPass
+          - failureCount
+      description: Represents an identity affirmation attribute for phone based identity verification step
+    PhoneNumberRiskAttributeResponse:
+      type: object
+      properties:
+        nativeClaim:
+          $ref: '#/components/schemas/NameIdAndDisplayName'
+    PhoneNumberRiskStepResponse:
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/IdentityProofingStepResponse'
+      - type: object
+        properties:
+          configuration:
+            $ref: '#/components/schemas/PhoneNumberRiskStepConfigurationResponse'
     IdentityVerificationDataStepConfiguration:
       required:
       - fields
@@ -1446,109 +1601,23 @@ components:
           pattern: ^$|^[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°]([\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*° ]*[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°])?$
           type: string
       description: Represents the configuration of an identity verification data step
-    IdentityVerificationDataStepNativeClaimConfiguration:
-      required:
-      - displayOption
-      - nativeClaim
+    ProofingDataStepCompoundAddressFieldResponse:
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/ProofingDataStepFieldResponse'
+      - type: object
+        properties:
+          configuration:
+            $ref: '#/components/schemas/CompoundAddressFieldConfigurationResponse'
+    PhoneNumberRiskStepConfigurationResponse:
       type: object
       properties:
-        displayOption:
-          type: string
-          enum:
-          - readOnly
-          - readOnlyMasked
-          - readWrite
-        nativeClaim:
-          $ref: '#/components/schemas/OnlyIdRequest'
-        required:
+        forbiddenPhoneTypes:
+          $ref: '#/components/schemas/ForbiddenPhoneTypesResponse'
+        numberPortingRisk:
           type: boolean
-          default: true
-    AddressRiskEvaluationAttributeResponse:
-      type: object
-      properties:
-        nativeClaim:
-          $ref: '#/components/schemas/NameIdAndDisplayName'
-    IdentityVerificationPhoneNumberRiskStep:
-      required:
-      - actions
-      - configuration
-      - id
-      - type
-      type: object
-      description: Represents phone number risk based identity verification step
-      allOf:
-      - $ref: '#/components/schemas/IdentityVerificationStep'
-      - type: object
-        properties:
-          configuration:
-            $ref: '#/components/schemas/IdentityVerificationPhoneNumberRiskStepConfiguration'
-    IdentityVerificationDocumentVerificationAttribute:
-      type: object
-      properties:
-        nativeClaim:
-          $ref: '#/components/schemas/OnlyIdRequest'
-      description: Represents a document verification attribute for document verification step
-    ProofingDataStepNativeClaimField:
-      required:
-      - configuration
-      - id
-      type: object
-      description: Proofing data step field for Native Claim
-      allOf:
-      - $ref: '#/components/schemas/IdentityVerificationDataStepField'
-      - type: object
-        properties:
-          configuration:
-            $ref: '#/components/schemas/IdentityVerificationDataStepNativeClaimConfiguration'
-    IdentityVerificationPhoneBasedStepConfiguration:
-      required:
-      - dataSources
-      - phoneNumber
-      type: object
-      properties:
-        dataSources:
-          $ref: '#/components/schemas/IdentityVerificationPhoneBasedStepConfigurationDataSource'
-        failureCountThreshold:
-          minimum: 1
-          type: integer
-          format: int32
-          default: 1
         phoneNumber:
-          $ref: '#/components/schemas/IdentityVerificationPhoneBasedStepPhoneNumberAffirmationAttribute'
-      description: Represents the configuration of a phone based identity verification step
-    DocumentVerificationPersonal:
-      required:
-      - dateOfBirth
-      - familyName
-      - firstName
-      - fullName
-      - gender
-      - givenName
-      - middleName
-      type: object
-      properties:
-        dateOfBirth:
-          $ref: '#/components/schemas/IdentityVerificationDocumentVerificationAttribute'
-        familyName:
-          $ref: '#/components/schemas/IdentityVerificationDocumentVerificationAttribute'
-        firstName:
-          $ref: '#/components/schemas/IdentityVerificationDocumentVerificationAttribute'
-        fullName:
-          $ref: '#/components/schemas/IdentityVerificationDocumentVerificationAttribute'
-        gender:
-          $ref: '#/components/schemas/IdentityVerificationDocumentVerificationAttribute'
-        givenName:
-          $ref: '#/components/schemas/IdentityVerificationDocumentVerificationAttribute'
-        middleName:
-          $ref: '#/components/schemas/IdentityVerificationDocumentVerificationAttribute'
-    KnowledgeBasedVerificationStepResponse:
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/IdentityProofingStepResponse'
-      - type: object
-        properties:
-          configuration:
-            $ref: '#/components/schemas/KnowledgeBasedVerificationStepConfigurationResponse'
+          $ref: '#/components/schemas/PhoneNumberRiskAttributeResponse'
     CompoundAddressFieldConfigurationUpsertRequest:
       type: object
       properties:
@@ -1562,17 +1631,22 @@ components:
           $ref: '#/components/schemas/CompoundAddressItem'
         province:
           $ref: '#/components/schemas/CompoundAddressItem'
-    IdentityVerificationStep_InsertRequest:
-      required:
-      - actions
-      - type
+    CompoundAddressItem:
+      type: object
+      properties:
+        nativeClaim:
+          $ref: '#/components/schemas/OnlyIdRequest'
+        required:
+          type: boolean
+    IdentityProofingStepResponse:
       type: object
       properties:
         actions:
-          $ref: '#/components/schemas/IdentityVerificationStepAction'
+          $ref: '#/components/schemas/Actions'
         enabled:
           type: boolean
-          default: false
+        id:
+          type: string
         type:
           type: string
           enum:
@@ -1582,111 +1656,37 @@ components:
           - phoneNumberRiskEvaluation
           - phoneBasedIdentityAffirmation
           - proofingData
-      description: Represents an identity verification step
       discriminator:
         propertyName: type
-    CompoundAddressFieldConfigurationResponse:
+    AddressRiskEvaluationAttributeResponse:
       type: object
       properties:
-        address:
-          $ref: '#/components/schemas/ItemResponse'
-        city:
-          $ref: '#/components/schemas/ItemResponse'
-        country:
-          $ref: '#/components/schemas/ItemResponse'
-        postalCode:
-          $ref: '#/components/schemas/ItemResponse'
-        province:
-          $ref: '#/components/schemas/ItemResponse'
-    DocumentVerificationStepResponse:
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/IdentityProofingStepResponse'
-      - type: object
-        properties:
-          configuration:
-            $ref: '#/components/schemas/DocumentVerificationStepConfigurationResponse'
-    IdentityVerificationKnowledgeBasedStepConfiguration:
-      required:
-      - city
-      - countryCode
-      - dateOfBirth
-      - familyName
-      - givenName
-      - phoneNumber
-      - postalCode
-      - state
-      - streetAddress
-      type: object
-      properties:
-        city:
-          $ref: '#/components/schemas/IdentityVerificationKnowledgeBasedVerificationStepAttribute'
-        countryCode:
-          $ref: '#/components/schemas/IdentityVerificationNullableKnowledgeBasedVerificationStepAttribute'
-        dateOfBirth:
-          $ref: '#/components/schemas/IdentityVerificationKnowledgeBasedVerificationStepAttribute'
-        familyName:
-          $ref: '#/components/schemas/IdentityVerificationKnowledgeBasedVerificationStepAttribute'
-        givenName:
-          $ref: '#/components/schemas/IdentityVerificationKnowledgeBasedVerificationStepAttribute'
-        phoneNumber:
-          $ref: '#/components/schemas/IdentityVerificationKnowledgeBasedVerificationStepAttribute'
-        postalCode:
-          $ref: '#/components/schemas/IdentityVerificationKnowledgeBasedVerificationStepAttribute'
-        state:
-          $ref: '#/components/schemas/IdentityVerificationKnowledgeBasedVerificationStepAttribute'
-        streetAddress:
-          $ref: '#/components/schemas/IdentityVerificationKnowledgeBasedVerificationStepAttribute'
-    IdentityVerificationAddressRiskEvaluationStepConfiguration:
-      required:
-      - claimManagement
-      - ruleManagement
-      type: object
-      properties:
-        claimManagement:
-          $ref: '#/components/schemas/ClaimManagement'
-        ruleManagement:
-          $ref: '#/components/schemas/RuleManagement'
-      description: Represents the configuration of a address risk evaluation step configuration
-    ProofingDataStepNativeClaimFieldResponse:
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/ProofingDataStepFieldResponse'
-      - type: object
-        properties:
-          configuration:
-            $ref: '#/components/schemas/NativeClaimFieldConfigurationResponse'
-    IdentityVerificationPhoneNumberRiskStepForbiddenPhoneTypes:
-      type: object
-      properties:
-        fixedVoip:
-          type: boolean
-        landLine:
-          type: boolean
-        mobile:
-          type: boolean
-        nonFixedVoip:
-          type: boolean
-        other:
-          type: boolean
-      description: Represents forbidden phone types for a phone number risk based identity verification step
-    DataSourceResponse:
-      type: object
-      properties:
-        failureCriteria:
-          type: string
-          enum:
-          - exactMatch
-          - highPartialMatch
-          - partialMatch
         nativeClaim:
           $ref: '#/components/schemas/NameIdAndDisplayName'
-        thresholdAction:
+    DocumentVerificationAttributeResponse:
+      type: object
+      properties:
+        nativeClaim:
+          $ref: '#/components/schemas/NameIdAndDisplayName'
+    Actions:
+      type: object
+      properties:
+        failure:
           type: string
           enum:
-          - none
-          - mandatoryToPass
-          - failureCount
+          - nextStep
+          - failureMessage
+          - exitProofing
+        success:
+          type: string
+          enum:
+          - nextStep
+          - exitProofing
+    IdentityVerificationNullableKnowledgeBasedVerificationStepAttribute:
+      type: object
+      properties:
+        nativeClaim:
+          $ref: '#/components/schemas/OnlyIdRequest'
   securitySchemes:
     securityScheme:
       scheme: bearer

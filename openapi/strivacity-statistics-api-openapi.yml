@@ -632,6 +632,26 @@ paths:
       - Statistics
 components:
   schemas:
+    ConnectorUptimeEventResponse_Stats:
+      type: object
+      properties:
+        end:
+          type: string
+          format: date-time
+        start:
+          type: string
+          format: date-time
+        type:
+          type: string
+    FieldError:
+      type: object
+      properties:
+        field:
+          type: string
+        message:
+          type: string
+        objectName:
+          type: string
     Metrics_Stats:
       type: object
       properties:
@@ -653,29 +673,6 @@ components:
         rowsProcessed:
           type: integer
           format: int64
-    StatsResponse_Stats:
-      type: object
-      properties:
-        links:
-          $ref: '#/components/schemas/LinksResponse_Stats'
-        values:
-          type: array
-          items:
-            $ref: '#/components/schemas/StatsResponseValue_Stats'
-    LinksResponse_Stats:
-      type: object
-      properties:
-        self:
-          $ref: '#/components/schemas/Link_Stats'
-    FieldError:
-      type: object
-      properties:
-        field:
-          type: string
-        message:
-          type: string
-        objectName:
-          type: string
     ConnectorJobResponse_Stats:
       type: object
       properties:
@@ -696,17 +693,6 @@ components:
           format: date-time
         status:
           type: string
-    ConnectorUptimeEventResponse_Stats:
-      type: object
-      properties:
-        end:
-          type: string
-          format: date-time
-        start:
-          type: string
-          format: date-time
-        type:
-          type: string
     StatsResponseValue_Stats:
       type: object
       properties:
@@ -721,16 +707,11 @@ components:
           type: number
           format: double
       description: Represents a time-group-value triplet.
-    Link_Stats:
+    LinksResponse_Stats:
       type: object
       properties:
-        href:
-          type: string
-        meta:
-          type: object
-          additionalProperties:
-            type: string
-      description: Represents a single link for statistics
+        self:
+          $ref: '#/components/schemas/Link_Stats'
     ProblemJson:
       type: object
       properties:
@@ -767,6 +748,25 @@ components:
         title:
           type: string
       description: Based on [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807)
+    Link_Stats:
+      type: object
+      properties:
+        href:
+          type: string
+        meta:
+          type: object
+          additionalProperties:
+            type: string
+      description: Represents a single link for statistics
+    StatsResponse_Stats:
+      type: object
+      properties:
+        links:
+          $ref: '#/components/schemas/LinksResponse_Stats'
+        values:
+          type: array
+          items:
+            $ref: '#/components/schemas/StatsResponseValue_Stats'
   securitySchemes:
     securityScheme:
       scheme: bearer

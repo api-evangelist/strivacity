@@ -284,6 +284,22 @@ paths:
       - Web Analytics
 components:
   schemas:
+    WebAnalyticsResponse:
+      type: object
+      properties:
+        apiKey:
+          type: string
+        configuration:
+          type: string
+        enabled:
+          type: boolean
+        id:
+          type: string
+          enum:
+          - googleAnalytics
+          - googleTagManager
+          - mixpanel
+          - amplitude
     WebAnalytics_WebAnalytics:
       required:
       - apiKey
@@ -311,6 +327,15 @@ components:
           - mixpanel
           - amplitude
       description: Represents web analytics configuration.
+    FieldError:
+      type: object
+      properties:
+        field:
+          type: string
+        message:
+          type: string
+        objectName:
+          type: string
     PageMetadata:
       type: object
       properties:
@@ -326,6 +351,15 @@ components:
         totalPages:
           type: integer
           format: int64
+    PagedModelWebAnalyticsResponse:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/WebAnalyticsResponse'
+        page:
+          $ref: '#/components/schemas/PageMetadata'
     WebAnalyticsResponse_WebAnalytics:
       type: object
       properties:
@@ -342,24 +376,6 @@ components:
           - googleTagManager
           - mixpanel
           - amplitude
-    FieldError:
-      type: object
-      properties:
-        field:
-          type: string
-        message:
-          type: string
-        objectName:
-          type: string
-    PagedModelWebAnalyticsResponse:
-      type: object
-      properties:
-        content:
-          type: array
-          items:
-            $ref: '#/components/schemas/WebAnalyticsResponse'
-        page:
-          $ref: '#/components/schemas/PageMetadata'
     ProblemJson:
       type: object
       properties:
@@ -396,22 +412,6 @@ components:
         title:
           type: string
       description: Based on [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807)
-    WebAnalyticsResponse:
-      type: object
-      properties:
-        apiKey:
-          type: string
-        configuration:
-          type: string
-        enabled:
-          type: boolean
-        id:
-          type: string
-          enum:
-          - googleAnalytics
-          - googleTagManager
-          - mixpanel
-          - amplitude
   securitySchemes:
     securityScheme:
       scheme: bearer

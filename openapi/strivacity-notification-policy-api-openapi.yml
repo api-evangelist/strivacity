@@ -411,15 +411,6 @@ components:
           maxLength: 255
           minLength: 1
           type: string
-    FieldError:
-      type: object
-      properties:
-        field:
-          type: string
-        message:
-          type: string
-        objectName:
-          type: string
     ProblemJson:
       type: object
       properties:
@@ -463,15 +454,30 @@ components:
           type: string
         senderDisplayName:
           type: string
-    PagedModelNotificationPolicyResponse:
+    FieldError:
       type: object
       properties:
-        content:
-          type: array
-          items:
-            $ref: '#/components/schemas/NotificationPolicyResponse'
-        page:
-          $ref: '#/components/schemas/PageMetadata'
+        field:
+          type: string
+        message:
+          type: string
+        objectName:
+          type: string
+    NotificationPolicyResponse:
+      type: object
+      properties:
+        description:
+          type: string
+        id:
+          type: string
+        name:
+          type: string
+        policyTag:
+          type: string
+        sender:
+          type: string
+        senderDisplayName:
+          type: string
     NotificationPolicyUpsertRequest_NotificationPolicy:
       required:
       - id
@@ -503,36 +509,6 @@ components:
           maxLength: 255
           minLength: 1
           type: string
-    NotificationPolicyResponse:
-      type: object
-      properties:
-        description:
-          type: string
-        id:
-          type: string
-        name:
-          type: string
-        policyTag:
-          type: string
-        sender:
-          type: string
-        senderDisplayName:
-          type: string
-    PageMetadata:
-      type: object
-      properties:
-        number:
-          type: integer
-          format: int64
-        size:
-          type: integer
-          format: int64
-        totalElements:
-          type: integer
-          format: int64
-        totalPages:
-          type: integer
-          format: int64
     NotificationPolicy_InsertRequest:
       required:
       - name
@@ -561,6 +537,30 @@ components:
           maxLength: 255
           minLength: 1
           type: string
+    PagedModelNotificationPolicyResponse:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/NotificationPolicyResponse'
+        page:
+          $ref: '#/components/schemas/PageMetadata'
+    PageMetadata:
+      type: object
+      properties:
+        number:
+          type: integer
+          format: int64
+        size:
+          type: integer
+          format: int64
+        totalElements:
+          type: integer
+          format: int64
+        totalPages:
+          type: integer
+          format: int64
     NotificationPolicyResponse_NotificationPolicy:
       type: object
       properties:

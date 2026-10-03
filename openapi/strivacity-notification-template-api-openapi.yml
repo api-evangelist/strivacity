@@ -560,24 +560,6 @@ paths:
           description: Your Strivacity tenant
 components:
   schemas:
-    NotificationTemplateResponse_NotificationTemplateMetainfo:
-      type: object
-      properties:
-        displayName:
-          type: string
-        enabled:
-          type: boolean
-        id:
-          type: string
-        modified:
-          type: boolean
-        optional:
-          type: boolean
-        placeholders:
-          type: array
-          items:
-            $ref: '#/components/schemas/Placeholder_NotificationTemplateMetainfo'
-      description: Represents a notification template
     NotificationTemplateSMSUpdateRequest_NotificationTemplate:
       required:
       - id
@@ -610,6 +592,24 @@ components:
           type: string
         objectName:
           type: string
+    NotificationTemplateResponse_NotificationTemplateMetainfo:
+      type: object
+      properties:
+        displayName:
+          type: string
+        enabled:
+          type: boolean
+        id:
+          type: string
+        modified:
+          type: boolean
+        optional:
+          type: boolean
+        placeholders:
+          type: array
+          items:
+            $ref: '#/components/schemas/Placeholder_NotificationTemplateMetainfo'
+      description: Represents a notification template
     NotificationTemplateDTO_NotificationTemplate:
       required:
       - id
@@ -667,12 +667,6 @@ components:
           enum:
           - sms
           - email
-    Placeholder_NotificationTemplateMetainfo:
-      type: object
-      properties:
-        placeholder:
-          type: string
-      description: Represents a placeholder
     ProblemJson:
       type: object
       properties:
@@ -709,6 +703,12 @@ components:
         title:
           type: string
       description: Based on [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807)
+    Placeholder_NotificationTemplateMetainfo:
+      type: object
+      properties:
+        placeholder:
+          type: string
+      description: Represents a placeholder
   securitySchemes:
     securityScheme:
       scheme: bearer

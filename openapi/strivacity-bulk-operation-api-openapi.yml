@@ -207,27 +207,6 @@ paths:
       - Bulk Operation
 components:
   schemas:
-    JobIdReferenceResponse:
-      type: object
-      properties:
-        id:
-          type: string
-          description: ID of the represented entity
-    DisableAccountOperationRequest:
-      required:
-      - accountId
-      - identityStore
-      - operation
-      type: object
-      properties:
-        accountId:
-          type: string
-        identityStore:
-          type: string
-        operation:
-          type: string
-          enum:
-          - disableAccount
     UpdatePersonalDataOperationRequest:
       required:
       - accountId
@@ -248,41 +227,6 @@ components:
           type: object
           additionalProperties:
             type: object
-    FieldError:
-      type: object
-      properties:
-        field:
-          type: string
-        message:
-          type: string
-        objectName:
-          type: string
-    Result:
-      type: object
-      properties:
-        failure:
-          type: integer
-          format: int32
-        success:
-          type: integer
-          format: int32
-        total:
-          type: integer
-          format: int32
-    BulkOperationErrorEntry:
-      type: object
-      properties:
-        error:
-          type: object
-          additionalProperties:
-            type: object
-        line:
-          type: integer
-          format: int32
-        request:
-          type: object
-          additionalProperties:
-            type: object
     EnableAccountOperationRequest:
       required:
       - accountId
@@ -298,6 +242,15 @@ components:
           type: string
           enum:
           - enableAccount
+    FieldError:
+      type: object
+      properties:
+        field:
+          type: string
+        message:
+          type: string
+        objectName:
+          type: string
     BulkStatus:
       type: object
       properties:
@@ -311,6 +264,53 @@ components:
           type: string
         status:
           type: string
+    JobIdReferenceResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID of the represented entity
+    Result:
+      type: object
+      properties:
+        failure:
+          type: integer
+          format: int32
+        success:
+          type: integer
+          format: int32
+        total:
+          type: integer
+          format: int32
+    DisableAccountOperationRequest:
+      required:
+      - accountId
+      - identityStore
+      - operation
+      type: object
+      properties:
+        accountId:
+          type: string
+        identityStore:
+          type: string
+        operation:
+          type: string
+          enum:
+          - disableAccount
+    BulkOperationErrorEntry:
+      type: object
+      properties:
+        error:
+          type: object
+          additionalProperties:
+            type: object
+        line:
+          type: integer
+          format: int32
+        request:
+          type: object
+          additionalProperties:
+            type: object
     ProblemJson:
       type: object
       properties:

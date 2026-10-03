@@ -248,15 +248,20 @@ paths:
       - Admin API Security Policy
 components:
   schemas:
-    IdReferenceRequest_ApiAccessPolicy:
-      required:
-      - id
+    ApiSecurityPolicyAssignmentResponse_ApiAccessPolicy:
       type: object
       properties:
-        id:
-          pattern: ^[a-zA-Z0-9-]{1,36}$
-          type: string
-          description: ID of the represented entity
+        apiAccessPolicy:
+          $ref: '#/components/schemas/IdReferenceResponse_ApiAccessPolicy'
+        application:
+          $ref: '#/components/schemas/NameAndId_ApiAccessPolicy'
+        client:
+          $ref: '#/components/schemas/NameAndId_ApiAccessPolicy'
+        scopes:
+          uniqueItems: true
+          type: array
+          items:
+            $ref: '#/components/schemas/ScopeResponse_ApiAccessPolicy'
     AdminApiSecurityPolicyAssignmentResponse_ApiAccessPolicy:
       type: object
       properties:
@@ -269,12 +274,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ScopeResponse_ApiAccessPolicy'
-    NameAndId_ApiAccessPolicy:
-      type: object
-      properties:
-        id:
-          type: string
-          description: ID of the represented entity
     FieldError:
       type: object
       properties:
@@ -283,6 +282,38 @@ components:
         message:
           type: string
         objectName:
+          type: string
+    IdReferenceResponse_ApiAccessPolicy:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID of the represented entity
+    ApiSecurityPolicyAssignmentUpsertRequest_ApiAccessPolicy:
+      required:
+      - apiAccessPolicy
+      - client
+      - scopes
+      type: object
+      properties:
+        apiAccessPolicy:
+          $ref: '#/components/schemas/IdReferenceRequest_ApiAccessPolicy'
+        client:
+          $ref: '#/components/schemas/IdReferenceRequest_ApiAccessPolicy'
+        scopes:
+          maxItems: 2147483647
+          minItems: 1
+          type: array
+          items:
+            $ref: '#/components/schemas/IdReferenceRequest_ApiAccessPolicy'
+    ScopeResponse_ApiAccessPolicy:
+      type: object
+      properties:
+        displayName:
+          type: string
+        id:
+          type: string
+        name:
           type: string
     ApiSecurityPolicyResponse_ApiAccessPolicy:
       type: object
@@ -307,52 +338,21 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ScopeResponse_ApiAccessPolicy'
-    ApiSecurityPolicyAssignmentResponse_ApiAccessPolicy:
-      type: object
-      properties:
-        apiAccessPolicy:
-          $ref: '#/components/schemas/IdReferenceResponse_ApiAccessPolicy'
-        application:
-          $ref: '#/components/schemas/NameAndId_ApiAccessPolicy'
-        client:
-          $ref: '#/components/schemas/NameAndId_ApiAccessPolicy'
-        scopes:
-          uniqueItems: true
-          type: array
-          items:
-            $ref: '#/components/schemas/ScopeResponse_ApiAccessPolicy'
-    IdReferenceResponse_ApiAccessPolicy:
+    NameAndId_ApiAccessPolicy:
       type: object
       properties:
         id:
           type: string
           description: ID of the represented entity
-    ScopeResponse_ApiAccessPolicy:
-      type: object
-      properties:
-        displayName:
-          type: string
-        id:
-          type: string
-        name:
-          type: string
-    ApiSecurityPolicyAssignmentUpsertRequest_ApiAccessPolicy:
+    IdReferenceRequest_ApiAccessPolicy:
       required:
-      - apiAccessPolicy
-      - client
-      - scopes
+      - id
       type: object
       properties:
-        apiAccessPolicy:
-          $ref: '#/components/schemas/IdReferenceRequest_ApiAccessPolicy'
-        client:
-          $ref: '#/components/schemas/IdReferenceRequest_ApiAccessPolicy'
-        scopes:
-          maxItems: 2147483647
-          minItems: 1
-          type: array
-          items:
-            $ref: '#/components/schemas/IdReferenceRequest_ApiAccessPolicy'
+        id:
+          pattern: ^[a-zA-Z0-9-]{1,36}$
+          type: string
+          description: ID of the represented entity
     ProblemJson:
       type: object
       properties:

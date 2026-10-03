@@ -199,6 +199,46 @@ components:
           type: string
         timestamp:
           type: string
+    FieldError:
+      type: object
+      properties:
+        field:
+          type: string
+        message:
+          type: string
+        objectName:
+          type: string
+    NameAndIdResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID of the represented entity
+        name:
+          type: string
+          description: Name of the represented entity
+          example: Entity name
+    EventHookLogListResponse:
+      type: object
+      properties:
+        accountEventId:
+          type: string
+        accountId:
+          type: string
+        application:
+          $ref: '#/components/schemas/NameAndIdResponse'
+        client:
+          $ref: '#/components/schemas/NameAndIdResponse'
+        hook:
+          $ref: '#/components/schemas/HookInfoResponse'
+        id:
+          type: string
+        identityStore:
+          type: string
+        logSummary:
+          $ref: '#/components/schemas/LogSummaryResponse'
+        timestamp:
+          type: string
     EventHookLogResponse:
       type: object
       properties:
@@ -224,15 +264,6 @@ components:
             $ref: '#/components/schemas/LogResponse'
         timestamp:
           type: string
-    FieldError:
-      type: object
-      properties:
-        field:
-          type: string
-        message:
-          type: string
-        objectName:
-          type: string
     LogSummaryResponse:
       type: object
       properties:
@@ -244,46 +275,6 @@ components:
         info:
           type: integer
           format: int32
-    EventHookLogListResponse:
-      type: object
-      properties:
-        accountEventId:
-          type: string
-        accountId:
-          type: string
-        application:
-          $ref: '#/components/schemas/NameAndIdResponse'
-        client:
-          $ref: '#/components/schemas/NameAndIdResponse'
-        hook:
-          $ref: '#/components/schemas/HookInfoResponse'
-        id:
-          type: string
-        identityStore:
-          type: string
-        logSummary:
-          $ref: '#/components/schemas/LogSummaryResponse'
-        timestamp:
-          type: string
-    HookInfoResponse:
-      type: object
-      properties:
-        id:
-          type: string
-        name:
-          type: string
-        type:
-          type: string
-    NameAndIdResponse:
-      type: object
-      properties:
-        id:
-          type: string
-          description: ID of the represented entity
-        name:
-          type: string
-          description: Name of the represented entity
-          example: Entity name
     ProblemJson:
       type: object
       properties:
@@ -320,6 +311,15 @@ components:
         title:
           type: string
       description: Based on [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807)
+    HookInfoResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        type:
+          type: string
   securitySchemes:
     securityScheme:
       scheme: bearer

@@ -291,108 +291,6 @@ paths:
       - Admin Account Invitation
 components:
   schemas:
-    AdminAccountInvitationInsertRequest_AccountInvitationDetails:
-      required:
-      - email
-      - metadata
-      - roles
-      type: object
-      properties:
-        email:
-          type: string
-          format: email
-          minLength: 1
-        metadata:
-          type: object
-          additionalProperties:
-            type: object
-            description: Represents metadata for an admin account to be invited
-          description: Represents metadata for an admin account to be invited
-        roles:
-          type: array
-          description: Represents the role IDs for an admin account to be invited
-          items:
-            $ref: '#/components/schemas/IdReferenceRequest_AccountInvitationDetails'
-    AccountRole_AccountInvitationDetails:
-      required:
-      - id
-      - organization
-      type: object
-      properties:
-        id:
-          minLength: 1
-          type: string
-          description: ID of the represented role
-        organization:
-          minLength: 1
-          type: string
-          description: ID of the represented organization
-      description: Represents an organization-role assignment
-    AdminAccountInvitationResponse_Account:
-      type: object
-      properties:
-        accountId:
-          type: string
-        email:
-          type: string
-        id:
-          type: string
-        sent:
-          type: string
-          format: date-time
-        validUntil:
-          type: string
-          format: date-time
-    FieldError:
-      type: object
-      properties:
-        field:
-          type: string
-        message:
-          type: string
-        objectName:
-          type: string
-    FieldError_AccountInvitationDetails:
-      type: object
-      properties:
-        field:
-          type: string
-        message:
-          type: string
-        objectName:
-          type: string
-    IdReferenceRequest_AccountInvitationDetails:
-      required:
-      - id
-      type: object
-      properties:
-        id:
-          pattern: ^[a-zA-Z0-9-]{1,36}$
-          type: string
-          description: ID of the represented entity
-    AdminAccountInvitationResponse_AccountInvitationDetails:
-      type: object
-      properties:
-        accountId:
-          type: string
-        email:
-          type: string
-        id:
-          type: string
-        metadata:
-          type: object
-          additionalProperties:
-            type: object
-        roles:
-          type: array
-          items:
-            $ref: '#/components/schemas/AccountRole_AccountInvitationDetails'
-        sent:
-          type: string
-          format: date-time
-        validUntil:
-          type: string
-          format: date-time
     InvitationConflictProblemJson_AccountInvitationDetails:
       type: object
       properties:
@@ -430,6 +328,93 @@ components:
           format: int32
         title:
           type: string
+    FieldError:
+      type: object
+      properties:
+        field:
+          type: string
+        message:
+          type: string
+        objectName:
+          type: string
+    AdminAccountInvitationResponse_AccountInvitationDetails:
+      type: object
+      properties:
+        accountId:
+          type: string
+        email:
+          type: string
+        id:
+          type: string
+        metadata:
+          type: object
+          additionalProperties:
+            type: object
+        roles:
+          type: array
+          items:
+            $ref: '#/components/schemas/AccountRole_AccountInvitationDetails'
+        sent:
+          type: string
+          format: date-time
+        validUntil:
+          type: string
+          format: date-time
+    AdminAccountInvitationResponse_Account:
+      type: object
+      properties:
+        accountId:
+          type: string
+        email:
+          type: string
+        id:
+          type: string
+        sent:
+          type: string
+          format: date-time
+        validUntil:
+          type: string
+          format: date-time
+    FieldError_AccountInvitationDetails:
+      type: object
+      properties:
+        field:
+          type: string
+        message:
+          type: string
+        objectName:
+          type: string
+    AdminAccountInvitationInsertRequest_AccountInvitationDetails:
+      required:
+      - email
+      - metadata
+      - roles
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+          minLength: 1
+        metadata:
+          type: object
+          additionalProperties:
+            type: object
+            description: Represents metadata for an admin account to be invited
+          description: Represents metadata for an admin account to be invited
+        roles:
+          type: array
+          description: Represents the role IDs for an admin account to be invited
+          items:
+            $ref: '#/components/schemas/IdReferenceRequest_AccountInvitationDetails'
+    IdReferenceRequest_AccountInvitationDetails:
+      required:
+      - id
+      type: object
+      properties:
+        id:
+          pattern: ^[a-zA-Z0-9-]{1,36}$
+          type: string
+          description: ID of the represented entity
     ProblemJson:
       type: object
       properties:
@@ -466,6 +451,21 @@ components:
         title:
           type: string
       description: Based on [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807)
+    AccountRole_AccountInvitationDetails:
+      required:
+      - id
+      - organization
+      type: object
+      properties:
+        id:
+          minLength: 1
+          type: string
+          description: ID of the represented role
+        organization:
+          minLength: 1
+          type: string
+          description: ID of the represented organization
+      description: Represents an organization-role assignment
   securitySchemes:
     securityScheme:
       scheme: bearer

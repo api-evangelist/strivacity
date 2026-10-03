@@ -138,36 +138,6 @@ paths:
       - Authenticator management
 components:
   schemas:
-    AuthenticatorSchemaResponse:
-      type: object
-      properties:
-        createdAt:
-          type: string
-          description: Creation time of the authenticator
-          format: date-time
-        id:
-          type: string
-        lastUsedAt:
-          type: string
-          description: Last usage time of the authenticator
-          format: date-time
-        methods:
-          type: array
-          items:
-            type: string
-            description: 'Authenticator method that defines how the authentication can be done. Possible values: `passcode`, `magicLink` or `voice`'
-            example: passcode
-        target:
-          type: string
-          description: Authenticator target, to where the MFA will be requested for
-          example: '+36301234567'
-        type:
-          type: string
-          description: Authenticator type used for MFA
-          enum:
-          - phone
-          - email
-      description: Represents an authenticator for an account
     AuthenticatorUpdate_Authenticator:
       required:
       - methods
@@ -255,6 +225,36 @@ components:
         title:
           type: string
       description: Based on [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807)
+    AuthenticatorSchemaResponse:
+      type: object
+      properties:
+        createdAt:
+          type: string
+          description: Creation time of the authenticator
+          format: date-time
+        id:
+          type: string
+        lastUsedAt:
+          type: string
+          description: Last usage time of the authenticator
+          format: date-time
+        methods:
+          type: array
+          items:
+            type: string
+            description: 'Authenticator method that defines how the authentication can be done. Possible values: `passcode`, `magicLink` or `voice`'
+            example: passcode
+        target:
+          type: string
+          description: Authenticator target, to where the MFA will be requested for
+          example: '+36301234567'
+        type:
+          type: string
+          description: Authenticator type used for MFA
+          enum:
+          - phone
+          - email
+      description: Represents an authenticator for an account
   securitySchemes:
     securityScheme:
       scheme: bearer

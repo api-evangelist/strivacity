@@ -382,38 +382,33 @@ paths:
       - Email Provider Configuration
 components:
   schemas:
-    SmtpEmailInsertRequestConfiguration:
+    EmailProviderInsertRequest:
       required:
-      - password
-      - username
+      - name
+      - type
       type: object
       properties:
-        connectionType:
-          pattern: ^SMTPS|StartTLS$
-          type:
-          - string
-          - 'null'
+        customSenderDomain:
+          maxLength: 512
+          minLength: 3
+          type: string
+          description: Override sender email domain with a custom value
+        description:
+          maxLength: 1024
+          minLength: 0
+          type: string
+        name:
+          maxLength: 64
+          minLength: 3
+          pattern: ^$|^[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°]([\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*° ]*[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°])?$
+          type: string
+        type:
+          type: string
           enum:
-          - SMTPS
-          - StartTLS
-        password:
-          maxLength: 255
-          minLength: 1
-          type: string
-        port:
-          maximum: 65535
-          minimum: 1
-          type: integer
-          format: int32
-        server:
-          maxLength: 255
-          minLength: 1
-          type: string
-          description: Should not be null when enabled.
-        username:
-          maxLength: 255
-          minLength: 1
-          type: string
+          - smtp
+          - custom
+      discriminator:
+        propertyName: type
     PagedModelEmailProviderListResponse:
       type: object
       properties:
@@ -423,97 +418,6 @@ components:
             $ref: '#/components/schemas/EmailProviderListResponse'
         page:
           $ref: '#/components/schemas/PageMetadata'
-    PageMetadata:
-      type: object
-      properties:
-        number:
-          type: integer
-          format: int64
-        size:
-          type: integer
-          format: int64
-        totalElements:
-          type: integer
-          format: int64
-        totalPages:
-          type: integer
-          format: int64
-    CustomEmailUpdateRequestConfiguration:
-      required:
-      - packageDependencies
-      type: object
-      properties:
-        code:
-          maxLength: 256000
-          minLength: 0
-          type: string
-          description: Code of the custom email provider, if not specified it's generated automatically for each type
-          default: '*example code*'
-        packageDependencies:
-          type: object
-          additionalProperties:
-            type: string
-            description: Dependencies used for the event hook function
-          description: Dependencies used for the event hook function
-    CustomEmailUpdateRequest:
-      required:
-      - configuration
-      - id
-      - name
-      - type
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/EmailProviderUpdateRequest'
-      - type: object
-        properties:
-          configuration:
-            $ref: '#/components/schemas/CustomEmailUpdateRequestConfiguration'
-    EmailProviderResponse:
-      type: object
-      properties:
-        configuration:
-          type: object
-        customSenderDomain:
-          type: string
-        description:
-          type: string
-        id:
-          type: string
-        name:
-          type: string
-        type:
-          type: string
-          enum:
-          - smtp
-          - custom
-          - strivacity
-    FieldError:
-      type: object
-      properties:
-        field:
-          type: string
-        message:
-          type: string
-        objectName:
-          type: string
-    OnlyIdResponse:
-      type: object
-      properties:
-        id:
-          type: string
-    SmtpEmailUpdateRequest:
-      required:
-      - configuration
-      - id
-      - name
-      - type
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/EmailProviderUpdateRequest'
-      - type: object
-        properties:
-          configuration:
-            $ref: '#/components/schemas/SmtpEmailUpdateRequestConfiguration'
     EmailProviderUpdateRequest:
       required:
       - id
@@ -548,18 +452,15 @@ components:
     EmailProvider_IdReference_InsertRequest:
       type: object
       properties: {}
-    CustomEmailInsertRequest:
-      required:
-      - configuration
-      - name
-      - type
+    FieldError:
       type: object
-      allOf:
-      - $ref: '#/components/schemas/EmailProviderInsertRequest'
-      - type: object
-        properties:
-          configuration:
-            $ref: '#/components/schemas/CustomEmailInsertRequestConfiguration'
+      properties:
+        field:
+          type: string
+        message:
+          type: string
+        objectName:
+          type: string
     CustomEmailInsertRequestConfiguration:
       required:
       - packageDependencies
@@ -577,6 +478,99 @@ components:
             type: string
             description: Dependencies used for the event hook function
           description: Dependencies used for the event hook function
+    CustomEmailUpdateRequestConfiguration:
+      required:
+      - packageDependencies
+      type: object
+      properties:
+        code:
+          maxLength: 256000
+          minLength: 0
+          type: string
+          description: Code of the custom email provider, if not specified it's generated automatically for each type
+          default: '*example code*'
+        packageDependencies:
+          type: object
+          additionalProperties:
+            type: string
+            description: Dependencies used for the event hook function
+          description: Dependencies used for the event hook function
+    SmtpEmailInsertRequestConfiguration:
+      required:
+      - password
+      - username
+      type: object
+      properties:
+        connectionType:
+          pattern: ^SMTPS|StartTLS$
+          type:
+          - string
+          - 'null'
+          enum:
+          - SMTPS
+          - StartTLS
+        password:
+          maxLength: 255
+          minLength: 1
+          type: string
+        port:
+          maximum: 65535
+          minimum: 1
+          type: integer
+          format: int32
+        server:
+          maxLength: 255
+          minLength: 1
+          type: string
+          description: Should not be null when enabled.
+        username:
+          maxLength: 255
+          minLength: 1
+          type: string
+    CustomEmailInsertRequest:
+      required:
+      - configuration
+      - name
+      - type
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/EmailProviderInsertRequest'
+      - type: object
+        properties:
+          configuration:
+            $ref: '#/components/schemas/CustomEmailInsertRequestConfiguration'
+    SmtpEmailUpdateRequest:
+      required:
+      - configuration
+      - id
+      - name
+      - type
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/EmailProviderUpdateRequest'
+      - type: object
+        properties:
+          configuration:
+            $ref: '#/components/schemas/SmtpEmailUpdateRequestConfiguration'
+    EmailProviderResponse:
+      type: object
+      properties:
+        configuration:
+          type: object
+        customSenderDomain:
+          type: string
+        description:
+          type: string
+        id:
+          type: string
+        name:
+          type: string
+        type:
+          type: string
+          enum:
+          - smtp
+          - custom
+          - strivacity
     EmailProviderListResponse:
       type: object
       properties:
@@ -594,18 +588,11 @@ components:
           - smtp
           - custom
           - strivacity
-    SmtpEmailInsertRequest:
-      required:
-      - configuration
-      - name
-      - type
+    OnlyIdResponse:
       type: object
-      allOf:
-      - $ref: '#/components/schemas/EmailProviderInsertRequest'
-      - type: object
-        properties:
-          configuration:
-            $ref: '#/components/schemas/SmtpEmailInsertRequestConfiguration'
+      properties:
+        id:
+          type: string
     SmtpEmailUpdateRequestConfiguration:
       required:
       - username
@@ -641,6 +628,33 @@ components:
           maxLength: 255
           minLength: 1
           type: string
+    PageMetadata:
+      type: object
+      properties:
+        number:
+          type: integer
+          format: int64
+        size:
+          type: integer
+          format: int64
+        totalElements:
+          type: integer
+          format: int64
+        totalPages:
+          type: integer
+          format: int64
+    SmtpEmailInsertRequest:
+      required:
+      - configuration
+      - name
+      - type
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/EmailProviderInsertRequest'
+      - type: object
+        properties:
+          configuration:
+            $ref: '#/components/schemas/SmtpEmailInsertRequestConfiguration'
     ProblemJson:
       type: object
       properties:
@@ -677,33 +691,19 @@ components:
         title:
           type: string
       description: Based on [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807)
-    EmailProviderInsertRequest:
+    CustomEmailUpdateRequest:
       required:
+      - configuration
+      - id
       - name
       - type
       type: object
-      properties:
-        customSenderDomain:
-          maxLength: 512
-          minLength: 3
-          type: string
-          description: Override sender email domain with a custom value
-        description:
-          maxLength: 1024
-          minLength: 0
-          type: string
-        name:
-          maxLength: 64
-          minLength: 3
-          pattern: ^$|^[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°]([\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*° ]*[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°])?$
-          type: string
-        type:
-          type: string
-          enum:
-          - smtp
-          - custom
-      discriminator:
-        propertyName: type
+      allOf:
+      - $ref: '#/components/schemas/EmailProviderUpdateRequest'
+      - type: object
+        properties:
+          configuration:
+            $ref: '#/components/schemas/CustomEmailUpdateRequestConfiguration'
   securitySchemes:
     securityScheme:
       scheme: bearer

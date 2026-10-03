@@ -310,38 +310,6 @@ paths:
       - Tag Based Permission
 components:
   schemas:
-    TagBasedPermissionUpdateRequest:
-      required:
-      - policyTags
-      - scopes
-      type: object
-      properties:
-        id:
-          type: string
-        policyTags:
-          maxItems: 2147483647
-          minItems: 1
-          uniqueItems: true
-          type: array
-          items:
-            pattern: ^[a-z0-9_]{2,32}$
-            type: string
-        scopes:
-          maxItems: 2147483647
-          minItems: 1
-          uniqueItems: true
-          type: array
-          items:
-            type: string
-    FieldError:
-      type: object
-      properties:
-        field:
-          type: string
-        message:
-          type: string
-        objectName:
-          type: string
     TagBasedPermissionResponse:
       type: object
       properties:
@@ -357,6 +325,15 @@ components:
           type: array
           items:
             type: string
+    FieldError:
+      type: object
+      properties:
+        field:
+          type: string
+        message:
+          type: string
+        objectName:
+          type: string
     TagBasedPermissionInsertRequest:
       required:
       - policyTags
@@ -414,6 +391,29 @@ components:
         title:
           type: string
       description: Based on [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807)
+    TagBasedPermissionUpdateRequest:
+      required:
+      - policyTags
+      - scopes
+      type: object
+      properties:
+        id:
+          type: string
+        policyTags:
+          maxItems: 2147483647
+          minItems: 1
+          uniqueItems: true
+          type: array
+          items:
+            pattern: ^[a-z0-9_]{2,32}$
+            type: string
+        scopes:
+          maxItems: 2147483647
+          minItems: 1
+          uniqueItems: true
+          type: array
+          items:
+            type: string
   securitySchemes:
     securityScheme:
       scheme: bearer

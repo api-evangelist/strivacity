@@ -320,7 +320,10 @@ paths:
       - Bridge Policy
 components:
   schemas:
-    BridgePolicyResponse.Header_ApplicationConfig:
+    BridgePolicyUpsertRequest.Header_ApplicationConfig:
+      required:
+      - idTokenClaim
+      - key
       type: object
       properties:
         idTokenClaim:
@@ -328,6 +331,34 @@ components:
         key:
           type: string
       description: Forwards a value to upstream server from id_token under the specified key
+    FieldError:
+      type: object
+      properties:
+        field:
+          type: string
+        message:
+          type: string
+        objectName:
+          type: string
+    BridgePolicyResponse_ApplicationConfig:
+      type: object
+      properties:
+        apiAccessPolicy:
+          $ref: '#/components/schemas/IdReferenceResponse_ApplicationConfig'
+        headers:
+          uniqueItems: true
+          type: array
+          items:
+            $ref: '#/components/schemas/BridgePolicyResponse.Header_ApplicationConfig'
+        healthMonitoringPath:
+          type: string
+        upstreamUrlPath:
+          type: string
+        upstreamUrls:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
     BridgePolicyUpsertRequest_ApplicationConfig:
       required:
       - apiAccessPolicy
@@ -359,54 +390,6 @@ components:
             minLength: 0
             type: string
             description: Must start with `http(s)://` and must not contain path, query or fragment part. An optional port can be specified.
-    BridgePolicyResponse_ApplicationConfig:
-      type: object
-      properties:
-        apiAccessPolicy:
-          $ref: '#/components/schemas/IdReferenceResponse_ApplicationConfig'
-        headers:
-          uniqueItems: true
-          type: array
-          items:
-            $ref: '#/components/schemas/BridgePolicyResponse.Header_ApplicationConfig'
-        healthMonitoringPath:
-          type: string
-        upstreamUrlPath:
-          type: string
-        upstreamUrls:
-          uniqueItems: true
-          type: array
-          items:
-            type: string
-    BridgePolicyUpsertRequest.Header_ApplicationConfig:
-      required:
-      - idTokenClaim
-      - key
-      type: object
-      properties:
-        idTokenClaim:
-          type: string
-        key:
-          type: string
-      description: Forwards a value to upstream server from id_token under the specified key
-    FieldError:
-      type: object
-      properties:
-        field:
-          type: string
-        message:
-          type: string
-        objectName:
-          type: string
-    IdReferenceRequest_ApplicationConfig:
-      required:
-      - id
-      type: object
-      properties:
-        id:
-          pattern: ^[a-zA-Z0-9-]{1,36}$
-          type: string
-          description: ID of the represented entity
     ProblemJson:
       type: object
       properties:
@@ -443,12 +426,29 @@ components:
         title:
           type: string
       description: Based on [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807)
+    IdReferenceRequest_ApplicationConfig:
+      required:
+      - id
+      type: object
+      properties:
+        id:
+          pattern: ^[a-zA-Z0-9-]{1,36}$
+          type: string
+          description: ID of the represented entity
     IdReferenceResponse_ApplicationConfig:
       type: object
       properties:
         id:
           type: string
           description: ID of the represented entity
+    BridgePolicyResponse.Header_ApplicationConfig:
+      type: object
+      properties:
+        idTokenClaim:
+          type: string
+        key:
+          type: string
+      description: Forwards a value to upstream server from id_token under the specified key
   securitySchemes:
     securityScheme:
       scheme: bearer

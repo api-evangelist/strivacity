@@ -320,6 +320,15 @@ paths:
       - Group API Security Policy Assignment
 components:
   schemas:
+    FieldError:
+      type: object
+      properties:
+        field:
+          type: string
+        message:
+          type: string
+        objectName:
+          type: string
     GroupApiSecurityPolicyAssignmentResponse:
       type: object
       properties:
@@ -330,15 +339,16 @@ components:
           items:
             $ref: '#/components/schemas/NameAndIdResponse'
       description: Represents a group API security policy assignment
-    FieldError:
+    NameAndIdResponse:
       type: object
       properties:
-        field:
+        id:
           type: string
-        message:
+          description: ID of the represented entity
+        name:
           type: string
-        objectName:
-          type: string
+          description: Name of the represented entity
+          example: Entity name
     GroupApiSecurityPolicyAssignmentRequest:
       required:
       - apiAccessPolicy
@@ -361,16 +371,6 @@ components:
         id:
           pattern: ^[a-zA-Z0-9-]{1,36}$
           type: string
-    NameAndIdResponse:
-      type: object
-      properties:
-        id:
-          type: string
-          description: ID of the represented entity
-        name:
-          type: string
-          description: Name of the represented entity
-          example: Entity name
     ProblemJson:
       type: object
       properties:

@@ -405,6 +405,18 @@ paths:
       - Bridge Policy Resource
 components:
   schemas:
+    BridgePolicyResourceRequest.Authentication_ApplicationConfig:
+      required:
+      - authorizationScopes
+      type: object
+      properties:
+        authorizationScopes:
+          type: array
+          items:
+            $ref: '#/components/schemas/IdReferenceRequest_ApplicationConfig'
+        required:
+          type: boolean
+          default: true
     BridgePolicyResourceInsertRequest_ApplicationConfig:
       required:
       - authentication
@@ -425,29 +437,6 @@ components:
           maxLength: 1024
           minLength: 0
           type: string
-    BridgePolicyResourceUpdateRequest_ApplicationConfig:
-      required:
-      - authentication
-      - id
-      - methods
-      - pathPattern
-      type: object
-      properties:
-        authentication:
-          $ref: '#/components/schemas/BridgePolicyResourceRequest.Authentication_ApplicationConfig'
-        id:
-          type: string
-        methods:
-          maxItems: 2147483647
-          minItems: 1
-          type: array
-          items:
-            pattern: ^(GET|HEAD|POST|PUT|DELETE|CONNECT|OPTIONS|TRACE|PATCH)$
-            type: string
-        pathPattern:
-          maxLength: 1024
-          minLength: 0
-          type: string
     FieldError:
       type: object
       properties:
@@ -457,15 +446,6 @@ components:
           type: string
         objectName:
           type: string
-    IdReferenceRequest_ApplicationConfig:
-      required:
-      - id
-      type: object
-      properties:
-        id:
-          pattern: ^[a-zA-Z0-9-]{1,36}$
-          type: string
-          description: ID of the represented entity
     BridgePolicyResourceResponse.Authentication_ApplicationConfig:
       type: object
       properties:
@@ -489,6 +469,29 @@ components:
           items:
             type: string
         pathPattern:
+          type: string
+    BridgePolicyResourceUpdateRequest_ApplicationConfig:
+      required:
+      - authentication
+      - id
+      - methods
+      - pathPattern
+      type: object
+      properties:
+        authentication:
+          $ref: '#/components/schemas/BridgePolicyResourceRequest.Authentication_ApplicationConfig'
+        id:
+          type: string
+        methods:
+          maxItems: 2147483647
+          minItems: 1
+          type: array
+          items:
+            pattern: ^(GET|HEAD|POST|PUT|DELETE|CONNECT|OPTIONS|TRACE|PATCH)$
+            type: string
+        pathPattern:
+          maxLength: 1024
+          minLength: 0
           type: string
     ProblemJson:
       type: object
@@ -526,24 +529,21 @@ components:
         title:
           type: string
       description: Based on [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807)
+    IdReferenceRequest_ApplicationConfig:
+      required:
+      - id
+      type: object
+      properties:
+        id:
+          pattern: ^[a-zA-Z0-9-]{1,36}$
+          type: string
+          description: ID of the represented entity
     IdReferenceResponse_ApplicationConfig:
       type: object
       properties:
         id:
           type: string
           description: ID of the represented entity
-    BridgePolicyResourceRequest.Authentication_ApplicationConfig:
-      required:
-      - authorizationScopes
-      type: object
-      properties:
-        authorizationScopes:
-          type: array
-          items:
-            $ref: '#/components/schemas/IdReferenceRequest_ApplicationConfig'
-        required:
-          type: boolean
-          default: true
   securitySchemes:
     securityScheme:
       scheme: bearer

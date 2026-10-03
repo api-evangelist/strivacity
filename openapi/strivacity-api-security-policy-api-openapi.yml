@@ -542,49 +542,20 @@ paths:
       - API Security Policy
 components:
   schemas:
-    IdReferenceRequest_ApiAccessPolicy:
-      required:
-      - id
+    ApiSecurityPolicyAssignmentResponse_ApiAccessPolicy:
       type: object
       properties:
-        id:
-          pattern: ^[a-zA-Z0-9-]{1,36}$
-          type: string
-          description: ID of the represented entity
-    ApiSecurityPolicyListResponse:
-      type: object
-      properties:
-        audience:
-          type: string
-        description:
-          type: string
-        id:
-          type: string
-        name:
-          type: string
-        policyTag:
-          type: string
-    PageMetadata:
-      type: object
-      properties:
-        number:
-          type: integer
-          format: int64
-        size:
-          type: integer
-          format: int64
-        totalElements:
-          type: integer
-          format: int64
-        totalPages:
-          type: integer
-          format: int64
-    NameAndId_ApiAccessPolicy:
-      type: object
-      properties:
-        id:
-          type: string
-          description: ID of the represented entity
+        apiAccessPolicy:
+          $ref: '#/components/schemas/IdReferenceResponse_ApiAccessPolicy'
+        application:
+          $ref: '#/components/schemas/NameAndId_ApiAccessPolicy'
+        client:
+          $ref: '#/components/schemas/NameAndId_ApiAccessPolicy'
+        scopes:
+          uniqueItems: true
+          type: array
+          items:
+            $ref: '#/components/schemas/ScopeResponse_ApiAccessPolicy'
     FieldError:
       type: object
       properties:
@@ -594,29 +565,38 @@ components:
           type: string
         objectName:
           type: string
-    ApiSecurityPolicyResponse_ApiAccessPolicy:
+    IdReferenceResponse_ApiAccessPolicy:
       type: object
       properties:
-        assignments:
-          uniqueItems: true
+        id:
+          type: string
+          description: ID of the represented entity
+    ApiSecurityPolicyAssignmentUpsertRequest_ApiAccessPolicy:
+      required:
+      - apiAccessPolicy
+      - client
+      - scopes
+      type: object
+      properties:
+        apiAccessPolicy:
+          $ref: '#/components/schemas/IdReferenceRequest_ApiAccessPolicy'
+        client:
+          $ref: '#/components/schemas/IdReferenceRequest_ApiAccessPolicy'
+        scopes:
+          maxItems: 2147483647
+          minItems: 1
           type: array
           items:
-            $ref: '#/components/schemas/ApiSecurityPolicyAssignmentResponse_ApiAccessPolicy'
-        audience:
-          type: string
-        description:
+            $ref: '#/components/schemas/IdReferenceRequest_ApiAccessPolicy'
+    ScopeResponse_ApiAccessPolicy:
+      type: object
+      properties:
+        displayName:
           type: string
         id:
           type: string
         name:
           type: string
-        policyTag:
-          type: string
-        scopes:
-          uniqueItems: true
-          type: array
-          items:
-            $ref: '#/components/schemas/ScopeResponse_ApiAccessPolicy'
     ApiSecurityPolicy_InsertRequest:
       required:
       - audience
@@ -641,52 +621,57 @@ components:
           pattern: ^[a-z0-9_]{2,32}$
           type: string
           description: Must be an existing policy tag name
-    ApiSecurityPolicyAssignmentResponse_ApiAccessPolicy:
+    ApiSecurityPolicyListResponse:
       type: object
       properties:
-        apiAccessPolicy:
-          $ref: '#/components/schemas/IdReferenceResponse_ApiAccessPolicy'
-        application:
-          $ref: '#/components/schemas/NameAndId_ApiAccessPolicy'
-        client:
-          $ref: '#/components/schemas/NameAndId_ApiAccessPolicy'
-        scopes:
-          uniqueItems: true
-          type: array
-          items:
-            $ref: '#/components/schemas/ScopeResponse_ApiAccessPolicy'
-    IdReferenceResponse_ApiAccessPolicy:
-      type: object
-      properties:
-        id:
+        audience:
           type: string
-          description: ID of the represented entity
-    ScopeResponse_ApiAccessPolicy:
-      type: object
-      properties:
-        displayName:
+        description:
           type: string
         id:
           type: string
         name:
           type: string
-    ApiSecurityPolicyAssignmentUpsertRequest_ApiAccessPolicy:
-      required:
-      - apiAccessPolicy
-      - client
-      - scopes
+        policyTag:
+          type: string
+    ApiSecurityPolicyResponse_ApiAccessPolicy:
       type: object
       properties:
-        apiAccessPolicy:
-          $ref: '#/components/schemas/IdReferenceRequest_ApiAccessPolicy'
-        client:
-          $ref: '#/components/schemas/IdReferenceRequest_ApiAccessPolicy'
-        scopes:
-          maxItems: 2147483647
-          minItems: 1
+        assignments:
+          uniqueItems: true
           type: array
           items:
-            $ref: '#/components/schemas/IdReferenceRequest_ApiAccessPolicy'
+            $ref: '#/components/schemas/ApiSecurityPolicyAssignmentResponse_ApiAccessPolicy'
+        audience:
+          type: string
+        description:
+          type: string
+        id:
+          type: string
+        name:
+          type: string
+        policyTag:
+          type: string
+        scopes:
+          uniqueItems: true
+          type: array
+          items:
+            $ref: '#/components/schemas/ScopeResponse_ApiAccessPolicy'
+    PageMetadata:
+      type: object
+      properties:
+        number:
+          type: integer
+          format: int64
+        size:
+          type: integer
+          format: int64
+        totalElements:
+          type: integer
+          format: int64
+        totalPages:
+          type: integer
+          format: int64
     ApiSecurityPolicyUpsertRequest_ApiAccessPolicy:
       required:
       - audience
@@ -714,6 +699,12 @@ components:
           pattern: ^[a-z0-9_]{2,32}$
           type: string
           description: Must be an existing policy tag name
+    NameAndId_ApiAccessPolicy:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID of the represented entity
     PagedModelApiSecurityPolicyListResponse:
       type: object
       properties:
@@ -723,6 +714,15 @@ components:
             $ref: '#/components/schemas/ApiSecurityPolicyListResponse'
         page:
           $ref: '#/components/schemas/PageMetadata'
+    IdReferenceRequest_ApiAccessPolicy:
+      required:
+      - id
+      type: object
+      properties:
+        id:
+          pattern: ^[a-zA-Z0-9-]{1,36}$
+          type: string
+          description: ID of the represented entity
     ProblemJson:
       type: object
       properties:

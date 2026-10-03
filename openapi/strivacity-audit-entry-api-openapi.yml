@@ -227,6 +227,26 @@ components:
         version:
           type: integer
           format: int32
+    FieldError:
+      type: object
+      properties:
+        field:
+          type: string
+        message:
+          type: string
+        objectName:
+          type: string
+    Actor:
+      type: object
+      properties:
+        accountId:
+          type: string
+        ip:
+          type: string
+        userAgent:
+          type: string
+        userName:
+          type: string
     PageMetadata:
       type: object
       properties:
@@ -248,26 +268,6 @@ components:
         id:
           type: string
         name:
-          type: string
-    FieldError:
-      type: object
-      properties:
-        field:
-          type: string
-        message:
-          type: string
-        objectName:
-          type: string
-    Actor:
-      type: object
-      properties:
-        accountId:
-          type: string
-        ip:
-          type: string
-        userAgent:
-          type: string
-        userName:
           type: string
     ProblemJson:
       type: object

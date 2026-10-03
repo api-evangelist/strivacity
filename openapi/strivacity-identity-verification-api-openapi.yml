@@ -257,41 +257,6 @@ paths:
       - Identity Verification
 components:
   schemas:
-    CustomerIdentityVerificationResponse_AccountProofing:
-      type: object
-      properties:
-        attempts:
-          type: integer
-          format: int64
-        id:
-          type: string
-          format: uuid
-        invalidatedAt:
-          type: string
-          format: date-time
-        policyId:
-          type: string
-        proofedAt:
-          type: string
-          format: date-time
-      description: Represents an identity verification
-    CustomerIdentityVerificationInsertRequest_AccountProofing:
-      required:
-      - policyId
-      type: object
-      properties:
-        policyId:
-          minLength: 1
-          type: string
-    FieldError:
-      type: object
-      properties:
-        field:
-          type: string
-        message:
-          type: string
-        objectName:
-          type: string
     ProblemJson:
       type: object
       properties:
@@ -328,6 +293,41 @@ components:
         title:
           type: string
       description: Based on [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807)
+    CustomerIdentityVerificationInsertRequest_AccountProofing:
+      required:
+      - policyId
+      type: object
+      properties:
+        policyId:
+          minLength: 1
+          type: string
+    CustomerIdentityVerificationResponse_AccountProofing:
+      type: object
+      properties:
+        attempts:
+          type: integer
+          format: int64
+        id:
+          type: string
+          format: uuid
+        invalidatedAt:
+          type: string
+          format: date-time
+        policyId:
+          type: string
+        proofedAt:
+          type: string
+          format: date-time
+      description: Represents an identity verification
+    FieldError:
+      type: object
+      properties:
+        field:
+          type: string
+        message:
+          type: string
+        objectName:
+          type: string
   securitySchemes:
     securityScheme:
       scheme: bearer

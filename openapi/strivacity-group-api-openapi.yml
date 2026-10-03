@@ -349,6 +349,41 @@ paths:
       - Group
 components:
   schemas:
+    GroupUpdateRequest:
+      required:
+      - id
+      - name
+      type: object
+      properties:
+        description:
+          maxLength: 1024
+          minLength: 0
+          type: string
+        id:
+          type: string
+        name:
+          maxLength: 64
+          minLength: 3
+          pattern: ^$|^[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°]([\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*° ]*[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°])?$
+          type: string
+    FieldError:
+      type: object
+      properties:
+        field:
+          type: string
+        message:
+          type: string
+        objectName:
+          type: string
+    GroupResponse:
+      type: object
+      properties:
+        description:
+          type: string
+        id:
+          type: string
+        name:
+          type: string
     PageMetadata:
       type: object
       properties:
@@ -364,15 +399,6 @@ components:
         totalPages:
           type: integer
           format: int64
-    FieldError:
-      type: object
-      properties:
-        field:
-          type: string
-        message:
-          type: string
-        objectName:
-          type: string
     PagedModelGroupResponse:
       type: object
       properties:
@@ -382,29 +408,6 @@ components:
             $ref: '#/components/schemas/GroupResponse'
         page:
           $ref: '#/components/schemas/PageMetadata'
-    GroupResponse:
-      type: object
-      properties:
-        description:
-          type: string
-        id:
-          type: string
-        name:
-          type: string
-    GroupInsertRequest:
-      required:
-      - name
-      type: object
-      properties:
-        description:
-          maxLength: 1024
-          minLength: 0
-          type: string
-        name:
-          maxLength: 64
-          minLength: 3
-          pattern: ^$|^[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°]([\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*° ]*[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°])?$
-          type: string
     ProblemJson:
       type: object
       properties:
@@ -441,17 +444,14 @@ components:
         title:
           type: string
       description: Based on [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807)
-    GroupUpdateRequest:
+    GroupInsertRequest:
       required:
-      - id
       - name
       type: object
       properties:
         description:
           maxLength: 1024
           minLength: 0
-          type: string
-        id:
           type: string
         name:
           maxLength: 64

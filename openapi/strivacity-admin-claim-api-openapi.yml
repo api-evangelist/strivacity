@@ -90,32 +90,6 @@ paths:
       - Admin Claim
 components:
   schemas:
-    NativeClaimResponse_NativeClaim:
-      type: object
-      properties:
-        description:
-          type: string
-        dialectUri:
-          type: string
-        displayName:
-          type: string
-        id:
-          type: string
-        name:
-          type: string
-        readonly:
-          type: boolean
-        targetReadonly:
-          type: boolean
-    FieldError:
-      type: object
-      properties:
-        field:
-          type: string
-        message:
-          type: string
-        objectName:
-          type: string
     ProblemJson:
       type: object
       properties:
@@ -152,6 +126,32 @@ components:
         title:
           type: string
       description: Based on [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807)
+    NativeClaimResponse_NativeClaim:
+      type: object
+      properties:
+        description:
+          type: string
+        dialectUri:
+          type: string
+        displayName:
+          type: string
+        id:
+          type: string
+        name:
+          type: string
+        readonly:
+          type: boolean
+        targetReadonly:
+          type: boolean
+    FieldError:
+      type: object
+      properties:
+        field:
+          type: string
+        message:
+          type: string
+        objectName:
+          type: string
   securitySchemes:
     securityScheme:
       scheme: bearer

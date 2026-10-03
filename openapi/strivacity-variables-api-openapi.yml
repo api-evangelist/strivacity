@@ -340,74 +340,6 @@ components:
           - secret
       discriminator:
         propertyName: type
-    PageMetadata:
-      type: object
-      properties:
-        number:
-          type: integer
-          format: int64
-        size:
-          type: integer
-          format: int64
-        totalElements:
-          type: integer
-          format: int64
-        totalPages:
-          type: integer
-          format: int64
-    VariableVariableInsertRequest:
-      required:
-      - name
-      - type
-      - value
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/VariableInsertRequest'
-      - type: object
-        properties:
-          value:
-            maxLength: 8192
-            minLength: 0
-            type: string
-    SecretVariableUpdateRequest:
-      required:
-      - id
-      - name
-      - type
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/VariableUpdateRequest'
-      - type: object
-        properties:
-          secretValue:
-            maxLength: 8192
-            minLength: 0
-            type: string
-            description: It will not be overridden unless provided.
-    FieldError:
-      type: object
-      properties:
-        field:
-          type: string
-        message:
-          type: string
-        objectName:
-          type: string
-    VariableVariableUpdateRequest:
-      required:
-      - id
-      - name
-      - type
-      - value
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/VariableUpdateRequest'
-      - type: object
-        properties:
-          value:
-            maxLength: 8192
-            minLength: 0
-            type: string
     VariableResponse:
       type: object
       properties:
@@ -429,26 +361,46 @@ components:
         valueUpdatedAt:
           type: string
           format: date-time
-    PagedModelVariableListResponse:
+    FieldError:
       type: object
       properties:
-        content:
-          type: array
-          items:
-            $ref: '#/components/schemas/VariableListResponse'
-        page:
-          $ref: '#/components/schemas/PageMetadata'
-    SecretVariableInsertRequest:
+        field:
+          type: string
+        message:
+          type: string
+        objectName:
+          type: string
+    VariableListResponse:
+      type: object
+      properties:
+        description:
+          type: string
+        id:
+          type: string
+        name:
+          type: string
+        policyTag:
+          type: string
+        type:
+          type: string
+          enum:
+          - variable
+          - secret
+        valueUpdatedAt:
+          type: string
+          format: date-time
+    VariableVariableUpdateRequest:
       required:
+      - id
       - name
-      - secretValue
       - type
+      - value
       type: object
       allOf:
-      - $ref: '#/components/schemas/VariableInsertRequest'
+      - $ref: '#/components/schemas/VariableUpdateRequest'
       - type: object
         properties:
-          secretValue:
+          value:
             maxLength: 8192
             minLength: 0
             type: string
@@ -478,25 +430,58 @@ components:
           - secret
       discriminator:
         propertyName: type
-    VariableListResponse:
+    PagedModelVariableListResponse:
       type: object
       properties:
-        description:
-          type: string
-        id:
-          type: string
-        name:
-          type: string
-        policyTag:
-          type: string
-        type:
-          type: string
-          enum:
-          - variable
-          - secret
-        valueUpdatedAt:
-          type: string
-          format: date-time
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/VariableListResponse'
+        page:
+          $ref: '#/components/schemas/PageMetadata'
+    VariableVariableInsertRequest:
+      required:
+      - name
+      - type
+      - value
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/VariableInsertRequest'
+      - type: object
+        properties:
+          value:
+            maxLength: 8192
+            minLength: 0
+            type: string
+    SecretVariableInsertRequest:
+      required:
+      - name
+      - secretValue
+      - type
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/VariableInsertRequest'
+      - type: object
+        properties:
+          secretValue:
+            maxLength: 8192
+            minLength: 0
+            type: string
+    PageMetadata:
+      type: object
+      properties:
+        number:
+          type: integer
+          format: int64
+        size:
+          type: integer
+          format: int64
+        totalElements:
+          type: integer
+          format: int64
+        totalPages:
+          type: integer
+          format: int64
     ProblemJson:
       type: object
       properties:
@@ -533,6 +518,21 @@ components:
         title:
           type: string
       description: Based on [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807)
+    SecretVariableUpdateRequest:
+      required:
+      - id
+      - name
+      - type
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/VariableUpdateRequest'
+      - type: object
+        properties:
+          secretValue:
+            maxLength: 8192
+            minLength: 0
+            type: string
+            description: It will not be overridden unless provided.
   securitySchemes:
     securityScheme:
       scheme: bearer

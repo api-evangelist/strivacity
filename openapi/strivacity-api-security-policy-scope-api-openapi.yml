@@ -251,29 +251,6 @@ paths:
       - API Security Policy Scope
 components:
   schemas:
-    Scope_InsertRequest:
-      required:
-      - name
-      type: object
-      properties:
-        name:
-          maxLength: 256
-          minLength: 1
-          pattern: ^[a-zA-Z0-9_!#$&'()*+,/:;=?@\[\].]*$
-          type: string
-    ScopeUpsertRequest_ApiAccessPolicy:
-      required:
-      - id
-      - name
-      type: object
-      properties:
-        id:
-          type: string
-        name:
-          maxLength: 256
-          minLength: 1
-          pattern: ^[a-zA-Z0-9_!#$&'()*+,/:;=?@\[\].]*$
-          type: string
     FieldError:
       type: object
       properties:
@@ -291,6 +268,16 @@ components:
         id:
           type: string
         name:
+          type: string
+    Scope_InsertRequest:
+      required:
+      - name
+      type: object
+      properties:
+        name:
+          maxLength: 256
+          minLength: 1
+          pattern: ^[a-zA-Z0-9_!#$&'()*+,/:;=?@\[\].]*$
           type: string
     ProblemJson:
       type: object
@@ -328,6 +315,19 @@ components:
         title:
           type: string
       description: Based on [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807)
+    ScopeUpsertRequest_ApiAccessPolicy:
+      required:
+      - id
+      - name
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          maxLength: 256
+          minLength: 1
+          pattern: ^[a-zA-Z0-9_!#$&'()*+,/:;=?@\[\].]*$
+          type: string
   securitySchemes:
     securityScheme:
       scheme: bearer

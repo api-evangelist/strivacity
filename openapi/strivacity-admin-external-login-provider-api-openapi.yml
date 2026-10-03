@@ -295,214 +295,28 @@ paths:
       - Admin External Login Provider
 components:
   schemas:
-    AdminSocialLoginProvider_InsertRequest:
-      required:
-      - configuration
-      - name
-      - type
-      type: object
-      properties:
-        configuration:
-          $ref: '#/components/schemas/SocialLoginProviderRequestConfiguration'
-        description:
-          maxLength: 1024
-          minLength: 0
-          type: string
-        enabled:
-          type: boolean
-          default: true
-        languageOverride:
-          $ref: '#/components/schemas/LanguageOverride'
-        loginButtonText:
-          maxLength: 32
-          minLength: 1
-          pattern: ^((?![<>]).)*$
-          type: string
-        name:
-          maxLength: 64
-          minLength: 2
-          pattern: '[a-zA-Z0-9]+'
-          type: string
-          description: This field cannot be altered
-        onlyStoreMappedValues:
-          type: boolean
-          default: false
-        policyTag:
-          pattern: ^[a-z0-9_]{2,32}$
-          type: string
-          description: Must be an existing policy tag name
-        type:
-          type: string
-          description: This field cannot be altered
-          enum:
-          - oidc
-          - okta
-          - azure
-          - hypr
-          - saml2
-          - github
-          - microsoft
-          - google
-          - facebook
-          - twitter
-          - linkedin
-          - amazon
-          - apple
-        updateAccountInfoOnLogin:
-          type: boolean
-          default: false
-    PageOfExternalLoginProviderNameAndIdAndType:
-      type: object
-      properties:
-        content:
-          type: array
-          items:
-            $ref: '#/components/schemas/ExternalLoginProviderReferenceResponse'
-        page:
-          $ref: '#/components/schemas/PageMetadata'
-    FieldError:
-      type: object
-      properties:
-        field:
-          type: string
-        message:
-          type: string
-        objectName:
-          type: string
-    Saml2LoginProviderConfigurationMetadataPreview:
-      type: object
-      properties:
-        certificates:
-          uniqueItems: true
-          type: array
-          items:
-            $ref: '#/components/schemas/Saml2LoginProviderConfigurationCertificatePreview'
-        idpEntityID:
-          type: string
-        singleSignOnServiceList:
-          type: array
-          items:
-            $ref: '#/components/schemas/Saml2LoginProviderConfigurationSingleSignOnService'
-        validUntil:
-          type: string
-    AdminGenericLoginProviderRequest:
-      type: object
-      description: Represents an external login provider.
-      oneOf:
-      - $ref: '#/components/schemas/AdminAppleLoginProviderUpsertRequest'
-      - $ref: '#/components/schemas/AdminSocialLoginProviderUpsertRequest'
-      - $ref: '#/components/schemas/AdminOidcSpecializedLoginProviderUpsertRequest'
-      - $ref: '#/components/schemas/AdminOidcLoginProviderUpsertRequest'
-      - $ref: '#/components/schemas/AdminSaml2LoginProviderUpsertRequest'
-    AdminGenericLoginProviderRequest_InsertRequest:
-      type: object
-      description: Represents an external login provider.
-      oneOf:
-      - $ref: '#/components/schemas/AdminAppleLoginProvider_InsertRequest'
-      - $ref: '#/components/schemas/AdminSocialLoginProvider_InsertRequest'
-      - $ref: '#/components/schemas/AdminOidcSpecializedLoginProvider_InsertRequest'
-      - $ref: '#/components/schemas/AdminOidcLoginProvider_InsertRequest'
-      - $ref: '#/components/schemas/AdminSaml2LoginProvider_InsertRequest'
-    Saml2LoginProviderRequestConfiguration:
-      required:
-      - authnNameIDFormat
-      - entityID
-      - protocolBinding
-      type: object
-      properties:
-        allowIdpInitiated:
-          type: boolean
-        authnNameIDFormat:
-          type: string
-          enum:
-          - EmailAddressNameIDFormat
-          - PersistentNameIDFormat
-        entityID:
-          maxLength: 1024
-          minLength: 1
-          type: string
-        forceAuthn:
-          type: boolean
-          default: false
-        idpMetadataUrl:
-          maxLength: 1024
-          minLength: 0
-          type: string
-        metadata:
-          type: string
-        protocolBinding:
-          type: string
-          enum:
-          - HTTPPostBinding
-          - HTTPRedirectBinding
-    AdminAppleLoginProvider_InsertRequest:
-      required:
-      - configuration
-      - name
-      - type
-      type: object
-      properties:
-        configuration:
-          $ref: '#/components/schemas/AppleLoginProviderRequestConfiguration'
-        description:
-          maxLength: 1024
-          minLength: 0
-          type: string
-        enabled:
-          type: boolean
-          default: true
-        languageOverride:
-          $ref: '#/components/schemas/LanguageOverride'
-        loginButtonText:
-          maxLength: 32
-          minLength: 1
-          pattern: ^((?![<>]).)*$
-          type: string
-        name:
-          maxLength: 64
-          minLength: 2
-          pattern: '[a-zA-Z0-9]+'
-          type: string
-          description: This field cannot be altered
-        onlyStoreMappedValues:
-          type: boolean
-          default: false
-        policyTag:
-          pattern: ^[a-z0-9_]{2,32}$
-          type: string
-          description: Must be an existing policy tag name
-        type:
-          type: string
-          description: This field cannot be altered
-          enum:
-          - oidc
-          - okta
-          - azure
-          - hypr
-          - saml2
-          - github
-          - microsoft
-          - google
-          - facebook
-          - twitter
-          - linkedin
-          - amazon
-          - apple
-        updateAccountInfoOnLogin:
-          type: boolean
-          default: false
-    LanguageOverride:
+    MessageLevelEncryption:
       type: object
       properties:
         enabled:
           type: boolean
-          default: false
-        regex:
+        fingerprint:
           type: string
-        sourcePath:
-          maxLength: 256
-          minLength: 0
-          type: string
+    PageMetadata:
+      type: object
+      properties:
+        number:
+          type: integer
+          format: int64
+        size:
+          type: integer
+          format: int64
+        totalElements:
+          type: integer
+          format: int64
+        totalPages:
+          type: integer
+          format: int64
     AdminSocialLoginProviderResponse:
       type: object
       properties:
@@ -542,6 +356,51 @@ components:
           - apple
         updateAccountInfoOnLogin:
           type: boolean
+    AdminGenericLoginProviderRequest_InsertRequest:
+      type: object
+      description: Represents an external login provider.
+      oneOf:
+      - $ref: '#/components/schemas/AdminAppleLoginProvider_InsertRequest'
+      - $ref: '#/components/schemas/AdminSocialLoginProvider_InsertRequest'
+      - $ref: '#/components/schemas/AdminOidcSpecializedLoginProvider_InsertRequest'
+      - $ref: '#/components/schemas/AdminOidcLoginProvider_InsertRequest'
+      - $ref: '#/components/schemas/AdminSaml2LoginProvider_InsertRequest'
+    ProblemJson:
+      type: object
+      properties:
+        detail:
+          type: string
+        entityName:
+          type: string
+          description: The name of the entity within the error has occurred
+        errorKey:
+          type: string
+          description: A unique identifier of the error
+        fieldErrors:
+          type: array
+          description: Field constraint violation errors
+          items:
+            $ref: '#/components/schemas/FieldError'
+        message:
+          type: string
+          description: A unique identifier in format of 'error.{errorKey}'
+        params:
+          type: array
+          description: Further information related to the actual error
+          items:
+            type: object
+            additionalProperties:
+              type: object
+        path:
+          type: string
+          description: Request URI
+        status:
+          type: integer
+          description: Status code
+          format: int32
+        title:
+          type: string
+      description: Based on [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807)
     Saml2LoginProviderConfigurationSingleSignOnService:
       type: object
       properties:
@@ -549,33 +408,16 @@ components:
           type: string
         location:
           type: string
-    SocialLoginProviderRequestConfiguration:
-      required:
-      - claims
-      - clientId
-      - clientSecret
+    PageOfExternalLoginProviderNameAndIdAndType:
       type: object
       properties:
-        additionalAuthRequestParams:
-          maxItems: 8
-          minItems: 0
+        content:
           type: array
           items:
-            $ref: '#/components/schemas/AdditionalAuthRequestParamUpsertRequest'
-        claims:
-          type: array
-          items:
-            minLength: 1
-            type: string
-        clientId:
-          maxLength: 128
-          minLength: 1
-          type: string
-        clientSecret:
-          maxLength: 1024
-          minLength: 1
-          type: string
-    AdminOidcSpecializedLoginProviderUpsertRequest:
+            $ref: '#/components/schemas/ExternalLoginProviderReferenceResponse'
+        page:
+          $ref: '#/components/schemas/PageMetadata'
+    AdminOidcLoginProviderUpsertRequest:
       required:
       - configuration
       - id
@@ -584,7 +426,7 @@ components:
       type: object
       properties:
         configuration:
-          $ref: '#/components/schemas/OidcSpecializedLoginProviderRequestConfiguration'
+          $ref: '#/components/schemas/OidcLoginProviderRequestConfiguration'
         description:
           maxLength: 1024
           minLength: 0
@@ -600,6 +442,8 @@ components:
           maxLength: 32
           minLength: 1
           pattern: ^((?![<>]).)*$
+          type: string
+        logoUrl:
           type: string
         name:
           maxLength: 64
@@ -634,23 +478,15 @@ components:
         updateAccountInfoOnLogin:
           type: boolean
           default: false
-    PARConfigurationRequest:
-      required:
-      - parEndpointAuthMethod
+    AdminGenericLoginProviderRequest:
       type: object
-      properties:
-        enabled:
-          type: boolean
-          default: false
-        endpointUrl:
-          maxLength: 1024
-          minLength: 10
-          type: string
-        parEndpointAuthMethod:
-          type: string
-          enum:
-          - client_secret_basic
-          - client_secret_post
+      description: Represents an external login provider.
+      oneOf:
+      - $ref: '#/components/schemas/AdminAppleLoginProviderUpsertRequest'
+      - $ref: '#/components/schemas/AdminSocialLoginProviderUpsertRequest'
+      - $ref: '#/components/schemas/AdminOidcSpecializedLoginProviderUpsertRequest'
+      - $ref: '#/components/schemas/AdminOidcLoginProviderUpsertRequest'
+      - $ref: '#/components/schemas/AdminSaml2LoginProviderUpsertRequest'
     AdminOidcLoginProvider_InsertRequest:
       required:
       - configuration
@@ -709,29 +545,6 @@ components:
         updateAccountInfoOnLogin:
           type: boolean
           default: false
-    MessageLevelEncryption:
-      type: object
-      properties:
-        enabled:
-          type: boolean
-        fingerprint:
-          type: string
-    Saml2LoginProviderConfigurationCertificatePreview:
-      type: object
-      properties:
-        notAfter:
-          type: string
-        subject:
-          type: string
-    PageOfGenericLoginProviderResponse:
-      type: object
-      properties:
-        content:
-          type: array
-          items:
-            $ref: '#/components/schemas/AdminGenericLoginProviderResponse'
-        page:
-          $ref: '#/components/schemas/PageMetadata'
     ExternalLoginProviderReferenceResponse:
       type: object
       properties:
@@ -758,6 +571,25 @@ components:
           - linkedin
           - amazon
           - apple
+    MessageLevelEncryptionRequest:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+          default: false
+        privateKey:
+          maxLength: 8192
+          minLength: 1
+          type: string
+    FieldError:
+      type: object
+      properties:
+        field:
+          type: string
+        message:
+          type: string
+        objectName:
+          type: string
     Saml2LoginProviderConfiguration:
       type: object
       properties:
@@ -800,6 +632,377 @@ components:
           type: string
         teamId:
           type: string
+    OidcSpecializedLoginProviderRequestConfiguration:
+      required:
+      - claims
+      - clientId
+      - clientSecret
+      type: object
+      properties:
+        acrValue:
+          maxLength: 8192
+          minLength: 1
+          type: string
+        additionalAuthRequestParams:
+          maxItems: 8
+          minItems: 0
+          type: array
+          items:
+            $ref: '#/components/schemas/AdditionalAuthRequestParamUpsertRequest'
+        authorizationEndpoint:
+          maxLength: 1024
+          minLength: 1
+          type: string
+        claims:
+          type: array
+          items:
+            minLength: 1
+            type: string
+        clientId:
+          maxLength: 128
+          minLength: 1
+          type: string
+        clientSecret:
+          maxLength: 1024
+          minLength: 1
+          type: string
+        issuer:
+          maxLength: 1024
+          minLength: 1
+          type: string
+        jwksUri:
+          maxLength: 1024
+          minLength: 1
+          type: string
+        openIdAutoDiscoveryURL:
+          maxLength: 1024
+          minLength: 1
+          type: string
+        tokenEndpoint:
+          maxLength: 1024
+          minLength: 1
+          type: string
+        tokenEndpointAuthMethodOverride:
+          type: string
+          description: 'Sets or overrides token endpoint authentication method of Auto-discovery config.
+
+            Options:
+
+            (1) null - use settings from auto-discovery, fallback to Basic if no auto-discovery
+
+            (2) client_secret_basic - client ID and secret sent in authorization header
+
+            (3) client_secret_post - client ID and secret sent in body of request
+
+            '
+          enum:
+          - client_secret_basic
+          - client_secret_post
+        userInfoEndpoint:
+          maxLength: 1024
+          minLength: 1
+          type: string
+    Saml2LoginProviderRequestConfiguration:
+      required:
+      - authnNameIDFormat
+      - entityID
+      - protocolBinding
+      type: object
+      properties:
+        allowIdpInitiated:
+          type: boolean
+        authnNameIDFormat:
+          type: string
+          enum:
+          - EmailAddressNameIDFormat
+          - PersistentNameIDFormat
+        entityID:
+          maxLength: 1024
+          minLength: 1
+          type: string
+        forceAuthn:
+          type: boolean
+          default: false
+        idpMetadataUrl:
+          maxLength: 1024
+          minLength: 0
+          type: string
+        metadata:
+          type: string
+        protocolBinding:
+          type: string
+          enum:
+          - HTTPPostBinding
+          - HTTPRedirectBinding
+    AdminGenericLoginProviderResponse:
+      type: object
+      description: Represents an admin external login provider.
+      oneOf:
+      - $ref: '#/components/schemas/AdminAppleLoginProviderResponse'
+      - $ref: '#/components/schemas/AdminSocialLoginProviderResponse'
+      - $ref: '#/components/schemas/AdminSaml2LoginProviderResponse'
+      - $ref: '#/components/schemas/AdminOidcSpecializedLoginProviderResponse'
+      - $ref: '#/components/schemas/AdminOidcLoginProviderResponse'
+    AdminAppleLoginProviderResponse:
+      type: object
+      properties:
+        configuration:
+          $ref: '#/components/schemas/AppleLoginProviderConfiguration'
+        description:
+          type: string
+        enabled:
+          type: boolean
+        id:
+          type: string
+        languageOverride:
+          $ref: '#/components/schemas/LanguageOverrideResponse'
+        loginButtonText:
+          type: string
+        name:
+          type: string
+        onlyStoreMappedValues:
+          type: boolean
+        policyTag:
+          type: string
+        type:
+          type: string
+          enum:
+          - oidc
+          - okta
+          - azure
+          - hypr
+          - saml2
+          - github
+          - microsoft
+          - google
+          - facebook
+          - twitter
+          - linkedin
+          - amazon
+          - apple
+        updateAccountInfoOnLogin:
+          type: boolean
+    AdminOidcSpecializedLoginProvider_InsertRequest:
+      required:
+      - configuration
+      - name
+      - type
+      type: object
+      properties:
+        configuration:
+          $ref: '#/components/schemas/OidcSpecializedLoginProviderRequestConfiguration'
+        description:
+          maxLength: 1024
+          minLength: 0
+          type: string
+        enabled:
+          type: boolean
+          default: true
+        languageOverride:
+          $ref: '#/components/schemas/LanguageOverride'
+        loginButtonText:
+          maxLength: 32
+          minLength: 1
+          pattern: ^((?![<>]).)*$
+          type: string
+        name:
+          maxLength: 64
+          minLength: 2
+          pattern: '[a-zA-Z0-9]+'
+          type: string
+          description: This field cannot be altered
+        onlyStoreMappedValues:
+          type: boolean
+          default: false
+        policyTag:
+          pattern: ^[a-z0-9_]{2,32}$
+          type: string
+          description: Must be an existing policy tag name
+        type:
+          type: string
+          description: This field cannot be altered
+          enum:
+          - oidc
+          - okta
+          - azure
+          - hypr
+          - saml2
+          - github
+          - microsoft
+          - google
+          - facebook
+          - twitter
+          - linkedin
+          - amazon
+          - apple
+        updateAccountInfoOnLogin:
+          type: boolean
+          default: false
+    Saml2LoginProviderConfigurationMetadataPreview:
+      type: object
+      properties:
+        certificates:
+          uniqueItems: true
+          type: array
+          items:
+            $ref: '#/components/schemas/Saml2LoginProviderConfigurationCertificatePreview'
+        idpEntityID:
+          type: string
+        singleSignOnServiceList:
+          type: array
+          items:
+            $ref: '#/components/schemas/Saml2LoginProviderConfigurationSingleSignOnService'
+        validUntil:
+          type: string
+    AdminOidcLoginProviderResponse:
+      type: object
+      properties:
+        configuration:
+          $ref: '#/components/schemas/OidcConfiguration'
+        description:
+          type: string
+        enabled:
+          type: boolean
+        id:
+          type: string
+        languageOverride:
+          $ref: '#/components/schemas/LanguageOverrideResponse'
+        loginButtonText:
+          type: string
+        logoUrl:
+          type: string
+        name:
+          type: string
+        onlyStoreMappedValues:
+          type: boolean
+        policyTag:
+          type: string
+        type:
+          type: string
+          enum:
+          - oidc
+          - okta
+          - azure
+          - hypr
+          - saml2
+          - github
+          - microsoft
+          - google
+          - facebook
+          - twitter
+          - linkedin
+          - amazon
+          - apple
+        updateAccountInfoOnLogin:
+          type: boolean
+    LanguageOverrideResponse:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+        regex:
+          type: string
+        sourcePath:
+          type: string
+    AdditionalAuthRequestParam:
+      type: object
+      properties:
+        key:
+          type: string
+        value:
+          type: string
+    AppleLoginProviderRequestConfiguration:
+      required:
+      - claims
+      - clientId
+      - keyId
+      - signingKey
+      - teamId
+      type: object
+      properties:
+        additionalAuthRequestParams:
+          maxItems: 8
+          minItems: 0
+          type: array
+          items:
+            $ref: '#/components/schemas/AdditionalAuthRequestParamUpsertRequest'
+        claims:
+          type: array
+          items:
+            minLength: 1
+            type: string
+        clientId:
+          maxLength: 128
+          minLength: 1
+          type: string
+        keyId:
+          maxLength: 256
+          minLength: 1
+          type: string
+        signingKey:
+          maxLength: 2048
+          minLength: 50
+          type: string
+        teamId:
+          maxLength: 256
+          minLength: 1
+          type: string
+    AdminAppleLoginProvider_InsertRequest:
+      required:
+      - configuration
+      - name
+      - type
+      type: object
+      properties:
+        configuration:
+          $ref: '#/components/schemas/AppleLoginProviderRequestConfiguration'
+        description:
+          maxLength: 1024
+          minLength: 0
+          type: string
+        enabled:
+          type: boolean
+          default: true
+        languageOverride:
+          $ref: '#/components/schemas/LanguageOverride'
+        loginButtonText:
+          maxLength: 32
+          minLength: 1
+          pattern: ^((?![<>]).)*$
+          type: string
+        name:
+          maxLength: 64
+          minLength: 2
+          pattern: '[a-zA-Z0-9]+'
+          type: string
+          description: This field cannot be altered
+        onlyStoreMappedValues:
+          type: boolean
+          default: false
+        policyTag:
+          pattern: ^[a-z0-9_]{2,32}$
+          type: string
+          description: Must be an existing policy tag name
+        type:
+          type: string
+          description: This field cannot be altered
+          enum:
+          - oidc
+          - okta
+          - azure
+          - hypr
+          - saml2
+          - github
+          - microsoft
+          - google
+          - facebook
+          - twitter
+          - linkedin
+          - amazon
+          - apple
+        updateAccountInfoOnLogin:
+          type: boolean
+          default: false
     OidcLoginProviderRequestConfiguration:
       required:
       - claims
@@ -874,245 +1077,33 @@ components:
           maxLength: 1024
           minLength: 1
           type: string
-    AdditionalAuthRequestParamResponse:
-      type: object
-      properties:
-        key:
-          type: string
-        value:
-          type: string
-    AdminOidcLoginProviderUpsertRequest:
+    PARConfigurationRequest:
       required:
-      - configuration
-      - id
-      - name
-      - type
+      - parEndpointAuthMethod
       type: object
       properties:
-        configuration:
-          $ref: '#/components/schemas/OidcLoginProviderRequestConfiguration'
-        description:
-          maxLength: 1024
-          minLength: 0
-          type: string
         enabled:
           type: boolean
-          default: true
-        id:
-          type: string
-        languageOverride:
-          $ref: '#/components/schemas/LanguageOverride'
-        loginButtonText:
-          maxLength: 32
-          minLength: 1
-          pattern: ^((?![<>]).)*$
-          type: string
-        logoUrl:
-          type: string
-        name:
-          maxLength: 64
-          minLength: 2
-          pattern: '[a-zA-Z0-9]+'
-          type: string
-          description: This field cannot be altered
-        onlyStoreMappedValues:
-          type: boolean
           default: false
-        policyTag:
-          pattern: ^[a-z0-9_]{2,32}$
+        endpointUrl:
+          maxLength: 1024
+          minLength: 10
           type: string
-          description: Must be an existing policy tag name
-        type:
+        parEndpointAuthMethod:
           type: string
-          description: This field cannot be altered
           enum:
-          - oidc
-          - okta
-          - azure
-          - hypr
-          - saml2
-          - github
-          - microsoft
-          - google
-          - facebook
-          - twitter
-          - linkedin
-          - amazon
-          - apple
-        updateAccountInfoOnLogin:
-          type: boolean
-          default: false
-    AdminOidcSpecializedLoginProvider_InsertRequest:
+          - client_secret_basic
+          - client_secret_post
+    Saml2LoginProviderConfigurationCertificatePreview:
+      type: object
+      properties:
+        notAfter:
+          type: string
+        subject:
+          type: string
+    AdminSaml2LoginProvider_InsertRequest:
       required:
       - configuration
-      - name
-      - type
-      type: object
-      properties:
-        configuration:
-          $ref: '#/components/schemas/OidcSpecializedLoginProviderRequestConfiguration'
-        description:
-          maxLength: 1024
-          minLength: 0
-          type: string
-        enabled:
-          type: boolean
-          default: true
-        languageOverride:
-          $ref: '#/components/schemas/LanguageOverride'
-        loginButtonText:
-          maxLength: 32
-          minLength: 1
-          pattern: ^((?![<>]).)*$
-          type: string
-        name:
-          maxLength: 64
-          minLength: 2
-          pattern: '[a-zA-Z0-9]+'
-          type: string
-          description: This field cannot be altered
-        onlyStoreMappedValues:
-          type: boolean
-          default: false
-        policyTag:
-          pattern: ^[a-z0-9_]{2,32}$
-          type: string
-          description: Must be an existing policy tag name
-        type:
-          type: string
-          description: This field cannot be altered
-          enum:
-          - oidc
-          - okta
-          - azure
-          - hypr
-          - saml2
-          - github
-          - microsoft
-          - google
-          - facebook
-          - twitter
-          - linkedin
-          - amazon
-          - apple
-        updateAccountInfoOnLogin:
-          type: boolean
-          default: false
-    AppleLoginProviderRequestConfiguration:
-      required:
-      - claims
-      - clientId
-      - keyId
-      - signingKey
-      - teamId
-      type: object
-      properties:
-        additionalAuthRequestParams:
-          maxItems: 8
-          minItems: 0
-          type: array
-          items:
-            $ref: '#/components/schemas/AdditionalAuthRequestParamUpsertRequest'
-        claims:
-          type: array
-          items:
-            minLength: 1
-            type: string
-        clientId:
-          maxLength: 128
-          minLength: 1
-          type: string
-        keyId:
-          maxLength: 256
-          minLength: 1
-          type: string
-        signingKey:
-          maxLength: 2048
-          minLength: 50
-          type: string
-        teamId:
-          maxLength: 256
-          minLength: 1
-          type: string
-    AdditionalAuthRequestParamUpsertRequest:
-      required:
-      - key
-      - value
-      type: object
-      properties:
-        key:
-          maxLength: 128
-          minLength: 1
-          pattern: ^\p{ASCII}*$
-          type: string
-        value:
-          maxLength: 1024
-          minLength: 1
-          pattern: ^\p{ASCII}*$
-          type: string
-    AdminSocialLoginProviderUpsertRequest:
-      required:
-      - configuration
-      - id
-      - name
-      - type
-      type: object
-      properties:
-        configuration:
-          $ref: '#/components/schemas/SocialLoginProviderRequestConfiguration'
-        description:
-          maxLength: 1024
-          minLength: 0
-          type: string
-        enabled:
-          type: boolean
-          default: true
-        id:
-          type: string
-        languageOverride:
-          $ref: '#/components/schemas/LanguageOverride'
-        loginButtonText:
-          maxLength: 32
-          minLength: 1
-          pattern: ^((?![<>]).)*$
-          type: string
-        name:
-          maxLength: 64
-          minLength: 2
-          pattern: '[a-zA-Z0-9]+'
-          type: string
-          description: This field cannot be altered
-        onlyStoreMappedValues:
-          type: boolean
-          default: false
-        policyTag:
-          pattern: ^[a-z0-9_]{2,32}$
-          type: string
-          description: Must be an existing policy tag name
-        type:
-          type: string
-          description: This field cannot be altered
-          enum:
-          - oidc
-          - okta
-          - azure
-          - hypr
-          - saml2
-          - github
-          - microsoft
-          - google
-          - facebook
-          - twitter
-          - linkedin
-          - amazon
-          - apple
-        updateAccountInfoOnLogin:
-          type: boolean
-          default: false
-    AdminSaml2LoginProviderUpsertRequest:
-      required:
-      - configuration
-      - id
       - name
       - type
       type: object
@@ -1126,8 +1117,6 @@ components:
         enabled:
           type: boolean
           default: true
-        id:
-          type: string
         languageOverride:
           $ref: '#/components/schemas/LanguageOverride'
         loginButtonText:
@@ -1202,6 +1191,18 @@ components:
           - client_secret_post
         userInfoEndpoint:
           type: string
+    LanguageOverride:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+          default: false
+        regex:
+          type: string
+        sourcePath:
+          maxLength: 256
+          minLength: 0
+          type: string
     AdminOidcSpecializedLoginProviderResponse:
       type: object
       properties:
@@ -1241,114 +1242,120 @@ components:
           - apple
         updateAccountInfoOnLogin:
           type: boolean
-    AdminAppleLoginProviderResponse:
+    PageOfGenericLoginProviderResponse:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/AdminGenericLoginProviderResponse'
+        page:
+          $ref: '#/components/schemas/PageMetadata'
+    AdminSocialLoginProviderUpsertRequest:
+      required:
+      - configuration
+      - id
+      - name
+      - type
       type: object
       properties:
         configuration:
-          $ref: '#/components/schemas/AppleLoginProviderConfiguration'
+          $ref: '#/components/schemas/SocialLoginProviderRequestConfiguration'
         description:
+          maxLength: 1024
+          minLength: 0
           type: string
         enabled:
           type: boolean
+          default: true
         id:
           type: string
         languageOverride:
-          $ref: '#/components/schemas/LanguageOverrideResponse'
+          $ref: '#/components/schemas/LanguageOverride'
         loginButtonText:
+          maxLength: 32
+          minLength: 1
+          pattern: ^((?![<>]).)*$
           type: string
         name:
+          maxLength: 64
+          minLength: 2
+          pattern: '[a-zA-Z0-9]+'
           type: string
+          description: This field cannot be altered
         onlyStoreMappedValues:
-          type: boolean
-        policyTag:
-          type: string
-        type:
-          type: string
-          enum:
-          - oidc
-          - okta
-          - azure
-          - hypr
-          - saml2
-          - github
-          - microsoft
-          - google
-          - facebook
-          - twitter
-          - linkedin
-          - amazon
-          - apple
-        updateAccountInfoOnLogin:
-          type: boolean
-    AdminOidcLoginProviderResponse:
-      type: object
-      properties:
-        configuration:
-          $ref: '#/components/schemas/OidcConfiguration'
-        description:
-          type: string
-        enabled:
-          type: boolean
-        id:
-          type: string
-        languageOverride:
-          $ref: '#/components/schemas/LanguageOverrideResponse'
-        loginButtonText:
-          type: string
-        logoUrl:
-          type: string
-        name:
-          type: string
-        onlyStoreMappedValues:
-          type: boolean
-        policyTag:
-          type: string
-        type:
-          type: string
-          enum:
-          - oidc
-          - okta
-          - azure
-          - hypr
-          - saml2
-          - github
-          - microsoft
-          - google
-          - facebook
-          - twitter
-          - linkedin
-          - amazon
-          - apple
-        updateAccountInfoOnLogin:
-          type: boolean
-    MessageLevelEncryptionRequest:
-      type: object
-      properties:
-        enabled:
           type: boolean
           default: false
-        privateKey:
-          maxLength: 8192
-          minLength: 1
+        policyTag:
+          pattern: ^[a-z0-9_]{2,32}$
           type: string
-    AdditionalAuthRequestParam:
+          description: Must be an existing policy tag name
+        type:
+          type: string
+          description: This field cannot be altered
+          enum:
+          - oidc
+          - okta
+          - azure
+          - hypr
+          - saml2
+          - github
+          - microsoft
+          - google
+          - facebook
+          - twitter
+          - linkedin
+          - amazon
+          - apple
+        updateAccountInfoOnLogin:
+          type: boolean
+          default: false
+    AdminSaml2LoginProviderResponse:
       type: object
       properties:
-        key:
+        configuration:
+          $ref: '#/components/schemas/Saml2LoginProviderConfiguration'
+        description:
           type: string
-        value:
+        enabled:
+          type: boolean
+        id:
           type: string
-    OidcConfiguration:
+        languageOverride:
+          $ref: '#/components/schemas/LanguageOverrideResponse'
+        loginButtonText:
+          type: string
+        name:
+          type: string
+        onlyStoreMappedValues:
+          type: boolean
+        policyTag:
+          type: string
+        type:
+          type: string
+          enum:
+          - oidc
+          - okta
+          - azure
+          - hypr
+          - saml2
+          - github
+          - microsoft
+          - google
+          - facebook
+          - twitter
+          - linkedin
+          - amazon
+          - apple
+        updateAccountInfoOnLogin:
+          type: boolean
+    SocialLoginProviderConfiguration:
       type: object
       properties:
-        acrValue:
-          type: string
         additionalAuthRequestParams:
           type: array
           items:
-            $ref: '#/components/schemas/AdditionalAuthRequestParamResponse'
-        authorizationEndpoint:
-          type: string
+            $ref: '#/components/schemas/AdditionalAuthRequestParam'
         claims:
           type: array
           items:
@@ -1357,55 +1364,6 @@ components:
           type: string
         clientSecret:
           type: string
-        issuer:
-          type: string
-        jwksUri:
-          type: string
-        messageLevelEncryption:
-          $ref: '#/components/schemas/MessageLevelEncryption'
-        openIdAutoDiscoveryURL:
-          type: string
-        parConfiguration:
-          $ref: '#/components/schemas/PARConfigurationResponse'
-        tokenEndpoint:
-          type: string
-        tokenEndpointAuthMethodOverride:
-          type: string
-          enum:
-          - client_secret_basic
-          - client_secret_post
-        userInfoEndpoint:
-          type: string
-    AdminGenericLoginProviderResponse:
-      type: object
-      description: Represents an admin external login provider.
-      oneOf:
-      - $ref: '#/components/schemas/AdminAppleLoginProviderResponse'
-      - $ref: '#/components/schemas/AdminSocialLoginProviderResponse'
-      - $ref: '#/components/schemas/AdminSaml2LoginProviderResponse'
-      - $ref: '#/components/schemas/AdminOidcSpecializedLoginProviderResponse'
-      - $ref: '#/components/schemas/AdminOidcLoginProviderResponse'
-    LanguageOverrideResponse:
-      type: object
-      properties:
-        enabled:
-          type: boolean
-        regex:
-          type: string
-        sourcePath:
-          type: string
-    PARConfigurationResponse:
-      type: object
-      properties:
-        enabled:
-          type: boolean
-        endpointUrl:
-          type: string
-        parEndpointAuthMethod:
-          type: string
-          enum:
-          - client_secret_basic
-          - client_secret_post
     AdminAppleLoginProviderUpsertRequest:
       required:
       - configuration
@@ -1465,107 +1423,7 @@ components:
         updateAccountInfoOnLogin:
           type: boolean
           default: false
-    PageMetadata:
-      type: object
-      properties:
-        number:
-          type: integer
-          format: int64
-        size:
-          type: integer
-          format: int64
-        totalElements:
-          type: integer
-          format: int64
-        totalPages:
-          type: integer
-          format: int64
-    SocialLoginProviderConfiguration:
-      type: object
-      properties:
-        additionalAuthRequestParams:
-          type: array
-          items:
-            $ref: '#/components/schemas/AdditionalAuthRequestParam'
-        claims:
-          type: array
-          items:
-            type: string
-        clientId:
-          type: string
-        clientSecret:
-          type: string
-    OidcSpecializedLoginProviderRequestConfiguration:
-      required:
-      - claims
-      - clientId
-      - clientSecret
-      type: object
-      properties:
-        acrValue:
-          maxLength: 8192
-          minLength: 1
-          type: string
-        additionalAuthRequestParams:
-          maxItems: 8
-          minItems: 0
-          type: array
-          items:
-            $ref: '#/components/schemas/AdditionalAuthRequestParamUpsertRequest'
-        authorizationEndpoint:
-          maxLength: 1024
-          minLength: 1
-          type: string
-        claims:
-          type: array
-          items:
-            minLength: 1
-            type: string
-        clientId:
-          maxLength: 128
-          minLength: 1
-          type: string
-        clientSecret:
-          maxLength: 1024
-          minLength: 1
-          type: string
-        issuer:
-          maxLength: 1024
-          minLength: 1
-          type: string
-        jwksUri:
-          maxLength: 1024
-          minLength: 1
-          type: string
-        openIdAutoDiscoveryURL:
-          maxLength: 1024
-          minLength: 1
-          type: string
-        tokenEndpoint:
-          maxLength: 1024
-          minLength: 1
-          type: string
-        tokenEndpointAuthMethodOverride:
-          type: string
-          description: 'Sets or overrides token endpoint authentication method of Auto-discovery config.
-
-            Options:
-
-            (1) null - use settings from auto-discovery, fallback to Basic if no auto-discovery
-
-            (2) client_secret_basic - client ID and secret sent in authorization header
-
-            (3) client_secret_post - client ID and secret sent in body of request
-
-            '
-          enum:
-          - client_secret_basic
-          - client_secret_post
-        userInfoEndpoint:
-          maxLength: 1024
-          minLength: 1
-          type: string
-    AdminSaml2LoginProvider_InsertRequest:
+    AdminSocialLoginProvider_InsertRequest:
       required:
       - configuration
       - name
@@ -1573,7 +1431,7 @@ components:
       type: object
       properties:
         configuration:
-          $ref: '#/components/schemas/Saml2LoginProviderRequestConfiguration'
+          $ref: '#/components/schemas/SocialLoginProviderRequestConfiguration'
         description:
           maxLength: 1024
           minLength: 0
@@ -1621,65 +1479,140 @@ components:
         updateAccountInfoOnLogin:
           type: boolean
           default: false
-    ProblemJson:
+    SocialLoginProviderRequestConfiguration:
+      required:
+      - claims
+      - clientId
+      - clientSecret
       type: object
       properties:
-        detail:
-          type: string
-        entityName:
-          type: string
-          description: The name of the entity within the error has occurred
-        errorKey:
-          type: string
-          description: A unique identifier of the error
-        fieldErrors:
+        additionalAuthRequestParams:
+          maxItems: 8
+          minItems: 0
           type: array
-          description: Field constraint violation errors
           items:
-            $ref: '#/components/schemas/FieldError'
-        message:
-          type: string
-          description: A unique identifier in format of 'error.{errorKey}'
-        params:
+            $ref: '#/components/schemas/AdditionalAuthRequestParamUpsertRequest'
+        claims:
           type: array
-          description: Further information related to the actual error
           items:
-            type: object
-            additionalProperties:
-              type: object
-        path:
+            minLength: 1
+            type: string
+        clientId:
+          maxLength: 128
+          minLength: 1
           type: string
-          description: Request URI
-        status:
-          type: integer
-          description: Status code
-          format: int32
-        title:
+        clientSecret:
+          maxLength: 1024
+          minLength: 1
           type: string
-      description: Based on [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807)
-    AdminSaml2LoginProviderResponse:
+    OidcConfiguration:
+      type: object
+      properties:
+        acrValue:
+          type: string
+        additionalAuthRequestParams:
+          type: array
+          items:
+            $ref: '#/components/schemas/AdditionalAuthRequestParamResponse'
+        authorizationEndpoint:
+          type: string
+        claims:
+          type: array
+          items:
+            type: string
+        clientId:
+          type: string
+        clientSecret:
+          type: string
+        issuer:
+          type: string
+        jwksUri:
+          type: string
+        messageLevelEncryption:
+          $ref: '#/components/schemas/MessageLevelEncryption'
+        openIdAutoDiscoveryURL:
+          type: string
+        parConfiguration:
+          $ref: '#/components/schemas/PARConfigurationResponse'
+        tokenEndpoint:
+          type: string
+        tokenEndpointAuthMethodOverride:
+          type: string
+          enum:
+          - client_secret_basic
+          - client_secret_post
+        userInfoEndpoint:
+          type: string
+    PARConfigurationResponse:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+        endpointUrl:
+          type: string
+        parEndpointAuthMethod:
+          type: string
+          enum:
+          - client_secret_basic
+          - client_secret_post
+    AdditionalAuthRequestParamUpsertRequest:
+      required:
+      - key
+      - value
+      type: object
+      properties:
+        key:
+          maxLength: 128
+          minLength: 1
+          pattern: ^\p{ASCII}*$
+          type: string
+        value:
+          maxLength: 1024
+          minLength: 1
+          pattern: ^\p{ASCII}*$
+          type: string
+    AdminOidcSpecializedLoginProviderUpsertRequest:
+      required:
+      - configuration
+      - id
+      - name
+      - type
       type: object
       properties:
         configuration:
-          $ref: '#/components/schemas/Saml2LoginProviderConfiguration'
+          $ref: '#/components/schemas/OidcSpecializedLoginProviderRequestConfiguration'
         description:
+          maxLength: 1024
+          minLength: 0
           type: string
         enabled:
           type: boolean
+          default: true
         id:
           type: string
         languageOverride:
-          $ref: '#/components/schemas/LanguageOverrideResponse'
+          $ref: '#/components/schemas/LanguageOverride'
         loginButtonText:
+          maxLength: 32
+          minLength: 1
+          pattern: ^((?![<>]).)*$
           type: string
         name:
+          maxLength: 64
+          minLength: 2
+          pattern: '[a-zA-Z0-9]+'
           type: string
+          description: This field cannot be altered
         onlyStoreMappedValues:
           type: boolean
+          default: false
         policyTag:
+          pattern: ^[a-z0-9_]{2,32}$
           type: string
+          description: Must be an existing policy tag name
         type:
           type: string
+          description: This field cannot be altered
           enum:
           - oidc
           - okta
@@ -1696,6 +1629,73 @@ components:
           - apple
         updateAccountInfoOnLogin:
           type: boolean
+          default: false
+    AdditionalAuthRequestParamResponse:
+      type: object
+      properties:
+        key:
+          type: string
+        value:
+          type: string
+    AdminSaml2LoginProviderUpsertRequest:
+      required:
+      - configuration
+      - id
+      - name
+      - type
+      type: object
+      properties:
+        configuration:
+          $ref: '#/components/schemas/Saml2LoginProviderRequestConfiguration'
+        description:
+          maxLength: 1024
+          minLength: 0
+          type: string
+        enabled:
+          type: boolean
+          default: true
+        id:
+          type: string
+        languageOverride:
+          $ref: '#/components/schemas/LanguageOverride'
+        loginButtonText:
+          maxLength: 32
+          minLength: 1
+          pattern: ^((?![<>]).)*$
+          type: string
+        name:
+          maxLength: 64
+          minLength: 2
+          pattern: '[a-zA-Z0-9]+'
+          type: string
+          description: This field cannot be altered
+        onlyStoreMappedValues:
+          type: boolean
+          default: false
+        policyTag:
+          pattern: ^[a-z0-9_]{2,32}$
+          type: string
+          description: Must be an existing policy tag name
+        type:
+          type: string
+          description: This field cannot be altered
+          enum:
+          - oidc
+          - okta
+          - azure
+          - hypr
+          - saml2
+          - github
+          - microsoft
+          - google
+          - facebook
+          - twitter
+          - linkedin
+          - amazon
+          - apple
+        updateAccountInfoOnLogin:
+          type: boolean
+          default: false
   securitySchemes:
     securityScheme:
       scheme: bearer

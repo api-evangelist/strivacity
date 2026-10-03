@@ -386,24 +386,34 @@ paths:
       - Admin Account Event
 components:
   schemas:
-    ActionResponse:
+    AccountEventHeaderResponse:
       type: object
       properties:
         actor:
           $ref: '#/components/schemas/EventActor'
-        details:
-          type: array
-          items:
-            $ref: '#/components/schemas/Detail'
-        http:
-          $ref: '#/components/schemas/Http'
-        notifications:
-          type: array
-          items:
-            $ref: '#/components/schemas/Notification'
-        timestamp:
+        actorApplication:
+          $ref: '#/components/schemas/ActorApplication'
+        actorClient:
+          $ref: '#/components/schemas/AccountEventActorClient'
+        endTimestamp:
           type: string
           format: date-time
+        eventId:
+          type: string
+          format: uuid
+        labels:
+          type: array
+          description: 'Labels indicating what happened during the occurrence of the event.Labels are in the following format: `(failure|success):{eventType}`'
+          items:
+            type: string
+            example: success:login
+        loginSessionId:
+          type: string
+        startTimestamp:
+          type: string
+          format: date-time
+        subject:
+          $ref: '#/components/schemas/Subject'
         type:
           type: string
           description: 'Gives additional context for an account event. An example for each event type: `customerFlow` - an account tries to log in, `selfService` - an account modifies their own metadata, `administrative` - an admin modifies metadata for an account'
@@ -414,50 +424,25 @@ components:
           - scheduled
           - bulkOperation
           - systemInitiatedOperation
-    Response:
+        variantId:
+          type: string
+      description: Represents an account event header. Fields with empty values are not included in the response.
+    Http:
       type: object
       properties:
-        body:
-          type: string
-        code:
-          type: integer
-          format: int32
-        location:
-          type: string
-      description: Represents the HTTP response for an event
-    FieldError:
+        request:
+          $ref: '#/components/schemas/Request'
+        response:
+          $ref: '#/components/schemas/Response'
+      description: Represents the HTTP communication for an event
+    Token:
       type: object
       properties:
-        field:
+        iss:
           type: string
-        message:
+        sub:
           type: string
-        objectName:
-          type: string
-    ResolvedApplication:
-      type: object
-      properties:
-        id:
-          type: string
-        name:
-          type: string
-      description: Represents the resolved application of a token exchange account event
-    ResolvedClient:
-      type: object
-      properties:
-        id:
-          type: string
-        name:
-          type: string
-      description: Represents the resolved client of a token exchange account event
-    ErrorMessage:
-      type: object
-      properties:
-        message:
-          type: string
-        retryCount:
-          type: integer
-          format: int32
+      description: Represents the token of a token exchange account event
     Subject:
       type: object
       properties:
@@ -477,110 +462,25 @@ components:
         userName:
           type: string
       description: Represents the subject of an account event by additional context
-    NotificationEventResponse:
-      type: object
-      properties:
-        accountEventId:
-          type: string
-        accountId:
-          type: string
-        channel:
-          type: string
-        errorMessages:
-          type: array
-          items:
-            $ref: '#/components/schemas/ErrorMessage'
-        id:
-          type: string
-        identityStore:
-          type: string
-        invitationId:
-          type: string
-        message:
-          type: string
-        messagePlainText:
-          type: string
-        notificationPolicyId:
-          type: string
-        notificationTemplate:
-          $ref: '#/components/schemas/DisplayNameAndIdResponse'
-        providerMessageId:
-          type: string
-        success:
-          type: boolean
-        target:
-          type: string
-        timestamp:
-          type: string
-        validUntil:
-          type: string
-      description: Represents a notification event. Fields with empty values are not included in the response.
-    Request:
+    Response:
       type: object
       properties:
         body:
           type: string
-        method:
+        code:
+          type: integer
+          format: int32
+        location:
           type: string
-        url:
-          type: string
-      description: Represents the HTTP request for an event
-    Detail:
+      description: Represents the HTTP response for an event
+    ActorApplication:
       type: object
       properties:
-        label:
+        id:
           type: string
-        metadata:
-          type: object
-          additionalProperties:
-            type: object
         name:
           type: string
-        notifications:
-          type: array
-          items:
-            $ref: '#/components/schemas/Notification'
-        outcome:
-          type: string
-        timestamp:
-          type: string
-          format: date-time
-        type:
-          type: string
-      description: Represents the details of an event
-    EventActor:
-      type: object
-      properties:
-        accountId:
-          type: string
-        bulkJobId:
-          type: string
-        inboundConnectionId:
-          type: string
-        ip:
-          type: string
-        location:
-          $ref: '#/components/schemas/FeatureResponse'
-        outboundProvisionTargetId:
-          type: string
-        resolvedApplication:
-          $ref: '#/components/schemas/ResolvedApplication'
-        resolvedClient:
-          $ref: '#/components/schemas/ResolvedClient'
-        ruleId:
-          type: string
-        store:
-          type: string
-          description: Name of the represented identity store
-        token:
-          $ref: '#/components/schemas/Token'
-        userAgent:
-          type: string
-          description: Information about the browser the actor used
-        userName:
-          type: string
-          description: Username or email of the actor (email for email-only identity stores)
-      description: Actor of the event, which account initiated the event
+      description: Application in which the actor initiated the event
     ProblemJson:
       type: object
       properties:
@@ -617,13 +517,41 @@ components:
         title:
           type: string
       description: Based on [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807)
-    Notification:
+    Detail:
       type: object
       properties:
-        id:
+        label:
           type: string
-        target:
+        metadata:
+          type: object
+          additionalProperties:
+            type: object
+        name:
           type: string
+        notifications:
+          type: array
+          items:
+            $ref: '#/components/schemas/Notification'
+        outcome:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        type:
+          type: string
+      description: Represents the details of an event
+    FeatureResponse:
+      type: object
+      properties:
+        geometry:
+          $ref: '#/components/schemas/GeometryResponse'
+        properties:
+          type: object
+          additionalProperties:
+            type: string
+        type:
+          type: string
+      description: Represents a feature object according to the [RFC 7946](https://www.rfc-editor.org/rfc/rfc7946#section-3.2) standard
     AccountEventResponse:
       type: object
       properties:
@@ -676,83 +604,104 @@ components:
           type: string
         id:
           type: string
-    Http:
+    FieldError:
       type: object
       properties:
-        request:
-          $ref: '#/components/schemas/Request'
-        response:
-          $ref: '#/components/schemas/Response'
-      description: Represents the HTTP communication for an event
-    Token:
+        field:
+          type: string
+        message:
+          type: string
+        objectName:
+          type: string
+    GeometryResponse:
       type: object
       properties:
-        iss:
+        coordinates:
+          type: array
+          items:
+            type: number
+            format: double
+        type:
           type: string
-        sub:
-          type: string
-      description: Represents the token of a token exchange account event
-    ActorApplication:
+      description: Represents a geometry object according to the [RFC 7946](https://www.rfc-editor.org/rfc/rfc7946#section-3.1) standard
+    Notification:
       type: object
       properties:
         id:
           type: string
-        name:
+        target:
           type: string
-      description: Application in which the actor initiated the event
-    AccountEventHeaderResponse:
+    NotificationEventResponse:
       type: object
       properties:
-        actor:
-          $ref: '#/components/schemas/EventActor'
-        actorApplication:
-          $ref: '#/components/schemas/ActorApplication'
-        actorClient:
-          $ref: '#/components/schemas/AccountEventActorClient'
-        endTimestamp:
+        accountEventId:
           type: string
-          format: date-time
-        eventId:
+        accountId:
           type: string
-          format: uuid
-        labels:
+        channel:
+          type: string
+        errorMessages:
           type: array
-          description: 'Labels indicating what happened during the occurrence of the event.Labels are in the following format: `(failure|success):{eventType}`'
           items:
-            type: string
-            example: success:login
-        loginSessionId:
+            $ref: '#/components/schemas/ErrorMessage'
+        id:
           type: string
-        startTimestamp:
+        identityStore:
           type: string
-          format: date-time
-        subject:
-          $ref: '#/components/schemas/Subject'
-        type:
+        invitationId:
           type: string
-          description: 'Gives additional context for an account event. An example for each event type: `customerFlow` - an account tries to log in, `selfService` - an account modifies their own metadata, `administrative` - an admin modifies metadata for an account'
-          enum:
-          - customerFlow
-          - selfService
-          - administrative
-          - scheduled
-          - bulkOperation
-          - systemInitiatedOperation
-        variantId:
+        message:
           type: string
-      description: Represents an account event header. Fields with empty values are not included in the response.
-    FeatureResponse:
+        messagePlainText:
+          type: string
+        notificationPolicyId:
+          type: string
+        notificationTemplate:
+          $ref: '#/components/schemas/DisplayNameAndIdResponse'
+        providerMessageId:
+          type: string
+        success:
+          type: boolean
+        target:
+          type: string
+        timestamp:
+          type: string
+        validUntil:
+          type: string
+      description: Represents a notification event. Fields with empty values are not included in the response.
+    EventActor:
       type: object
       properties:
-        geometry:
-          $ref: '#/components/schemas/GeometryResponse'
-        properties:
-          type: object
-          additionalProperties:
-            type: string
-        type:
+        accountId:
           type: string
-      description: Represents a feature object according to the [RFC 7946](https://www.rfc-editor.org/rfc/rfc7946#section-3.2) standard
+        bulkJobId:
+          type: string
+        inboundConnectionId:
+          type: string
+        ip:
+          type: string
+        location:
+          $ref: '#/components/schemas/FeatureResponse'
+        outboundProvisionTargetId:
+          type: string
+        resolvedApplication:
+          $ref: '#/components/schemas/ResolvedApplication'
+        resolvedClient:
+          $ref: '#/components/schemas/ResolvedClient'
+        ruleId:
+          type: string
+        store:
+          type: string
+          description: Name of the represented identity store
+        token:
+          $ref: '#/components/schemas/Token'
+        userAgent:
+          type: string
+          description: Information about the browser the actor used
+        userName:
+          type: string
+          description: Username or email of the actor (email for email-only identity stores)
+      description: Actor of the event, which account initiated the event
     AccountEventActorClient:
       type: object
       properties:
@@ -761,6 +710,14 @@ components:
         name:
           type: string
       description: Client in which the actor initiated the event
+    ResolvedClient:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+      description: Represents the resolved client of a token exchange account event
     NotificationEventListResponse:
       type: object
       properties:
@@ -789,17 +746,60 @@ components:
         validUntil:
           type: string
       description: Represents a notification event briefly. Fields with empty values are not included in the response.
-    GeometryResponse:
+    ResolvedApplication:
       type: object
       properties:
-        coordinates:
+        id:
+          type: string
+        name:
+          type: string
+      description: Represents the resolved application of a token exchange account event
+    Request:
+      type: object
+      properties:
+        body:
+          type: string
+        method:
+          type: string
+        url:
+          type: string
+      description: Represents the HTTP request for an event
+    ActionResponse:
+      type: object
+      properties:
+        actor:
+          $ref: '#/components/schemas/EventActor'
+        details:
           type: array
           items:
-            type: number
-            format: double
+            $ref: '#/components/schemas/Detail'
+        http:
+          $ref: '#/components/schemas/Http'
+        notifications:
+          type: array
+          items:
+            $ref: '#/components/schemas/Notification'
+        timestamp:
+          type: string
+          format: date-time
         type:
           type: string
-      description: Represents a geometry object according to the [RFC 7946](https://www.rfc-editor.org/rfc/rfc7946#section-3.1) standard
+          description: 'Gives additional context for an account event. An example for each event type: `customerFlow` - an account tries to log in, `selfService` - an account modifies their own metadata, `administrative` - an admin modifies metadata for an account'
+          enum:
+          - customerFlow
+          - selfService
+          - administrative
+          - scheduled
+          - bulkOperation
+          - systemInitiatedOperation
+    ErrorMessage:
+      type: object
+      properties:
+        message:
+          type: string
+        retryCount:
+          type: integer
+          format: int32
   securitySchemes:
     securityScheme:
       scheme: bearer
