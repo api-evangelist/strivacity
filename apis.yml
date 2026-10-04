@@ -1747,6 +1747,9 @@ maintainers:
 - FN: APIs.json
   email: info@apis.io
 common:
+- type: CapabilityMap
+  url: capabilities/strivacity-capability-edges.yml
+  name: Strivacity Business Capability Map
 - type: Overlay
   url: overlays/strivacity-admin-portal-overlay.yaml
 - type: Overlay

@@ -1,0 +1,437 @@
+slug: strivacity
+provider: Strivacity
+generated_by: planning/capability-mapping/scripts/classify_capabilities.py
+model: claude-opus-5
+frame:
+- Software & Technology
+min_confidence: 0.7
+capability_model:
+  source: https://github.com/vincentmakes/turbo-ea-capabilities
+  license: CC-BY-4.0
+  attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
+    CC BY 4.0
+  notice: NOTICE
+edge_count: 42
+edges:
+- tag: Adaptive Access Policy (Adaptive MFA)
+  spec_file: strivacity-adaptive-access-policy-adaptive-mfa-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.92
+  evidence: POST /admin/api/v1/adaptiveMfas  createAdaptiveMFA  Create an adaptive access policy; PasskeyFactorRequest_AdaptiveMFA,
+    PermanentLockoutResponse_AdaptiveMFA
+  reason: Creation and maintenance of adaptive access policies with authentication factors, blocking rules,
+    lockout and session termination — unambiguously authentication/access policy management under IAM.
+- tag: Native Journey API
+  spec_file: strivacity-native-journey-api-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.92
+  evidence: POST /flow/api/v1/form/customerInput 'Authenticate account using password'; 'Starting point
+    of the MFA enrollment'; 'Send forgotten password email'
+  reason: 'Operations execute end-user authentication journeys: identification, password authentication,
+    MFA enrollment and challenge, and password/username recovery. This is unambiguously identity and access
+    management.'
+- tag: Admin Account
+  spec_file: strivacity-admin-account-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.9
+  evidence: POST /admin/api/v1/admin/identityStore/accounts  createAccount  Create an admin account; .../authenticators  addAuthenticator;
+    .../disable  disableAccount
+  reason: Full administrative user account lifecycle — create, enable/disable, authenticator management,
+    identifier updates, passcode lock lifting — which is Identity & Access Management.
+- tag: Account
+  spec_file: strivacity-account-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.85
+  evidence: '''Create an account''; ''Create authenticator for an account''; ''Disable an account''; ''Assign
+    groups to an account''; ''Lift passcode lock for an account'''
+  reason: Full identity account lifecycle — creation, enable/disable, authenticator registration, group/role
+    assignment, impersonation and lockout — in an identity store. This is identity and access management,
+    not customer master data.
+- tag: Account Identity
+  spec_file: strivacity-account-identity-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.85
+  evidence: DELETE .../accounts/{accountId}/identities/{externalLoginId}  deleteExternalIdentity  Unlink
+    an external identity from an account
+  reason: Manages the identities linked to an account including external/federated identity linking, unlinking
+    and connector sync — core identity federation and access management operations.
+- tag: Admin External Login Provider
+  spec_file: strivacity-admin-external-login-provider-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.85
+  evidence: POST /admin/api/v1/admin/loginProviders  createExternalLoginProvider  Create an admin external
+    login provider
+  reason: Managing OIDC/SAML2/Apple external login providers for administrator sign-in is federation configuration,
+    a core IAM capability.
+- tag: Admin Role
+  spec_file: strivacity-admin-role-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.85
+  evidence: POST /admin/api/v1/admin/identityStore/roles  create  Create an admin role  /  getAllScopes  List
+    scopes
+  reason: Role and scope definition for administrators is role-based access control, a direct Identity
+    & Access Management capability.
+- tag: Admin Role Assignee
+  spec_file: strivacity-admin-role-assignee-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.85
+  evidence: POST /admin/api/v1/admin/identityStore/roles/{roleId}/assignees  assignRole  Assign an admin
+    account to a role
+  reason: Granting and revoking role membership for admin accounts is access assignment/entitlement administration
+    under IAM.
+- tag: Authenticator management
+  spec_file: strivacity-authenticator-management-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.85
+  evidence: POST /myaccount/api/v1/authenticators  addAuthenticatorRequest  Enroll an authenticator; Update
+    authenticator methods
+  reason: End-user self-service enrolment, update and deletion of authentication factors (authenticators)
+    in the MyAccount portal. This is squarely identity and access management — credential/MFA factor lifecycle
+    — for an identity platform.
+- tag: Custom Adaptive MFA
+  spec_file: strivacity-custom-adaptive-mfa-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.85
+  evidence: POST /admin/api/v1/admin/customMfas  create_2  Create a custom mfa policy; schema CustomMfaUpdateRequest_CustomMfa
+  reason: CRUD over custom multi-factor authentication policies in the admin portal. Authentication strength/step-up
+    policy administration is unambiguously Identity & Access Management.
+- tag: Enterprise Login Provider
+  spec_file: strivacity-enterprise-login-provider-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.85
+  evidence: '"Create an enterprise login provider"; schemas Saml2LoginProviderUpsertRequest, OidcLoginProviderResponse'
+  reason: CRUD over SAML2/OIDC enterprise identity providers is federation setup — a core Identity & Access
+    Management function.
+- tag: Group API Security Policy Assignment
+  spec_file: strivacity-group-api-security-policy-assignment-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.85
+  evidence: '"Assign API security policy to a group"; "Update assigned scopes"'
+  reason: Assigning API access policies and scopes to groups is access-rights administration, core Identity
+    & Access Management.
+- tag: Password Quality Policy
+  spec_file: strivacity-password-quality-policy-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.85
+  evidence: POST /admin/api/v1/passwordPolicies createPasswordPolicy 'Create a password quality policy';
+    PasswordPolicyConstraints.EnforcePasswordChange
+  reason: Credential policy administration (password strength, reuse filtering, forced change) is a core
+    identity and access management control.
+- tag: Account Lifecycle Rule
+  spec_file: strivacity-account-lifecycle-rule-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.82
+  evidence: POST .../lifecycleRules  createLifecycleRule  Create an account lifecycle rule; LifecycleActionWithRoleTargetRequest
+  reason: Rules that drive automated account lifecycle actions against group/role targets — the joiners-movers-leavers
+    automation explicitly in scope for Identity & Access Management.
+- tag: Role
+  spec_file: strivacity-role-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.82
+  evidence: GET /admin/api/v1/identityStores/{identityStoreName}/roles list_5 'List roles'; RoleUpsertRequest_Role
+  reason: CRUD over roles scoped to an identity store in a CIAM platform — role-based access administration,
+    squarely identity and access management.
+- tag: Admin Account Invitation
+  spec_file: strivacity-admin-account-invitation-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.8
+  evidence: POST /admin/api/v1/admin/identityStore/invite  createInvitation  Create an admin account invitation
+  reason: Creating, resending and revoking invitations for administrator accounts in the identity store
+    is account provisioning/joiner-leaver handling, i.e. Identity & Access Management.
+- tag: Admin External Login Mapping
+  spec_file: strivacity-admin-external-login-mapping-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.8
+  evidence: GET /admin/api/v1/admin/loginProviders/{providerId}/mappings  getEnterpriseLoginMappings  List
+    claim mappings
+  reason: CRUD of claim mappings for enterprise/external login providers is federation configuration —
+    squarely Identity & Access Management.
+- tag: Enterprise Login Claim Mapping
+  spec_file: strivacity-enterprise-login-claim-mapping-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.8
+  evidence: '"GET /admin/api/v1/loginProviders/enterprise/{providerId}/mappings  List claim mappings";
+    schema ExternalLoginMappingUpsertRequest'
+  reason: Mapping external IdP claims to native identity claims for enterprise federated login is identity
+    federation configuration, squarely Identity & Access Management.
+- tag: Group
+  spec_file: strivacity-group-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.8
+  evidence: '"POST /admin/api/v1/identityStores/{identityStoreName}/groups  Create a group"'
+  reason: Group objects inside an identity store are authorization/role grouping constructs of the CIAM
+    directory — Identity & Access Management.
+- tag: Group Member
+  spec_file: strivacity-group-member-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.8
+  evidence: '"Add member to a group"; "Remove member from a group"; schema AccountRole_Account'
+  reason: Managing account membership of identity-store groups is directory group/entitlement administration
+    — Identity & Access Management.
+- tag: Identity Store
+  spec_file: strivacity-identity-store-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.8
+  evidence: '"Create an identity store"; "List native claim mappings"; schema IdentityStoreUpsertRequest_IdentityStore'
+  reason: Administration of the identity directory and its claim schema is the foundation of Identity
+    & Access Management for this CIAM platform.
+- tag: Simplelogin
+  spec_file: strivacity-simplelogin-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.8
+  evidence: POST /simplelogin/api/v1/authenticate 'Authenticate with identifier and password'
+  reason: Authentication and token issuance endpoints. This is the vendor's core product function (CIAM
+    authentication), mapped as identity and access management rather than treated as generic auth plumbing
+    of an unrelated API.
+- tag: Social Login Claim Mapping
+  spec_file: strivacity-social-login-claim-mapping-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.8
+  evidence: GET /admin/api/v1/loginProviders/social/{providerId}/mappings getSocialMappings 'List claim
+    mappings'; ExternalLoginMappingUpsertRequest
+  reason: Configuration of claim mappings between social/external login providers and local identity attributes
+    — identity federation configuration, part of identity and access management.
+- tag: Tag Based Permission
+  spec_file: strivacity-tag-based-permission-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.8
+  evidence: POST /admin/api/v1/admin/identityStore/roles/{roleId}/tagBasedPermissions 'Create tag based
+    permissions for an admin role'
+  reason: Operations manage permission entries attached to admin roles in the identity store — role-based
+    access control administration, i.e. Identity & Access Management. The tag is not a content-tagging
+    feature despite the word 'Tag'.
+- tag: API Security Policy
+  spec_file: strivacity-api-security-policy-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.78
+  evidence: '''Create an API security policy''; ''Assign a client to an API security policy''; schema
+    ApiSecurityPolicyAssignmentResponse_ApiAccessPolicy'
+  reason: CRUD over API access policies and their assignment to OAuth clients governs which clients may
+    access which APIs — access management within the identity platform.
+- tag: Account Invitation
+  spec_file: strivacity-account-invitation-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.78
+  evidence: POST /admin/api/v1/identityStores/{identityStoreName}/invite  createInvitation  Create an
+    account invitation
+  reason: Invitation-based onboarding of accounts into an identity store, with revoke and resend — user
+    account provisioning within Identity & Access Management.
+- tag: Outbound Provision
+  spec_file: strivacity-outbound-provision-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.78
+  evidence: POST /admin/api/v1/identityStores/{identityStoreName}/outboundProvision createOutboundProvision;
+    'Full resync an outbound provision'
+  reason: Outbound provisioning of identity-store accounts to downstream systems with sync and status
+    monitoring — classic identity provisioning/joiner-mover-leaver plumbing within IAM.
+- tag: Restricted Password
+  spec_file: strivacity-restricted-password-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.78
+  evidence: POST /admin/api/v1/passwordPolicies/{policyId}/restrictedPasswords 'Create a password word
+    restriction'; PasswordRestrictionInsertRequest
+  reason: Management of banned-password word lists attached to password policies — credential control
+    configuration within identity and access management.
+- tag: Social Login Provider
+  spec_file: strivacity-social-login-provider-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.78
+  evidence: POST /admin/api/v1/loginProviders/social createLoginProvider 'Create a social login provider';
+    schemas SocialLoginProviderConfiguration, ExternalLoginProviderResponse
+  reason: The operations configure external/social identity providers (Apple, generic OAuth) used for
+    end-user login in a CIAM platform — federation configuration, which falls under Identity & Access
+    Management. Mapped at L2 federation rather than a tenant-SaaS capability because these are consumer-facing
+    login providers, not the vendor's own tenant SSO.
+- tag: Self Management
+  spec_file: strivacity-self-management-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.75
+  evidence: POST /myaccount/api/v1/password updatePassword 'Change password'; DELETE /myaccount/api/v1/identities/{externalLoginId}
+    'Unlink an external identity from the account'
+  reason: 'End-user self-service over their own identity: credentials, linked external identities, identifiers
+    and account metadata — identity lifecycle self-administration within IAM rather than CRM customer
+    data.'
+- tag: API Security Policy Scope
+  spec_file: strivacity-api-security-policy-scope-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.72
+  evidence: '''Create a scope for an API security policy''; schema ScopeUpsertRequest_ApiAccessPolicy'
+  reason: Manages OAuth scopes attached to API access policies, defining permitted access — access management.
+    Narrow surface, so confidence tempered.
+- tag: Account Attribute
+  spec_file: strivacity-account-attribute-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.72
+  evidence: GET /admin/api/v1/identityStores/{identityStoreName}/attributes  getAllAccountAttributes  List
+    attributes; schemas UsernameIdentifierValidator, PasswordAccountAttribute
+  reason: Defines the account/profile attribute schema of an identity store in a CIAM platform — configuration
+    of the identity data model underpinning authentication and account management, which sits under Identity
+    & Access Management. Some ambiguity with customer master data modelling, hence moderate confidence.
+- tag: Application Variant
+  spec_file: strivacity-application-variant-api-openapi.yml
+  capability_id: BC-4280.50
+  capability_id_l1: BC-4280
+  capability_name: A/B Test Execution
+  confidence: 0.72
+  evidence: POST /admin/api/v2/applications/{applicationId}/variants  createVariant  Create an application
+    config A/B testing variant
+  reason: Operations explicitly create, order, update and delete A/B testing variants with targeting boolean
+    expressions — configuration and targeting of running A/B tests.
+- tag: Consent
+  spec_file: strivacity-consent-api-openapi.yml
+  capability_id: BC-130.50
+  capability_id_l1: BC-130
+  capability_name: Privacy & Data Protection Management
+  confidence: 0.72
+  evidence: POST /myaccount/api/v1/consents/{consentId}/optIn  optInConsent  Accept a consent; POST .../optOut  optOutConsent  Revoke
+    a consent
+  reason: Administrative definition of consents plus end-user opt-in/opt-out and revocation — the consent-management
+    capability the vendor advertises. Consent capture and withdrawal is the core mechanism of privacy/data-protection
+    compliance (GDPR data subject rights), hence BC-130.50.
+- tag: Self Service Policy
+  spec_file: strivacity-self-service-policy-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.72
+  evidence: POST /admin/api/v1/selfServicePolicies createSelfServicePolicy; SelfServicePolicyRequestOptionsPasswordChange_SelfServicePolicy,
+    SelfServicePolicyRequestOptionsAccountDeletion_SelfServicePolicy
+  reason: Administration of policies governing what identity self-service actions (registration, password
+    change, account deletion, consent management) users may perform — IAM policy configuration.
+- tag: Admin API Security Policy
+  spec_file: strivacity-admin-api-security-policy-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.7
+  evidence: GET /admin/api/v1/admin/accessPolicy  getAdminApiAccessPolicy  Get admin API security policy;
+    ApiSecurityPolicyAssignmentUpsertRequest, ScopeResponse_ApiAccessPolicy
+  reason: Assigns OAuth clients and scopes to an admin API access policy — access control over administrative
+    API clients. Could arguably be read as API consumption governance, but the surface is security policy
+    and scope assignment, i.e. access management.
+- tag: Admin Claim
+  spec_file: strivacity-admin-claim-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.7
+  evidence: GET /admin/api/v1/admin/identityStore/nativeClaimMappings  getNativeClaimMappings  List native
+    claim mappings
+  reason: Native identity claims and their mappings in the identity store are identity attribute/assertion
+    configuration, part of IAM. Surface is small and read-only, so moderate confidence.
+- tag: Application Client
+  spec_file: strivacity-application-client-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.7
+  evidence: GET /admin/api/v2/applications/{applicationId}/clients/{clientId}/saml2/metadata/descriptor  getSaml2MetadataDescriptor  Get
+    SAML2 metadata for an application client
+  reason: Lifecycle of OAuth/SAML2 clients, secrets, JWKS and token-exchange claim mapping — federation/credential
+    configuration within the identity platform, best read as Identity & Access Management rather than
+    a developer-ecosystem programme.
+- tag: Identity Verification
+  spec_file: strivacity-identity-verification-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.7
+  evidence: '"POST .../accounts/{accountId}/accountProofings  Create an identity verification"; schema
+    CustomerIdentityVerificationInsertRequest_AccountProofing'
+  reason: Per-account identity proofing records for customer accounts; closest fit in this frame is Identity
+    & Access Management, though identity proofing is not a perfect match to the sub-capability definition.
+- tag: Identity Verification Policy
+  spec_file: strivacity-identity-verification-policy-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.7
+  evidence: '"Create an identity verification policy"; schema IdentityProofingUpsertRequest_IdentityProofing'
+  reason: Defines identity-proofing policies governing how customer identities are verified before access
+    — identity assurance policy within Identity & Access Management.
+- tag: Native Claim
+  spec_file: strivacity-native-claim-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.7
+  evidence: POST /admin/api/v1/claim/native createNativeClaim 'Create a native claim'; schema 'NativeClaim_InsertRequest'
+  reason: Claims are the identity attributes this CIAM platform issues about authenticated subjects; CRUD
+    over the native claim set configures identity/attribute handling, which sits under Identity & Access
+    Management. Some ambiguity since it is schema/attribute definition rather than access control itself.
+- tag: Variables
+  spec_file: strivacity-variables-api-openapi.yml
+  capability_id: BC-4210.60
+  capability_id_l1: BC-4210
+  capability_name: Configuration & Secrets Management
+  confidence: 0.7
+  evidence: GET /admin/api/v1/instance/variables 'List variables'; schemas SecretVariableInsertRequest,
+    SecretVariableUpdateRequest
+  reason: CRUD over instance-level configuration variables including explicit secret variables matches
+    Configuration & Secrets Management — runtime configuration values and secrets consumed by the service.
+    Confidence held at 0.7 because the tag is generic and the semantics rest mainly on the Secret* schema
+    names.
