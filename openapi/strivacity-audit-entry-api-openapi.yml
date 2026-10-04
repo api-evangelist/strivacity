@@ -196,6 +196,32 @@ components:
             $ref: '#/components/schemas/AuditEntry'
         page:
           $ref: '#/components/schemas/PageMetadata'
+    PageMetadata:
+      type: object
+      properties:
+        number:
+          type: integer
+          format: int64
+        size:
+          type: integer
+          format: int64
+        totalElements:
+          type: integer
+          format: int64
+        totalPages:
+          type: integer
+          format: int64
+    Actor:
+      type: object
+      properties:
+        accountId:
+          type: string
+        ip:
+          type: string
+        userAgent:
+          type: string
+        userName:
+          type: string
     AuditEntry:
       required:
       - id
@@ -227,6 +253,13 @@ components:
         version:
           type: integer
           format: int32
+    ActorClient:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
     FieldError:
       type: object
       properties:
@@ -235,39 +268,6 @@ components:
         message:
           type: string
         objectName:
-          type: string
-    Actor:
-      type: object
-      properties:
-        accountId:
-          type: string
-        ip:
-          type: string
-        userAgent:
-          type: string
-        userName:
-          type: string
-    PageMetadata:
-      type: object
-      properties:
-        number:
-          type: integer
-          format: int64
-        size:
-          type: integer
-          format: int64
-        totalElements:
-          type: integer
-          format: int64
-        totalPages:
-          type: integer
-          format: int64
-    ActorClient:
-      type: object
-      properties:
-        id:
-          type: string
-        name:
           type: string
     ProblemJson:
       type: object

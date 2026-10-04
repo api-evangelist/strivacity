@@ -420,47 +420,6 @@ paths:
           description: Your Strivacity tenant
 components:
   schemas:
-    FieldError:
-      type: object
-      properties:
-        field:
-          type: string
-        message:
-          type: string
-        objectName:
-          type: string
-    PagedModelConsent:
-      type: object
-      properties:
-        content:
-          type: array
-          items:
-            $ref: '#/components/schemas/Consent'
-        page:
-          $ref: '#/components/schemas/PageMetadata'
-    Consent:
-      required:
-      - id
-      type: object
-      properties:
-        description:
-          type: string
-        displayText:
-          type: string
-          description: Represents the consent statement
-        id:
-          type: string
-        name:
-          type: string
-        policyTag:
-          type: string
-        selfServiceDisplayText:
-          type: string
-          description: Represents the consent statement on the self-service page
-        version:
-          type: integer
-          format: int32
-          default: 1
     PageMetadata:
       type: object
       properties:
@@ -511,65 +470,6 @@ components:
           type: integer
           format: int32
           default: 1
-    Consent_Consent:
-      required:
-      - id
-      type: object
-      properties:
-        description:
-          type: string
-        displayText:
-          type: string
-          description: Represents the consent statement
-        id:
-          type: string
-        name:
-          type: string
-        policyTag:
-          type: string
-        selfServiceDisplayText:
-          type: string
-          description: Represents the consent statement on the self-service page
-        version:
-          type: integer
-          format: int32
-          default: 1
-    ProblemJson:
-      type: object
-      properties:
-        detail:
-          type: string
-        entityName:
-          type: string
-          description: The name of the entity within the error has occurred
-        errorKey:
-          type: string
-          description: A unique identifier of the error
-        fieldErrors:
-          type: array
-          description: Field constraint violation errors
-          items:
-            $ref: '#/components/schemas/FieldError'
-        message:
-          type: string
-          description: A unique identifier in format of 'error.{errorKey}'
-        params:
-          type: array
-          description: Further information related to the actual error
-          items:
-            type: object
-            additionalProperties:
-              type: object
-        path:
-          type: string
-          description: Request URI
-        status:
-          type: integer
-          description: Status code
-          format: int32
-        title:
-          type: string
-      description: Based on [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807)
     ConsentUpsertRequest_Consent:
       required:
       - displayText
@@ -607,15 +507,106 @@ components:
           type: integer
           format: int32
           default: 1
-    AccountConsentOptOutRequest_Consent:
+    PagedModelConsent:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/Consent'
+        page:
+          $ref: '#/components/schemas/PageMetadata'
+    FieldError:
+      type: object
+      properties:
+        field:
+          type: string
+        message:
+          type: string
+        objectName:
+          type: string
+    ProblemJson:
+      type: object
+      properties:
+        detail:
+          type: string
+        entityName:
+          type: string
+          description: The name of the entity within the error has occurred
+        errorKey:
+          type: string
+          description: A unique identifier of the error
+        fieldErrors:
+          type: array
+          description: Field constraint violation errors
+          items:
+            $ref: '#/components/schemas/FieldError'
+        message:
+          type: string
+          description: A unique identifier in format of 'error.{errorKey}'
+        params:
+          type: array
+          description: Further information related to the actual error
+          items:
+            type: object
+            additionalProperties:
+              type: object
+        path:
+          type: string
+          description: Request URI
+        status:
+          type: integer
+          description: Status code
+          format: int32
+        title:
+          type: string
+      description: Based on [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807)
+    Consent:
       required:
       - id
       type: object
       properties:
-        id:
-          minLength: 1
+        description:
           type: string
-          description: ID of the consent acceptance
+        displayText:
+          type: string
+          description: Represents the consent statement
+        id:
+          type: string
+        name:
+          type: string
+        policyTag:
+          type: string
+        selfServiceDisplayText:
+          type: string
+          description: Represents the consent statement on the self-service page
+        version:
+          type: integer
+          format: int32
+          default: 1
+    Consent_Consent:
+      required:
+      - id
+      type: object
+      properties:
+        description:
+          type: string
+        displayText:
+          type: string
+          description: Represents the consent statement
+        id:
+          type: string
+        name:
+          type: string
+        policyTag:
+          type: string
+        selfServiceDisplayText:
+          type: string
+          description: Represents the consent statement on the self-service page
+        version:
+          type: integer
+          format: int32
+          default: 1
     MyAccountConsentResponse_Consent:
       type: object
       properties:
@@ -635,6 +626,15 @@ components:
           - optional
           - mandatory
           - mandatoryHidden
+    AccountConsentOptOutRequest_Consent:
+      required:
+      - id
+      type: object
+      properties:
+        id:
+          minLength: 1
+          type: string
+          description: ID of the consent acceptance
   securitySchemes:
     securityScheme:
       scheme: bearer

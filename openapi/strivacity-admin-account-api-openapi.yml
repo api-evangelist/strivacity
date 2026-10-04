@@ -1237,24 +1237,20 @@ paths:
       - Admin Account
 components:
   schemas:
-    AccountInsertRequest.Email_Account:
+    NotificationPreferencesRequest:
       type: object
       properties:
-        id:
-          type: string
-          description: Represents the email identifier
-          example: john@example.com
-        verified:
+        accountAttributeUpdate:
           type: boolean
-          default: false
-    AuthenticatorsResponse_Account:
-      type: object
-      properties:
-        methods:
-          type: array
-          items:
-            $ref: '#/components/schemas/AuthenticatorResponse_Account'
-      description: Represents the authenticators for an account
+        accountDeletion:
+          type: boolean
+        accountLockout:
+          type: boolean
+        mfaMethodChange:
+          type: boolean
+        passwordResetSuccess:
+          type: boolean
+      description: Contains which types of notifications are enabled or not for an account
     AccountRole_Account:
       required:
       - id
@@ -1270,151 +1266,14 @@ components:
           type: string
           description: ID of the represented organization
       description: Represents an organization-role assignment
-    IdentitiesResponse_Account:
-      type: object
-      description: Represents the identities of an account
-      oneOf:
-      - $ref: '#/components/schemas/IdentitiesResponse.Local_Account'
-      - $ref: '#/components/schemas/IdentitiesResponse.Email_Account'
-      - $ref: '#/components/schemas/IdentitiesResponse.Phone_Account'
-      - $ref: '#/components/schemas/IdentitiesResponse.External_Account'
-    IdentitiesResponse.Phone_Account:
+    AuthenticatorsResponse_Account:
       type: object
       properties:
-        id:
-          type: string
-          description: Represents the phone identifier
-        verified:
-          type: boolean
-    ProblemJson:
-      type: object
-      properties:
-        detail:
-          type: string
-        entityName:
-          type: string
-          description: The name of the entity within the error has occurred
-        errorKey:
-          type: string
-          description: A unique identifier of the error
-        fieldErrors:
+        methods:
           type: array
-          description: Field constraint violation errors
           items:
-            $ref: '#/components/schemas/FieldError'
-        message:
-          type: string
-          description: A unique identifier in format of 'error.{errorKey}'
-        params:
-          type: array
-          description: Further information related to the actual error
-          items:
-            type: object
-            additionalProperties:
-              type: object
-        path:
-          type: string
-          description: Request URI
-        status:
-          type: integer
-          description: Status code
-          format: int32
-        title:
-          type: string
-      description: Based on [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807)
-    IdentitiesResponse.Email_Account:
-      type: object
-      properties:
-        display:
-          type: string
-        id:
-          type: string
-          description: Represents the email identifier
-        verified:
-          type: boolean
-    ConsentResponse_Account:
-      type: object
-      properties:
-        consentId:
-          type: string
-        consentVersion:
-          type: integer
-          format: int32
-        id:
-          type: string
-        optIn:
-          type: string
-          format: date-time
-        optOut:
-          type: string
-          format: date-time
-    FieldError:
-      type: object
-      properties:
-        field:
-          type: string
-        message:
-          type: string
-        objectName:
-          type: string
-    AccountLockout_Account:
-      type: object
-      properties:
-        failedPasscodeAttemptCount:
-          type: integer
-          format: int32
-        failedPasscodeAttemptCountPermanentLock:
-          type: integer
-          format: int32
-        failedPasswordAttemptCount:
-          type: integer
-          format: int32
-        failedPasswordAttemptCountPermanentLock:
-          type: integer
-          format: int32
-        locks:
-          type: object
-          additionalProperties:
-            $ref: '#/components/schemas/AccountLock_Account'
-      description: Represents the account lockout details
-    AuthenticatorAdminInsertRequest_Account:
-      required:
-      - target
-      - type
-      type: object
-      properties:
-        metadata:
-          type: object
-          additionalProperties:
-            type: object
-        publicMetadata:
-          type: object
-          additionalProperties:
-            type: object
-        subType:
-          type: string
-          description: ID of subtype
-        target:
-          minLength: 1
-          type: string
-          description: Targeted email address or phone number the MFA request is sent to
-        type:
-          type: string
-          enum:
-          - email
-          - phone
-          - custom
-    AdminAccountInsertLocal_Account:
-      type: object
-      properties:
-        metadata:
-          type: object
-          additionalProperties:
-            type: object
-            description: Represents metadata for account information
-            example: "{\n  \"name\": {\n    \"givenName\": \"John\"\n    \"familyName\": \"Doe\"\n  }\n}"
-          description: Represents metadata for account information
-          example: "{\n  \"name\": {\n    \"givenName\": \"John\"\n    \"familyName\": \"Doe\"\n  }\n}"
+            $ref: '#/components/schemas/AuthenticatorResponse_Account'
+      description: Represents the authenticators for an account
     AccountResponse_Account:
       type: object
       properties:
@@ -1480,18 +1339,57 @@ components:
         updatedAt:
           type: string
           format: date-time
-    FeatureResponse_Account:
+    ConsentResponse_Account:
       type: object
       properties:
-        geometry:
-          $ref: '#/components/schemas/GeometryResponse_Account'
-        properties:
+        consentId:
+          type: string
+        consentVersion:
+          type: integer
+          format: int32
+        id:
+          type: string
+        optIn:
+          type: string
+          format: date-time
+        optOut:
+          type: string
+          format: date-time
+    IdentitiesResponse.External_Identities:
+      type: object
+      properties:
+        display:
+          type: string
+        id:
+          type: string
+          description: Represents an external identifier
+        metadata:
           type: object
           additionalProperties:
-            type: string
-        type:
+            type: object
+    IdReferenceRequest_Account:
+      required:
+      - id
+      type: object
+      properties:
+        id:
+          pattern: ^[a-zA-Z0-9-]{1,36}$
           type: string
-      description: Represents a feature object according to the [RFC 7946](https://www.rfc-editor.org/rfc/rfc7946#section-3.2) standard
+          description: ID of the represented entity
+    NotificationPreferencesResponse_Account:
+      type: object
+      properties:
+        accountAttributeUpdate:
+          type: boolean
+        accountDeletion:
+          type: boolean
+        accountLockout:
+          type: boolean
+        mfaMethodChange:
+          type: boolean
+        passwordResetSuccess:
+          type: boolean
+      description: Contains which types of notifications are enabled or not for an account
     NotificationPreferencesResponse:
       type: object
       properties:
@@ -1506,61 +1404,22 @@ components:
         passwordResetSuccess:
           type: boolean
       description: Contains which types of notifications are enabled or not for an account
-    AccountLock_Account:
+    IdentifiedSessionResponse_Account:
       type: object
       properties:
-        until:
+        deviceString:
           type: string
-          description: null in case of permanent lock, otherwise temporary lock
+        id:
+          type: string
+        lastIP:
+          type: string
+        lastLoginAt:
+          type: string
           format: date-time
-      description: Represents a lock on the account
-    IdentitiesResponse.External_Account:
-      type: object
-      properties:
-        display:
+        location:
+          $ref: '#/components/schemas/FeatureResponse_Account'
+        userAgent:
           type: string
-        id:
-          type: string
-          description: Represents an external identifier
-        metadata:
-          type: object
-          additionalProperties:
-            type: object
-    IdentitiesResponse.Local_Identities:
-      type: object
-      properties:
-        display:
-          type: string
-        id:
-          type: string
-          description: Represents the username identifier
-        metadata:
-          type: object
-          additionalProperties:
-            type: object
-            description: Represents metadata for account information
-          description: Represents metadata for account information
-      description: Represents the local metadata for an account
-    IdReferenceRequest_Account:
-      required:
-      - id
-      type: object
-      properties:
-        id:
-          pattern: ^[a-zA-Z0-9-]{1,36}$
-          type: string
-          description: ID of the represented entity
-    GeometryResponse_Account:
-      type: object
-      properties:
-        coordinates:
-          type: array
-          items:
-            type: number
-            format: double
-        type:
-          type: string
-      description: Represents a geometry object according to the [RFC 7946](https://www.rfc-editor.org/rfc/rfc7946#section-3.1) standard
     AdminAccountInsertRequest_Account:
       type: object
       properties:
@@ -1575,21 +1434,7 @@ components:
         skipPasswordPolicy:
           type: boolean
           default: false
-    NotificationPreferencesRequest:
-      type: object
-      properties:
-        accountAttributeUpdate:
-          type: boolean
-        accountDeletion:
-          type: boolean
-        accountLockout:
-          type: boolean
-        mfaMethodChange:
-          type: boolean
-        passwordResetSuccess:
-          type: boolean
-      description: Contains which types of notifications are enabled or not for an account
-    IdentitiesResponse.External_Identities:
+    IdentitiesResponse.External_Account:
       type: object
       properties:
         display:
@@ -1601,15 +1446,27 @@ components:
           type: object
           additionalProperties:
             type: object
-    AdminPasswordResetDTO_Account:
+    GeometryResponse_Account:
       type: object
       properties:
-        newPassword:
-          maxLength: 256
-          minLength: 1
+        coordinates:
+          type: array
+          items:
+            type: number
+            format: double
+        type:
           type: string
-        skipPasswordPolicy:
+      description: Represents a geometry object according to the [RFC 7946](https://www.rfc-editor.org/rfc/rfc7946#section-3.1) standard
+    AccountInsertRequest.Email_Account:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Represents the email identifier
+          example: john@example.com
+        verified:
           type: boolean
+          default: false
     IdentitiesResponse.Phone_Identities:
       type: object
       properties:
@@ -1618,6 +1475,17 @@ components:
           description: Represents the phone identifier
         verified:
           type: boolean
+    AdminAccountInsertLocal_Account:
+      type: object
+      properties:
+        metadata:
+          type: object
+          additionalProperties:
+            type: object
+            description: Represents metadata for account information
+            example: "{\n  \"name\": {\n    \"givenName\": \"John\"\n    \"familyName\": \"Doe\"\n  }\n}"
+          description: Represents metadata for account information
+          example: "{\n  \"name\": {\n    \"givenName\": \"John\"\n    \"familyName\": \"Doe\"\n  }\n}"
     AuthenticatorResponse_Account:
       type: object
       properties:
@@ -1662,70 +1530,14 @@ components:
           - passkey
           - custom
       description: Represents an authenticator for an account
-    IdentifiedSessionResponse_Account:
+    AccountLock_Account:
       type: object
       properties:
-        deviceString:
+        until:
           type: string
-        id:
-          type: string
-        lastIP:
-          type: string
-        lastLoginAt:
-          type: string
+          description: null in case of permanent lock, otherwise temporary lock
           format: date-time
-        location:
-          $ref: '#/components/schemas/FeatureResponse_Account'
-        userAgent:
-          type: string
-    NotificationPreferencesResponse_Account:
-      type: object
-      properties:
-        accountAttributeUpdate:
-          type: boolean
-        accountDeletion:
-          type: boolean
-        accountLockout:
-          type: boolean
-        mfaMethodChange:
-          type: boolean
-        passwordResetSuccess:
-          type: boolean
-      description: Contains which types of notifications are enabled or not for an account
-    LastLoginResponse_Account:
-      type: object
-      properties:
-        ip:
-          type: string
-        location:
-          $ref: '#/components/schemas/FeatureResponse_Account'
-        time:
-          type: string
-          format: date-time
-      description: Represents the last login by IP address and time of login
-    IdentitiesResponse.Local_Account:
-      type: object
-      properties:
-        display:
-          type: string
-        id:
-          type: string
-          description: Represents the username identifier
-        metadata:
-          type: object
-          additionalProperties:
-            type: object
-            description: Represents metadata for account information
-          description: Represents metadata for account information
-      description: Represents the local metadata for an account
-    IdentitiesResponse_Identities:
-      type: object
-      description: Represents the identities of an account
-      oneOf:
-      - $ref: '#/components/schemas/IdentitiesResponse.Local_Identities'
-      - $ref: '#/components/schemas/IdentitiesResponse.Email_Identities'
-      - $ref: '#/components/schemas/IdentitiesResponse.Phone_Identities'
-      - $ref: '#/components/schemas/IdentitiesResponse.External_Identities'
+      description: Represents a lock on the account
     AccountProofingWithNameAndDeletedResponse_Account:
       type: object
       properties:
@@ -1745,6 +1557,29 @@ components:
         proofedAt:
           type: string
           format: date-time
+    IdentitiesResponse_Account:
+      type: object
+      description: Represents the identities of an account
+      oneOf:
+      - $ref: '#/components/schemas/IdentitiesResponse.Local_Account'
+      - $ref: '#/components/schemas/IdentitiesResponse.Email_Account'
+      - $ref: '#/components/schemas/IdentitiesResponse.Phone_Account'
+      - $ref: '#/components/schemas/IdentitiesResponse.External_Account'
+    IdentitiesResponse.Local_Account:
+      type: object
+      properties:
+        display:
+          type: string
+        id:
+          type: string
+          description: Represents the username identifier
+        metadata:
+          type: object
+          additionalProperties:
+            type: object
+            description: Represents metadata for account information
+          description: Represents metadata for account information
+      description: Represents the local metadata for an account
     AccountIdentifierUpdateRequest_Account:
       required:
       - type
@@ -1759,6 +1594,171 @@ components:
           - username
           - email
           - phone
+    IdentitiesResponse.Phone_Account:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Represents the phone identifier
+        verified:
+          type: boolean
+    FieldError:
+      type: object
+      properties:
+        field:
+          type: string
+        message:
+          type: string
+        objectName:
+          type: string
+    IdentitiesResponse_Identities:
+      type: object
+      description: Represents the identities of an account
+      oneOf:
+      - $ref: '#/components/schemas/IdentitiesResponse.Local_Identities'
+      - $ref: '#/components/schemas/IdentitiesResponse.Email_Identities'
+      - $ref: '#/components/schemas/IdentitiesResponse.Phone_Identities'
+      - $ref: '#/components/schemas/IdentitiesResponse.External_Identities'
+    FeatureResponse_Account:
+      type: object
+      properties:
+        geometry:
+          $ref: '#/components/schemas/GeometryResponse_Account'
+        properties:
+          type: object
+          additionalProperties:
+            type: string
+        type:
+          type: string
+      description: Represents a feature object according to the [RFC 7946](https://www.rfc-editor.org/rfc/rfc7946#section-3.2) standard
+    ProblemJson:
+      type: object
+      properties:
+        detail:
+          type: string
+        entityName:
+          type: string
+          description: The name of the entity within the error has occurred
+        errorKey:
+          type: string
+          description: A unique identifier of the error
+        fieldErrors:
+          type: array
+          description: Field constraint violation errors
+          items:
+            $ref: '#/components/schemas/FieldError'
+        message:
+          type: string
+          description: A unique identifier in format of 'error.{errorKey}'
+        params:
+          type: array
+          description: Further information related to the actual error
+          items:
+            type: object
+            additionalProperties:
+              type: object
+        path:
+          type: string
+          description: Request URI
+        status:
+          type: integer
+          description: Status code
+          format: int32
+        title:
+          type: string
+      description: Based on [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807)
+    IdentitiesResponse.Email_Account:
+      type: object
+      properties:
+        display:
+          type: string
+        id:
+          type: string
+          description: Represents the email identifier
+        verified:
+          type: boolean
+    AdminPasswordResetDTO_Account:
+      type: object
+      properties:
+        newPassword:
+          maxLength: 256
+          minLength: 1
+          type: string
+        skipPasswordPolicy:
+          type: boolean
+    IdentitiesResponse.Local_Identities:
+      type: object
+      properties:
+        display:
+          type: string
+        id:
+          type: string
+          description: Represents the username identifier
+        metadata:
+          type: object
+          additionalProperties:
+            type: object
+            description: Represents metadata for account information
+          description: Represents metadata for account information
+      description: Represents the local metadata for an account
+    LastLoginResponse_Account:
+      type: object
+      properties:
+        ip:
+          type: string
+        location:
+          $ref: '#/components/schemas/FeatureResponse_Account'
+        time:
+          type: string
+          format: date-time
+      description: Represents the last login by IP address and time of login
+    AccountLockout_Account:
+      type: object
+      properties:
+        failedPasscodeAttemptCount:
+          type: integer
+          format: int32
+        failedPasscodeAttemptCountPermanentLock:
+          type: integer
+          format: int32
+        failedPasswordAttemptCount:
+          type: integer
+          format: int32
+        failedPasswordAttemptCountPermanentLock:
+          type: integer
+          format: int32
+        locks:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/AccountLock_Account'
+      description: Represents the account lockout details
+    AuthenticatorAdminInsertRequest_Account:
+      required:
+      - target
+      - type
+      type: object
+      properties:
+        metadata:
+          type: object
+          additionalProperties:
+            type: object
+        publicMetadata:
+          type: object
+          additionalProperties:
+            type: object
+        subType:
+          type: string
+          description: ID of subtype
+        target:
+          minLength: 1
+          type: string
+          description: Targeted email address or phone number the MFA request is sent to
+        type:
+          type: string
+          enum:
+          - email
+          - phone
+          - custom
     IdentitiesResponse.Email_Identities:
       type: object
       properties:

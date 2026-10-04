@@ -297,51 +297,6 @@ paths:
       - Policy Tag
 components:
   schemas:
-    PageOfNameAndColorResponse:
-      type: object
-      properties:
-        content:
-          type: array
-          items:
-            $ref: '#/components/schemas/NameAndColorResponse'
-        page:
-          $ref: '#/components/schemas/PageMetadata'
-    FieldError:
-      type: object
-      properties:
-        field:
-          type: string
-        message:
-          type: string
-        objectName:
-          type: string
-    PageOfPolicyTagResponse:
-      type: object
-      properties:
-        content:
-          type: array
-          items:
-            $ref: '#/components/schemas/PolicyTagResponse'
-        page:
-          $ref: '#/components/schemas/PageMetadata'
-    NameAndColorResponse:
-      type: object
-      properties:
-        color:
-          type: string
-          description: Color in hexadecimal format
-        name:
-          type: string
-    PolicyTagResponse:
-      type: object
-      properties:
-        color:
-          type: string
-          description: Color in hexadecimal format
-        description:
-          type: string
-        name:
-          type: string
     PageMetadata:
       type: object
       properties:
@@ -357,6 +312,53 @@ components:
         totalPages:
           type: integer
           format: int64
+    PageOfPolicyTagResponse:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/PolicyTagResponse'
+        page:
+          $ref: '#/components/schemas/PageMetadata'
+    PolicyTagUpsertRequest:
+      required:
+      - color
+      - name
+      type: object
+      properties:
+        color:
+          minLength: 1
+          pattern: '#[0-9a-fA-F]{6}'
+          type: string
+          description: Color in hexadecimal format
+          example: '#ffffff'
+        description:
+          maxLength: 1024
+          minLength: 0
+          type: string
+        name:
+          maxLength: 32
+          minLength: 2
+          pattern: ^[a-z0-9_]{2,32}$
+          type: string
+    NameAndColorResponse:
+      type: object
+      properties:
+        color:
+          type: string
+          description: Color in hexadecimal format
+        name:
+          type: string
+    FieldError:
+      type: object
+      properties:
+        field:
+          type: string
+        message:
+          type: string
+        objectName:
+          type: string
     ProblemJson:
       type: object
       properties:
@@ -393,26 +395,24 @@ components:
         title:
           type: string
       description: Based on [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807)
-    PolicyTagUpsertRequest:
-      required:
-      - color
-      - name
+    PageOfNameAndColorResponse:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/NameAndColorResponse'
+        page:
+          $ref: '#/components/schemas/PageMetadata'
+    PolicyTagResponse:
       type: object
       properties:
         color:
-          minLength: 1
-          pattern: '#[0-9a-fA-F]{6}'
           type: string
           description: Color in hexadecimal format
-          example: '#ffffff'
         description:
-          maxLength: 1024
-          minLength: 0
           type: string
         name:
-          maxLength: 32
-          minLength: 2
-          pattern: ^[a-z0-9_]{2,32}$
           type: string
   securitySchemes:
     securityScheme:

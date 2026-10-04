@@ -354,103 +354,67 @@ paths:
       - Inbound Connection [beta]
 components:
   schemas:
-    MappingTargetResponse:
+    ForceSync:
       type: object
       properties:
+        enabled:
+          type: boolean
+        intervalInDays:
+          maximum: 365
+          minimum: 2
+          type: integer
+          format: int32
+    InboundConnectionListResponse:
+      type: object
+      properties:
+        description:
+          type: string
+        enabled:
+          type: boolean
+        id:
+          type: string
+        name:
+          type: string
         type:
           type: string
           enum:
-          - attribute
-          - accountEnabled
-    AttributeTarget:
+          - jdbcAggregation
+      description: Represents an inbound connection list response
+    MappingRequest:
       required:
-      - attribute
-      - type
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/Target'
-      - type: object
-        properties:
-          attribute:
-            $ref: '#/components/schemas/OnlyIdRequest'
-    AccountEnabledTarget:
-      required:
-      - type
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/Target'
-    ProblemJson:
+      - source
+      - target
       type: object
       properties:
-        detail:
-          type: string
-        entityName:
-          type: string
-          description: The name of the entity within the error has occurred
-        errorKey:
-          type: string
-          description: A unique identifier of the error
-        fieldErrors:
-          type: array
-          description: Field constraint violation errors
-          items:
-            $ref: '#/components/schemas/FieldError'
-        message:
-          type: string
-          description: A unique identifier in format of 'error.{errorKey}'
-        params:
-          type: array
-          description: Further information related to the actual error
-          items:
-            type: object
-            additionalProperties:
-              type: object
-        path:
-          type: string
-          description: Request URI
-        status:
-          type: integer
-          description: Status code
-          format: int32
-        title:
-          type: string
-      description: Based on [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807)
-    Source:
+        enabled:
+          type: boolean
+          default: false
+        source:
+          $ref: '#/components/schemas/Source'
+        target:
+          oneOf:
+          - $ref: '#/components/schemas/Target'
+          - $ref: '#/components/schemas/AccountEnabledTarget'
+          - $ref: '#/components/schemas/AttributeTarget'
+        useAsCorrelationId:
+          type: boolean
+          default: false
+    JdbcConfiguration:
       required:
-      - path
+      - connection
+      - syncSettings
+      type: object
+      properties:
+        connection:
+          $ref: '#/components/schemas/Connection'
+        syncSettings:
+          $ref: '#/components/schemas/SyncSettings'
+    MappingSourceResponse:
       type: object
       properties:
         path:
-          maxLength: 256
-          minLength: 0
           type: string
         regex:
-          maxLength: 64
-          minLength: 0
-          type: string
-    InboundConnectionConfigurationResponse:
-      type: object
-      oneOf:
-      - $ref: '#/components/schemas/InboundConnectionJdbcConfigurationResponse'
-    FieldError:
-      type: object
-      properties:
-        field:
-          type: string
-        message:
-          type: string
-        objectName:
-          type: string
-    Configuration:
-      type: object
-      oneOf:
-      - $ref: '#/components/schemas/JdbcConfiguration'
-    InboundConnectionJdbcConfigurationConnectionResponse:
-      type: object
-      properties:
-        url:
-          type: string
-        username:
           type: string
     InboundConnectionUpdateRequest:
       required:
@@ -490,44 +454,89 @@ components:
           enum:
           - jdbcAggregation
       description: Represents an inbound connection update request. Mapping should contain one mapping with useAsCorrelationId = true, also the correlationId mapping must be mapped to identity store unique attribute
-    InboundConnectionJdbcConfigurationSyncSettingsResponse:
+    InboundConnectionConfigurationResponse:
+      type: object
+      oneOf:
+      - $ref: '#/components/schemas/InboundConnectionJdbcConfigurationResponse'
+    Source:
+      required:
+      - path
+      type: object
+      properties:
+        path:
+          maxLength: 256
+          minLength: 0
+          type: string
+        regex:
+          maxLength: 64
+          minLength: 0
+          type: string
+    InboundConnectionJdbcConfigurationConnectionResponse:
+      type: object
+      properties:
+        url:
+          type: string
+        username:
+          type: string
+    Target:
+      required:
+      - type
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - attribute
+          - accountEnabled
+      discriminator:
+        propertyName: type
+    AttributeTarget:
+      required:
+      - attribute
+      - type
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/Target'
+      - type: object
+        properties:
+          attribute:
+            $ref: '#/components/schemas/OnlyIdRequest'
+    SyncSettings:
+      required:
+      - cron
+      - forceSync
+      - query
       type: object
       properties:
         batchSize:
+          maximum: 1000
+          minimum: 1
           type: integer
           format: int32
         cron:
+          minLength: 1
           type: string
         deleteDelay:
+          maximum: 100
+          minimum: 1
           type: integer
           format: int32
         forceSync:
-          $ref: '#/components/schemas/InboundConnectionJdbcConfigurationForceSyncResponse'
+          $ref: '#/components/schemas/ForceSync'
         query:
+          minLength: 1
           type: string
         singleResultQuery:
           type: string
-    JdbcConfiguration:
-      required:
-      - connection
-      - syncSettings
+    FieldError:
       type: object
       properties:
-        connection:
-          $ref: '#/components/schemas/Connection'
-        syncSettings:
-          $ref: '#/components/schemas/SyncSettings'
-    MappingResponse:
-      type: object
-      properties:
-        enabled:
-          type: boolean
-        source:
-          $ref: '#/components/schemas/MappingSourceResponse'
-        target:
-          $ref: '#/components/schemas/MappingTargetResponse'
-        useAsCorrelationId:
-          type: boolean
+        field:
+          type: string
+        message:
+          type: string
+        objectName:
+          type: string
     InboundConnectionInsertRequest:
       required:
       - configuration
@@ -552,25 +561,55 @@ components:
           enum:
           - jdbcAggregation
       description: Represents an inbound connection insert request
-    InboundConnectionListResponse:
+    InboundConnectionJdbcConfigurationForceSyncResponse:
       type: object
       properties:
-        description:
-          type: string
         enabled:
           type: boolean
-        id:
+        intervalInDays:
+          type: integer
+          format: int32
+    ProblemJson:
+      type: object
+      properties:
+        detail:
           type: string
-        name:
+        entityName:
           type: string
-        type:
+          description: The name of the entity within the error has occurred
+        errorKey:
           type: string
-          enum:
-          - jdbcAggregation
-      description: Represents an inbound connection list response
-    Target:
-      required:
-      - type
+          description: A unique identifier of the error
+        fieldErrors:
+          type: array
+          description: Field constraint violation errors
+          items:
+            $ref: '#/components/schemas/FieldError'
+        message:
+          type: string
+          description: A unique identifier in format of 'error.{errorKey}'
+        params:
+          type: array
+          description: Further information related to the actual error
+          items:
+            type: object
+            additionalProperties:
+              type: object
+        path:
+          type: string
+          description: Request URI
+        status:
+          type: integer
+          description: Status code
+          format: int32
+        title:
+          type: string
+      description: Based on [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807)
+    Configuration:
+      type: object
+      oneOf:
+      - $ref: '#/components/schemas/JdbcConfiguration'
+    MappingTargetResponse:
       type: object
       properties:
         type:
@@ -578,8 +617,13 @@ components:
           enum:
           - attribute
           - accountEnabled
-      discriminator:
-        propertyName: type
+    InboundConnectionJdbcConfigurationResponse:
+      type: object
+      properties:
+        connection:
+          $ref: '#/components/schemas/InboundConnectionJdbcConfigurationConnectionResponse'
+        syncSettings:
+          $ref: '#/components/schemas/InboundConnectionJdbcConfigurationSyncSettingsResponse'
     InboundConnectionResponse:
       type: object
       properties:
@@ -610,31 +654,40 @@ components:
         id:
           pattern: ^[a-zA-Z0-9-]{1,36}$
           type: string
-    ForceSync:
+    InboundConnectionJdbcConfigurationSyncSettingsResponse:
+      type: object
+      properties:
+        batchSize:
+          type: integer
+          format: int32
+        cron:
+          type: string
+        deleteDelay:
+          type: integer
+          format: int32
+        forceSync:
+          $ref: '#/components/schemas/InboundConnectionJdbcConfigurationForceSyncResponse'
+        query:
+          type: string
+        singleResultQuery:
+          type: string
+    MappingResponse:
       type: object
       properties:
         enabled:
           type: boolean
-        intervalInDays:
-          maximum: 365
-          minimum: 2
-          type: integer
-          format: int32
-    InboundConnectionJdbcConfigurationForceSyncResponse:
-      type: object
-      properties:
-        enabled:
+        source:
+          $ref: '#/components/schemas/MappingSourceResponse'
+        target:
+          $ref: '#/components/schemas/MappingTargetResponse'
+        useAsCorrelationId:
           type: boolean
-        intervalInDays:
-          type: integer
-          format: int32
-    MappingSourceResponse:
+    AccountEnabledTarget:
+      required:
+      - type
       type: object
-      properties:
-        path:
-          type: string
-        regex:
-          type: string
+      allOf:
+      - $ref: '#/components/schemas/Target'
     Connection:
       required:
       - url
@@ -652,59 +705,6 @@ components:
           maxLength: 512
           minLength: 0
           type: string
-    SyncSettings:
-      required:
-      - cron
-      - forceSync
-      - query
-      type: object
-      properties:
-        batchSize:
-          maximum: 1000
-          minimum: 1
-          type: integer
-          format: int32
-        cron:
-          minLength: 1
-          type: string
-        deleteDelay:
-          maximum: 100
-          minimum: 1
-          type: integer
-          format: int32
-        forceSync:
-          $ref: '#/components/schemas/ForceSync'
-        query:
-          minLength: 1
-          type: string
-        singleResultQuery:
-          type: string
-    InboundConnectionJdbcConfigurationResponse:
-      type: object
-      properties:
-        connection:
-          $ref: '#/components/schemas/InboundConnectionJdbcConfigurationConnectionResponse'
-        syncSettings:
-          $ref: '#/components/schemas/InboundConnectionJdbcConfigurationSyncSettingsResponse'
-    MappingRequest:
-      required:
-      - source
-      - target
-      type: object
-      properties:
-        enabled:
-          type: boolean
-          default: false
-        source:
-          $ref: '#/components/schemas/Source'
-        target:
-          oneOf:
-          - $ref: '#/components/schemas/Target'
-          - $ref: '#/components/schemas/AccountEnabledTarget'
-          - $ref: '#/components/schemas/AttributeTarget'
-        useAsCorrelationId:
-          type: boolean
-          default: false
   securitySchemes:
     securityScheme:
       scheme: bearer

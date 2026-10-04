@@ -126,6 +126,15 @@ components:
         title:
           type: string
       description: Based on [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807)
+    FieldError:
+      type: object
+      properties:
+        field:
+          type: string
+        message:
+          type: string
+        objectName:
+          type: string
     NativeClaimResponse_NativeClaim:
       type: object
       properties:
@@ -143,15 +152,6 @@ components:
           type: boolean
         targetReadonly:
           type: boolean
-    FieldError:
-      type: object
-      properties:
-        field:
-          type: string
-        message:
-          type: string
-        objectName:
-          type: string
   securitySchemes:
     securityScheme:
       scheme: bearer

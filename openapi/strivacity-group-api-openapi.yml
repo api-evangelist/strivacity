@@ -349,6 +349,30 @@ paths:
       - Group
 components:
   schemas:
+    PageMetadata:
+      type: object
+      properties:
+        number:
+          type: integer
+          format: int64
+        size:
+          type: integer
+          format: int64
+        totalElements:
+          type: integer
+          format: int64
+        totalPages:
+          type: integer
+          format: int64
+    PagedModelGroupResponse:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/GroupResponse'
+        page:
+          $ref: '#/components/schemas/PageMetadata'
     GroupUpdateRequest:
       required:
       - id
@@ -375,39 +399,6 @@ components:
           type: string
         objectName:
           type: string
-    GroupResponse:
-      type: object
-      properties:
-        description:
-          type: string
-        id:
-          type: string
-        name:
-          type: string
-    PageMetadata:
-      type: object
-      properties:
-        number:
-          type: integer
-          format: int64
-        size:
-          type: integer
-          format: int64
-        totalElements:
-          type: integer
-          format: int64
-        totalPages:
-          type: integer
-          format: int64
-    PagedModelGroupResponse:
-      type: object
-      properties:
-        content:
-          type: array
-          items:
-            $ref: '#/components/schemas/GroupResponse'
-        page:
-          $ref: '#/components/schemas/PageMetadata'
     ProblemJson:
       type: object
       properties:
@@ -457,6 +448,15 @@ components:
           maxLength: 64
           minLength: 3
           pattern: ^$|^[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°]([\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*° ]*[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°])?$
+          type: string
+    GroupResponse:
+      type: object
+      properties:
+        description:
+          type: string
+        id:
+          type: string
+        name:
           type: string
   securitySchemes:
     securityScheme:

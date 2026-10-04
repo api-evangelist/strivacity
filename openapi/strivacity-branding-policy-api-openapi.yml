@@ -433,24 +433,6 @@ components:
         title:
           type: string
       description: Based on [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807)
-    AdminBrandingCustomCss_Brand:
-      type: object
-      properties:
-        adminPortal:
-          maxLength: 131072
-          minLength: 1
-          type: string
-          description: CSS code for custom styling on admin portal
-        login:
-          maxLength: 131072
-          minLength: 1
-          type: string
-          description: CSS code for custom styling on login flow
-        myaccount:
-          maxLength: 131072
-          minLength: 1
-          type: string
-          description: CSS code for custom styling on myaccount
     AdminBranding_Brand:
       required:
       - backgroundColor
@@ -482,6 +464,24 @@ components:
           minLength: 10
           type: string
       description: Represents a branding for the admin portal
+    AdminBrandingCustomCss_Brand:
+      type: object
+      properties:
+        adminPortal:
+          maxLength: 131072
+          minLength: 1
+          type: string
+          description: CSS code for custom styling on admin portal
+        login:
+          maxLength: 131072
+          minLength: 1
+          type: string
+          description: CSS code for custom styling on login flow
+        myaccount:
+          maxLength: 131072
+          minLength: 1
+          type: string
+          description: CSS code for custom styling on myaccount
     FieldError:
       type: object
       properties:
@@ -502,70 +502,71 @@ components:
           $ref: '#/components/schemas/AdditionalContent'
         right:
           $ref: '#/components/schemas/AdditionalContent'
-    AdditionalContent:
+    BrandAdditionalScripts_Brand:
       type: object
       properties:
-        html:
-          type:
-          - string
-          - 'null'
-        link:
-          type:
-          - string
-          - 'null'
-      description: Exactly one of its fields have a value other than null
-    Brand_Brand:
-      required:
-      - id
+        login:
+          maxLength: 131072
+          minLength: 1
+          type: string
+          description: Additional JavaScript code that is executed on login flow initialization
+        myaccount:
+          maxLength: 131072
+          minLength: 1
+          type: string
+          description: Additional JavaScript code that is executed on My Account page load
+        organizationPortal:
+          maxLength: 131072
+          minLength: 1
+          type: string
+          description: Additional JavaScript code that is executed on Organization Portal page load
+    AdditionalScripts:
       type: object
       properties:
-        additionalContents:
-          type: object
-          additionalProperties:
-            $ref: '#/components/schemas/AdditionalContents_Brand'
-        additionalScripts:
-          $ref: '#/components/schemas/AdditionalScripts_Brand'
-        additionalTexts:
-          type: object
-          additionalProperties:
-            type: string
-        backgroundColor:
-          pattern: '#[0-9a-fA-F]{6}([0-9a-fA-F]{2})?'
+        login:
           type: string
-          description: Represented in a hexadecimal format, optionally extended with an alpha channel.
-        brandName:
+          description: Additional JavaScript code that is executed on login flow initialization
+        myaccount:
           type: string
-        copyright:
+          description: Additional JavaScript code that is executed on My Account page load
+        organizationPortal:
           type: string
-        css:
-          $ref: '#/components/schemas/BrandingCustomCss_Brand'
-        default:
-          type: boolean
-        description:
+          description: Additional JavaScript code that is executed on Organization Portal page load
+    BrandingCustomCss_Brand:
+      type: object
+      properties:
+        login:
           type: string
-        faviconUrl:
+          description: CSS code for custom styling on login flow
+        myaccount:
           type: string
-        id:
+          description: CSS code for custom styling on myaccount
+        organizationPortal:
           type: string
-        logoInFooter:
-          type: boolean
-          default: false
-        logoUrl:
+          description: CSS code for custom styling on Organization Portal page
+    AdditionalContents_Brand:
+      type: object
+      properties:
+        footer:
+          $ref: '#/components/schemas/AdditionalContent_Brand'
+        header:
+          $ref: '#/components/schemas/AdditionalContent_Brand'
+        left:
+          $ref: '#/components/schemas/AdditionalContent_Brand'
+        right:
+          $ref: '#/components/schemas/AdditionalContent_Brand'
+    BrandingCustomCss:
+      type: object
+      properties:
+        login:
           type: string
-        name:
+          description: CSS code for custom styling on login flow
+        myaccount:
           type: string
-        policyTag:
+          description: CSS code for custom styling on myaccount
+        organizationPortal:
           type: string
-        primaryColor:
-          pattern: '#[0-9a-fA-F]{6}([0-9a-fA-F]{2})?'
-          type: string
-          description: Represented in a hexadecimal format, optionally extended with an alpha channel.
-        privacyPolicyUrl:
-          type: string
-        siteTermsUrl:
-          type: string
-        supportText:
-          type: string
+          description: CSS code for custom styling on Organization Portal page
     PageMetadata:
       type: object
       properties:
@@ -593,18 +594,17 @@ components:
           - string
           - 'null'
       description: Exactly one of its fields have a value other than null
-    AdditionalScripts:
+    BrandAdditionalContents_Brand:
       type: object
       properties:
-        login:
-          type: string
-          description: Additional JavaScript code that is executed on login flow initialization
-        myaccount:
-          type: string
-          description: Additional JavaScript code that is executed on My Account page load
-        organizationPortal:
-          type: string
-          description: Additional JavaScript code that is executed on Organization Portal page load
+        footer:
+          $ref: '#/components/schemas/BrandAdditionalContent_Brand'
+        header:
+          $ref: '#/components/schemas/BrandAdditionalContent_Brand'
+        left:
+          $ref: '#/components/schemas/BrandAdditionalContent_Brand'
+        right:
+          $ref: '#/components/schemas/BrandAdditionalContent_Brand'
     BrandUpsertRequest_Brand:
       required:
       - backgroundColor
@@ -677,30 +677,15 @@ components:
           minLength: 1
           pattern: ^((?![<>]).)*$
           type: string
-    BrandingCustomCss:
+    PagedModelBrand:
       type: object
       properties:
-        login:
-          type: string
-          description: CSS code for custom styling on login flow
-        myaccount:
-          type: string
-          description: CSS code for custom styling on myaccount
-        organizationPortal:
-          type: string
-          description: CSS code for custom styling on Organization Portal page
-    AdditionalScripts_Brand:
-      type: object
-      properties:
-        login:
-          type: string
-          description: Additional JavaScript code that is executed on login flow initialization
-        myaccount:
-          type: string
-          description: Additional JavaScript code that is executed on My Account page load
-        organizationPortal:
-          type: string
-          description: Additional JavaScript code that is executed on Organization Portal page load
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/Brand'
+        page:
+          $ref: '#/components/schemas/PageMetadata'
     Brand:
       required:
       - id
@@ -753,51 +738,6 @@ components:
           type: string
         supportText:
           type: string
-    AdditionalContents_Brand:
-      type: object
-      properties:
-        footer:
-          $ref: '#/components/schemas/AdditionalContent_Brand'
-        header:
-          $ref: '#/components/schemas/AdditionalContent_Brand'
-        left:
-          $ref: '#/components/schemas/AdditionalContent_Brand'
-        right:
-          $ref: '#/components/schemas/AdditionalContent_Brand'
-    BrandAdditionalContent_Brand:
-      type: object
-      properties:
-        html:
-          maxLength: 65536
-          minLength: 1
-          type:
-          - string
-          - 'null'
-        link:
-          maxLength: 1024
-          minLength: 10
-          type:
-          - string
-          - 'null'
-      description: Exactly one of its fields have a value other than null
-    BrandAdditionalScripts_Brand:
-      type: object
-      properties:
-        login:
-          maxLength: 131072
-          minLength: 1
-          type: string
-          description: Additional JavaScript code that is executed on login flow initialization
-        myaccount:
-          maxLength: 131072
-          minLength: 1
-          type: string
-          description: Additional JavaScript code that is executed on My Account page load
-        organizationPortal:
-          maxLength: 131072
-          minLength: 1
-          type: string
-          description: Additional JavaScript code that is executed on Organization Portal page load
     BrandCustomCss_Brand:
       type: object
       properties:
@@ -814,27 +754,6 @@ components:
         organizationPortal:
           maxLength: 131072
           minLength: 1
-          type: string
-          description: CSS code for custom styling on Organization Portal page
-    PagedModelBrand:
-      type: object
-      properties:
-        content:
-          type: array
-          items:
-            $ref: '#/components/schemas/Brand'
-        page:
-          $ref: '#/components/schemas/PageMetadata'
-    BrandingCustomCss_Brand:
-      type: object
-      properties:
-        login:
-          type: string
-          description: CSS code for custom styling on login flow
-        myaccount:
-          type: string
-          description: CSS code for custom styling on myaccount
-        organizationPortal:
           type: string
           description: CSS code for custom styling on Organization Portal page
     Brand_InsertRequest:
@@ -906,17 +825,98 @@ components:
           minLength: 1
           pattern: ^((?![<>]).)*$
           type: string
-    BrandAdditionalContents_Brand:
+    Brand_Brand:
+      required:
+      - id
       type: object
       properties:
-        footer:
-          $ref: '#/components/schemas/BrandAdditionalContent_Brand'
-        header:
-          $ref: '#/components/schemas/BrandAdditionalContent_Brand'
-        left:
-          $ref: '#/components/schemas/BrandAdditionalContent_Brand'
-        right:
-          $ref: '#/components/schemas/BrandAdditionalContent_Brand'
+        additionalContents:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/AdditionalContents_Brand'
+        additionalScripts:
+          $ref: '#/components/schemas/AdditionalScripts_Brand'
+        additionalTexts:
+          type: object
+          additionalProperties:
+            type: string
+        backgroundColor:
+          pattern: '#[0-9a-fA-F]{6}([0-9a-fA-F]{2})?'
+          type: string
+          description: Represented in a hexadecimal format, optionally extended with an alpha channel.
+        brandName:
+          type: string
+        copyright:
+          type: string
+        css:
+          $ref: '#/components/schemas/BrandingCustomCss_Brand'
+        default:
+          type: boolean
+        description:
+          type: string
+        faviconUrl:
+          type: string
+        id:
+          type: string
+        logoInFooter:
+          type: boolean
+          default: false
+        logoUrl:
+          type: string
+        name:
+          type: string
+        policyTag:
+          type: string
+        primaryColor:
+          pattern: '#[0-9a-fA-F]{6}([0-9a-fA-F]{2})?'
+          type: string
+          description: Represented in a hexadecimal format, optionally extended with an alpha channel.
+        privacyPolicyUrl:
+          type: string
+        siteTermsUrl:
+          type: string
+        supportText:
+          type: string
+    AdditionalScripts_Brand:
+      type: object
+      properties:
+        login:
+          type: string
+          description: Additional JavaScript code that is executed on login flow initialization
+        myaccount:
+          type: string
+          description: Additional JavaScript code that is executed on My Account page load
+        organizationPortal:
+          type: string
+          description: Additional JavaScript code that is executed on Organization Portal page load
+    BrandAdditionalContent_Brand:
+      type: object
+      properties:
+        html:
+          maxLength: 65536
+          minLength: 1
+          type:
+          - string
+          - 'null'
+        link:
+          maxLength: 1024
+          minLength: 10
+          type:
+          - string
+          - 'null'
+      description: Exactly one of its fields have a value other than null
+    AdditionalContent:
+      type: object
+      properties:
+        html:
+          type:
+          - string
+          - 'null'
+        link:
+          type:
+          - string
+          - 'null'
+      description: Exactly one of its fields have a value other than null
   securitySchemes:
     securityScheme:
       scheme: bearer

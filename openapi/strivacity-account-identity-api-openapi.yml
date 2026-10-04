@@ -191,15 +191,14 @@ paths:
       - Account Identity
 components:
   schemas:
-    FieldError:
+    IdentitiesResponse.Phone_Identities:
       type: object
       properties:
-        field:
+        id:
           type: string
-        message:
-          type: string
-        objectName:
-          type: string
+          description: Represents the phone identifier
+        verified:
+          type: boolean
     IdentitiesResponse.Local_Identities:
       type: object
       properties:
@@ -223,6 +222,25 @@ components:
       - $ref: '#/components/schemas/IdentitiesResponse.Email_Identities'
       - $ref: '#/components/schemas/IdentitiesResponse.Phone_Identities'
       - $ref: '#/components/schemas/IdentitiesResponse.External_Identities'
+    FieldError:
+      type: object
+      properties:
+        field:
+          type: string
+        message:
+          type: string
+        objectName:
+          type: string
+    IdentitiesResponse.Email_Identities:
+      type: object
+      properties:
+        display:
+          type: string
+        id:
+          type: string
+          description: Represents the email identifier
+        verified:
+          type: boolean
     IdentitiesResponse.External_Identities:
       type: object
       properties:
@@ -271,24 +289,6 @@ components:
         title:
           type: string
       description: Based on [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807)
-    IdentitiesResponse.Phone_Identities:
-      type: object
-      properties:
-        id:
-          type: string
-          description: Represents the phone identifier
-        verified:
-          type: boolean
-    IdentitiesResponse.Email_Identities:
-      type: object
-      properties:
-        display:
-          type: string
-        id:
-          type: string
-          description: Represents the email identifier
-        verified:
-          type: boolean
   securitySchemes:
     securityScheme:
       scheme: bearer

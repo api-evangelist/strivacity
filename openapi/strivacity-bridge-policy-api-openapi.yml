@@ -320,26 +320,6 @@ paths:
       - Bridge Policy
 components:
   schemas:
-    BridgePolicyUpsertRequest.Header_ApplicationConfig:
-      required:
-      - idTokenClaim
-      - key
-      type: object
-      properties:
-        idTokenClaim:
-          type: string
-        key:
-          type: string
-      description: Forwards a value to upstream server from id_token under the specified key
-    FieldError:
-      type: object
-      properties:
-        field:
-          type: string
-        message:
-          type: string
-        objectName:
-          type: string
     BridgePolicyResponse_ApplicationConfig:
       type: object
       properties:
@@ -359,37 +339,40 @@ components:
           type: array
           items:
             type: string
-    BridgePolicyUpsertRequest_ApplicationConfig:
+    BridgePolicyUpsertRequest.Header_ApplicationConfig:
       required:
-      - apiAccessPolicy
-      - headers
-      - upstreamUrls
+      - idTokenClaim
+      - key
       type: object
       properties:
-        apiAccessPolicy:
-          $ref: '#/components/schemas/IdReferenceRequest_ApplicationConfig'
-        headers:
-          uniqueItems: true
-          type: array
-          items:
-            $ref: '#/components/schemas/BridgePolicyUpsertRequest.Header_ApplicationConfig'
-        healthMonitoringPath:
-          maxLength: 1024
-          minLength: 0
+        idTokenClaim:
           type: string
-          description: Must start with `/`. Expect a HTTP 200 OK response on this path on the upstream server.
-        upstreamUrlPath:
-          maxLength: 1024
-          minLength: 0
+        key:
           type: string
-          description: Must start with `/` and must not end with `/`.
-        upstreamUrls:
-          type: array
-          items:
-            maxLength: 1024
-            minLength: 0
-            type: string
-            description: Must start with `http(s)://` and must not contain path, query or fragment part. An optional port can be specified.
+      description: Forwards a value to upstream server from id_token under the specified key
+    BridgePolicyResponse.Header_ApplicationConfig:
+      type: object
+      properties:
+        idTokenClaim:
+          type: string
+        key:
+          type: string
+      description: Forwards a value to upstream server from id_token under the specified key
+    IdReferenceResponse_ApplicationConfig:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID of the represented entity
+    FieldError:
+      type: object
+      properties:
+        field:
+          type: string
+        message:
+          type: string
+        objectName:
+          type: string
     ProblemJson:
       type: object
       properties:
@@ -435,20 +418,37 @@ components:
           pattern: ^[a-zA-Z0-9-]{1,36}$
           type: string
           description: ID of the represented entity
-    IdReferenceResponse_ApplicationConfig:
+    BridgePolicyUpsertRequest_ApplicationConfig:
+      required:
+      - apiAccessPolicy
+      - headers
+      - upstreamUrls
       type: object
       properties:
-        id:
+        apiAccessPolicy:
+          $ref: '#/components/schemas/IdReferenceRequest_ApplicationConfig'
+        headers:
+          uniqueItems: true
+          type: array
+          items:
+            $ref: '#/components/schemas/BridgePolicyUpsertRequest.Header_ApplicationConfig'
+        healthMonitoringPath:
+          maxLength: 1024
+          minLength: 0
           type: string
-          description: ID of the represented entity
-    BridgePolicyResponse.Header_ApplicationConfig:
-      type: object
-      properties:
-        idTokenClaim:
+          description: Must start with `/`. Expect a HTTP 200 OK response on this path on the upstream server.
+        upstreamUrlPath:
+          maxLength: 1024
+          minLength: 0
           type: string
-        key:
-          type: string
-      description: Forwards a value to upstream server from id_token under the specified key
+          description: Must start with `/` and must not end with `/`.
+        upstreamUrls:
+          type: array
+          items:
+            maxLength: 1024
+            minLength: 0
+            type: string
+            description: Must start with `http(s)://` and must not contain path, query or fragment part. An optional port can be specified.
   securitySchemes:
     securityScheme:
       scheme: bearer

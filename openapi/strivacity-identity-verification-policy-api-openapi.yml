@@ -297,10 +297,64 @@ paths:
       - Identity Verification Policy
 components:
   schemas:
-    FailureMessageResponse_IdentityProofing:
+    IdentityProofingResponse_IdentityProofing:
       type: object
       properties:
-        displayText:
+        description:
+          type: string
+        failureMessage:
+          $ref: '#/components/schemas/FailureMessageResponse_IdentityProofing'
+        id:
+          type: string
+        name:
+          type: string
+        policyTag:
+          type: string
+        proofingNotification:
+          $ref: '#/components/schemas/ProofingNotificationResponse_IdentityProofing'
+    PagedModelIdentityProofingListResponse:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/IdentityProofingListResponse'
+        page:
+          $ref: '#/components/schemas/PageMetadata'
+    PageMetadata:
+      type: object
+      properties:
+        number:
+          type: integer
+          format: int64
+        size:
+          type: integer
+          format: int64
+        totalElements:
+          type: integer
+          format: int64
+        totalPages:
+          type: integer
+          format: int64
+    DisplayTextResponse_IdentityProofing:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+        text:
+          type: string
+    DisplayText_IdentityProofing:
+      required:
+      - text
+      type: object
+      properties:
+        enabled:
+          type: boolean
+          default: false
+        text:
+          maxLength: 2048
+          minLength: 0
+          pattern: ^((?![<>]).)*$
           type: string
     ProofingNotificationResponse_IdentityProofing:
       type: object
@@ -316,68 +370,6 @@ components:
           $ref: '#/components/schemas/DisplayTextResponse_IdentityProofing'
         implicit:
           type: boolean
-    DisplayText_IdentityProofing:
-      required:
-      - text
-      type: object
-      properties:
-        enabled:
-          type: boolean
-          default: false
-        text:
-          maxLength: 2048
-          minLength: 0
-          pattern: ^((?![<>]).)*$
-          type: string
-    OnlyIdRequest_IdentityProofing:
-      required:
-      - id
-      type: object
-      properties:
-        id:
-          pattern: ^[a-zA-Z0-9-]{1,36}$
-          type: string
-    FieldError:
-      type: object
-      properties:
-        field:
-          type: string
-        message:
-          type: string
-        objectName:
-          type: string
-    IdentityProofingStepDTO:
-      type: object
-      properties:
-        configuration:
-          $ref: '#/components/schemas/ProofingDataStepConfiguration'
-        id:
-          type: string
-        type:
-          type: string
-          enum:
-          - addressRiskEvaluation
-          - documentVerification
-          - knowledgeBasedVerification
-          - phoneNumberRiskEvaluation
-          - phoneBasedIdentityAffirmation
-          - proofingData
-    ProofingDataStepConfiguration:
-      type: object
-      properties:
-        name:
-          type: string
-    FailureMessage_IdentityProofing:
-      required:
-      - displayText
-      type: object
-      properties:
-        displayText:
-          maxLength: 2048
-          minLength: 0
-          pattern: ^((?![<>]).)*$
-          type: string
-      description: Represents a text to display on failed identity verification
     IdentityProofing_InsertRequest:
       required:
       - failureMessage
@@ -402,12 +394,13 @@ components:
           description: Must be an existing policy tag name
         proofingNotification:
           $ref: '#/components/schemas/ProofingNotification_IdentityProofing'
-    DisplayTextResponse_IdentityProofing:
+    OnlyIdRequest_IdentityProofing:
+      required:
+      - id
       type: object
       properties:
-        enabled:
-          type: boolean
-        text:
+        id:
+          pattern: ^[a-zA-Z0-9-]{1,36}$
           type: string
     ProofingNotification_IdentityProofing:
       required:
@@ -428,36 +421,62 @@ components:
         implicit:
           type: boolean
           default: false
-    PageMetadata:
-      type: object
-      properties:
-        number:
-          type: integer
-          format: int64
-        size:
-          type: integer
-          format: int64
-        totalElements:
-          type: integer
-          format: int64
-        totalPages:
-          type: integer
-          format: int64
-    IdentityProofingResponse_IdentityProofing:
+    IdentityProofingListResponse:
       type: object
       properties:
         description:
           type: string
-        failureMessage:
-          $ref: '#/components/schemas/FailureMessageResponse_IdentityProofing'
         id:
           type: string
         name:
           type: string
         policyTag:
           type: string
-        proofingNotification:
-          $ref: '#/components/schemas/ProofingNotificationResponse_IdentityProofing'
+        steps:
+          type: array
+          items:
+            $ref: '#/components/schemas/IdentityProofingStepDTO'
+    IdentityProofingStepDTO:
+      type: object
+      properties:
+        configuration:
+          $ref: '#/components/schemas/ProofingDataStepConfiguration'
+        id:
+          type: string
+        type:
+          type: string
+          enum:
+          - addressRiskEvaluation
+          - documentVerification
+          - knowledgeBasedVerification
+          - phoneNumberRiskEvaluation
+          - phoneBasedIdentityAffirmation
+          - proofingData
+    ProofingDataStepConfiguration:
+      type: object
+      properties:
+        name:
+          type: string
+    FieldError:
+      type: object
+      properties:
+        field:
+          type: string
+        message:
+          type: string
+        objectName:
+          type: string
+    NameAndIdResponse_IdentityProofing:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID of the represented entity
+    FailureMessageResponse_IdentityProofing:
+      type: object
+      properties:
+        displayText:
+          type: string
     IdentityProofingUpsertRequest_IdentityProofing:
       required:
       - failureMessage
@@ -521,36 +540,17 @@ components:
         title:
           type: string
       description: Based on [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807)
-    PagedModelIdentityProofingListResponse:
+    FailureMessage_IdentityProofing:
+      required:
+      - displayText
       type: object
       properties:
-        content:
-          type: array
-          items:
-            $ref: '#/components/schemas/IdentityProofingListResponse'
-        page:
-          $ref: '#/components/schemas/PageMetadata'
-    NameAndIdResponse_IdentityProofing:
-      type: object
-      properties:
-        id:
+        displayText:
+          maxLength: 2048
+          minLength: 0
+          pattern: ^((?![<>]).)*$
           type: string
-          description: ID of the represented entity
-    IdentityProofingListResponse:
-      type: object
-      properties:
-        description:
-          type: string
-        id:
-          type: string
-        name:
-          type: string
-        policyTag:
-          type: string
-        steps:
-          type: array
-          items:
-            $ref: '#/components/schemas/IdentityProofingStepDTO'
+      description: Represents a text to display on failed identity verification
   securitySchemes:
     securityScheme:
       scheme: bearer

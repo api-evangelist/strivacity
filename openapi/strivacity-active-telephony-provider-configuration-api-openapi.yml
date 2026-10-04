@@ -205,6 +205,9 @@ paths:
       - Active Telephony Provider Configuration
 components:
   schemas:
+    TelephonyProvider_IdReference_InsertRequest:
+      type: object
+      properties: {}
     FieldError:
       type: object
       properties:
@@ -213,6 +216,16 @@ components:
         message:
           type: string
         objectName:
+          type: string
+    ActiveTelephonyProviderResponse:
+      type: object
+      properties:
+        channel:
+          type: string
+          enum:
+          - sms
+          - voice
+        id:
           type: string
     ProblemJson:
       type: object
@@ -250,19 +263,6 @@ components:
         title:
           type: string
       description: Based on [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807)
-    ActiveTelephonyProviderResponse:
-      type: object
-      properties:
-        channel:
-          type: string
-          enum:
-          - sms
-          - voice
-        id:
-          type: string
-    TelephonyProvider_IdReference_InsertRequest:
-      type: object
-      properties: {}
   securitySchemes:
     securityScheme:
       scheme: bearer

@@ -284,7 +284,22 @@ paths:
       - Web Analytics
 components:
   schemas:
-    WebAnalyticsResponse:
+    PageMetadata:
+      type: object
+      properties:
+        number:
+          type: integer
+          format: int64
+        size:
+          type: integer
+          format: int64
+        totalElements:
+          type: integer
+          format: int64
+        totalPages:
+          type: integer
+          format: int64
+    WebAnalyticsResponse_WebAnalytics:
       type: object
       properties:
         apiKey:
@@ -327,40 +342,7 @@ components:
           - mixpanel
           - amplitude
       description: Represents web analytics configuration.
-    FieldError:
-      type: object
-      properties:
-        field:
-          type: string
-        message:
-          type: string
-        objectName:
-          type: string
-    PageMetadata:
-      type: object
-      properties:
-        number:
-          type: integer
-          format: int64
-        size:
-          type: integer
-          format: int64
-        totalElements:
-          type: integer
-          format: int64
-        totalPages:
-          type: integer
-          format: int64
-    PagedModelWebAnalyticsResponse:
-      type: object
-      properties:
-        content:
-          type: array
-          items:
-            $ref: '#/components/schemas/WebAnalyticsResponse'
-        page:
-          $ref: '#/components/schemas/PageMetadata'
-    WebAnalyticsResponse_WebAnalytics:
+    WebAnalyticsResponse:
       type: object
       properties:
         apiKey:
@@ -376,6 +358,24 @@ components:
           - googleTagManager
           - mixpanel
           - amplitude
+    FieldError:
+      type: object
+      properties:
+        field:
+          type: string
+        message:
+          type: string
+        objectName:
+          type: string
+    PagedModelWebAnalyticsResponse:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/WebAnalyticsResponse'
+        page:
+          $ref: '#/components/schemas/PageMetadata'
     ProblemJson:
       type: object
       properties:

@@ -290,43 +290,94 @@ paths:
       - Social Login Provider
 components:
   schemas:
-    AppleLoginProviderResponse:
+    AppleLoginProviderRequestConfiguration:
+      required:
+      - claims
+      - clientId
+      - keyId
+      - signingKey
+      - teamId
       type: object
       properties:
-        configuration:
-          $ref: '#/components/schemas/AppleLoginProviderConfiguration'
-        description:
+        additionalAuthRequestParams:
+          maxItems: 8
+          minItems: 0
+          type: array
+          items:
+            $ref: '#/components/schemas/AdditionalAuthRequestParamUpsertRequest'
+        claims:
+          type: array
+          items:
+            minLength: 1
+            type: string
+        clientId:
+          maxLength: 128
+          minLength: 1
           type: string
-        id:
+        keyId:
+          maxLength: 256
+          minLength: 1
           type: string
-        languageOverride:
-          $ref: '#/components/schemas/LanguageOverrideResponse'
-        loginButtonText:
+        signingKey:
+          maxLength: 2048
+          minLength: 50
           type: string
-        name:
+        teamId:
+          maxLength: 256
+          minLength: 1
           type: string
-        onlyStoreMappedValues:
-          type: boolean
-        policyTag:
+    GenericSocialLoginProviderResponse:
+      type: object
+      description: Represents a social login provider.
+      oneOf:
+      - $ref: '#/components/schemas/AppleLoginProviderResponse'
+      - $ref: '#/components/schemas/SocialLoginProviderResponse'
+    SocialLoginProviderConfiguration:
+      type: object
+      properties:
+        additionalAuthRequestParams:
+          type: array
+          items:
+            $ref: '#/components/schemas/AdditionalAuthRequestParam'
+        claims:
+          type: array
+          items:
+            type: string
+        clientId:
           type: string
-        type:
+        clientSecret:
           type: string
-          enum:
-          - oidc
-          - okta
-          - azure
-          - hypr
-          - saml2
-          - github
-          - microsoft
-          - google
-          - facebook
-          - twitter
-          - linkedin
-          - amazon
-          - apple
-        updateAccountInfoOnLogin:
-          type: boolean
+    AdditionalAuthRequestParamUpsertRequest:
+      required:
+      - key
+      - value
+      type: object
+      properties:
+        key:
+          maxLength: 128
+          minLength: 1
+          pattern: ^\p{ASCII}*$
+          type: string
+        value:
+          maxLength: 1024
+          minLength: 1
+          pattern: ^\p{ASCII}*$
+          type: string
+    PageMetadata:
+      type: object
+      properties:
+        number:
+          type: integer
+          format: int64
+        size:
+          type: integer
+          format: int64
+        totalElements:
+          type: integer
+          format: int64
+        totalPages:
+          type: integer
+          format: int64
     PagedModelExternalLoginProviderResponse:
       type: object
       properties:
@@ -392,21 +443,102 @@ components:
         updateAccountInfoOnLogin:
           type: boolean
           default: false
-    PageMetadata:
+    Generic_SocialLoginProvider_InsertRequest:
+      type: object
+      description: Represents a social login provider.
+      oneOf:
+      - $ref: '#/components/schemas/Apple_LoginProvider_InsertRequest'
+      - $ref: '#/components/schemas/SocialLoginProvider_InsertRequest'
+    LanguageOverrideResponse:
       type: object
       properties:
-        number:
-          type: integer
-          format: int64
-        size:
-          type: integer
-          format: int64
-        totalElements:
-          type: integer
-          format: int64
-        totalPages:
-          type: integer
-          format: int64
+        enabled:
+          type: boolean
+        regex:
+          type: string
+        sourcePath:
+          type: string
+    AppleLoginProviderConfiguration:
+      type: object
+      properties:
+        additionalAuthRequestParams:
+          type: array
+          items:
+            $ref: '#/components/schemas/AdditionalAuthRequestParam'
+        claims:
+          type: array
+          items:
+            type: string
+        clientId:
+          type: string
+        keyId:
+          type: string
+        signingKey:
+          type: string
+        teamId:
+          type: string
+    Apple_LoginProvider_InsertRequest:
+      required:
+      - configuration
+      - name
+      - type
+      type: object
+      properties:
+        configuration:
+          $ref: '#/components/schemas/AppleLoginProviderRequestConfiguration'
+        description:
+          maxLength: 1024
+          minLength: 0
+          type: string
+        languageOverride:
+          $ref: '#/components/schemas/LanguageOverride'
+        loginButtonText:
+          maxLength: 32
+          minLength: 1
+          pattern: ^((?![<>]).)*$
+          type: string
+        name:
+          maxLength: 64
+          minLength: 2
+          pattern: '[a-zA-Z0-9]+'
+          type: string
+          description: This field cannot be altered
+        onlyStoreMappedValues:
+          type: boolean
+          default: false
+        policyTag:
+          pattern: ^[a-z0-9_]{2,32}$
+          type: string
+          description: Must be an existing policy tag name
+        type:
+          type: string
+          description: This field cannot be altered
+          enum:
+          - oidc
+          - okta
+          - azure
+          - hypr
+          - saml2
+          - github
+          - microsoft
+          - google
+          - facebook
+          - twitter
+          - linkedin
+          - amazon
+          - apple
+        updateAccountInfoOnLogin:
+          type: boolean
+          default: false
+    FieldError:
+      type: object
+      properties:
+        field:
+          type: string
+        message:
+          type: string
+        objectName:
+          type: string
     ProblemJson:
       type: object
       properties:
@@ -443,41 +575,13 @@ components:
         title:
           type: string
       description: Based on [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807)
-    FieldError:
+    SocialLoginProviderResponse:
       type: object
       properties:
-        field:
-          type: string
-        message:
-          type: string
-        objectName:
-          type: string
-    AppleLoginProviderConfiguration:
-      type: object
-      properties:
-        additionalAuthRequestParams:
-          type: array
-          items:
-            $ref: '#/components/schemas/AdditionalAuthRequestParam'
-        claims:
-          type: array
-          items:
-            type: string
-        clientId:
-          type: string
-        keyId:
-          type: string
-        signingKey:
-          type: string
-        teamId:
-          type: string
-    ExternalLoginProviderResponse:
-      type: object
-      properties:
+        configuration:
+          $ref: '#/components/schemas/SocialLoginProviderConfiguration'
         description:
           type: string
-        enabled:
-          type: boolean
         id:
           type: string
         languageOverride:
@@ -508,21 +612,38 @@ components:
           - apple
         updateAccountInfoOnLogin:
           type: boolean
-    Generic_SocialLoginProvider_InsertRequest:
+    SocialLoginProviderRequestConfiguration:
+      required:
+      - claims
+      - clientId
+      - clientSecret
+      type: object
+      properties:
+        additionalAuthRequestParams:
+          maxItems: 8
+          minItems: 0
+          type: array
+          items:
+            $ref: '#/components/schemas/AdditionalAuthRequestParamUpsertRequest'
+        claims:
+          type: array
+          items:
+            minLength: 1
+            type: string
+        clientId:
+          maxLength: 128
+          minLength: 1
+          type: string
+        clientSecret:
+          maxLength: 1024
+          minLength: 1
+          type: string
+    GenericSocialLoginProviderRequest:
       type: object
       description: Represents a social login provider.
       oneOf:
-      - $ref: '#/components/schemas/Apple_LoginProvider_InsertRequest'
-      - $ref: '#/components/schemas/SocialLoginProvider_InsertRequest'
-    LanguageOverrideResponse:
-      type: object
-      properties:
-        enabled:
-          type: boolean
-        regex:
-          type: string
-        sourcePath:
-          type: string
+      - $ref: '#/components/schemas/AppleLoginProviderUpsertRequest'
+      - $ref: '#/components/schemas/SocialLoginProviderUpsertRequest'
     AppleLoginProviderUpsertRequest:
       required:
       - configuration
@@ -579,13 +700,43 @@ components:
         updateAccountInfoOnLogin:
           type: boolean
           default: false
-    AdditionalAuthRequestParam:
+    AppleLoginProviderResponse:
       type: object
       properties:
-        key:
+        configuration:
+          $ref: '#/components/schemas/AppleLoginProviderConfiguration'
+        description:
           type: string
-        value:
+        id:
           type: string
+        languageOverride:
+          $ref: '#/components/schemas/LanguageOverrideResponse'
+        loginButtonText:
+          type: string
+        name:
+          type: string
+        onlyStoreMappedValues:
+          type: boolean
+        policyTag:
+          type: string
+        type:
+          type: string
+          enum:
+          - oidc
+          - okta
+          - azure
+          - hypr
+          - saml2
+          - github
+          - microsoft
+          - google
+          - facebook
+          - twitter
+          - linkedin
+          - amazon
+          - apple
+        updateAccountInfoOnLogin:
+          type: boolean
     SocialLoginProvider_InsertRequest:
       required:
       - configuration
@@ -639,120 +790,13 @@ components:
         updateAccountInfoOnLogin:
           type: boolean
           default: false
-    AppleLoginProviderRequestConfiguration:
-      required:
-      - claims
-      - clientId
-      - keyId
-      - signingKey
-      - teamId
+    ExternalLoginProviderResponse:
       type: object
       properties:
-        additionalAuthRequestParams:
-          maxItems: 8
-          minItems: 0
-          type: array
-          items:
-            $ref: '#/components/schemas/AdditionalAuthRequestParamUpsertRequest'
-        claims:
-          type: array
-          items:
-            minLength: 1
-            type: string
-        clientId:
-          maxLength: 128
-          minLength: 1
-          type: string
-        keyId:
-          maxLength: 256
-          minLength: 1
-          type: string
-        signingKey:
-          maxLength: 2048
-          minLength: 50
-          type: string
-        teamId:
-          maxLength: 256
-          minLength: 1
-          type: string
-    Apple_LoginProvider_InsertRequest:
-      required:
-      - configuration
-      - name
-      - type
-      type: object
-      properties:
-        configuration:
-          $ref: '#/components/schemas/AppleLoginProviderRequestConfiguration'
         description:
-          maxLength: 1024
-          minLength: 0
           type: string
-        languageOverride:
-          $ref: '#/components/schemas/LanguageOverride'
-        loginButtonText:
-          maxLength: 32
-          minLength: 1
-          pattern: ^((?![<>]).)*$
-          type: string
-        name:
-          maxLength: 64
-          minLength: 2
-          pattern: '[a-zA-Z0-9]+'
-          type: string
-          description: This field cannot be altered
-        onlyStoreMappedValues:
-          type: boolean
-          default: false
-        policyTag:
-          pattern: ^[a-z0-9_]{2,32}$
-          type: string
-          description: Must be an existing policy tag name
-        type:
-          type: string
-          description: This field cannot be altered
-          enum:
-          - oidc
-          - okta
-          - azure
-          - hypr
-          - saml2
-          - github
-          - microsoft
-          - google
-          - facebook
-          - twitter
-          - linkedin
-          - amazon
-          - apple
-        updateAccountInfoOnLogin:
-          type: boolean
-          default: false
-    GenericSocialLoginProviderResponse:
-      type: object
-      description: Represents a social login provider.
-      oneOf:
-      - $ref: '#/components/schemas/AppleLoginProviderResponse'
-      - $ref: '#/components/schemas/SocialLoginProviderResponse'
-    LanguageOverride:
-      type: object
-      properties:
         enabled:
           type: boolean
-          default: false
-        regex:
-          type: string
-        sourcePath:
-          maxLength: 256
-          minLength: 0
-          type: string
-    SocialLoginProviderResponse:
-      type: object
-      properties:
-        configuration:
-          $ref: '#/components/schemas/SocialLoginProviderConfiguration'
-        description:
-          type: string
         id:
           type: string
         languageOverride:
@@ -783,68 +827,24 @@ components:
           - apple
         updateAccountInfoOnLogin:
           type: boolean
-    SocialLoginProviderConfiguration:
-      type: object
-      properties:
-        additionalAuthRequestParams:
-          type: array
-          items:
-            $ref: '#/components/schemas/AdditionalAuthRequestParam'
-        claims:
-          type: array
-          items:
-            type: string
-        clientId:
-          type: string
-        clientSecret:
-          type: string
-    GenericSocialLoginProviderRequest:
-      type: object
-      description: Represents a social login provider.
-      oneOf:
-      - $ref: '#/components/schemas/AppleLoginProviderUpsertRequest'
-      - $ref: '#/components/schemas/SocialLoginProviderUpsertRequest'
-    SocialLoginProviderRequestConfiguration:
-      required:
-      - claims
-      - clientId
-      - clientSecret
-      type: object
-      properties:
-        additionalAuthRequestParams:
-          maxItems: 8
-          minItems: 0
-          type: array
-          items:
-            $ref: '#/components/schemas/AdditionalAuthRequestParamUpsertRequest'
-        claims:
-          type: array
-          items:
-            minLength: 1
-            type: string
-        clientId:
-          maxLength: 128
-          minLength: 1
-          type: string
-        clientSecret:
-          maxLength: 1024
-          minLength: 1
-          type: string
-    AdditionalAuthRequestParamUpsertRequest:
-      required:
-      - key
-      - value
+    AdditionalAuthRequestParam:
       type: object
       properties:
         key:
-          maxLength: 128
-          minLength: 1
-          pattern: ^\p{ASCII}*$
           type: string
         value:
-          maxLength: 1024
-          minLength: 1
-          pattern: ^\p{ASCII}*$
+          type: string
+    LanguageOverride:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+          default: false
+        regex:
+          type: string
+        sourcePath:
+          maxLength: 256
+          minLength: 0
           type: string
   securitySchemes:
     securityScheme:

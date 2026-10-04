@@ -560,113 +560,12 @@ paths:
           description: Your Strivacity tenant
 components:
   schemas:
-    NotificationTemplateSMSUpdateRequest_NotificationTemplate:
-      required:
-      - id
+    Placeholder_NotificationTemplateMetainfo:
       type: object
       properties:
-        body:
-          maxLength: 100000
-          minLength: 1
+        placeholder:
           type: string
-          description: HTML body of the template, if not specified it'll be reset to the default template
-        enabled:
-          type: boolean
-          default: true
-        id:
-          maxLength: 255
-          minLength: 0
-          pattern: ^[a-zA-Z0-9-_]+$
-          type: string
-        type:
-          type: string
-          enum:
-          - sms
-          - email
-    FieldError:
-      type: object
-      properties:
-        field:
-          type: string
-        message:
-          type: string
-        objectName:
-          type: string
-    NotificationTemplateResponse_NotificationTemplateMetainfo:
-      type: object
-      properties:
-        displayName:
-          type: string
-        enabled:
-          type: boolean
-        id:
-          type: string
-        modified:
-          type: boolean
-        optional:
-          type: boolean
-        placeholders:
-          type: array
-          items:
-            $ref: '#/components/schemas/Placeholder_NotificationTemplateMetainfo'
-      description: Represents a notification template
-    NotificationTemplateDTO_NotificationTemplate:
-      required:
-      - id
-      type: object
-      properties:
-        body:
-          maxLength: 100000
-          minLength: 1
-          type: string
-          description: HTML body of the template, if not specified it'll be reset to the default template
-        enabled:
-          type: boolean
-          default: true
-        id:
-          maxLength: 255
-          minLength: 0
-          pattern: ^[a-zA-Z0-9-_]+$
-          type: string
-        type:
-          type: string
-          enum:
-          - sms
-          - email
-    NotificationTemplateEmailUpdateRequest_NotificationTemplate:
-      required:
-      - id
-      type: object
-      properties:
-        body:
-          maxLength: 100000
-          minLength: 1
-          type: string
-          description: HTML body of the template, if not specified it'll be reset to the default template
-        enabled:
-          type: boolean
-          default: true
-        id:
-          maxLength: 255
-          minLength: 0
-          pattern: ^[a-zA-Z0-9-_]+$
-          type: string
-        plainTextBody:
-          maxLength: 100000
-          minLength: 1
-          type: string
-          description: Plain text body of the template, if not specified it'll be reset to the default template
-        subject:
-          maxLength: 255
-          minLength: 1
-          pattern: ^$|^[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°]([\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*° ]*[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°])?$
-          type: string
-          description: Subject text of the template, if not specified it'll be reset to the default template
-        type:
-          type: string
-          enum:
-          - sms
-          - email
+      description: Represents a placeholder
     ProblemJson:
       type: object
       properties:
@@ -703,12 +602,113 @@ components:
         title:
           type: string
       description: Based on [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807)
-    Placeholder_NotificationTemplateMetainfo:
+    FieldError:
       type: object
       properties:
-        placeholder:
+        field:
           type: string
-      description: Represents a placeholder
+        message:
+          type: string
+        objectName:
+          type: string
+    NotificationTemplateResponse_NotificationTemplateMetainfo:
+      type: object
+      properties:
+        displayName:
+          type: string
+        enabled:
+          type: boolean
+        id:
+          type: string
+        modified:
+          type: boolean
+        optional:
+          type: boolean
+        placeholders:
+          type: array
+          items:
+            $ref: '#/components/schemas/Placeholder_NotificationTemplateMetainfo'
+      description: Represents a notification template
+    NotificationTemplateEmailUpdateRequest_NotificationTemplate:
+      required:
+      - id
+      type: object
+      properties:
+        body:
+          maxLength: 100000
+          minLength: 1
+          type: string
+          description: HTML body of the template, if not specified it'll be reset to the default template
+        enabled:
+          type: boolean
+          default: true
+        id:
+          maxLength: 255
+          minLength: 0
+          pattern: ^[a-zA-Z0-9-_]+$
+          type: string
+        plainTextBody:
+          maxLength: 100000
+          minLength: 1
+          type: string
+          description: Plain text body of the template, if not specified it'll be reset to the default template
+        subject:
+          maxLength: 255
+          minLength: 1
+          pattern: ^$|^[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°]([\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*° ]*[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°])?$
+          type: string
+          description: Subject text of the template, if not specified it'll be reset to the default template
+        type:
+          type: string
+          enum:
+          - sms
+          - email
+    NotificationTemplateDTO_NotificationTemplate:
+      required:
+      - id
+      type: object
+      properties:
+        body:
+          maxLength: 100000
+          minLength: 1
+          type: string
+          description: HTML body of the template, if not specified it'll be reset to the default template
+        enabled:
+          type: boolean
+          default: true
+        id:
+          maxLength: 255
+          minLength: 0
+          pattern: ^[a-zA-Z0-9-_]+$
+          type: string
+        type:
+          type: string
+          enum:
+          - sms
+          - email
+    NotificationTemplateSMSUpdateRequest_NotificationTemplate:
+      required:
+      - id
+      type: object
+      properties:
+        body:
+          maxLength: 100000
+          minLength: 1
+          type: string
+          description: HTML body of the template, if not specified it'll be reset to the default template
+        enabled:
+          type: boolean
+          default: true
+        id:
+          maxLength: 255
+          minLength: 0
+          pattern: ^[a-zA-Z0-9-_]+$
+          type: string
+        type:
+          type: string
+          enum:
+          - sms
+          - email
   securitySchemes:
     securityScheme:
       scheme: bearer

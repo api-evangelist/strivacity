@@ -293,13 +293,14 @@ components:
         title:
           type: string
       description: Based on [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807)
-    CustomerIdentityVerificationInsertRequest_AccountProofing:
-      required:
-      - policyId
+    FieldError:
       type: object
       properties:
-        policyId:
-          minLength: 1
+        field:
+          type: string
+        message:
+          type: string
+        objectName:
           type: string
     CustomerIdentityVerificationResponse_AccountProofing:
       type: object
@@ -319,14 +320,13 @@ components:
           type: string
           format: date-time
       description: Represents an identity verification
-    FieldError:
+    CustomerIdentityVerificationInsertRequest_AccountProofing:
+      required:
+      - policyId
       type: object
       properties:
-        field:
-          type: string
-        message:
-          type: string
-        objectName:
+        policyId:
+          minLength: 1
           type: string
   securitySchemes:
     securityScheme:

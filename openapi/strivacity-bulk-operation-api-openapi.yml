@@ -207,6 +207,46 @@ paths:
       - Bulk Operation
 components:
   schemas:
+    Result:
+      type: object
+      properties:
+        failure:
+          type: integer
+          format: int32
+        success:
+          type: integer
+          format: int32
+        total:
+          type: integer
+          format: int32
+    BulkStatus:
+      type: object
+      properties:
+        endDate:
+          type: string
+        id:
+          type: string
+        result:
+          $ref: '#/components/schemas/Result'
+        startDate:
+          type: string
+        status:
+          type: string
+    EnableAccountOperationRequest:
+      required:
+      - accountId
+      - identityStore
+      - operation
+      type: object
+      properties:
+        accountId:
+          type: string
+        identityStore:
+          type: string
+        operation:
+          type: string
+          enum:
+          - enableAccount
     UpdatePersonalDataOperationRequest:
       required:
       - accountId
@@ -227,21 +267,6 @@ components:
           type: object
           additionalProperties:
             type: object
-    EnableAccountOperationRequest:
-      required:
-      - accountId
-      - identityStore
-      - operation
-      type: object
-      properties:
-        accountId:
-          type: string
-        identityStore:
-          type: string
-        operation:
-          type: string
-          enum:
-          - enableAccount
     FieldError:
       type: object
       properties:
@@ -251,37 +276,6 @@ components:
           type: string
         objectName:
           type: string
-    BulkStatus:
-      type: object
-      properties:
-        endDate:
-          type: string
-        id:
-          type: string
-        result:
-          $ref: '#/components/schemas/Result'
-        startDate:
-          type: string
-        status:
-          type: string
-    JobIdReferenceResponse:
-      type: object
-      properties:
-        id:
-          type: string
-          description: ID of the represented entity
-    Result:
-      type: object
-      properties:
-        failure:
-          type: integer
-          format: int32
-        success:
-          type: integer
-          format: int32
-        total:
-          type: integer
-          format: int32
     DisableAccountOperationRequest:
       required:
       - accountId
@@ -297,20 +291,12 @@ components:
           type: string
           enum:
           - disableAccount
-    BulkOperationErrorEntry:
+    JobIdReferenceResponse:
       type: object
       properties:
-        error:
-          type: object
-          additionalProperties:
-            type: object
-        line:
-          type: integer
-          format: int32
-        request:
-          type: object
-          additionalProperties:
-            type: object
+        id:
+          type: string
+          description: ID of the represented entity
     ProblemJson:
       type: object
       properties:
@@ -347,6 +333,20 @@ components:
         title:
           type: string
       description: Based on [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807)
+    BulkOperationErrorEntry:
+      type: object
+      properties:
+        error:
+          type: object
+          additionalProperties:
+            type: object
+        line:
+          type: integer
+          format: int32
+        request:
+          type: object
+          additionalProperties:
+            type: object
   securitySchemes:
     securityScheme:
       scheme: bearer

@@ -330,36 +330,27 @@ paths:
       - Plugin Library
 components:
   schemas:
-    LifecycleEventHook:
+    EventHookIntegrationResponse:
       type: object
       properties:
-        code:
+        categories:
+          type: array
+          items:
+            type: string
+        description:
           type: string
-        name:
+        displayName:
           type: string
-        packageDependencies:
+        hooks:
           type: object
           additionalProperties:
-            type: string
-    FieldError:
-      type: object
-      properties:
-        field:
+            $ref: '#/components/schemas/LifecycleEventHook'
+        logoUrl:
           type: string
-        message:
+        maintainer:
           type: string
-        objectName:
+        summary:
           type: string
-    EventHookSnippetCode:
-      type: object
-      properties:
-        code:
-          type: string
-        packageDependencies:
-          type: object
-          additionalProperties:
-            type: string
-      description: Represents the code of the snippet
     EventHookSnippet:
       type: object
       properties:
@@ -370,6 +361,33 @@ components:
         name:
           type: string
       description: Represents a snippet for an event hook
+    EventHookSnippetCode:
+      type: object
+      properties:
+        code:
+          type: string
+        packageDependencies:
+          type: object
+          additionalProperties:
+            type: string
+      description: Represents the code of the snippet
+    JourneyIntegrationListResponse:
+      type: object
+      properties:
+        categories:
+          type: array
+          items:
+            type: string
+        description:
+          type: string
+        displayName:
+          type: string
+        logoUrl:
+          type: string
+        maintainer:
+          type: string
+        summary:
+          type: string
     JourneyIntegrationResponse:
       type: object
       properties:
@@ -391,46 +409,39 @@ components:
           type: string
         summary:
           type: string
-    EventHookIntegrationListResponse:
+    CategoryResponse:
       type: object
       properties:
-        categories:
-          type: array
-          items:
-            type: string
-        description:
-          type: string
         displayName:
           type: string
-        logoUrl:
+        name:
           type: string
-        maintainer:
+    FieldError:
+      type: object
+      properties:
+        field:
           type: string
-        summary:
+        message:
           type: string
-    Journey:
+        objectName:
+          type: string
+    LifecycleEventHook:
       type: object
       properties:
         code:
           type: string
         name:
           type: string
-    JourneyIntegrationListResponse:
+        packageDependencies:
+          type: object
+          additionalProperties:
+            type: string
+    Journey:
       type: object
       properties:
-        categories:
-          type: array
-          items:
-            type: string
-        description:
+        code:
           type: string
-        displayName:
-          type: string
-        logoUrl:
-          type: string
-        maintainer:
-          type: string
-        summary:
+        name:
           type: string
     ProblemJson:
       type: object
@@ -468,14 +479,7 @@ components:
         title:
           type: string
       description: Based on [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807)
-    CategoryResponse:
-      type: object
-      properties:
-        displayName:
-          type: string
-        name:
-          type: string
-    EventHookIntegrationResponse:
+    EventHookIntegrationListResponse:
       type: object
       properties:
         categories:
@@ -486,10 +490,6 @@ components:
           type: string
         displayName:
           type: string
-        hooks:
-          type: object
-          additionalProperties:
-            $ref: '#/components/schemas/LifecycleEventHook'
         logoUrl:
           type: string
         maintainer:

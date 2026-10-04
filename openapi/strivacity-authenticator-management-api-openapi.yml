@@ -163,32 +163,6 @@ components:
           type: string
         objectName:
           type: string
-    AuthenticatorInsert_Authenticator:
-      required:
-      - methods
-      - target
-      - type
-      type: object
-      properties:
-        methods:
-          type: array
-          items:
-            type: string
-            description: Methods of the authenticator. Can be 'passcode', or 'magicLink' for email and 'voice', 'passcode', or 'magicLink' for phone.
-            enum:
-            - passcode
-            - voice
-            - magicLink
-        target:
-          minLength: 1
-          type: string
-          description: Target value of the authenticator, such as an email address or phone number.
-        type:
-          type: string
-          description: Type of the authenticator, can be 'email' or 'phone'.
-          enum:
-          - email
-          - phone
     ProblemJson:
       type: object
       properties:
@@ -255,6 +229,32 @@ components:
           - phone
           - email
       description: Represents an authenticator for an account
+    AuthenticatorInsert_Authenticator:
+      required:
+      - methods
+      - target
+      - type
+      type: object
+      properties:
+        methods:
+          type: array
+          items:
+            type: string
+            description: Methods of the authenticator. Can be 'passcode', or 'magicLink' for email and 'voice', 'passcode', or 'magicLink' for phone.
+            enum:
+            - passcode
+            - voice
+            - magicLink
+        target:
+          minLength: 1
+          type: string
+          description: Target value of the authenticator, such as an email address or phone number.
+        type:
+          type: string
+          description: Type of the authenticator, can be 'email' or 'phone'.
+          enum:
+          - email
+          - phone
   securitySchemes:
     securityScheme:
       scheme: bearer

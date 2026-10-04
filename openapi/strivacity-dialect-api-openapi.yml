@@ -296,15 +296,45 @@ paths:
       - Dialect
 components:
   schemas:
-    FieldError:
+    Dialect_InsertRequest:
+      required:
+      - dialectUri
+      - name
       type: object
       properties:
-        field:
+        description:
+          maxLength: 1024
+          minLength: 0
           type: string
-        message:
+        dialect:
+          $ref: '#/components/schemas/DialectReference_Dialect'
+        dialectUri:
+          minLength: 1
           type: string
-        objectName:
+        name:
+          maxLength: 256
+          minLength: 3
+          pattern: ^$|^[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°]([\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*° ]*[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°])?$
           type: string
+        policyTag:
+          pattern: ^[a-z0-9_]{2,32}$
+          type: string
+          description: Must be an existing policy tag name
+    PageMetadata:
+      type: object
+      properties:
+        number:
+          type: integer
+          format: int64
+        size:
+          type: integer
+          format: int64
+        totalElements:
+          type: integer
+          format: int64
+        totalPages:
+          type: integer
+          format: int64
     DialectUpdateRequest_Dialect:
       required:
       - dialectUri
@@ -343,39 +373,6 @@ components:
           type: string
         policyTag:
           type: string
-    DialectReference_Dialect:
-      required:
-      - id
-      type: object
-      properties:
-        id:
-          pattern: ^[a-zA-Z0-9-]{1,36}$
-          type: string
-          description: ID of the represented entity
-    PagedModelDialectResponse:
-      type: object
-      properties:
-        content:
-          type: array
-          items:
-            $ref: '#/components/schemas/DialectResponse'
-        page:
-          $ref: '#/components/schemas/PageMetadata'
-    PageMetadata:
-      type: object
-      properties:
-        number:
-          type: integer
-          format: int64
-        size:
-          type: integer
-          format: int64
-        totalElements:
-          type: integer
-          format: int64
-        totalPages:
-          type: integer
-          format: int64
     DialectResponse:
       type: object
       properties:
@@ -389,30 +386,33 @@ components:
           type: string
         policyTag:
           type: string
-    Dialect_InsertRequest:
-      required:
-      - dialectUri
-      - name
+    FieldError:
       type: object
       properties:
-        description:
-          maxLength: 1024
-          minLength: 0
+        field:
           type: string
-        dialect:
-          $ref: '#/components/schemas/DialectReference_Dialect'
-        dialectUri:
-          minLength: 1
+        message:
           type: string
-        name:
-          maxLength: 256
-          minLength: 3
-          pattern: ^$|^[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°]([\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*° ]*[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°])?$
+        objectName:
           type: string
-        policyTag:
-          pattern: ^[a-z0-9_]{2,32}$
+    PagedModelDialectResponse:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/DialectResponse'
+        page:
+          $ref: '#/components/schemas/PageMetadata'
+    DialectReference_Dialect:
+      required:
+      - id
+      type: object
+      properties:
+        id:
+          pattern: ^[a-zA-Z0-9-]{1,36}$
           type: string
-          description: Must be an existing policy tag name
+          description: ID of the represented entity
     ProblemJson:
       type: object
       properties:

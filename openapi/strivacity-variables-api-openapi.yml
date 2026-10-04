@@ -311,6 +311,148 @@ paths:
       - Variables
 components:
   schemas:
+    VariableResponse:
+      type: object
+      properties:
+        description:
+          type: string
+        id:
+          type: string
+        name:
+          type: string
+        policyTag:
+          type: string
+        type:
+          type: string
+          enum:
+          - variable
+          - secret
+        value:
+          type: string
+        valueUpdatedAt:
+          type: string
+          format: date-time
+    PageMetadata:
+      type: object
+      properties:
+        number:
+          type: integer
+          format: int64
+        size:
+          type: integer
+          format: int64
+        totalElements:
+          type: integer
+          format: int64
+        totalPages:
+          type: integer
+          format: int64
+    SecretVariableUpdateRequest:
+      required:
+      - id
+      - name
+      - type
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/VariableUpdateRequest'
+      - type: object
+        properties:
+          secretValue:
+            maxLength: 8192
+            minLength: 0
+            type: string
+            description: It will not be overridden unless provided.
+    PagedModelVariableListResponse:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/VariableListResponse'
+        page:
+          $ref: '#/components/schemas/PageMetadata'
+    VariableInsertRequest:
+      required:
+      - name
+      - type
+      type: object
+      properties:
+        description:
+          maxLength: 1024
+          minLength: 0
+          type: string
+        name:
+          maxLength: 64
+          minLength: 3
+          pattern: ^$|^[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°]([\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*° ]*[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°])?$
+          type: string
+        policyTag:
+          pattern: ^[a-z0-9_]{2,32}$
+          type: string
+          description: Must be an existing policy tag name
+        type:
+          type: string
+          enum:
+          - variable
+          - secret
+      discriminator:
+        propertyName: type
+    VariableVariableInsertRequest:
+      required:
+      - name
+      - type
+      - value
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/VariableInsertRequest'
+      - type: object
+        properties:
+          value:
+            maxLength: 8192
+            minLength: 0
+            type: string
+    FieldError:
+      type: object
+      properties:
+        field:
+          type: string
+        message:
+          type: string
+        objectName:
+          type: string
+    SecretVariableInsertRequest:
+      required:
+      - name
+      - secretValue
+      - type
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/VariableInsertRequest'
+      - type: object
+        properties:
+          secretValue:
+            maxLength: 8192
+            minLength: 0
+            type: string
+    VariableListResponse:
+      type: object
+      properties:
+        description:
+          type: string
+        id:
+          type: string
+        name:
+          type: string
+        policyTag:
+          type: string
+        type:
+          type: string
+          enum:
+          - variable
+          - secret
+        valueUpdatedAt:
+          type: string
+          format: date-time
     VariableUpdateRequest:
       required:
       - id
@@ -340,148 +482,6 @@ components:
           - secret
       discriminator:
         propertyName: type
-    VariableResponse:
-      type: object
-      properties:
-        description:
-          type: string
-        id:
-          type: string
-        name:
-          type: string
-        policyTag:
-          type: string
-        type:
-          type: string
-          enum:
-          - variable
-          - secret
-        value:
-          type: string
-        valueUpdatedAt:
-          type: string
-          format: date-time
-    FieldError:
-      type: object
-      properties:
-        field:
-          type: string
-        message:
-          type: string
-        objectName:
-          type: string
-    VariableListResponse:
-      type: object
-      properties:
-        description:
-          type: string
-        id:
-          type: string
-        name:
-          type: string
-        policyTag:
-          type: string
-        type:
-          type: string
-          enum:
-          - variable
-          - secret
-        valueUpdatedAt:
-          type: string
-          format: date-time
-    VariableVariableUpdateRequest:
-      required:
-      - id
-      - name
-      - type
-      - value
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/VariableUpdateRequest'
-      - type: object
-        properties:
-          value:
-            maxLength: 8192
-            minLength: 0
-            type: string
-    VariableInsertRequest:
-      required:
-      - name
-      - type
-      type: object
-      properties:
-        description:
-          maxLength: 1024
-          minLength: 0
-          type: string
-        name:
-          maxLength: 64
-          minLength: 3
-          pattern: ^$|^[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°]([\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*° ]*[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°])?$
-          type: string
-        policyTag:
-          pattern: ^[a-z0-9_]{2,32}$
-          type: string
-          description: Must be an existing policy tag name
-        type:
-          type: string
-          enum:
-          - variable
-          - secret
-      discriminator:
-        propertyName: type
-    PagedModelVariableListResponse:
-      type: object
-      properties:
-        content:
-          type: array
-          items:
-            $ref: '#/components/schemas/VariableListResponse'
-        page:
-          $ref: '#/components/schemas/PageMetadata'
-    VariableVariableInsertRequest:
-      required:
-      - name
-      - type
-      - value
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/VariableInsertRequest'
-      - type: object
-        properties:
-          value:
-            maxLength: 8192
-            minLength: 0
-            type: string
-    SecretVariableInsertRequest:
-      required:
-      - name
-      - secretValue
-      - type
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/VariableInsertRequest'
-      - type: object
-        properties:
-          secretValue:
-            maxLength: 8192
-            minLength: 0
-            type: string
-    PageMetadata:
-      type: object
-      properties:
-        number:
-          type: integer
-          format: int64
-        size:
-          type: integer
-          format: int64
-        totalElements:
-          type: integer
-          format: int64
-        totalPages:
-          type: integer
-          format: int64
     ProblemJson:
       type: object
       properties:
@@ -518,21 +518,21 @@ components:
         title:
           type: string
       description: Based on [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807)
-    SecretVariableUpdateRequest:
+    VariableVariableUpdateRequest:
       required:
       - id
       - name
       - type
+      - value
       type: object
       allOf:
       - $ref: '#/components/schemas/VariableUpdateRequest'
       - type: object
         properties:
-          secretValue:
+          value:
             maxLength: 8192
             minLength: 0
             type: string
-            description: It will not be overridden unless provided.
   securitySchemes:
     securityScheme:
       scheme: bearer

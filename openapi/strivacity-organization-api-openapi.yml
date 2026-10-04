@@ -361,53 +361,65 @@ paths:
       - Organization
 components:
   schemas:
-    FieldError:
+    OrganizationListResponse:
       type: object
       properties:
-        field:
+        configuration:
+          $ref: '#/components/schemas/OrganizationConfigurationResponse'
+        description:
           type: string
-        message:
+        id:
           type: string
-        objectName:
+        name:
           type: string
-    OrganizationConfigurationResponse:
+        parent:
+          $ref: '#/components/schemas/NameAndIdResponse'
+        routes:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+    OrganizationConfigurationBrandRequest:
       type: object
       properties:
-        brand:
-          $ref: '#/components/schemas/OrganizationConfigurationBrandResponse'
-        organizationRegistrationEnabled:
-          type: boolean
-        selfRegistrationEnabled:
-          type: boolean
-        uniqueIdentifier:
-          type: boolean
-        uniqueIdentifierRoot:
+        backgroundColor:
           type: string
-    NameAndIdResponse:
+        faviconUrl:
+          type: string
+        logoUrl:
+          type: string
+        primaryColor:
+          type: string
+    OrganizationResponse:
+      type: object
+      properties:
+        configuration:
+          $ref: '#/components/schemas/OrganizationConfigurationResponse'
+        description:
+          type: string
+        id:
+          type: string
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+        name:
+          type: string
+        parent:
+          $ref: '#/components/schemas/NameAndIdResponse'
+        routes:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+    OnlyIdRequest:
+      required:
+      - id
       type: object
       properties:
         id:
+          pattern: ^[a-zA-Z0-9-]{1,36}$
           type: string
-          description: ID of the represented entity
-        name:
-          type: string
-          description: Name of the represented entity
-          example: Entity name
-    OrganizationConfigurationRequest:
-      type: object
-      properties:
-        brand:
-          $ref: '#/components/schemas/OrganizationConfigurationBrandRequest'
-        organizationRegistrationEnabled:
-          type: boolean
-          default: false
-        selfRegistrationEnabled:
-          type: boolean
-          default: false
-        uniqueIdentifier:
-          type: boolean
-          default: false
-      description: Represents an organization configuration
     Organization_InsertRequest:
       required:
       - name
@@ -444,112 +456,16 @@ components:
             minLength: 1
             pattern: ^|[a-z0-9]([-a-z0-9]*[a-z0-9])?$
             type: string
-    OrganizationConfigurationBrandRequest:
+    NameAndIdResponse:
       type: object
       properties:
-        backgroundColor:
-          type: string
-        faviconUrl:
-          type: string
-        logoUrl:
-          type: string
-        primaryColor:
-          type: string
-    OrganizationConfigurationBrandResponse:
-      type: object
-      properties:
-        backgroundColor:
-          type: string
-        faviconUrl:
-          type: string
-        logoUrl:
-          type: string
-        primaryColor:
-          type: string
-    OrganizationListResponse:
-      type: object
-      properties:
-        configuration:
-          $ref: '#/components/schemas/OrganizationConfigurationResponse'
-        description:
-          type: string
         id:
           type: string
+          description: ID of the represented entity
         name:
           type: string
-        parent:
-          $ref: '#/components/schemas/NameAndIdResponse'
-        routes:
-          uniqueItems: true
-          type: array
-          items:
-            type: string
-    OrganizationResponse:
-      type: object
-      properties:
-        configuration:
-          $ref: '#/components/schemas/OrganizationConfigurationResponse'
-        description:
-          type: string
-        id:
-          type: string
-        metadata:
-          type: object
-          additionalProperties:
-            type: string
-        name:
-          type: string
-        parent:
-          $ref: '#/components/schemas/NameAndIdResponse'
-        routes:
-          uniqueItems: true
-          type: array
-          items:
-            type: string
-    OnlyIdRequest:
-      required:
-      - id
-      type: object
-      properties:
-        id:
-          pattern: ^[a-zA-Z0-9-]{1,36}$
-          type: string
-    ProblemJson:
-      type: object
-      properties:
-        detail:
-          type: string
-        entityName:
-          type: string
-          description: The name of the entity within the error has occurred
-        errorKey:
-          type: string
-          description: A unique identifier of the error
-        fieldErrors:
-          type: array
-          description: Field constraint violation errors
-          items:
-            $ref: '#/components/schemas/FieldError'
-        message:
-          type: string
-          description: A unique identifier in format of 'error.{errorKey}'
-        params:
-          type: array
-          description: Further information related to the actual error
-          items:
-            type: object
-            additionalProperties:
-              type: object
-        path:
-          type: string
-          description: Request URI
-        status:
-          type: integer
-          description: Status code
-          format: int32
-        title:
-          type: string
-      description: Based on [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807)
+          description: Name of the represented entity
+          example: Entity name
     OrganizationUpsertRequest:
       required:
       - id
@@ -589,6 +505,90 @@ components:
             minLength: 1
             pattern: ^|[a-z0-9]([-a-z0-9]*[a-z0-9])?$
             type: string
+    OrganizationConfigurationBrandResponse:
+      type: object
+      properties:
+        backgroundColor:
+          type: string
+        faviconUrl:
+          type: string
+        logoUrl:
+          type: string
+        primaryColor:
+          type: string
+    OrganizationConfigurationRequest:
+      type: object
+      properties:
+        brand:
+          $ref: '#/components/schemas/OrganizationConfigurationBrandRequest'
+        organizationRegistrationEnabled:
+          type: boolean
+          default: false
+        selfRegistrationEnabled:
+          type: boolean
+          default: false
+        uniqueIdentifier:
+          type: boolean
+          default: false
+      description: Represents an organization configuration
+    FieldError:
+      type: object
+      properties:
+        field:
+          type: string
+        message:
+          type: string
+        objectName:
+          type: string
+    ProblemJson:
+      type: object
+      properties:
+        detail:
+          type: string
+        entityName:
+          type: string
+          description: The name of the entity within the error has occurred
+        errorKey:
+          type: string
+          description: A unique identifier of the error
+        fieldErrors:
+          type: array
+          description: Field constraint violation errors
+          items:
+            $ref: '#/components/schemas/FieldError'
+        message:
+          type: string
+          description: A unique identifier in format of 'error.{errorKey}'
+        params:
+          type: array
+          description: Further information related to the actual error
+          items:
+            type: object
+            additionalProperties:
+              type: object
+        path:
+          type: string
+          description: Request URI
+        status:
+          type: integer
+          description: Status code
+          format: int32
+        title:
+          type: string
+      description: Based on [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807)
+    OrganizationConfigurationResponse:
+      type: object
+      properties:
+        brand:
+          $ref: '#/components/schemas/OrganizationConfigurationBrandResponse'
+        organizationRegistrationEnabled:
+          type: boolean
+        selfRegistrationEnabled:
+          type: boolean
+        uniqueIdentifier:
+          type: boolean
+        uniqueIdentifierRoot:
+          type: string
   securitySchemes:
     securityScheme:
       scheme: bearer

@@ -643,14 +643,25 @@ components:
           format: date-time
         type:
           type: string
-    FieldError:
+    ConnectorJobResponse_Stats:
       type: object
       properties:
-        field:
+        end:
           type: string
-        message:
+          format: date-time
+        id:
           type: string
-        objectName:
+        inboundConnectionId:
+          type: string
+        lastSeen:
+          type: string
+          format: date-time
+        metrics:
+          $ref: '#/components/schemas/Metrics_Stats'
+        start:
+          type: string
+          format: date-time
+        status:
           type: string
     Metrics_Stats:
       type: object
@@ -673,26 +684,16 @@ components:
         rowsProcessed:
           type: integer
           format: int64
-    ConnectorJobResponse_Stats:
+    Link_Stats:
       type: object
       properties:
-        end:
+        href:
           type: string
-          format: date-time
-        id:
-          type: string
-        inboundConnectionId:
-          type: string
-        lastSeen:
-          type: string
-          format: date-time
-        metrics:
-          $ref: '#/components/schemas/Metrics_Stats'
-        start:
-          type: string
-          format: date-time
-        status:
-          type: string
+        meta:
+          type: object
+          additionalProperties:
+            type: string
+      description: Represents a single link for statistics
     StatsResponseValue_Stats:
       type: object
       properties:
@@ -712,6 +713,24 @@ components:
       properties:
         self:
           $ref: '#/components/schemas/Link_Stats'
+    StatsResponse_Stats:
+      type: object
+      properties:
+        links:
+          $ref: '#/components/schemas/LinksResponse_Stats'
+        values:
+          type: array
+          items:
+            $ref: '#/components/schemas/StatsResponseValue_Stats'
+    FieldError:
+      type: object
+      properties:
+        field:
+          type: string
+        message:
+          type: string
+        objectName:
+          type: string
     ProblemJson:
       type: object
       properties:
@@ -748,25 +767,6 @@ components:
         title:
           type: string
       description: Based on [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807)
-    Link_Stats:
-      type: object
-      properties:
-        href:
-          type: string
-        meta:
-          type: object
-          additionalProperties:
-            type: string
-      description: Represents a single link for statistics
-    StatsResponse_Stats:
-      type: object
-      properties:
-        links:
-          $ref: '#/components/schemas/LinksResponse_Stats'
-        values:
-          type: array
-          items:
-            $ref: '#/components/schemas/StatsResponseValue_Stats'
   securitySchemes:
     securityScheme:
       scheme: bearer

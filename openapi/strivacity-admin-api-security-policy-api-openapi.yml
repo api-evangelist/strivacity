@@ -262,27 +262,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ScopeResponse_ApiAccessPolicy'
-    AdminApiSecurityPolicyAssignmentResponse_ApiAccessPolicy:
-      type: object
-      properties:
-        application:
-          $ref: '#/components/schemas/NameAndId_ApiAccessPolicy'
-        client:
-          $ref: '#/components/schemas/NameAndId_ApiAccessPolicy'
-        scopes:
-          uniqueItems: true
-          type: array
-          items:
-            $ref: '#/components/schemas/ScopeResponse_ApiAccessPolicy'
-    FieldError:
-      type: object
-      properties:
-        field:
-          type: string
-        message:
-          type: string
-        objectName:
-          type: string
     IdReferenceResponse_ApiAccessPolicy:
       type: object
       properties:
@@ -306,6 +285,21 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/IdReferenceRequest_ApiAccessPolicy'
+    NameAndId_ApiAccessPolicy:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID of the represented entity
+    FieldError:
+      type: object
+      properties:
+        field:
+          type: string
+        message:
+          type: string
+        objectName:
+          type: string
     ScopeResponse_ApiAccessPolicy:
       type: object
       properties:
@@ -315,35 +309,6 @@ components:
           type: string
         name:
           type: string
-    ApiSecurityPolicyResponse_ApiAccessPolicy:
-      type: object
-      properties:
-        assignments:
-          uniqueItems: true
-          type: array
-          items:
-            $ref: '#/components/schemas/ApiSecurityPolicyAssignmentResponse_ApiAccessPolicy'
-        audience:
-          type: string
-        description:
-          type: string
-        id:
-          type: string
-        name:
-          type: string
-        policyTag:
-          type: string
-        scopes:
-          uniqueItems: true
-          type: array
-          items:
-            $ref: '#/components/schemas/ScopeResponse_ApiAccessPolicy'
-    NameAndId_ApiAccessPolicy:
-      type: object
-      properties:
-        id:
-          type: string
-          description: ID of the represented entity
     IdReferenceRequest_ApiAccessPolicy:
       required:
       - id
@@ -389,6 +354,41 @@ components:
         title:
           type: string
       description: Based on [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807)
+    ApiSecurityPolicyResponse_ApiAccessPolicy:
+      type: object
+      properties:
+        assignments:
+          uniqueItems: true
+          type: array
+          items:
+            $ref: '#/components/schemas/ApiSecurityPolicyAssignmentResponse_ApiAccessPolicy'
+        audience:
+          type: string
+        description:
+          type: string
+        id:
+          type: string
+        name:
+          type: string
+        policyTag:
+          type: string
+        scopes:
+          uniqueItems: true
+          type: array
+          items:
+            $ref: '#/components/schemas/ScopeResponse_ApiAccessPolicy'
+    AdminApiSecurityPolicyAssignmentResponse_ApiAccessPolicy:
+      type: object
+      properties:
+        application:
+          $ref: '#/components/schemas/NameAndId_ApiAccessPolicy'
+        client:
+          $ref: '#/components/schemas/NameAndId_ApiAccessPolicy'
+        scopes:
+          uniqueItems: true
+          type: array
+          items:
+            $ref: '#/components/schemas/ScopeResponse_ApiAccessPolicy'
   securitySchemes:
     securityScheme:
       scheme: bearer

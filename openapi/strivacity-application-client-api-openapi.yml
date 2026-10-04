@@ -594,52 +594,70 @@ paths:
       - Application Client
 components:
   schemas:
-    ApplicationLauncherEntryRequest_ApplicationConfig:
+    InternalLogResponse:
       type: object
       properties:
-        displayName:
-          maxLength: 128
-          minLength: 1
+        level:
           type: string
-        enabled:
-          type: boolean
-          default: false
-        logoUrl:
-          maxLength: 1024
-          minLength: 1
-          pattern: ^$|^\S(.*\S)?$
+        message:
           type: string
-      description: Represents a launcher entry for an application client
-    AssetLinkTargetResponse_ApplicationConfig:
-      type: object
-      properties:
-        packageName:
+        timestamp:
           type: string
-        sha256CertFingerprint:
-          type: string
-    Saml2MetadataDescriptorResponse_ApplicationConfig:
-      type: object
-      properties:
-        httpPostBindingUrl:
-          type: string
-        httpRedirectBindingUrl:
-          type: string
-        metadataURL:
-          type: string
-        sha1CertificateFingerprint:
-          type: string
-        sha256CertificateFingerprint:
-          type: string
-    SubjectTokenResponse_ApplicationConfig:
+    SubjectTokenRequest_ApplicationConfig:
+      required:
+      - jwksUri
+      - tokenType
       type: object
       properties:
         issuer:
           type: string
+          description: Issuer of the subject token. Required if token type is not `urn:ietf:params:oauth:token-type:jwt`.
         jwksUri:
+          minLength: 1
           type: string
         tokenType:
+          pattern: ^urn:ietf:params:oauth:token-type:(access_token|jwt|id_token)$
           type: string
-    BridgeClientResponse_ApplicationConfig:
+    GenericClientUpdateRequest_ApplicationConfig:
+      type: object
+      oneOf:
+      - $ref: '#/components/schemas/SspClientUpdate_ApplicationConfig'
+      - $ref: '#/components/schemas/OrgPortalClientUpdate_ApplicationConfig'
+      - $ref: '#/components/schemas/Oauth2ClientUpdate_ApplicationConfig'
+      - $ref: '#/components/schemas/Saml2ClientUpdate_ApplicationConfig'
+      - $ref: '#/components/schemas/BridgeClientUpdate_ApplicationConfig'
+      - $ref: '#/components/schemas/OAuth2NativeClientUpdate_ApplicationConfig'
+      - $ref: '#/components/schemas/TokenExchangeClientUpdate_ApplicationConfig'
+    RelayStateHandlingResponse_ApplicationConfig:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - passthrough
+          - specificValue
+    ApplicationLauncherEntryResponse_ApplicationConfig:
+      type: object
+      properties:
+        displayName:
+          type: string
+        enabled:
+          type: boolean
+        logoUrl:
+          type: string
+    ScopeResponse_ApplicationConfig:
+      type: object
+      properties:
+        allowed:
+          type: array
+          items:
+            type: string
+        type:
+          type: string
+          enum:
+          - whitelist
+          - passthrough
+    OAuth2NativeClientResponse_ApplicationConfig:
       type: object
       properties:
         applicationDomain:
@@ -649,7 +667,7 @@ components:
         baseOrganization:
           $ref: '#/components/schemas/IdReferenceResponse_ApplicationConfig'
         configuration:
-          $ref: '#/components/schemas/ApplicationClientOAuth2ConfigurationResponse_ApplicationConfig'
+          $ref: '#/components/schemas/ApplicationClientOAuth2NativeConfigurationResponse_ApplicationConfig'
         description:
           type: string
         enabled:
@@ -677,263 +695,49 @@ components:
           - tokenExchange
         websiteUrl:
           type: string
-    ApplicationLauncherEntryResponse_ApplicationConfig:
-      type: object
-      properties:
-        displayName:
-          type: string
-        enabled:
-          type: boolean
-        logoUrl:
-          type: string
-    ApplicationClientTokenExchangeConfigurationResponse_ApplicationConfig:
-      type: object
-      properties:
-        accessTokenFormat:
-          type: string
-          enum:
-          - opaque
-          - jwt
-        accessTokenLifespanMinutes:
-          type: integer
-          format: int32
-        allowedResources:
-          type: array
-          items:
-            type: string
-        backChannelLogoutUrl:
-          type: array
-          items:
-            type: string
-        callbackUrl:
-          $ref: '#/components/schemas/CallbackURLResponse_ApplicationConfig'
-        clientId:
-          type: string
-        clientSecret:
-          type: string
-        customAudiences:
-          type: array
-          items:
-            type: string
-        dialect:
-          $ref: '#/components/schemas/NameAndId_ApplicationConfig'
-        enableSelfServiceApiAccess:
-          type: boolean
-        enforceRefreshTokenLimits:
-          type: boolean
-        idTokenLifespanMinutes:
-          type: integer
-          format: int32
-        interactiveLoginEnabled:
-          type: boolean
-        jwks:
-          $ref: '#/components/schemas/JwksResponse_ApplicationConfig'
-        jwksAlgorithm:
-          type: string
-          enum:
-          - RS256
-          - ES256
-        jwksUri:
-          type: string
-        jwtSigningMethod:
-          type: string
-          enum:
-          - RS256
-        logoutUrl:
-          $ref: '#/components/schemas/CallbackURLResponse_ApplicationConfig'
-        maximumRefreshPeriodMinutes:
-          type: integer
-          format: int32
-        refreshTokenGrantEnabled:
-          type: boolean
-        refreshTokenLifespanMinutes:
-          type: integer
-          format: int32
-        tokenEndpointAuthMethod:
-          type: string
-          enum:
-          - client_secret_basic
-          - client_secret_post
-          - private_key_jwt
-          - none
-        tokenExchangeConfiguration:
-          $ref: '#/components/schemas/ApplicationClientTokenExchangeExchangeConfigResponse_ApplicationConfig'
-    AssetLinkTargetUpdate_ApplicationConfig:
+    CallbackURLRequest_ApplicationConfig:
       required:
-      - packageName
-      - sha256CertFingerprint
-      type: object
-      properties:
-        packageName:
-          maxLength: 256
-          minLength: 1
-          pattern: ^$|^\S(.*\S)?$
-          type: string
-        sha256CertFingerprint:
-          pattern: ^([A-Z0-9]{2}:){31}[A-Z0-9]{2}$
-          type: string
-    OrgPortalClientUpdate_ApplicationConfig:
-      required:
-      - id
-      - name
-      - type
-      type: object
-      properties:
-        applicationDomain:
-          type: string
-        applicationLauncherEntry:
-          $ref: '#/components/schemas/ApplicationLauncherEntryRequest_ApplicationConfig'
-        baseOrganization:
-          $ref: '#/components/schemas/IdReferenceRequest_ApplicationConfig'
-        description:
-          type: string
-        enabled:
-          type: boolean
-          default: false
-        friendlyLoginPageUrlPart:
-          maxLength: 16
-          minLength: 3
-          pattern: ^[-a-zA-Z0-9]*$
-          type: string
-        id:
-          maxLength: 36
-          minLength: 1
-          type: string
-        loginUrlShortcut:
-          maxLength: 255
-          minLength: 1
-          pattern: ^[-a-zA-Z0-9]*$
-          type: string
-        name:
-          maxLength: 255
-          minLength: 1
-          pattern: ^$|^[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°]([\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*° ]*[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°])?$
-          type: string
-        type:
-          type: string
-          description: This field cannot be altered
-          enum:
-          - ssp
-          - oauth2
-          - saml2
-          - orgPortal
-          - bridge
-          - oauth2Simplified
-          - oauth2Native
-          - tokenExchange
-        websiteUrl:
-          maxLength: 1024
-          minLength: 1
-          pattern: ^$|^\S(.*\S)?$
-          type: string
-    GenericClientResponse_ApplicationConfig:
-      type: object
-      oneOf:
-      - $ref: '#/components/schemas/SspClientResponse_ApplicationConfig'
-      - $ref: '#/components/schemas/OrgPortalClientResponse_ApplicationConfig'
-      - $ref: '#/components/schemas/OAuth2ClientResponse_ApplicationConfig'
-      - $ref: '#/components/schemas/Saml2ClientResponse_ApplicationConfig'
-      - $ref: '#/components/schemas/BridgeClientResponse_ApplicationConfig'
-      - $ref: '#/components/schemas/OAuth2NativeClientResponse_ApplicationConfig'
-      - $ref: '#/components/schemas/TokenExchangeClientResponse_ApplicationConfig'
-    ModifiableClientResponse_ApplicationConfig:
-      type: object
-      oneOf:
-      - $ref: '#/components/schemas/OrgPortalClientResponse_ApplicationConfig'
-      - $ref: '#/components/schemas/OAuth2ClientResponse_ApplicationConfig'
-      - $ref: '#/components/schemas/Saml2ClientResponse_ApplicationConfig'
-      - $ref: '#/components/schemas/BridgeClientResponse_ApplicationConfig'
-      - $ref: '#/components/schemas/OAuth2NativeClientResponse_ApplicationConfig'
-      - $ref: '#/components/schemas/TokenExchangeClientResponse_ApplicationConfig'
-    ApplicationClientTokenExchangeExchangeConfigUpdateRequest_ApplicationConfig:
-      required:
-      - allowedAudiences
-      - allowedAuthorizationServers
-      - allowedExchange
-      - allowedResources
-      - claimMapping
-      - scopes
-      type: object
-      properties:
-        accountIdField:
-          maxLength: 256
-          minLength: 0
-          pattern: ^$|[a-zA-Z][a-zA-Z0-9_!#$&'()*+,\/:;=?@\[\].]*$
-          type: string
-        allowedAudiences:
-          maxItems: 32
-          minItems: 0
-          type: array
-          items:
-            maxLength: 2083
-            minLength: 0
-            pattern: ^$|^\S([^|]*\S)?$
-            type: string
-        allowedAuthorizationServers:
-          $ref: '#/components/schemas/AllowedAuthorizationServersRequest_ApplicationConfig'
-        allowedExchange:
-          type: string
-          enum:
-          - impersonation
-          - delegation
-        allowedResources:
-          maxItems: 32
-          minItems: 0
-          type: array
-          items:
-            maxLength: 2083
-            minLength: 0
-            pattern: ^$|^\S(.*\S)?$
-            type: string
-        claimMapping:
-          $ref: '#/components/schemas/ClaimMappingEventHookFunctionRequest_ApplicationConfig'
-        scopes:
-          $ref: '#/components/schemas/ScopeRequest_ApplicationConfig'
-    RelayStateHandling_ApplicationConfig:
-      required:
-      - type
-      type: object
-      properties:
-        type:
-          type: string
-          enum:
-          - passthrough
-          - specificValue
-      discriminator:
-        propertyName: type
-    CallbackURLResponse_ApplicationConfig:
+      - whitelist
       type: object
       properties:
         whitelist:
+          maxItems: 32
+          minItems: 0
           type: array
           items:
+            maxLength: 1024
+            minLength: 1
             type: string
-    JwksResponse_ApplicationConfig:
+    NameAndId_ApplicationConfig:
       type: object
       properties:
-        keys:
-          type: array
-          items:
-            type: object
-            additionalProperties:
-              type: object
-    ApplicationClientSdkConfigurationResponse_ApplicationConfig:
-      type: object
-      properties:
-        appleAppSiteAssociations:
-          uniqueItems: true
-          type: array
-          items:
-            $ref: '#/components/schemas/AppleAppSiteAssociationResponse_ApplicationConfig'
-        assetLinkTargets:
-          uniqueItems: true
-          type: array
-          items:
-            $ref: '#/components/schemas/AssetLinkTargetResponse_ApplicationConfig'
-        entryUrl:
+        id:
           type: string
-        origins:
-          uniqueItems: true
+          description: ID of the represented entity
+        name:
+          type: string
+          description: Name of the represented entity
+          example: Entity name
+    ApplicationClientSaml2ConfigurationResponse_ApplicationConfig:
+      type: object
+      properties:
+        assertionConsumerServiceUrl:
+          $ref: '#/components/schemas/CallbackURLResponse_ApplicationConfig'
+        defaultAssertionConsumerServiceUrl:
+          type: string
+        dialect:
+          $ref: '#/components/schemas/NameAndId_ApplicationConfig'
+        entityId:
+          type: string
+        nameIdFormat:
+          type: string
+        nameIdNativeClaim:
+          $ref: '#/components/schemas/NameAndId_ApplicationConfig'
+        relayStateHandling:
+          $ref: '#/components/schemas/RelayStateHandlingResponse_ApplicationConfig'
+        signingCertificate:
+          type: string
+        singleLogoutUrl:
           type: array
           items:
             type: string
@@ -999,215 +803,32 @@ components:
           minLength: 1
           pattern: ^$|^\S(.*\S)?$
           type: string
-    ApplicationClientTokenExchangeExchangeConfigResponse_ApplicationConfig:
-      type: object
-      properties:
-        accountIdField:
-          type: string
-        allowedAudiences:
-          type: array
-          items:
-            type: string
-        allowedAuthorizationServers:
-          $ref: '#/components/schemas/AllowedAuthorizationServersResponse_ApplicationConfig'
-        allowedExchange:
-          type: string
-          enum:
-          - impersonation
-          - delegation
-        allowedResources:
-          type: array
-          items:
-            type: string
-        claimMapping:
-          $ref: '#/components/schemas/ClaimMappingEventHookFunctionResponse_ApplicationConfig'
-        scopes:
-          $ref: '#/components/schemas/ScopeResponse_ApplicationConfig'
-    Saml2Client_InsertRequest:
+    ActorTokenRequest_ApplicationConfig:
       required:
-      - configuration
-      - name
-      - type
+      - jwksUri
+      - tokenType
       type: object
       properties:
-        applicationDomain:
+        issuer:
           type: string
-        applicationLauncherEntry:
-          $ref: '#/components/schemas/ApplicationLauncherEntryRequest_ApplicationConfig'
-        baseOrganization:
-          $ref: '#/components/schemas/IdReferenceRequest_ApplicationConfig'
-        configuration:
-          $ref: '#/components/schemas/ApplicationClientSaml2ConfigurationUpdateRequest_ApplicationConfig'
-        description:
-          type: string
-        enabled:
-          type: boolean
-          default: false
-        friendlyLoginPageUrlPart:
-          maxLength: 16
-          minLength: 3
-          pattern: ^[-a-zA-Z0-9]*$
-          type: string
-        loginUrl:
-          maxLength: 1024
+          description: Issuer of the actor token. Required if token type is not `urn:ietf:params:oauth:token-type:jwt`.
+        jwksUri:
           minLength: 1
-          pattern: ^$|^\S(.*\S)?$
           type: string
-        loginUrlShortcut:
-          maxLength: 255
-          minLength: 1
-          pattern: ^[-a-zA-Z0-9]*$
+        tokenType:
+          pattern: ^urn:ietf:params:oauth:token-type:(access_token|jwt|id_token)$
           type: string
-        name:
-          maxLength: 255
-          minLength: 1
-          pattern: ^$|^[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°]([\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*° ]*[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°])?$
-          type: string
-        type:
-          type: string
-          description: This field cannot be altered
-          enum:
-          - ssp
-          - oauth2
-          - saml2
-          - orgPortal
-          - bridge
-          - oauth2Simplified
-          - oauth2Native
-          - tokenExchange
-        websiteUrl:
-          maxLength: 1024
-          minLength: 1
-          pattern: ^$|^\S(.*\S)?$
-          type: string
-    ProblemJson:
+    EventHookStatusResponse:
       type: object
       properties:
-        detail:
-          type: string
-        entityName:
-          type: string
-          description: The name of the entity within the error has occurred
-        errorKey:
-          type: string
-          description: A unique identifier of the error
-        fieldErrors:
-          type: array
-          description: Field constraint violation errors
-          items:
-            $ref: '#/components/schemas/FieldError'
-        message:
-          type: string
-          description: A unique identifier in format of 'error.{errorKey}'
-        params:
-          type: array
-          description: Further information related to the actual error
-          items:
-            type: object
-            additionalProperties:
-              type: object
-        path:
-          type: string
-          description: Request URI
         status:
-          type: integer
-          description: Status code
-          format: int32
-        title:
-          type: string
-      description: Based on [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807)
-    ScopeResponse_ApplicationConfig:
-      type: object
-      properties:
-        allowed:
-          type: array
-          items:
-            type: string
-        type:
           type: string
           enum:
-          - whitelist
-          - passthrough
-    ClaimMappingEventHookFunctionResponse_ApplicationConfig:
-      type: object
-      properties:
-        code:
-          type: string
-        packageDependencies:
-          type: object
-          additionalProperties:
-            type: string
-    LogSummaryResponse:
-      type: object
-      properties:
-        error:
-          type: integer
-          format: int32
-        exception:
-          type: boolean
-        info:
-          type: integer
-          format: int32
-    Saml2ClientResponse_ApplicationConfig:
-      type: object
-      properties:
-        applicationDomain:
-          type: string
-        applicationLauncherEntry:
-          $ref: '#/components/schemas/ApplicationLauncherEntryResponse_ApplicationConfig'
-        baseOrganization:
-          $ref: '#/components/schemas/IdReferenceResponse_ApplicationConfig'
-        configuration:
-          $ref: '#/components/schemas/ApplicationClientSaml2ConfigurationResponse_ApplicationConfig'
-        description:
-          type: string
-        enabled:
-          type: boolean
-        friendlyLoginPageUrlPart:
-          type: string
-        id:
-          type: string
-        loginUrl:
-          type: string
-        loginUrlShortcut:
-          type: string
-        name:
-          type: string
-        type:
-          type: string
-          enum:
-          - ssp
-          - oauth2
-          - saml2
-          - orgPortal
-          - bridge
-          - oauth2Simplified
-          - oauth2Native
-          - tokenExchange
-        websiteUrl:
-          type: string
-    IdReferenceResponse_ApplicationConfig:
-      type: object
-      properties:
-        id:
-          type: string
-          description: ID of the represented entity
-    AppleAppSiteAssociationUpdate_ApplicationConfig:
-      required:
-      - bundleIdentifier
-      - teamId
-      type: object
-      properties:
-        bundleIdentifier:
-          maxLength: 256
-          minLength: 1
-          pattern: ^$|^\S(.*\S)?$
-          type: string
-        teamId:
-          maxLength: 32
-          minLength: 1
-          pattern: ^$|^\S(.*\S)?$
-          type: string
+          - ACTIVE
+          - UPGRADING
+          - UNHEALTHY
+          - NOT_RUNNING
+          - NON_DEPLOYED
     ApplicationClientOAuth2ConfigurationResponse_ApplicationConfig:
       type: object
       properties:
@@ -1278,194 +899,40 @@ components:
           - client_secret_post
           - private_key_jwt
           - none
-    Oauth2ClientUpdate_ApplicationConfig:
-      required:
-      - configuration
-      - id
-      - name
-      - type
-      type: object
-      properties:
-        applicationDomain:
-          type: string
-        applicationLauncherEntry:
-          $ref: '#/components/schemas/ApplicationLauncherEntryRequest_ApplicationConfig'
-        baseOrganization:
-          $ref: '#/components/schemas/IdReferenceRequest_ApplicationConfig'
-        configuration:
-          $ref: '#/components/schemas/OAuth2Configuration_ApplicationConfig'
-        description:
-          type: string
-        enabled:
-          type: boolean
-          default: false
-        friendlyLoginPageUrlPart:
-          maxLength: 16
-          minLength: 3
-          pattern: ^[-a-zA-Z0-9]*$
-          type: string
-        id:
-          maxLength: 36
-          minLength: 1
-          type: string
-        loginUrl:
-          maxLength: 1024
-          minLength: 1
-          pattern: ^$|^\S(.*\S)?$
-          type: string
-        loginUrlShortcut:
-          maxLength: 255
-          minLength: 1
-          pattern: ^[-a-zA-Z0-9]*$
-          type: string
-        name:
-          maxLength: 255
-          minLength: 1
-          pattern: ^$|^[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°]([\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*° ]*[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°])?$
-          type: string
-        type:
-          type: string
-          description: This field cannot be altered
-          enum:
-          - ssp
-          - oauth2
-          - saml2
-          - orgPortal
-          - bridge
-          - oauth2Simplified
-          - oauth2Native
-          - tokenExchange
-        websiteUrl:
-          maxLength: 1024
-          minLength: 1
-          pattern: ^$|^\S(.*\S)?$
-          type: string
-    InternalLogResponse:
-      type: object
-      properties:
-        level:
-          type: string
-        message:
-          type: string
-        timestamp:
-          type: string
-    JwksRequest_ApplicationConfig:
-      required:
-      - keys
+    JwksResponse_ApplicationConfig:
       type: object
       properties:
         keys:
-          maxItems: 32
-          minItems: 1
           type: array
           items:
             type: object
             additionalProperties:
               type: object
-    FieldError:
-      type: object
-      properties:
-        field:
-          type: string
-        message:
-          type: string
-        objectName:
-          type: string
-    ApplicationClientSaml2ConfigurationUpdateRequest_ApplicationConfig:
-      required:
-      - assertionConsumerServiceUrl
-      - defaultAssertionConsumerServiceUrl
-      - dialect
-      - nameIdFormat
-      - nameIdNativeClaim
-      type: object
-      properties:
-        assertionConsumerServiceUrl:
-          $ref: '#/components/schemas/CallbackURLRequest_ApplicationConfig'
-        defaultAssertionConsumerServiceUrl:
-          maxLength: 1024
-          minLength: 1
-          pattern: ^$|^\S(.*\S)?$
-          type: string
-          description: Must contain one of the URLs specified in `assertionConsumerServiceUrl` list
-        dialect:
-          $ref: '#/components/schemas/IdReferenceRequest_ApplicationConfig'
-        entityId:
-          maxLength: 256
-          minLength: 1
-          type: string
-          description: The value of this field is generated when not provided
-        nameIdFormat:
-          pattern: urn:oasis:names:tc:SAML:(1\.1:nameid-format:unspecified|1\.1:nameid-format:emailAddress|2\.0:nameid-format:persistent|2\.0:nameid-format:transient)
-          type: string
-        nameIdNativeClaim:
-          $ref: '#/components/schemas/IdReferenceRequest_ApplicationConfig'
-        relayStateHandling:
-          oneOf:
-          - $ref: '#/components/schemas/RelayStateHandling_ApplicationConfig'
-          - $ref: '#/components/schemas/Passthrough_ApplicationConfig'
-          - $ref: '#/components/schemas/SpecificValue_ApplicationConfig'
-        signingCertificate:
-          maxLength: 8192
-          minLength: 1
-          type: string
-        singleLogoutUrl:
-          maxItems: 32
-          minItems: 0
-          type: array
-          items:
-            maxLength: 1024
-            minLength: 1
-            type: string
-          default: []
-    OAuth2NativeClientUpdate_ApplicationConfig:
-      required:
-      - configuration
-      - id
-      - name
-      - type
+    SspClientResponse_ApplicationConfig:
       type: object
       properties:
         applicationDomain:
           type: string
         applicationLauncherEntry:
-          $ref: '#/components/schemas/ApplicationLauncherEntryRequest_ApplicationConfig'
+          $ref: '#/components/schemas/ApplicationLauncherEntryResponse_ApplicationConfig'
         baseOrganization:
-          $ref: '#/components/schemas/IdReferenceRequest_ApplicationConfig'
-        configuration:
-          $ref: '#/components/schemas/ApplicationClientOAuth2NativeConfigurationUpdateRequest_ApplicationConfig'
+          $ref: '#/components/schemas/IdReferenceResponse_ApplicationConfig'
         description:
           type: string
         enabled:
           type: boolean
-          default: false
         friendlyLoginPageUrlPart:
-          maxLength: 16
-          minLength: 3
-          pattern: ^[-a-zA-Z0-9]*$
           type: string
         id:
-          maxLength: 36
-          minLength: 1
           type: string
         loginUrl:
-          maxLength: 1024
-          minLength: 1
-          pattern: ^$|^\S(.*\S)?$
           type: string
         loginUrlShortcut:
-          maxLength: 255
-          minLength: 1
-          pattern: ^[-a-zA-Z0-9]*$
           type: string
         name:
-          maxLength: 255
-          minLength: 1
-          pattern: ^$|^[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°]([\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*° ]*[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°])?$
           type: string
         type:
           type: string
-          description: This field cannot be altered
           enum:
           - ssp
           - oauth2
@@ -1476,80 +943,7 @@ components:
           - oauth2Native
           - tokenExchange
         websiteUrl:
-          maxLength: 1024
-          minLength: 1
-          pattern: ^$|^\S(.*\S)?$
           type: string
-    ApplicationClientOAuth2NativeConfigurationResponse_ApplicationConfig:
-      type: object
-      properties:
-        accessTokenFormat:
-          type: string
-          enum:
-          - opaque
-          - jwt
-        accessTokenLifespanMinutes:
-          type: integer
-          format: int32
-        allowedResources:
-          type: array
-          items:
-            type: string
-        callbackUrl:
-          $ref: '#/components/schemas/CallbackURLResponse_ApplicationConfig'
-        clientId:
-          type: string
-        clientSecret:
-          type: string
-        customAudiences:
-          type: array
-          items:
-            type: string
-        dialect:
-          $ref: '#/components/schemas/NameAndId_ApplicationConfig'
-        enableSelfServiceApiAccess:
-          type: boolean
-        enforceRefreshTokenLimits:
-          type: boolean
-        idTokenLifespanMinutes:
-          type: integer
-          format: int32
-        interactiveLoginEnabled:
-          type: boolean
-        jwks:
-          $ref: '#/components/schemas/JwksResponse_ApplicationConfig'
-        jwksAlgorithm:
-          type: string
-          enum:
-          - RS256
-          - ES256
-        jwksUri:
-          type: string
-        jwtSigningMethod:
-          type: string
-          enum:
-          - RS256
-        logoutUrl:
-          $ref: '#/components/schemas/CallbackURLResponse_ApplicationConfig'
-        maximumRefreshPeriodMinutes:
-          type: integer
-          format: int32
-        refreshTokenGrantEnabled:
-          type: boolean
-        refreshTokenLifespanMinutes:
-          type: integer
-          format: int32
-        sdk:
-          $ref: '#/components/schemas/ApplicationClientSdkConfigurationResponse_ApplicationConfig'
-        tokenEndpointAuthMethod:
-          type: string
-          enum:
-          - none
-    GenericClient_InsertRequest:
-      type: object
-      oneOf:
-      - $ref: '#/components/schemas/Oauth2Client_InsertRequest'
-      - $ref: '#/components/schemas/Saml2Client_InsertRequest'
     ApplicationClientOAuth2NativeConfigurationUpdateRequest_ApplicationConfig:
       required:
       - clientId
@@ -1652,259 +1046,58 @@ components:
           default: 43200
         sdk:
           $ref: '#/components/schemas/ApplicationClientSdkConfigurationUpdateRequest_ApplicationConfig'
-    ApplicationClientTokenExchangeConfigurationUpdateRequest_ApplicationConfig:
+    GenericClient_InsertRequest:
+      type: object
+      oneOf:
+      - $ref: '#/components/schemas/Oauth2Client_InsertRequest'
+      - $ref: '#/components/schemas/Saml2Client_InsertRequest'
+    ApplicationClientSaml2ConfigurationUpdateRequest_ApplicationConfig:
       required:
-      - clientId
-      - clientSecret
-      - jwtSigningMethod
-      - tokenEndpointAuthMethod
-      - tokenExchangeConfiguration
+      - assertionConsumerServiceUrl
+      - defaultAssertionConsumerServiceUrl
+      - dialect
+      - nameIdFormat
+      - nameIdNativeClaim
       type: object
       properties:
-        accessTokenLifespanMinutes:
-          maximum: 1440
-          minimum: 1
-          type: integer
-          format: int32
-          default: 60
-        clientId:
-          maxLength: 36
-          minLength: 0
-          type: string
-        clientSecret:
-          maxLength: 72
-          minLength: 0
-          type: string
-        jwks:
-          $ref: '#/components/schemas/JwksRequest_ApplicationConfig'
-        jwksAlgorithm:
-          type: string
-          enum:
-          - RS256
-          - ES256
-        jwksUri:
+        assertionConsumerServiceUrl:
+          $ref: '#/components/schemas/CallbackURLRequest_ApplicationConfig'
+        defaultAssertionConsumerServiceUrl:
           maxLength: 1024
           minLength: 1
           pattern: ^$|^\S(.*\S)?$
           type: string
-        jwtSigningMethod:
+          description: Must contain one of the URLs specified in `assertionConsumerServiceUrl` list
+        dialect:
+          $ref: '#/components/schemas/IdReferenceRequest_ApplicationConfig'
+        entityId:
+          maxLength: 256
+          minLength: 1
           type: string
-          enum:
-          - RS256
-        tokenEndpointAuthMethod:
+          description: The value of this field is generated when not provided
+        nameIdFormat:
+          pattern: urn:oasis:names:tc:SAML:(1\.1:nameid-format:unspecified|1\.1:nameid-format:emailAddress|2\.0:nameid-format:persistent|2\.0:nameid-format:transient)
           type: string
-          enum:
-          - client_secret_basic
-          - client_secret_post
-          - private_key_jwt
-          - none
-        tokenExchangeConfiguration:
-          $ref: '#/components/schemas/ApplicationClientTokenExchangeExchangeConfigUpdateRequest_ApplicationConfig'
-    GenericClientUpdateRequest_ApplicationConfig:
-      type: object
-      oneOf:
-      - $ref: '#/components/schemas/SspClientUpdate_ApplicationConfig'
-      - $ref: '#/components/schemas/OrgPortalClientUpdate_ApplicationConfig'
-      - $ref: '#/components/schemas/Oauth2ClientUpdate_ApplicationConfig'
-      - $ref: '#/components/schemas/Saml2ClientUpdate_ApplicationConfig'
-      - $ref: '#/components/schemas/BridgeClientUpdate_ApplicationConfig'
-      - $ref: '#/components/schemas/OAuth2NativeClientUpdate_ApplicationConfig'
-      - $ref: '#/components/schemas/TokenExchangeClientUpdate_ApplicationConfig'
-    AllowedAuthorizationServersRequest_ApplicationConfig:
-      required:
-      - actorTokens
-      - subjectTokens
-      type: object
-      properties:
-        actorTokens:
+        nameIdNativeClaim:
+          $ref: '#/components/schemas/IdReferenceRequest_ApplicationConfig'
+        relayStateHandling:
+          oneOf:
+          - $ref: '#/components/schemas/RelayStateHandling_ApplicationConfig'
+          - $ref: '#/components/schemas/Passthrough_ApplicationConfig'
+          - $ref: '#/components/schemas/SpecificValue_ApplicationConfig'
+        signingCertificate:
+          maxLength: 8192
+          minLength: 1
+          type: string
+        singleLogoutUrl:
           maxItems: 32
           minItems: 0
           type: array
           items:
-            $ref: '#/components/schemas/ActorTokenRequest_ApplicationConfig'
-        subjectTokens:
-          maxItems: 32
-          minItems: 1
-          type: array
-          items:
-            $ref: '#/components/schemas/SubjectTokenRequest_ApplicationConfig'
-    SubjectTokenRequest_ApplicationConfig:
-      required:
-      - jwksUri
-      - tokenType
-      type: object
-      properties:
-        issuer:
-          type: string
-          description: Issuer of the subject token. Required if token type is not `urn:ietf:params:oauth:token-type:jwt`.
-        jwksUri:
-          minLength: 1
-          type: string
-        tokenType:
-          pattern: ^urn:ietf:params:oauth:token-type:(access_token|jwt|id_token)$
-          type: string
-    ApplicationClientSaml2ConfigurationResponse_ApplicationConfig:
-      type: object
-      properties:
-        assertionConsumerServiceUrl:
-          $ref: '#/components/schemas/CallbackURLResponse_ApplicationConfig'
-        defaultAssertionConsumerServiceUrl:
-          type: string
-        dialect:
-          $ref: '#/components/schemas/NameAndId_ApplicationConfig'
-        entityId:
-          type: string
-        nameIdFormat:
-          type: string
-        nameIdNativeClaim:
-          $ref: '#/components/schemas/NameAndId_ApplicationConfig'
-        relayStateHandling:
-          $ref: '#/components/schemas/RelayStateHandlingResponse_ApplicationConfig'
-        signingCertificate:
-          type: string
-        singleLogoutUrl:
-          type: array
-          items:
+            maxLength: 1024
+            minLength: 1
             type: string
-    IdReferenceRequest_ApplicationConfig:
-      required:
-      - id
-      type: object
-      properties:
-        id:
-          pattern: ^[a-zA-Z0-9-]{1,36}$
-          type: string
-          description: ID of the represented entity
-    ActorTokenRequest_ApplicationConfig:
-      required:
-      - jwksUri
-      - tokenType
-      type: object
-      properties:
-        issuer:
-          type: string
-          description: Issuer of the actor token. Required if token type is not `urn:ietf:params:oauth:token-type:jwt`.
-        jwksUri:
-          minLength: 1
-          type: string
-        tokenType:
-          pattern: ^urn:ietf:params:oauth:token-type:(access_token|jwt|id_token)$
-          type: string
-    SspClientUpdate_ApplicationConfig:
-      required:
-      - id
-      - name
-      - type
-      type: object
-      properties:
-        applicationDomain:
-          type: string
-        applicationLauncherEntry:
-          $ref: '#/components/schemas/ApplicationLauncherEntryRequest_ApplicationConfig'
-        baseOrganization:
-          $ref: '#/components/schemas/IdReferenceRequest_ApplicationConfig'
-        description:
-          type: string
-        enabled:
-          type: boolean
-          default: false
-        friendlyLoginPageUrlPart:
-          maxLength: 16
-          minLength: 3
-          pattern: ^[-a-zA-Z0-9]*$
-          type: string
-        id:
-          maxLength: 36
-          minLength: 1
-          type: string
-        loginUrlShortcut:
-          maxLength: 255
-          minLength: 1
-          pattern: ^[-a-zA-Z0-9]*$
-          type: string
-        name:
-          maxLength: 255
-          minLength: 1
-          pattern: ^$|^[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°]([\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*° ]*[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°])?$
-          type: string
-        type:
-          type: string
-          description: This field cannot be altered
-          enum:
-          - ssp
-          - oauth2
-          - saml2
-          - orgPortal
-          - bridge
-          - oauth2Simplified
-          - oauth2Native
-          - tokenExchange
-        websiteUrl:
-          maxLength: 1024
-          minLength: 1
-          pattern: ^$|^\S(.*\S)?$
-          type: string
-    AllowedAuthorizationServersResponse_ApplicationConfig:
-      type: object
-      properties:
-        actorTokens:
-          type: array
-          items:
-            $ref: '#/components/schemas/ActorTokenResponse_ApplicationConfig'
-        subjectTokens:
-          type: array
-          items:
-            $ref: '#/components/schemas/SubjectTokenResponse_ApplicationConfig'
-    ActorTokenResponse_ApplicationConfig:
-      type: object
-      properties:
-        issuer:
-          type: string
-        jwksUri:
-          type: string
-        tokenType:
-          type: string
-    AppleAppSiteAssociationResponse_ApplicationConfig:
-      type: object
-      properties:
-        bundleIdentifier:
-          type: string
-        teamId:
-          type: string
-    BaseEventHookLogListResponse:
-      type: object
-      properties:
-        accountEventId:
-          type: string
-        accountId:
-          type: string
-        id:
-          type: string
-        identityStore:
-          type: string
-        logSummary:
-          $ref: '#/components/schemas/LogSummaryResponse'
-        timestamp:
-          type: string
-    InternalEventHookLogResponse:
-      type: object
-      properties:
-        accountEventId:
-          type: string
-        accountId:
-          type: string
-        id:
-          type: string
-        identityStore:
-          type: string
-        logSummary:
-          $ref: '#/components/schemas/LogSummaryResponse'
-        logs:
-          type: array
-          items:
-            $ref: '#/components/schemas/InternalLogResponse'
-        timestamp:
-          type: string
+          default: []
     OAuth2Configuration_ApplicationConfig:
       required:
       - dialect
@@ -2011,39 +1204,68 @@ components:
           - client_secret_post
           - private_key_jwt
           - none
-    SpecificValue_ApplicationConfig:
-      required:
-      - type
-      - value
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/RelayStateHandling_ApplicationConfig'
-      - type: object
-        properties:
-          value:
-            maxLength: 200
-            minLength: 1
-            type: string
-    NameAndId_ApplicationConfig:
+    BridgeClientResponse_ApplicationConfig:
       type: object
       properties:
+        applicationDomain:
+          type: string
+        applicationLauncherEntry:
+          $ref: '#/components/schemas/ApplicationLauncherEntryResponse_ApplicationConfig'
+        baseOrganization:
+          $ref: '#/components/schemas/IdReferenceResponse_ApplicationConfig'
+        configuration:
+          $ref: '#/components/schemas/ApplicationClientOAuth2ConfigurationResponse_ApplicationConfig'
+        description:
+          type: string
+        enabled:
+          type: boolean
+        friendlyLoginPageUrlPart:
+          type: string
         id:
           type: string
-          description: ID of the represented entity
+        loginUrl:
+          type: string
+        loginUrlShortcut:
+          type: string
         name:
           type: string
-          description: Name of the represented entity
-          example: Entity name
-    Passthrough_ApplicationConfig:
-      required:
-      - type
+        type:
+          type: string
+          enum:
+          - ssp
+          - oauth2
+          - saml2
+          - orgPortal
+          - bridge
+          - oauth2Simplified
+          - oauth2Native
+          - tokenExchange
+        websiteUrl:
+          type: string
+    AllowedAuthorizationServersResponse_ApplicationConfig:
       type: object
-      allOf:
-      - $ref: '#/components/schemas/RelayStateHandling_ApplicationConfig'
-    TokenExchangeClientUpdate_ApplicationConfig:
+      properties:
+        actorTokens:
+          type: array
+          items:
+            $ref: '#/components/schemas/ActorTokenResponse_ApplicationConfig'
+        subjectTokens:
+          type: array
+          items:
+            $ref: '#/components/schemas/SubjectTokenResponse_ApplicationConfig'
+    GenericClientResponse_ApplicationConfig:
+      type: object
+      oneOf:
+      - $ref: '#/components/schemas/SspClientResponse_ApplicationConfig'
+      - $ref: '#/components/schemas/OrgPortalClientResponse_ApplicationConfig'
+      - $ref: '#/components/schemas/OAuth2ClientResponse_ApplicationConfig'
+      - $ref: '#/components/schemas/Saml2ClientResponse_ApplicationConfig'
+      - $ref: '#/components/schemas/BridgeClientResponse_ApplicationConfig'
+      - $ref: '#/components/schemas/OAuth2NativeClientResponse_ApplicationConfig'
+      - $ref: '#/components/schemas/TokenExchangeClientResponse_ApplicationConfig'
+    Saml2Client_InsertRequest:
       required:
       - configuration
-      - id
       - name
       - type
       type: object
@@ -2055,7 +1277,7 @@ components:
         baseOrganization:
           $ref: '#/components/schemas/IdReferenceRequest_ApplicationConfig'
         configuration:
-          $ref: '#/components/schemas/ApplicationClientTokenExchangeConfigurationUpdateRequest_ApplicationConfig'
+          $ref: '#/components/schemas/ApplicationClientSaml2ConfigurationUpdateRequest_ApplicationConfig'
         description:
           type: string
         enabled:
@@ -2066,9 +1288,10 @@ components:
           minLength: 3
           pattern: ^[-a-zA-Z0-9]*$
           type: string
-        id:
-          maxLength: 36
+        loginUrl:
+          maxLength: 1024
           minLength: 1
+          pattern: ^$|^\S(.*\S)?$
           type: string
         loginUrlShortcut:
           maxLength: 255
@@ -2097,38 +1320,113 @@ components:
           minLength: 1
           pattern: ^$|^\S(.*\S)?$
           type: string
-    RelayStateHandlingResponse_ApplicationConfig:
+    ApplicationClientSdkConfigurationResponse_ApplicationConfig:
       type: object
       properties:
+        appleAppSiteAssociations:
+          uniqueItems: true
+          type: array
+          items:
+            $ref: '#/components/schemas/AppleAppSiteAssociationResponse_ApplicationConfig'
+        assetLinkTargets:
+          uniqueItems: true
+          type: array
+          items:
+            $ref: '#/components/schemas/AssetLinkTargetResponse_ApplicationConfig'
+        entryUrl:
+          type: string
+        origins:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+    Saml2MetadataDescriptorResponse_ApplicationConfig:
+      type: object
+      properties:
+        httpPostBindingUrl:
+          type: string
+        httpRedirectBindingUrl:
+          type: string
+        metadataURL:
+          type: string
+        sha1CertificateFingerprint:
+          type: string
+        sha256CertificateFingerprint:
+          type: string
+    OrgPortalClientResponse_ApplicationConfig:
+      type: object
+      properties:
+        applicationDomain:
+          type: string
+        applicationLauncherEntry:
+          $ref: '#/components/schemas/ApplicationLauncherEntryResponse_ApplicationConfig'
+        baseOrganization:
+          $ref: '#/components/schemas/IdReferenceResponse_ApplicationConfig'
+        description:
+          type: string
+        enabled:
+          type: boolean
+        friendlyLoginPageUrlPart:
+          type: string
+        id:
+          type: string
+        loginUrl:
+          type: string
+        loginUrlShortcut:
+          type: string
+        name:
+          type: string
         type:
           type: string
           enum:
-          - passthrough
-          - specificValue
-    CallbackURLRequest_ApplicationConfig:
-      required:
-      - whitelist
+          - ssp
+          - oauth2
+          - saml2
+          - orgPortal
+          - bridge
+          - oauth2Simplified
+          - oauth2Native
+          - tokenExchange
+        websiteUrl:
+          type: string
+    Saml2ClientResponse_ApplicationConfig:
       type: object
       properties:
-        whitelist:
-          maxItems: 32
-          minItems: 0
-          type: array
-          items:
-            maxLength: 1024
-            minLength: 1
-            type: string
-    EventHookStatusResponse:
-      type: object
-      properties:
-        status:
+        applicationDomain:
+          type: string
+        applicationLauncherEntry:
+          $ref: '#/components/schemas/ApplicationLauncherEntryResponse_ApplicationConfig'
+        baseOrganization:
+          $ref: '#/components/schemas/IdReferenceResponse_ApplicationConfig'
+        configuration:
+          $ref: '#/components/schemas/ApplicationClientSaml2ConfigurationResponse_ApplicationConfig'
+        description:
+          type: string
+        enabled:
+          type: boolean
+        friendlyLoginPageUrlPart:
+          type: string
+        id:
+          type: string
+        loginUrl:
+          type: string
+        loginUrlShortcut:
+          type: string
+        name:
+          type: string
+        type:
           type: string
           enum:
-          - ACTIVE
-          - UPGRADING
-          - UNHEALTHY
-          - NOT_RUNNING
-          - NON_DEPLOYED
+          - ssp
+          - oauth2
+          - saml2
+          - orgPortal
+          - bridge
+          - oauth2Simplified
+          - oauth2Native
+          - tokenExchange
+        websiteUrl:
+          type: string
     Oauth2Client_InsertRequest:
       required:
       - configuration
@@ -2202,248 +1500,6 @@ components:
             type: string
             description: Dependencies used for the event hook function
           description: Dependencies used for the event hook function
-    OAuth2NativeClientResponse_ApplicationConfig:
-      type: object
-      properties:
-        applicationDomain:
-          type: string
-        applicationLauncherEntry:
-          $ref: '#/components/schemas/ApplicationLauncherEntryResponse_ApplicationConfig'
-        baseOrganization:
-          $ref: '#/components/schemas/IdReferenceResponse_ApplicationConfig'
-        configuration:
-          $ref: '#/components/schemas/ApplicationClientOAuth2NativeConfigurationResponse_ApplicationConfig'
-        description:
-          type: string
-        enabled:
-          type: boolean
-        friendlyLoginPageUrlPart:
-          type: string
-        id:
-          type: string
-        loginUrl:
-          type: string
-        loginUrlShortcut:
-          type: string
-        name:
-          type: string
-        type:
-          type: string
-          enum:
-          - ssp
-          - oauth2
-          - saml2
-          - orgPortal
-          - bridge
-          - oauth2Simplified
-          - oauth2Native
-          - tokenExchange
-        websiteUrl:
-          type: string
-    OAuth2ClientResponse_ApplicationConfig:
-      type: object
-      properties:
-        applicationDomain:
-          type: string
-        applicationLauncherEntry:
-          $ref: '#/components/schemas/ApplicationLauncherEntryResponse_ApplicationConfig'
-        baseOrganization:
-          $ref: '#/components/schemas/IdReferenceResponse_ApplicationConfig'
-        configuration:
-          $ref: '#/components/schemas/ApplicationClientOAuth2ConfigurationResponse_ApplicationConfig'
-        description:
-          type: string
-        enabled:
-          type: boolean
-        friendlyLoginPageUrlPart:
-          type: string
-        id:
-          type: string
-        loginUrl:
-          type: string
-        loginUrlShortcut:
-          type: string
-        name:
-          type: string
-        type:
-          type: string
-          enum:
-          - ssp
-          - oauth2
-          - saml2
-          - orgPortal
-          - bridge
-          - oauth2Simplified
-          - oauth2Native
-          - tokenExchange
-        websiteUrl:
-          type: string
-    OrgPortalClientResponse_ApplicationConfig:
-      type: object
-      properties:
-        applicationDomain:
-          type: string
-        applicationLauncherEntry:
-          $ref: '#/components/schemas/ApplicationLauncherEntryResponse_ApplicationConfig'
-        baseOrganization:
-          $ref: '#/components/schemas/IdReferenceResponse_ApplicationConfig'
-        description:
-          type: string
-        enabled:
-          type: boolean
-        friendlyLoginPageUrlPart:
-          type: string
-        id:
-          type: string
-        loginUrl:
-          type: string
-        loginUrlShortcut:
-          type: string
-        name:
-          type: string
-        type:
-          type: string
-          enum:
-          - ssp
-          - oauth2
-          - saml2
-          - orgPortal
-          - bridge
-          - oauth2Simplified
-          - oauth2Native
-          - tokenExchange
-        websiteUrl:
-          type: string
-    SspClientResponse_ApplicationConfig:
-      type: object
-      properties:
-        applicationDomain:
-          type: string
-        applicationLauncherEntry:
-          $ref: '#/components/schemas/ApplicationLauncherEntryResponse_ApplicationConfig'
-        baseOrganization:
-          $ref: '#/components/schemas/IdReferenceResponse_ApplicationConfig'
-        description:
-          type: string
-        enabled:
-          type: boolean
-        friendlyLoginPageUrlPart:
-          type: string
-        id:
-          type: string
-        loginUrl:
-          type: string
-        loginUrlShortcut:
-          type: string
-        name:
-          type: string
-        type:
-          type: string
-          enum:
-          - ssp
-          - oauth2
-          - saml2
-          - orgPortal
-          - bridge
-          - oauth2Simplified
-          - oauth2Native
-          - tokenExchange
-        websiteUrl:
-          type: string
-    TokenExchangeClientResponse_ApplicationConfig:
-      type: object
-      properties:
-        applicationDomain:
-          type: string
-        applicationLauncherEntry:
-          $ref: '#/components/schemas/ApplicationLauncherEntryResponse_ApplicationConfig'
-        baseOrganization:
-          $ref: '#/components/schemas/IdReferenceResponse_ApplicationConfig'
-        configuration:
-          $ref: '#/components/schemas/ApplicationClientTokenExchangeConfigurationResponse_ApplicationConfig'
-        description:
-          type: string
-        enabled:
-          type: boolean
-        friendlyLoginPageUrlPart:
-          type: string
-        id:
-          type: string
-        loginUrl:
-          type: string
-        loginUrlShortcut:
-          type: string
-        name:
-          type: string
-        type:
-          type: string
-          enum:
-          - ssp
-          - oauth2
-          - saml2
-          - orgPortal
-          - bridge
-          - oauth2Simplified
-          - oauth2Native
-          - tokenExchange
-        websiteUrl:
-          type: string
-    ScopeRequest_ApplicationConfig:
-      required:
-      - allowed
-      - type
-      type: object
-      properties:
-        allowed:
-          maxItems: 32
-          minItems: 0
-          type: array
-          items:
-            maxLength: 256
-            minLength: 0
-            pattern: ^[a-zA-Z0-9_!#$&'()*+,/:;=?@\[\].]*$
-            type: string
-        type:
-          type: string
-          enum:
-          - whitelist
-          - passthrough
-    ApplicationClientSdkConfigurationUpdateRequest_ApplicationConfig:
-      required:
-      - appleAppSiteAssociations
-      - assetLinkTargets
-      - origins
-      type: object
-      properties:
-        appleAppSiteAssociations:
-          maxItems: 32
-          minItems: 0
-          uniqueItems: true
-          type: array
-          items:
-            $ref: '#/components/schemas/AppleAppSiteAssociationUpdate_ApplicationConfig'
-        assetLinkTargets:
-          maxItems: 32
-          minItems: 0
-          uniqueItems: true
-          type: array
-          items:
-            $ref: '#/components/schemas/AssetLinkTargetUpdate_ApplicationConfig'
-        entryUrl:
-          maxLength: 1024
-          minLength: 1
-          pattern: ^$|^\S(.*\S)?$
-          type: string
-        origins:
-          maxItems: 32
-          minItems: 0
-          uniqueItems: true
-          type: array
-          items:
-            maxLength: 1024
-            minLength: 1
-            pattern: ^$|^\S(.*\S)?$
-            type: string
     BridgeClientUpdate_ApplicationConfig:
       required:
       - configuration
@@ -2505,6 +1561,950 @@ components:
           maxLength: 1024
           minLength: 1
           pattern: ^$|^\S(.*\S)?$
+          type: string
+    ScopeRequest_ApplicationConfig:
+      required:
+      - allowed
+      - type
+      type: object
+      properties:
+        allowed:
+          maxItems: 32
+          minItems: 0
+          type: array
+          items:
+            maxLength: 256
+            minLength: 0
+            pattern: ^[a-zA-Z0-9_!#$&'()*+,/:;=?@\[\].]*$
+            type: string
+        type:
+          type: string
+          enum:
+          - whitelist
+          - passthrough
+    ApplicationClientTokenExchangeExchangeConfigUpdateRequest_ApplicationConfig:
+      required:
+      - allowedAudiences
+      - allowedAuthorizationServers
+      - allowedExchange
+      - allowedResources
+      - claimMapping
+      - scopes
+      type: object
+      properties:
+        accountIdField:
+          maxLength: 256
+          minLength: 0
+          pattern: ^$|[a-zA-Z][a-zA-Z0-9_!#$&'()*+,\/:;=?@\[\].]*$
+          type: string
+        allowedAudiences:
+          maxItems: 32
+          minItems: 0
+          type: array
+          items:
+            maxLength: 2083
+            minLength: 0
+            pattern: ^$|^\S([^|]*\S)?$
+            type: string
+        allowedAuthorizationServers:
+          $ref: '#/components/schemas/AllowedAuthorizationServersRequest_ApplicationConfig'
+        allowedExchange:
+          type: string
+          enum:
+          - impersonation
+          - delegation
+        allowedResources:
+          maxItems: 32
+          minItems: 0
+          type: array
+          items:
+            maxLength: 2083
+            minLength: 0
+            pattern: ^$|^\S(.*\S)?$
+            type: string
+        claimMapping:
+          $ref: '#/components/schemas/ClaimMappingEventHookFunctionRequest_ApplicationConfig'
+        scopes:
+          $ref: '#/components/schemas/ScopeRequest_ApplicationConfig'
+    SubjectTokenResponse_ApplicationConfig:
+      type: object
+      properties:
+        issuer:
+          type: string
+        jwksUri:
+          type: string
+        tokenType:
+          type: string
+    IdReferenceResponse_ApplicationConfig:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID of the represented entity
+    InternalEventHookLogResponse:
+      type: object
+      properties:
+        accountEventId:
+          type: string
+        accountId:
+          type: string
+        id:
+          type: string
+        identityStore:
+          type: string
+        logSummary:
+          $ref: '#/components/schemas/LogSummaryResponse'
+        logs:
+          type: array
+          items:
+            $ref: '#/components/schemas/InternalLogResponse'
+        timestamp:
+          type: string
+    FieldError:
+      type: object
+      properties:
+        field:
+          type: string
+        message:
+          type: string
+        objectName:
+          type: string
+    JwksRequest_ApplicationConfig:
+      required:
+      - keys
+      type: object
+      properties:
+        keys:
+          maxItems: 32
+          minItems: 1
+          type: array
+          items:
+            type: object
+            additionalProperties:
+              type: object
+    ApplicationClientTokenExchangeConfigurationResponse_ApplicationConfig:
+      type: object
+      properties:
+        accessTokenFormat:
+          type: string
+          enum:
+          - opaque
+          - jwt
+        accessTokenLifespanMinutes:
+          type: integer
+          format: int32
+        allowedResources:
+          type: array
+          items:
+            type: string
+        backChannelLogoutUrl:
+          type: array
+          items:
+            type: string
+        callbackUrl:
+          $ref: '#/components/schemas/CallbackURLResponse_ApplicationConfig'
+        clientId:
+          type: string
+        clientSecret:
+          type: string
+        customAudiences:
+          type: array
+          items:
+            type: string
+        dialect:
+          $ref: '#/components/schemas/NameAndId_ApplicationConfig'
+        enableSelfServiceApiAccess:
+          type: boolean
+        enforceRefreshTokenLimits:
+          type: boolean
+        idTokenLifespanMinutes:
+          type: integer
+          format: int32
+        interactiveLoginEnabled:
+          type: boolean
+        jwks:
+          $ref: '#/components/schemas/JwksResponse_ApplicationConfig'
+        jwksAlgorithm:
+          type: string
+          enum:
+          - RS256
+          - ES256
+        jwksUri:
+          type: string
+        jwtSigningMethod:
+          type: string
+          enum:
+          - RS256
+        logoutUrl:
+          $ref: '#/components/schemas/CallbackURLResponse_ApplicationConfig'
+        maximumRefreshPeriodMinutes:
+          type: integer
+          format: int32
+        refreshTokenGrantEnabled:
+          type: boolean
+        refreshTokenLifespanMinutes:
+          type: integer
+          format: int32
+        tokenEndpointAuthMethod:
+          type: string
+          enum:
+          - client_secret_basic
+          - client_secret_post
+          - private_key_jwt
+          - none
+        tokenExchangeConfiguration:
+          $ref: '#/components/schemas/ApplicationClientTokenExchangeExchangeConfigResponse_ApplicationConfig'
+    ProblemJson:
+      type: object
+      properties:
+        detail:
+          type: string
+        entityName:
+          type: string
+          description: The name of the entity within the error has occurred
+        errorKey:
+          type: string
+          description: A unique identifier of the error
+        fieldErrors:
+          type: array
+          description: Field constraint violation errors
+          items:
+            $ref: '#/components/schemas/FieldError'
+        message:
+          type: string
+          description: A unique identifier in format of 'error.{errorKey}'
+        params:
+          type: array
+          description: Further information related to the actual error
+          items:
+            type: object
+            additionalProperties:
+              type: object
+        path:
+          type: string
+          description: Request URI
+        status:
+          type: integer
+          description: Status code
+          format: int32
+        title:
+          type: string
+      description: Based on [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807)
+    ClaimMappingEventHookFunctionResponse_ApplicationConfig:
+      type: object
+      properties:
+        code:
+          type: string
+        packageDependencies:
+          type: object
+          additionalProperties:
+            type: string
+    IdReferenceRequest_ApplicationConfig:
+      required:
+      - id
+      type: object
+      properties:
+        id:
+          pattern: ^[a-zA-Z0-9-]{1,36}$
+          type: string
+          description: ID of the represented entity
+    Passthrough_ApplicationConfig:
+      required:
+      - type
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/RelayStateHandling_ApplicationConfig'
+    ApplicationLauncherEntryRequest_ApplicationConfig:
+      type: object
+      properties:
+        displayName:
+          maxLength: 128
+          minLength: 1
+          type: string
+        enabled:
+          type: boolean
+          default: false
+        logoUrl:
+          maxLength: 1024
+          minLength: 1
+          pattern: ^$|^\S(.*\S)?$
+          type: string
+      description: Represents a launcher entry for an application client
+    Oauth2ClientUpdate_ApplicationConfig:
+      required:
+      - configuration
+      - id
+      - name
+      - type
+      type: object
+      properties:
+        applicationDomain:
+          type: string
+        applicationLauncherEntry:
+          $ref: '#/components/schemas/ApplicationLauncherEntryRequest_ApplicationConfig'
+        baseOrganization:
+          $ref: '#/components/schemas/IdReferenceRequest_ApplicationConfig'
+        configuration:
+          $ref: '#/components/schemas/OAuth2Configuration_ApplicationConfig'
+        description:
+          type: string
+        enabled:
+          type: boolean
+          default: false
+        friendlyLoginPageUrlPart:
+          maxLength: 16
+          minLength: 3
+          pattern: ^[-a-zA-Z0-9]*$
+          type: string
+        id:
+          maxLength: 36
+          minLength: 1
+          type: string
+        loginUrl:
+          maxLength: 1024
+          minLength: 1
+          pattern: ^$|^\S(.*\S)?$
+          type: string
+        loginUrlShortcut:
+          maxLength: 255
+          minLength: 1
+          pattern: ^[-a-zA-Z0-9]*$
+          type: string
+        name:
+          maxLength: 255
+          minLength: 1
+          pattern: ^$|^[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°]([\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*° ]*[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°])?$
+          type: string
+        type:
+          type: string
+          description: This field cannot be altered
+          enum:
+          - ssp
+          - oauth2
+          - saml2
+          - orgPortal
+          - bridge
+          - oauth2Simplified
+          - oauth2Native
+          - tokenExchange
+        websiteUrl:
+          maxLength: 1024
+          minLength: 1
+          pattern: ^$|^\S(.*\S)?$
+          type: string
+    AppleAppSiteAssociationResponse_ApplicationConfig:
+      type: object
+      properties:
+        bundleIdentifier:
+          type: string
+        teamId:
+          type: string
+    BaseEventHookLogListResponse:
+      type: object
+      properties:
+        accountEventId:
+          type: string
+        accountId:
+          type: string
+        id:
+          type: string
+        identityStore:
+          type: string
+        logSummary:
+          $ref: '#/components/schemas/LogSummaryResponse'
+        timestamp:
+          type: string
+    SpecificValue_ApplicationConfig:
+      required:
+      - type
+      - value
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/RelayStateHandling_ApplicationConfig'
+      - type: object
+        properties:
+          value:
+            maxLength: 200
+            minLength: 1
+            type: string
+    ActorTokenResponse_ApplicationConfig:
+      type: object
+      properties:
+        issuer:
+          type: string
+        jwksUri:
+          type: string
+        tokenType:
+          type: string
+    AssetLinkTargetUpdate_ApplicationConfig:
+      required:
+      - packageName
+      - sha256CertFingerprint
+      type: object
+      properties:
+        packageName:
+          maxLength: 256
+          minLength: 1
+          pattern: ^$|^\S(.*\S)?$
+          type: string
+        sha256CertFingerprint:
+          pattern: ^([A-Z0-9]{2}:){31}[A-Z0-9]{2}$
+          type: string
+    AppleAppSiteAssociationUpdate_ApplicationConfig:
+      required:
+      - bundleIdentifier
+      - teamId
+      type: object
+      properties:
+        bundleIdentifier:
+          maxLength: 256
+          minLength: 1
+          pattern: ^$|^\S(.*\S)?$
+          type: string
+        teamId:
+          maxLength: 32
+          minLength: 1
+          pattern: ^$|^\S(.*\S)?$
+          type: string
+    AllowedAuthorizationServersRequest_ApplicationConfig:
+      required:
+      - actorTokens
+      - subjectTokens
+      type: object
+      properties:
+        actorTokens:
+          maxItems: 32
+          minItems: 0
+          type: array
+          items:
+            $ref: '#/components/schemas/ActorTokenRequest_ApplicationConfig'
+        subjectTokens:
+          maxItems: 32
+          minItems: 1
+          type: array
+          items:
+            $ref: '#/components/schemas/SubjectTokenRequest_ApplicationConfig'
+    LogSummaryResponse:
+      type: object
+      properties:
+        error:
+          type: integer
+          format: int32
+        exception:
+          type: boolean
+        info:
+          type: integer
+          format: int32
+    RelayStateHandling_ApplicationConfig:
+      required:
+      - type
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - passthrough
+          - specificValue
+      discriminator:
+        propertyName: type
+    TokenExchangeClientResponse_ApplicationConfig:
+      type: object
+      properties:
+        applicationDomain:
+          type: string
+        applicationLauncherEntry:
+          $ref: '#/components/schemas/ApplicationLauncherEntryResponse_ApplicationConfig'
+        baseOrganization:
+          $ref: '#/components/schemas/IdReferenceResponse_ApplicationConfig'
+        configuration:
+          $ref: '#/components/schemas/ApplicationClientTokenExchangeConfigurationResponse_ApplicationConfig'
+        description:
+          type: string
+        enabled:
+          type: boolean
+        friendlyLoginPageUrlPart:
+          type: string
+        id:
+          type: string
+        loginUrl:
+          type: string
+        loginUrlShortcut:
+          type: string
+        name:
+          type: string
+        type:
+          type: string
+          enum:
+          - ssp
+          - oauth2
+          - saml2
+          - orgPortal
+          - bridge
+          - oauth2Simplified
+          - oauth2Native
+          - tokenExchange
+        websiteUrl:
+          type: string
+    ApplicationClientTokenExchangeConfigurationUpdateRequest_ApplicationConfig:
+      required:
+      - clientId
+      - clientSecret
+      - jwtSigningMethod
+      - tokenEndpointAuthMethod
+      - tokenExchangeConfiguration
+      type: object
+      properties:
+        accessTokenLifespanMinutes:
+          maximum: 1440
+          minimum: 1
+          type: integer
+          format: int32
+          default: 60
+        clientId:
+          maxLength: 36
+          minLength: 0
+          type: string
+        clientSecret:
+          maxLength: 72
+          minLength: 0
+          type: string
+        jwks:
+          $ref: '#/components/schemas/JwksRequest_ApplicationConfig'
+        jwksAlgorithm:
+          type: string
+          enum:
+          - RS256
+          - ES256
+        jwksUri:
+          maxLength: 1024
+          minLength: 1
+          pattern: ^$|^\S(.*\S)?$
+          type: string
+        jwtSigningMethod:
+          type: string
+          enum:
+          - RS256
+        tokenEndpointAuthMethod:
+          type: string
+          enum:
+          - client_secret_basic
+          - client_secret_post
+          - private_key_jwt
+          - none
+        tokenExchangeConfiguration:
+          $ref: '#/components/schemas/ApplicationClientTokenExchangeExchangeConfigUpdateRequest_ApplicationConfig'
+    ApplicationClientSdkConfigurationUpdateRequest_ApplicationConfig:
+      required:
+      - appleAppSiteAssociations
+      - assetLinkTargets
+      - origins
+      type: object
+      properties:
+        appleAppSiteAssociations:
+          maxItems: 32
+          minItems: 0
+          uniqueItems: true
+          type: array
+          items:
+            $ref: '#/components/schemas/AppleAppSiteAssociationUpdate_ApplicationConfig'
+        assetLinkTargets:
+          maxItems: 32
+          minItems: 0
+          uniqueItems: true
+          type: array
+          items:
+            $ref: '#/components/schemas/AssetLinkTargetUpdate_ApplicationConfig'
+        entryUrl:
+          maxLength: 1024
+          minLength: 1
+          pattern: ^$|^\S(.*\S)?$
+          type: string
+        origins:
+          maxItems: 32
+          minItems: 0
+          uniqueItems: true
+          type: array
+          items:
+            maxLength: 1024
+            minLength: 1
+            pattern: ^$|^\S(.*\S)?$
+            type: string
+    OrgPortalClientUpdate_ApplicationConfig:
+      required:
+      - id
+      - name
+      - type
+      type: object
+      properties:
+        applicationDomain:
+          type: string
+        applicationLauncherEntry:
+          $ref: '#/components/schemas/ApplicationLauncherEntryRequest_ApplicationConfig'
+        baseOrganization:
+          $ref: '#/components/schemas/IdReferenceRequest_ApplicationConfig'
+        description:
+          type: string
+        enabled:
+          type: boolean
+          default: false
+        friendlyLoginPageUrlPart:
+          maxLength: 16
+          minLength: 3
+          pattern: ^[-a-zA-Z0-9]*$
+          type: string
+        id:
+          maxLength: 36
+          minLength: 1
+          type: string
+        loginUrlShortcut:
+          maxLength: 255
+          minLength: 1
+          pattern: ^[-a-zA-Z0-9]*$
+          type: string
+        name:
+          maxLength: 255
+          minLength: 1
+          pattern: ^$|^[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°]([\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*° ]*[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°])?$
+          type: string
+        type:
+          type: string
+          description: This field cannot be altered
+          enum:
+          - ssp
+          - oauth2
+          - saml2
+          - orgPortal
+          - bridge
+          - oauth2Simplified
+          - oauth2Native
+          - tokenExchange
+        websiteUrl:
+          maxLength: 1024
+          minLength: 1
+          pattern: ^$|^\S(.*\S)?$
+          type: string
+    AssetLinkTargetResponse_ApplicationConfig:
+      type: object
+      properties:
+        packageName:
+          type: string
+        sha256CertFingerprint:
+          type: string
+    SspClientUpdate_ApplicationConfig:
+      required:
+      - id
+      - name
+      - type
+      type: object
+      properties:
+        applicationDomain:
+          type: string
+        applicationLauncherEntry:
+          $ref: '#/components/schemas/ApplicationLauncherEntryRequest_ApplicationConfig'
+        baseOrganization:
+          $ref: '#/components/schemas/IdReferenceRequest_ApplicationConfig'
+        description:
+          type: string
+        enabled:
+          type: boolean
+          default: false
+        friendlyLoginPageUrlPart:
+          maxLength: 16
+          minLength: 3
+          pattern: ^[-a-zA-Z0-9]*$
+          type: string
+        id:
+          maxLength: 36
+          minLength: 1
+          type: string
+        loginUrlShortcut:
+          maxLength: 255
+          minLength: 1
+          pattern: ^[-a-zA-Z0-9]*$
+          type: string
+        name:
+          maxLength: 255
+          minLength: 1
+          pattern: ^$|^[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°]([\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*° ]*[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°])?$
+          type: string
+        type:
+          type: string
+          description: This field cannot be altered
+          enum:
+          - ssp
+          - oauth2
+          - saml2
+          - orgPortal
+          - bridge
+          - oauth2Simplified
+          - oauth2Native
+          - tokenExchange
+        websiteUrl:
+          maxLength: 1024
+          minLength: 1
+          pattern: ^$|^\S(.*\S)?$
+          type: string
+    ApplicationClientOAuth2NativeConfigurationResponse_ApplicationConfig:
+      type: object
+      properties:
+        accessTokenFormat:
+          type: string
+          enum:
+          - opaque
+          - jwt
+        accessTokenLifespanMinutes:
+          type: integer
+          format: int32
+        allowedResources:
+          type: array
+          items:
+            type: string
+        callbackUrl:
+          $ref: '#/components/schemas/CallbackURLResponse_ApplicationConfig'
+        clientId:
+          type: string
+        clientSecret:
+          type: string
+        customAudiences:
+          type: array
+          items:
+            type: string
+        dialect:
+          $ref: '#/components/schemas/NameAndId_ApplicationConfig'
+        enableSelfServiceApiAccess:
+          type: boolean
+        enforceRefreshTokenLimits:
+          type: boolean
+        idTokenLifespanMinutes:
+          type: integer
+          format: int32
+        interactiveLoginEnabled:
+          type: boolean
+        jwks:
+          $ref: '#/components/schemas/JwksResponse_ApplicationConfig'
+        jwksAlgorithm:
+          type: string
+          enum:
+          - RS256
+          - ES256
+        jwksUri:
+          type: string
+        jwtSigningMethod:
+          type: string
+          enum:
+          - RS256
+        logoutUrl:
+          $ref: '#/components/schemas/CallbackURLResponse_ApplicationConfig'
+        maximumRefreshPeriodMinutes:
+          type: integer
+          format: int32
+        refreshTokenGrantEnabled:
+          type: boolean
+        refreshTokenLifespanMinutes:
+          type: integer
+          format: int32
+        sdk:
+          $ref: '#/components/schemas/ApplicationClientSdkConfigurationResponse_ApplicationConfig'
+        tokenEndpointAuthMethod:
+          type: string
+          enum:
+          - none
+    ApplicationClientTokenExchangeExchangeConfigResponse_ApplicationConfig:
+      type: object
+      properties:
+        accountIdField:
+          type: string
+        allowedAudiences:
+          type: array
+          items:
+            type: string
+        allowedAuthorizationServers:
+          $ref: '#/components/schemas/AllowedAuthorizationServersResponse_ApplicationConfig'
+        allowedExchange:
+          type: string
+          enum:
+          - impersonation
+          - delegation
+        allowedResources:
+          type: array
+          items:
+            type: string
+        claimMapping:
+          $ref: '#/components/schemas/ClaimMappingEventHookFunctionResponse_ApplicationConfig'
+        scopes:
+          $ref: '#/components/schemas/ScopeResponse_ApplicationConfig'
+    TokenExchangeClientUpdate_ApplicationConfig:
+      required:
+      - configuration
+      - id
+      - name
+      - type
+      type: object
+      properties:
+        applicationDomain:
+          type: string
+        applicationLauncherEntry:
+          $ref: '#/components/schemas/ApplicationLauncherEntryRequest_ApplicationConfig'
+        baseOrganization:
+          $ref: '#/components/schemas/IdReferenceRequest_ApplicationConfig'
+        configuration:
+          $ref: '#/components/schemas/ApplicationClientTokenExchangeConfigurationUpdateRequest_ApplicationConfig'
+        description:
+          type: string
+        enabled:
+          type: boolean
+          default: false
+        friendlyLoginPageUrlPart:
+          maxLength: 16
+          minLength: 3
+          pattern: ^[-a-zA-Z0-9]*$
+          type: string
+        id:
+          maxLength: 36
+          minLength: 1
+          type: string
+        loginUrlShortcut:
+          maxLength: 255
+          minLength: 1
+          pattern: ^[-a-zA-Z0-9]*$
+          type: string
+        name:
+          maxLength: 255
+          minLength: 1
+          pattern: ^$|^[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°]([\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*° ]*[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°])?$
+          type: string
+        type:
+          type: string
+          description: This field cannot be altered
+          enum:
+          - ssp
+          - oauth2
+          - saml2
+          - orgPortal
+          - bridge
+          - oauth2Simplified
+          - oauth2Native
+          - tokenExchange
+        websiteUrl:
+          maxLength: 1024
+          minLength: 1
+          pattern: ^$|^\S(.*\S)?$
+          type: string
+    OAuth2NativeClientUpdate_ApplicationConfig:
+      required:
+      - configuration
+      - id
+      - name
+      - type
+      type: object
+      properties:
+        applicationDomain:
+          type: string
+        applicationLauncherEntry:
+          $ref: '#/components/schemas/ApplicationLauncherEntryRequest_ApplicationConfig'
+        baseOrganization:
+          $ref: '#/components/schemas/IdReferenceRequest_ApplicationConfig'
+        configuration:
+          $ref: '#/components/schemas/ApplicationClientOAuth2NativeConfigurationUpdateRequest_ApplicationConfig'
+        description:
+          type: string
+        enabled:
+          type: boolean
+          default: false
+        friendlyLoginPageUrlPart:
+          maxLength: 16
+          minLength: 3
+          pattern: ^[-a-zA-Z0-9]*$
+          type: string
+        id:
+          maxLength: 36
+          minLength: 1
+          type: string
+        loginUrl:
+          maxLength: 1024
+          minLength: 1
+          pattern: ^$|^\S(.*\S)?$
+          type: string
+        loginUrlShortcut:
+          maxLength: 255
+          minLength: 1
+          pattern: ^[-a-zA-Z0-9]*$
+          type: string
+        name:
+          maxLength: 255
+          minLength: 1
+          pattern: ^$|^[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°]([\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*° ]*[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°])?$
+          type: string
+        type:
+          type: string
+          description: This field cannot be altered
+          enum:
+          - ssp
+          - oauth2
+          - saml2
+          - orgPortal
+          - bridge
+          - oauth2Simplified
+          - oauth2Native
+          - tokenExchange
+        websiteUrl:
+          maxLength: 1024
+          minLength: 1
+          pattern: ^$|^\S(.*\S)?$
+          type: string
+    ModifiableClientResponse_ApplicationConfig:
+      type: object
+      oneOf:
+      - $ref: '#/components/schemas/OrgPortalClientResponse_ApplicationConfig'
+      - $ref: '#/components/schemas/OAuth2ClientResponse_ApplicationConfig'
+      - $ref: '#/components/schemas/Saml2ClientResponse_ApplicationConfig'
+      - $ref: '#/components/schemas/BridgeClientResponse_ApplicationConfig'
+      - $ref: '#/components/schemas/OAuth2NativeClientResponse_ApplicationConfig'
+      - $ref: '#/components/schemas/TokenExchangeClientResponse_ApplicationConfig'
+    CallbackURLResponse_ApplicationConfig:
+      type: object
+      properties:
+        whitelist:
+          type: array
+          items:
+            type: string
+    OAuth2ClientResponse_ApplicationConfig:
+      type: object
+      properties:
+        applicationDomain:
+          type: string
+        applicationLauncherEntry:
+          $ref: '#/components/schemas/ApplicationLauncherEntryResponse_ApplicationConfig'
+        baseOrganization:
+          $ref: '#/components/schemas/IdReferenceResponse_ApplicationConfig'
+        configuration:
+          $ref: '#/components/schemas/ApplicationClientOAuth2ConfigurationResponse_ApplicationConfig'
+        description:
+          type: string
+        enabled:
+          type: boolean
+        friendlyLoginPageUrlPart:
+          type: string
+        id:
+          type: string
+        loginUrl:
+          type: string
+        loginUrlShortcut:
+          type: string
+        name:
+          type: string
+        type:
+          type: string
+          enum:
+          - ssp
+          - oauth2
+          - saml2
+          - orgPortal
+          - bridge
+          - oauth2Simplified
+          - oauth2Native
+          - tokenExchange
+        websiteUrl:
           type: string
   securitySchemes:
     securityScheme:

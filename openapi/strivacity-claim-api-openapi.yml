@@ -319,46 +319,6 @@ paths:
       - Claim
 components:
   schemas:
-    FieldError:
-      type: object
-      properties:
-        field:
-          type: string
-        message:
-          type: string
-        objectName:
-          type: string
-    PagedModelClaimResponse:
-      type: object
-      properties:
-        content:
-          type: array
-          items:
-            $ref: '#/components/schemas/ClaimResponse'
-        page:
-          $ref: '#/components/schemas/PageMetadata'
-    ClaimResponse_Claim:
-      type: object
-      properties:
-        dialectUri:
-          type: string
-        id:
-          type: string
-        name:
-          type: string
-        nativeClaim:
-          $ref: '#/components/schemas/NameIdAndDisplayName_Claim'
-    ClaimResponse:
-      type: object
-      properties:
-        dialectUri:
-          type: string
-        id:
-          type: string
-        name:
-          type: string
-        nativeClaim:
-          $ref: '#/components/schemas/NameIdAndDisplayName'
     PageMetadata:
       type: object
       properties:
@@ -374,6 +334,50 @@ components:
         totalPages:
           type: integer
           format: int64
+    ClaimResponse:
+      type: object
+      properties:
+        dialectUri:
+          type: string
+        id:
+          type: string
+        name:
+          type: string
+        nativeClaim:
+          $ref: '#/components/schemas/NameIdAndDisplayName'
+    NameIdAndDisplayName:
+      type: object
+      properties:
+        displayName:
+          type: string
+          description: Display name of the represented entity
+        id:
+          type: string
+          description: ID of the represented entity
+        name:
+          type: string
+          description: Name of the represented entity
+    IdReferenceRequest_Claim:
+      required:
+      - id
+      type: object
+      properties:
+        id:
+          pattern: ^[a-zA-Z0-9-]{1,36}$
+          type: string
+          description: ID of the represented entity
+    NameIdAndDisplayName_Claim:
+      type: object
+      properties:
+        displayName:
+          type: string
+          description: Display name of the represented entity
+        id:
+          type: string
+          description: ID of the represented entity
+        name:
+          type: string
+          description: Name of the represented entity
     ClaimUpdateRequest_Claim:
       required:
       - id
@@ -403,18 +407,15 @@ components:
           type: string
         nativeClaim:
           $ref: '#/components/schemas/IdReferenceRequest_Claim'
-    NameIdAndDisplayName:
+    FieldError:
       type: object
       properties:
-        displayName:
+        field:
           type: string
-          description: Display name of the represented entity
-        id:
+        message:
           type: string
-          description: ID of the represented entity
-        name:
+        objectName:
           type: string
-          description: Name of the represented entity
     ProblemJson:
       type: object
       properties:
@@ -451,27 +452,26 @@ components:
         title:
           type: string
       description: Based on [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807)
-    IdReferenceRequest_Claim:
-      required:
-      - id
+    PagedModelClaimResponse:
       type: object
       properties:
-        id:
-          pattern: ^[a-zA-Z0-9-]{1,36}$
-          type: string
-          description: ID of the represented entity
-    NameIdAndDisplayName_Claim:
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/ClaimResponse'
+        page:
+          $ref: '#/components/schemas/PageMetadata'
+    ClaimResponse_Claim:
       type: object
       properties:
-        displayName:
+        dialectUri:
           type: string
-          description: Display name of the represented entity
         id:
           type: string
-          description: ID of the represented entity
         name:
           type: string
-          description: Name of the represented entity
+        nativeClaim:
+          $ref: '#/components/schemas/NameIdAndDisplayName_Claim'
   securitySchemes:
     securityScheme:
       scheme: bearer

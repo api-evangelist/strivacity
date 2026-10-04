@@ -190,49 +190,6 @@ paths:
       - Lifecycle Event Hook Tryout
 components:
   schemas:
-    FunctionCallResponse_EventHookFunction:
-      type: object
-      properties:
-        body:
-          type: object
-        status:
-          type: integer
-          format: int32
-    TryOutEventHookIdResponse_EventHookFunction:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-    CallTryOutEventHookRequest_EventHookFunction:
-      required:
-      - code
-      - requestBody
-      type: object
-      properties:
-        code:
-          maxLength: 256000
-          minLength: 1
-          type: string
-          description: JavaScript code to be executed for the event hook function
-        packageDependencies:
-          type: object
-          additionalProperties:
-            type: string
-            description: Dependencies used for the event hook function
-          description: Dependencies used for the event hook function
-        requestBody:
-          type: object
-          description: Request body for the tryout function
-    FieldError:
-      type: object
-      properties:
-        field:
-          type: string
-        message:
-          type: string
-        objectName:
-          type: string
     TryOutEventHookRequest_EventHookFunction:
       required:
       - code
@@ -249,6 +206,23 @@ components:
             type: string
             description: Dependencies used for the event hook function
           description: Dependencies used for the event hook function
+    FunctionCallResponse_EventHookFunction:
+      type: object
+      properties:
+        body:
+          type: object
+        status:
+          type: integer
+          format: int32
+    FieldError:
+      type: object
+      properties:
+        field:
+          type: string
+        message:
+          type: string
+        objectName:
+          type: string
     ProblemJson:
       type: object
       properties:
@@ -285,6 +259,32 @@ components:
         title:
           type: string
       description: Based on [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807)
+    CallTryOutEventHookRequest_EventHookFunction:
+      required:
+      - code
+      - requestBody
+      type: object
+      properties:
+        code:
+          maxLength: 256000
+          minLength: 1
+          type: string
+          description: JavaScript code to be executed for the event hook function
+        packageDependencies:
+          type: object
+          additionalProperties:
+            type: string
+            description: Dependencies used for the event hook function
+          description: Dependencies used for the event hook function
+        requestBody:
+          type: object
+          description: Request body for the tryout function
+    TryOutEventHookIdResponse_EventHookFunction:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
   securitySchemes:
     securityScheme:
       scheme: bearer

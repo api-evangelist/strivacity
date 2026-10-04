@@ -58,15 +58,6 @@ paths:
       - Available Role Scope
 components:
   schemas:
-    FieldError:
-      type: object
-      properties:
-        field:
-          type: string
-        message:
-          type: string
-        objectName:
-          type: string
     ProblemJson:
       type: object
       properties:
@@ -118,6 +109,15 @@ components:
           type: string
           description: Write permission for the scope
       description: Represents an available scope
+    FieldError:
+      type: object
+      properties:
+        field:
+          type: string
+        message:
+          type: string
+        objectName:
+          type: string
   securitySchemes:
     securityScheme:
       scheme: bearer

@@ -548,29 +548,69 @@ paths:
       - Native Journey API
 components:
   schemas:
-    CheckboxWidgetValidator:
+    WidgetLayout:
       type: object
       properties:
-        required:
-          type: boolean
-    ForgottenPasswordPhoneRequest:
-      type: object
-      properties:
-        voice:
-          type: boolean
-    CheckboxWidgetRender:
-      type: object
-      properties:
-        labelType:
+        formId:
           type: string
-          enum:
-          - text
-          - html
         type:
           type: string
           enum:
-          - checkboxHidden
-          - checkboxShown
+          - widget
+          - horizontal
+          - vertical
+          - grid
+        widgetId:
+          type: string
+      description: A layout which refers to a widget within a form
+    GridLayout:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - widget
+          - horizontal
+          - vertical
+          - grid
+      description: A layout which displays items in multiple rows and columns
+    DateWidget:
+      type: object
+      properties:
+        id:
+          type: string
+        label:
+          type: string
+        readonly:
+          type: boolean
+        render:
+          $ref: '#/components/schemas/DateWidgetRender'
+        type:
+          type: string
+        validator:
+          $ref: '#/components/schemas/DateWidgetValidator'
+        value:
+          type: string
+      description: A widget which is used for date input
+    DateWidgetRender:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - native
+          - fieldSet
+    CustomerInputRequest:
+      type: object
+      properties:
+        attributes:
+          type: object
+          additionalProperties:
+            type: object
+        local:
+          type: object
+          additionalProperties:
+            type: object
     MfaEnrollTargetSelectRequest:
       required:
       - method
@@ -582,51 +622,55 @@ components:
           type: string
         target:
           type: string
-    MultiSelectWidget:
+    Branding:
       type: object
       properties:
-        id:
+        copyright:
           type: string
-        label:
+        logoUrl:
           type: string
-        options:
-          type: array
-          description: Contains the items in the multi select widget with additional groupings
-          items:
-            $ref: '#/components/schemas/Options'
-        readonly:
-          type: boolean
-        type:
+        privacyPolicyUrl:
           type: string
-        validator:
-          $ref: '#/components/schemas/MultiSelectWidgetValidator'
-        value:
-          type: array
-          items:
+        siteTermUrl:
+          type: string
+        styling:
+          type: object
+          additionalProperties:
             type: string
-      description: A widget which is used to receive inputs from a predefined set of values
-    Hint:
-      type: object
-      properties:
-        icon:
-          type: string
-        variant:
-          type: string
-    GenericLayout:
-      type: object
-      description: Describes the layout of the screen
-      oneOf:
-      - $ref: '#/components/schemas/WidgetLayout'
-      - $ref: '#/components/schemas/HorizontalLayout'
-      - $ref: '#/components/schemas/VerticalLayout'
-      - $ref: '#/components/schemas/GridLayout'
-    ForgottenUsernameRequest:
+      description: Contains branding data, describes the styling of the screen
+    PasswordResetRequest:
       required:
-      - recipient
+      - password
       type: object
       properties:
-        recipient:
+        password:
+          maxLength: 256
+          minLength: 1
           type: string
+        passwordConfirmation:
+          type: string
+    GenericResultRequest:
+      type: object
+    MultiSelectWidgetValidator:
+      type: object
+      properties:
+        maxSelectable:
+          type: integer
+          format: int32
+        minSelectable:
+          type: integer
+          format: int32
+    ProgressiveProfilingRequest:
+      type: object
+      properties:
+        attributes:
+          type: object
+          additionalProperties:
+            type: object
+        consents:
+          type: object
+          additionalProperties:
+            type: boolean
     PasswordWidgetValidator:
       type: object
       properties:
@@ -653,14 +697,41 @@ components:
             - SPECIAL
         restrictedCharacters:
           type: string
-    StaticWidgetRender:
+    HorizontalLayout:
       type: object
       properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/GenericLayout'
         type:
+          type: string
+          enum:
+          - widget
+          - horizontal
+          - vertical
+          - grid
+      description: A layout which displays items in multiple columns
+    ProofingDataRequest:
+      type: object
+      properties:
+        attributes:
+          type: object
+          additionalProperties:
+            type: object
+    CheckboxWidgetRender:
+      type: object
+      properties:
+        labelType:
           type: string
           enum:
           - text
           - html
+        type:
+          type: string
+          enum:
+          - checkboxHidden
+          - checkboxShown
     PasswordEnrollRequest:
       required:
       - password
@@ -674,118 +745,30 @@ components:
           type: string
         passwordConfirmation:
           type: string
-    MultiSelectWidgetValidator:
+    MultiSelectWidget:
       type: object
       properties:
-        maxSelectable:
-          type: integer
-          format: int32
-        minSelectable:
-          type: integer
-          format: int32
-    Screen:
-      type: object
-      properties:
-        branding:
-          $ref: '#/components/schemas/Branding'
-        finalizeUrl:
+        id:
           type: string
-          description: URL to redirect to at the end of the flow
-        forms:
+        label:
+          type: string
+        options:
           type: array
-          description: Contains the widgets appearing on the screen
+          description: Contains the items in the multi select widget with additional groupings
           items:
-            $ref: '#/components/schemas/FormWidget'
-        hostedUrl:
-          type: string
-          description: Fallback URL to continue the flow in case of an unknown widget cannot be rendered natively
-        layout:
-          $ref: '#/components/schemas/GenericLayout'
-        messages:
-          $ref: '#/components/schemas/Messages'
-        screen:
-          type: string
-          description: Name of the screen
-    InputWidgetValidator:
-      type: object
-      properties:
-        maxLength:
-          type: integer
-          format: int32
-        minLength:
-          type: integer
-          format: int32
-        regex:
-          type: string
-        required:
-          type: boolean
-    PasswordWidget:
-      type: object
-      properties:
-        id:
-          type: string
-        label:
-          type: string
-        qualityIndicator:
-          type: boolean
-        type:
-          type: string
-        validator:
-          $ref: '#/components/schemas/PasswordWidgetValidator'
-      description: A widget which is used for password input
-    InputWidget:
-      type: object
-      properties:
-        autocomplete:
-          type: string
-        id:
-          type: string
-        inputmode:
-          type: string
-          enum:
-          - email
-        label:
-          type: string
+            $ref: '#/components/schemas/Options'
         readonly:
           type: boolean
         type:
           type: string
         validator:
-          $ref: '#/components/schemas/InputWidgetValidator'
+          $ref: '#/components/schemas/MultiSelectWidgetValidator'
         value:
-          type: string
-      description: A widget which is used for customer data input
-    FilterProvider:
-      type: object
-    PasswordResetRequest:
-      required:
-      - password
-      type: object
-      properties:
-        password:
-          maxLength: 256
-          minLength: 1
-          type: string
-        passwordConfirmation:
-          type: string
-    SelectWidgetRender:
-      type: object
-      properties:
-        type:
-          type: string
-          enum:
-          - dropdown
-          - radio
-    IdentificationRequest:
-      required:
-      - identifier
-      type: object
-      properties:
-        identifier:
-          type: string
-        rememberAccount:
-          type: boolean
-    SelectWidgetValidator:
+          type: array
+          items:
+            type: string
+      description: A widget which is used to receive inputs from a predefined set of values
+    CheckboxWidgetValidator:
       type: object
       properties:
         required:
@@ -796,6 +779,44 @@ components:
         global:
           $ref: '#/components/schemas/Message'
       description: Contains error messages during the flow
+    MfaEnrollChallengeRequest:
+      required:
+      - passcode
+      type: object
+      properties:
+        passcode:
+          type: string
+        rememberDevice:
+          type: boolean
+    Message:
+      type: object
+      properties:
+        text:
+          type: string
+        type:
+          type: string
+    MfaPasscodeAuthenticationRequest:
+      required:
+      - passcode
+      type: object
+      properties:
+        passcode:
+          type: string
+        rememberDevice:
+          type: boolean
+    SelectWidgetRender:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - dropdown
+          - radio
+    ForgottenPasswordPhoneRequest:
+      type: object
+      properties:
+        voice:
+          type: boolean
     RegistrationRequest:
       type: object
       properties:
@@ -821,144 +842,6 @@ components:
           type: string
         userName:
           type: string
-    ProgressiveProfilingRequest:
-      type: object
-      properties:
-        attributes:
-          type: object
-          additionalProperties:
-            type: object
-        consents:
-          type: object
-          additionalProperties:
-            type: boolean
-    CustomerInputRequest:
-      type: object
-      properties:
-        attributes:
-          type: object
-          additionalProperties:
-            type: object
-        local:
-          type: object
-          additionalProperties:
-            type: object
-    PasswordAuthenticationRequest:
-      required:
-      - password
-      type: object
-      properties:
-        keepMeLoggedIn:
-          type: boolean
-        password:
-          maxLength: 256
-          minLength: 1
-          type: string
-    GenericResultRequest:
-      type: object
-    Message:
-      type: object
-      properties:
-        text:
-          type: string
-        type:
-          type: string
-    PhoneWidgetValidator:
-      type: object
-      properties:
-        required:
-          type: boolean
-    WidgetLayout:
-      type: object
-      properties:
-        formId:
-          type: string
-        type:
-          type: string
-          enum:
-          - widget
-          - horizontal
-          - vertical
-          - grid
-        widgetId:
-          type: string
-      description: A layout which refers to a widget within a form
-    Options:
-      type: object
-      properties:
-        label:
-          type: string
-        options:
-          type: array
-          items:
-            $ref: '#/components/schemas/Options'
-        type:
-          type: string
-          enum:
-          - group
-          - item
-        value:
-          type: string
-    MfaMethodSelectionRequest:
-      required:
-      - id
-      type: object
-      properties:
-        id:
-          pattern: '[0-9a-fA-F-]{36}/(passcode|magicLink|voice|publicKey)'
-          type: string
-        rememberDevice:
-          type: boolean
-    DateWidget:
-      type: object
-      properties:
-        id:
-          type: string
-        label:
-          type: string
-        readonly:
-          type: boolean
-        render:
-          $ref: '#/components/schemas/DateWidgetRender'
-        type:
-          type: string
-        validator:
-          $ref: '#/components/schemas/DateWidgetValidator'
-        value:
-          type: string
-      description: A widget which is used for date input
-    ProofingDataRequest:
-      type: object
-      properties:
-        attributes:
-          type: object
-          additionalProperties:
-            type: object
-    GenericWidget:
-      type: object
-      oneOf:
-      - $ref: '#/components/schemas/FormWidget'
-      - $ref: '#/components/schemas/SubmitWidget'
-      - $ref: '#/components/schemas/StaticWidget'
-      - $ref: '#/components/schemas/InputWidget'
-      - $ref: '#/components/schemas/CheckboxWidget'
-      - $ref: '#/components/schemas/PasswordWidget'
-      - $ref: '#/components/schemas/DateWidget'
-      - $ref: '#/components/schemas/PhoneWidget'
-      - $ref: '#/components/schemas/SelectWidget'
-      - $ref: '#/components/schemas/MultiSelectWidget'
-    StaticWidget:
-      type: object
-      properties:
-        id:
-          type: string
-        render:
-          $ref: '#/components/schemas/StaticWidgetRender'
-        type:
-          type: string
-        value:
-          type: string
-      description: A widget which contains static text to display on the form
     SubmitWidget:
       type: object
       properties:
@@ -971,14 +854,17 @@ components:
         type:
           type: string
       description: A widget which is used to submit a form
-    MfaEnrollChallengeRequest:
-      required:
-      - passcode
+    Hint:
       type: object
       properties:
-        passcode:
+        icon:
           type: string
-        rememberDevice:
+        variant:
+          type: string
+    PhoneWidgetValidator:
+      type: object
+      properties:
+        required:
           type: boolean
     MappingJacksonValue:
       type: object
@@ -987,35 +873,6 @@ components:
           $ref: '#/components/schemas/FilterProvider'
         value:
           type: object
-    PhoneWidget:
-      type: object
-      properties:
-        id:
-          type: string
-        label:
-          type: string
-        readonly:
-          type: boolean
-        type:
-          type: string
-        validator:
-          $ref: '#/components/schemas/PhoneWidgetValidator'
-        value:
-          type: string
-      description: A widget which is used for phone input
-    VerticalLayout:
-      type: object
-      properties:
-        type:
-          type: string
-          enum:
-          - widget
-          - horizontal
-          - vertical
-          - grid
-      description: A layout which displays items in multiple rows
-    ForgottenPasswordEmailRequest:
-      type: object
     SelectWidget:
       type: object
       properties:
@@ -1039,29 +896,90 @@ components:
         value:
           type: string
       description: A widget which is used to receive input from a predefined set of values
-    Branding:
+    PasswordWidget:
       type: object
       properties:
-        copyright:
+        id:
           type: string
-        logoUrl:
+        label:
           type: string
-        privacyPolicyUrl:
+        qualityIndicator:
+          type: boolean
+        type:
           type: string
-        siteTermUrl:
-          type: string
-        styling:
-          type: object
-          additionalProperties:
-            type: string
-      description: Contains branding data, describes the styling of the screen
-    HorizontalLayout:
+        validator:
+          $ref: '#/components/schemas/PasswordWidgetValidator'
+      description: A widget which is used for password input
+    ForgottenPasswordEmailRequest:
+      type: object
+    StaticWidget:
       type: object
       properties:
-        items:
+        id:
+          type: string
+        render:
+          $ref: '#/components/schemas/StaticWidgetRender'
+        type:
+          type: string
+        value:
+          type: string
+      description: A widget which contains static text to display on the form
+    ForgottenUsernameRequest:
+      required:
+      - recipient
+      type: object
+      properties:
+        recipient:
+          type: string
+    GenericWidget:
+      type: object
+      oneOf:
+      - $ref: '#/components/schemas/FormWidget'
+      - $ref: '#/components/schemas/SubmitWidget'
+      - $ref: '#/components/schemas/StaticWidget'
+      - $ref: '#/components/schemas/InputWidget'
+      - $ref: '#/components/schemas/CheckboxWidget'
+      - $ref: '#/components/schemas/PasswordWidget'
+      - $ref: '#/components/schemas/DateWidget'
+      - $ref: '#/components/schemas/PhoneWidget'
+      - $ref: '#/components/schemas/SelectWidget'
+      - $ref: '#/components/schemas/MultiSelectWidget'
+    MfaMethodSelectionRequest:
+      required:
+      - id
+      type: object
+      properties:
+        id:
+          pattern: '[0-9a-fA-F-]{36}/(passcode|magicLink|voice|publicKey)'
+          type: string
+        rememberDevice:
+          type: boolean
+    Screen:
+      type: object
+      properties:
+        branding:
+          $ref: '#/components/schemas/Branding'
+        finalizeUrl:
+          type: string
+          description: URL to redirect to at the end of the flow
+        forms:
           type: array
+          description: Contains the widgets appearing on the screen
           items:
-            $ref: '#/components/schemas/GenericLayout'
+            $ref: '#/components/schemas/FormWidget'
+        hostedUrl:
+          type: string
+          description: Fallback URL to continue the flow in case of an unknown widget cannot be rendered natively
+        layout:
+          $ref: '#/components/schemas/GenericLayout'
+        messages:
+          $ref: '#/components/schemas/Messages'
+        screen:
+          type: string
+          description: Name of the screen
+    VerticalLayout:
+      type: object
+      properties:
         type:
           type: string
           enum:
@@ -1069,7 +987,87 @@ components:
           - horizontal
           - vertical
           - grid
-      description: A layout which displays items in multiple columns
+      description: A layout which displays items in multiple rows
+    InputWidgetValidator:
+      type: object
+      properties:
+        maxLength:
+          type: integer
+          format: int32
+        minLength:
+          type: integer
+          format: int32
+        regex:
+          type: string
+        required:
+          type: boolean
+    FilterProvider:
+      type: object
+    PasswordAuthenticationRequest:
+      required:
+      - password
+      type: object
+      properties:
+        keepMeLoggedIn:
+          type: boolean
+        password:
+          maxLength: 256
+          minLength: 1
+          type: string
+    CheckboxWidget:
+      type: object
+      properties:
+        id:
+          type: string
+        label:
+          type: string
+        readonly:
+          type: boolean
+        render:
+          $ref: '#/components/schemas/CheckboxWidgetRender'
+        type:
+          type: string
+        validator:
+          $ref: '#/components/schemas/CheckboxWidgetValidator'
+        value:
+          type: boolean
+      description: A widget which is used for customer data input and can be either `true` or `false`
+    SelectWidgetValidator:
+      type: object
+      properties:
+        required:
+          type: boolean
+    IdentificationRequest:
+      required:
+      - identifier
+      type: object
+      properties:
+        identifier:
+          type: string
+        rememberAccount:
+          type: boolean
+    InputWidget:
+      type: object
+      properties:
+        autocomplete:
+          type: string
+        id:
+          type: string
+        inputmode:
+          type: string
+          enum:
+          - email
+        label:
+          type: string
+        readonly:
+          type: boolean
+        type:
+          type: string
+        validator:
+          $ref: '#/components/schemas/InputWidgetValidator'
+        value:
+          type: string
+      description: A widget which is used for customer data input
     MfaEnrollStartRequest:
       type: object
       properties:
@@ -1101,33 +1099,22 @@ components:
             - custom
         rememberDevice:
           type: boolean
-    MfaPasscodeAuthenticationRequest:
-      required:
-      - passcode
+    StaticWidgetRender:
       type: object
       properties:
-        passcode:
-          type: string
-        rememberDevice:
-          type: boolean
-    CheckboxWidget:
-      type: object
-      properties:
-        id:
-          type: string
-        label:
-          type: string
-        readonly:
-          type: boolean
-        render:
-          $ref: '#/components/schemas/CheckboxWidgetRender'
         type:
           type: string
-        validator:
-          $ref: '#/components/schemas/CheckboxWidgetValidator'
-        value:
-          type: boolean
-      description: A widget which is used for customer data input and can be either `true` or `false`
+          enum:
+          - text
+          - html
+    GenericLayout:
+      type: object
+      description: Describes the layout of the screen
+      oneOf:
+      - $ref: '#/components/schemas/WidgetLayout'
+      - $ref: '#/components/schemas/HorizontalLayout'
+      - $ref: '#/components/schemas/VerticalLayout'
+      - $ref: '#/components/schemas/GridLayout'
     FormWidget:
       type: object
       properties:
@@ -1140,6 +1127,47 @@ components:
           items:
             $ref: '#/components/schemas/GenericWidget'
       description: A form widget containing multiple widgets
+    DateWidgetValidator:
+      type: object
+      properties:
+        notAfter:
+          type: string
+        notBefore:
+          type: string
+        required:
+          type: boolean
+    Options:
+      type: object
+      properties:
+        label:
+          type: string
+        options:
+          type: array
+          items:
+            $ref: '#/components/schemas/Options'
+        type:
+          type: string
+          enum:
+          - group
+          - item
+        value:
+          type: string
+    PhoneWidget:
+      type: object
+      properties:
+        id:
+          type: string
+        label:
+          type: string
+        readonly:
+          type: boolean
+        type:
+          type: string
+        validator:
+          $ref: '#/components/schemas/PhoneWidgetValidator'
+        value:
+          type: string
+      description: A widget which is used for phone input
     SubmitWidgetRender:
       type: object
       properties:
@@ -1154,34 +1182,6 @@ components:
           enum:
           - button
           - link
-    DateWidgetValidator:
-      type: object
-      properties:
-        notAfter:
-          type: string
-        notBefore:
-          type: string
-        required:
-          type: boolean
-    GridLayout:
-      type: object
-      properties:
-        type:
-          type: string
-          enum:
-          - widget
-          - horizontal
-          - vertical
-          - grid
-      description: A layout which displays items in multiple rows and columns
-    DateWidgetRender:
-      type: object
-      properties:
-        type:
-          type: string
-          enum:
-          - native
-          - fieldSet
   securitySchemes:
     securityScheme:
       scheme: bearer

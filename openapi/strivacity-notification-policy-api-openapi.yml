@@ -397,20 +397,6 @@ paths:
           description: Your Strivacity tenant
 components:
   schemas:
-    AdminNotificationPolicyUpdateRequest:
-      required:
-      - sender
-      type: object
-      properties:
-        sender:
-          maxLength: 64
-          minLength: 0
-          pattern: "([a-z0-9!#$%&'*+/=?^_`{|}~\x80-\uFFFF-]+|\"([a-z0-9!#$%&'*.(),<>\\[\\]:; @+/=?^_`{|}~\x80-\uFFFF-]|\\\\\\\\|\\\\\")+\")(\\.([a-z0-9!#$%&'*+/=?^_`{|}~\x80-\uFFFF-]+|\"([a-z0-9!#$%&'*.(),<>\\[\\]:; @+/=?^_`{|}~\x80-\uFFFF-]|\\\\\\\\|\\\\\")+\"))*"
-          type: string
-        senderDisplayName:
-          maxLength: 255
-          minLength: 1
-          type: string
     ProblemJson:
       type: object
       properties:
@@ -447,13 +433,6 @@ components:
         title:
           type: string
       description: Based on [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807)
-    AdminNotificationPolicyResponse:
-      type: object
-      properties:
-        sender:
-          type: string
-        senderDisplayName:
-          type: string
     FieldError:
       type: object
       properties:
@@ -463,6 +442,42 @@ components:
           type: string
         objectName:
           type: string
+    AdminNotificationPolicyResponse:
+      type: object
+      properties:
+        sender:
+          type: string
+        senderDisplayName:
+          type: string
+    AdminNotificationPolicyUpdateRequest:
+      required:
+      - sender
+      type: object
+      properties:
+        sender:
+          maxLength: 64
+          minLength: 0
+          pattern: "([a-z0-9!#$%&'*+/=?^_`{|}~\x80-\uFFFF-]+|\"([a-z0-9!#$%&'*.(),<>\\[\\]:; @+/=?^_`{|}~\x80-\uFFFF-]|\\\\\\\\|\\\\\")+\")(\\.([a-z0-9!#$%&'*+/=?^_`{|}~\x80-\uFFFF-]+|\"([a-z0-9!#$%&'*.(),<>\\[\\]:; @+/=?^_`{|}~\x80-\uFFFF-]|\\\\\\\\|\\\\\")+\"))*"
+          type: string
+        senderDisplayName:
+          maxLength: 255
+          minLength: 1
+          type: string
+    PageMetadata:
+      type: object
+      properties:
+        number:
+          type: integer
+          format: int64
+        size:
+          type: integer
+          format: int64
+        totalElements:
+          type: integer
+          format: int64
+        totalPages:
+          type: integer
+          format: int64
     NotificationPolicyResponse:
       type: object
       properties:
@@ -509,6 +524,30 @@ components:
           maxLength: 255
           minLength: 1
           type: string
+    PagedModelNotificationPolicyResponse:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/NotificationPolicyResponse'
+        page:
+          $ref: '#/components/schemas/PageMetadata'
+    NotificationPolicyResponse_NotificationPolicy:
+      type: object
+      properties:
+        description:
+          type: string
+        id:
+          type: string
+        name:
+          type: string
+        policyTag:
+          type: string
+        sender:
+          type: string
+        senderDisplayName:
+          type: string
     NotificationPolicy_InsertRequest:
       required:
       - name
@@ -536,45 +575,6 @@ components:
         senderDisplayName:
           maxLength: 255
           minLength: 1
-          type: string
-    PagedModelNotificationPolicyResponse:
-      type: object
-      properties:
-        content:
-          type: array
-          items:
-            $ref: '#/components/schemas/NotificationPolicyResponse'
-        page:
-          $ref: '#/components/schemas/PageMetadata'
-    PageMetadata:
-      type: object
-      properties:
-        number:
-          type: integer
-          format: int64
-        size:
-          type: integer
-          format: int64
-        totalElements:
-          type: integer
-          format: int64
-        totalPages:
-          type: integer
-          format: int64
-    NotificationPolicyResponse_NotificationPolicy:
-      type: object
-      properties:
-        description:
-          type: string
-        id:
-          type: string
-        name:
-          type: string
-        policyTag:
-          type: string
-        sender:
-          type: string
-        senderDisplayName:
           type: string
   securitySchemes:
     securityScheme:
