@@ -50,3 +50,16 @@ trial:
   available: true
   url: https://www.strivacity.com/free-trial
   http_status: 200
+x-canonical:
+  generated: '2026-10-08'
+  vocabulary: all/0-working/economics/plans-canonical.yml
+  models:
+  - hybrid
+  units: []
+  plans:
+  - name: Strivacity (all-inclusive CIAM)
+    access: other
+    model: hybrid
+    model_how: derived
+    units: []
+    periods: []
