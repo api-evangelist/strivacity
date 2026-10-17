@@ -285,119 +285,6 @@ paths:
       - Native Claim
 components:
   schemas:
-    PageMetadata:
-      type: object
-      properties:
-        number:
-          type: integer
-          format: int64
-        size:
-          type: integer
-          format: int64
-        totalElements:
-          type: integer
-          format: int64
-        totalPages:
-          type: integer
-          format: int64
-    NativeClaim_InsertRequest:
-      required:
-      - displayName
-      - name
-      type: object
-      properties:
-        description:
-          maxLength: 1024
-          minLength: 0
-          type: string
-        dialectUri:
-          type: string
-          default: http://strivacity.com/claims
-        displayName:
-          maxLength: 64
-          minLength: 3
-          pattern: ^$|^[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°]([\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*° ]*[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°])?$
-          type: string
-        name:
-          maxLength: 256
-          minLength: 1
-          pattern: ^[a-zA-Z][a-zA-Z0-9_!#$&'()*+,\/:;=?@\[\].]*$
-          type: string
-        readonly:
-          type: boolean
-          readOnly: true
-    NativeClaimResponse_NativeClaim:
-      type: object
-      properties:
-        description:
-          type: string
-        dialectUri:
-          type: string
-        displayName:
-          type: string
-        id:
-          type: string
-        name:
-          type: string
-        readonly:
-          type: boolean
-        targetReadonly:
-          type: boolean
-    FieldError:
-      type: object
-      properties:
-        field:
-          type: string
-        message:
-          type: string
-        objectName:
-          type: string
-    NativeClaimResponse:
-      type: object
-      properties:
-        description:
-          type: string
-        dialectUri:
-          type: string
-        displayName:
-          type: string
-        id:
-          type: string
-        name:
-          type: string
-        readonly:
-          type: boolean
-        targetReadonly:
-          type: boolean
-    NativeClaim_NativeClaim:
-      required:
-      - displayName
-      - id
-      - name
-      type: object
-      properties:
-        description:
-          maxLength: 1024
-          minLength: 0
-          type: string
-        dialectUri:
-          type: string
-          default: http://strivacity.com/claims
-        displayName:
-          maxLength: 64
-          minLength: 3
-          pattern: ^$|^[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°]([\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*° ]*[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°])?$
-          type: string
-        id:
-          type: string
-        name:
-          maxLength: 256
-          minLength: 1
-          pattern: ^[a-zA-Z][a-zA-Z0-9_!#$&'()*+,\/:;=?@\[\].]*$
-          type: string
-        readonly:
-          type: boolean
-          readOnly: true
     ProblemJson:
       type: object
       properties:
@@ -434,6 +321,119 @@ components:
         title:
           type: string
       description: Based on [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807)
+    NativeClaimResponse_NativeClaim:
+      type: object
+      properties:
+        description:
+          type: string
+        dialectUri:
+          type: string
+        displayName:
+          type: string
+        id:
+          type: string
+        name:
+          type: string
+        readonly:
+          type: boolean
+        targetReadonly:
+          type: boolean
+    FieldError:
+      type: object
+      properties:
+        field:
+          type: string
+        message:
+          type: string
+        objectName:
+          type: string
+    NativeClaim_NativeClaim:
+      required:
+      - displayName
+      - id
+      - name
+      type: object
+      properties:
+        description:
+          maxLength: 1024
+          minLength: 0
+          type: string
+        dialectUri:
+          type: string
+          default: http://strivacity.com/claims
+        displayName:
+          maxLength: 64
+          minLength: 3
+          pattern: ^$|^[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°]([\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*° ]*[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°])?$
+          type: string
+        id:
+          type: string
+        name:
+          maxLength: 256
+          minLength: 1
+          pattern: ^[a-zA-Z][a-zA-Z0-9_!#$&'()*+,\/:;=?@\[\].]*$
+          type: string
+        readonly:
+          type: boolean
+          readOnly: true
+    PageMetadata:
+      type: object
+      properties:
+        number:
+          type: integer
+          format: int64
+        size:
+          type: integer
+          format: int64
+        totalElements:
+          type: integer
+          format: int64
+        totalPages:
+          type: integer
+          format: int64
+    NativeClaimResponse:
+      type: object
+      properties:
+        description:
+          type: string
+        dialectUri:
+          type: string
+        displayName:
+          type: string
+        id:
+          type: string
+        name:
+          type: string
+        readonly:
+          type: boolean
+        targetReadonly:
+          type: boolean
+    NativeClaim_InsertRequest:
+      required:
+      - displayName
+      - name
+      type: object
+      properties:
+        description:
+          maxLength: 1024
+          minLength: 0
+          type: string
+        dialectUri:
+          type: string
+          default: http://strivacity.com/claims
+        displayName:
+          maxLength: 64
+          minLength: 3
+          pattern: ^$|^[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°]([\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*° ]*[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°])?$
+          type: string
+        name:
+          maxLength: 256
+          minLength: 1
+          pattern: ^[a-zA-Z][a-zA-Z0-9_!#$&'()*+,\/:;=?@\[\].]*$
+          type: string
+        readonly:
+          type: boolean
+          readOnly: true
     PagedModelNativeClaimResponse:
       type: object
       properties:

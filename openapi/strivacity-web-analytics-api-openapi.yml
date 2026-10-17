@@ -284,22 +284,68 @@ paths:
       - Web Analytics
 components:
   schemas:
-    PageMetadata:
+    ProblemJson:
       type: object
       properties:
-        number:
+        detail:
+          type: string
+        entityName:
+          type: string
+          description: The name of the entity within the error has occurred
+        errorKey:
+          type: string
+          description: A unique identifier of the error
+        fieldErrors:
+          type: array
+          description: Field constraint violation errors
+          items:
+            $ref: '#/components/schemas/FieldError'
+        message:
+          type: string
+          description: A unique identifier in format of 'error.{errorKey}'
+        params:
+          type: array
+          description: Further information related to the actual error
+          items:
+            type: object
+            additionalProperties:
+              type: object
+        path:
+          type: string
+          description: Request URI
+        status:
           type: integer
-          format: int64
-        size:
-          type: integer
-          format: int64
-        totalElements:
-          type: integer
-          format: int64
-        totalPages:
-          type: integer
-          format: int64
+          description: Status code
+          format: int32
+        title:
+          type: string
+      description: Based on [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807)
     WebAnalyticsResponse_WebAnalytics:
+      type: object
+      properties:
+        apiKey:
+          type: string
+        configuration:
+          type: string
+        enabled:
+          type: boolean
+        id:
+          type: string
+          enum:
+          - googleAnalytics
+          - googleTagManager
+          - mixpanel
+          - amplitude
+    FieldError:
+      type: object
+      properties:
+        field:
+          type: string
+        message:
+          type: string
+        objectName:
+          type: string
+    WebAnalyticsResponse:
       type: object
       properties:
         apiKey:
@@ -342,31 +388,21 @@ components:
           - mixpanel
           - amplitude
       description: Represents web analytics configuration.
-    WebAnalyticsResponse:
+    PageMetadata:
       type: object
       properties:
-        apiKey:
-          type: string
-        configuration:
-          type: string
-        enabled:
-          type: boolean
-        id:
-          type: string
-          enum:
-          - googleAnalytics
-          - googleTagManager
-          - mixpanel
-          - amplitude
-    FieldError:
-      type: object
-      properties:
-        field:
-          type: string
-        message:
-          type: string
-        objectName:
-          type: string
+        number:
+          type: integer
+          format: int64
+        size:
+          type: integer
+          format: int64
+        totalElements:
+          type: integer
+          format: int64
+        totalPages:
+          type: integer
+          format: int64
     PagedModelWebAnalyticsResponse:
       type: object
       properties:
@@ -376,42 +412,6 @@ components:
             $ref: '#/components/schemas/WebAnalyticsResponse'
         page:
           $ref: '#/components/schemas/PageMetadata'
-    ProblemJson:
-      type: object
-      properties:
-        detail:
-          type: string
-        entityName:
-          type: string
-          description: The name of the entity within the error has occurred
-        errorKey:
-          type: string
-          description: A unique identifier of the error
-        fieldErrors:
-          type: array
-          description: Field constraint violation errors
-          items:
-            $ref: '#/components/schemas/FieldError'
-        message:
-          type: string
-          description: A unique identifier in format of 'error.{errorKey}'
-        params:
-          type: array
-          description: Further information related to the actual error
-          items:
-            type: object
-            additionalProperties:
-              type: object
-        path:
-          type: string
-          description: Request URI
-        status:
-          type: integer
-          description: Status code
-          format: int32
-        title:
-          type: string
-      description: Based on [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807)
   securitySchemes:
     securityScheme:
       scheme: bearer

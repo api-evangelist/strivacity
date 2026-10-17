@@ -296,6 +296,19 @@ paths:
       - Dialect
 components:
   schemas:
+    DialectResponse_Dialect:
+      type: object
+      properties:
+        description:
+          type: string
+        dialectUri:
+          type: string
+        id:
+          type: string
+        name:
+          type: string
+        policyTag:
+          type: string
     Dialect_InsertRequest:
       required:
       - dialectUri
@@ -320,90 +333,6 @@ components:
           pattern: ^[a-z0-9_]{2,32}$
           type: string
           description: Must be an existing policy tag name
-    PageMetadata:
-      type: object
-      properties:
-        number:
-          type: integer
-          format: int64
-        size:
-          type: integer
-          format: int64
-        totalElements:
-          type: integer
-          format: int64
-        totalPages:
-          type: integer
-          format: int64
-    DialectUpdateRequest_Dialect:
-      required:
-      - dialectUri
-      - id
-      - name
-      type: object
-      properties:
-        description:
-          maxLength: 1024
-          minLength: 0
-          type: string
-        dialectUri:
-          minLength: 1
-          type: string
-        id:
-          type: string
-        name:
-          maxLength: 256
-          minLength: 3
-          pattern: ^$|^[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°]([\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*° ]*[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°])?$
-          type: string
-        policyTag:
-          pattern: ^[a-z0-9_]{2,32}$
-          type: string
-          description: Must be an existing policy tag name
-    DialectResponse_Dialect:
-      type: object
-      properties:
-        description:
-          type: string
-        dialectUri:
-          type: string
-        id:
-          type: string
-        name:
-          type: string
-        policyTag:
-          type: string
-    DialectResponse:
-      type: object
-      properties:
-        description:
-          type: string
-        dialectUri:
-          type: string
-        id:
-          type: string
-        name:
-          type: string
-        policyTag:
-          type: string
-    FieldError:
-      type: object
-      properties:
-        field:
-          type: string
-        message:
-          type: string
-        objectName:
-          type: string
-    PagedModelDialectResponse:
-      type: object
-      properties:
-        content:
-          type: array
-          items:
-            $ref: '#/components/schemas/DialectResponse'
-        page:
-          $ref: '#/components/schemas/PageMetadata'
     DialectReference_Dialect:
       required:
       - id
@@ -449,6 +378,77 @@ components:
         title:
           type: string
       description: Based on [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807)
+    DialectUpdateRequest_Dialect:
+      required:
+      - dialectUri
+      - id
+      - name
+      type: object
+      properties:
+        description:
+          maxLength: 1024
+          minLength: 0
+          type: string
+        dialectUri:
+          minLength: 1
+          type: string
+        id:
+          type: string
+        name:
+          maxLength: 256
+          minLength: 3
+          pattern: ^$|^[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°]([\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*° ]*[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°])?$
+          type: string
+        policyTag:
+          pattern: ^[a-z0-9_]{2,32}$
+          type: string
+          description: Must be an existing policy tag name
+    FieldError:
+      type: object
+      properties:
+        field:
+          type: string
+        message:
+          type: string
+        objectName:
+          type: string
+    PagedModelDialectResponse:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/DialectResponse'
+        page:
+          $ref: '#/components/schemas/PageMetadata'
+    PageMetadata:
+      type: object
+      properties:
+        number:
+          type: integer
+          format: int64
+        size:
+          type: integer
+          format: int64
+        totalElements:
+          type: integer
+          format: int64
+        totalPages:
+          type: integer
+          format: int64
+    DialectResponse:
+      type: object
+      properties:
+        description:
+          type: string
+        dialectUri:
+          type: string
+        id:
+          type: string
+        name:
+          type: string
+        policyTag:
+          type: string
   securitySchemes:
     securityScheme:
       scheme: bearer

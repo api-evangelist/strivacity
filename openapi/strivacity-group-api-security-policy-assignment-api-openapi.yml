@@ -320,6 +320,16 @@ paths:
       - Group API Security Policy Assignment
 components:
   schemas:
+    NameAndIdResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID of the represented entity
+        name:
+          type: string
+          description: Name of the represented entity
+          example: Entity name
     GroupApiSecurityPolicyAssignmentRequest:
       required:
       - apiAccessPolicy
@@ -341,35 +351,6 @@ components:
       properties:
         id:
           pattern: ^[a-zA-Z0-9-]{1,36}$
-          type: string
-    NameAndIdResponse:
-      type: object
-      properties:
-        id:
-          type: string
-          description: ID of the represented entity
-        name:
-          type: string
-          description: Name of the represented entity
-          example: Entity name
-    GroupApiSecurityPolicyAssignmentResponse:
-      type: object
-      properties:
-        apiAccessPolicy:
-          $ref: '#/components/schemas/NameAndIdResponse'
-        scopes:
-          type: array
-          items:
-            $ref: '#/components/schemas/NameAndIdResponse'
-      description: Represents a group API security policy assignment
-    FieldError:
-      type: object
-      properties:
-        field:
-          type: string
-        message:
-          type: string
-        objectName:
           type: string
     ProblemJson:
       type: object
@@ -407,6 +388,25 @@ components:
         title:
           type: string
       description: Based on [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807)
+    FieldError:
+      type: object
+      properties:
+        field:
+          type: string
+        message:
+          type: string
+        objectName:
+          type: string
+    GroupApiSecurityPolicyAssignmentResponse:
+      type: object
+      properties:
+        apiAccessPolicy:
+          $ref: '#/components/schemas/NameAndIdResponse'
+        scopes:
+          type: array
+          items:
+            $ref: '#/components/schemas/NameAndIdResponse'
+      description: Represents a group API security policy assignment
   securitySchemes:
     securityScheme:
       scheme: bearer

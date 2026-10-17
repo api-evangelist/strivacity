@@ -248,67 +248,12 @@ paths:
       - Admin API Security Policy
 components:
   schemas:
-    ApiSecurityPolicyAssignmentResponse_ApiAccessPolicy:
-      type: object
-      properties:
-        apiAccessPolicy:
-          $ref: '#/components/schemas/IdReferenceResponse_ApiAccessPolicy'
-        application:
-          $ref: '#/components/schemas/NameAndId_ApiAccessPolicy'
-        client:
-          $ref: '#/components/schemas/NameAndId_ApiAccessPolicy'
-        scopes:
-          uniqueItems: true
-          type: array
-          items:
-            $ref: '#/components/schemas/ScopeResponse_ApiAccessPolicy'
     IdReferenceResponse_ApiAccessPolicy:
       type: object
       properties:
         id:
           type: string
           description: ID of the represented entity
-    ApiSecurityPolicyAssignmentUpsertRequest_ApiAccessPolicy:
-      required:
-      - apiAccessPolicy
-      - client
-      - scopes
-      type: object
-      properties:
-        apiAccessPolicy:
-          $ref: '#/components/schemas/IdReferenceRequest_ApiAccessPolicy'
-        client:
-          $ref: '#/components/schemas/IdReferenceRequest_ApiAccessPolicy'
-        scopes:
-          maxItems: 2147483647
-          minItems: 1
-          type: array
-          items:
-            $ref: '#/components/schemas/IdReferenceRequest_ApiAccessPolicy'
-    NameAndId_ApiAccessPolicy:
-      type: object
-      properties:
-        id:
-          type: string
-          description: ID of the represented entity
-    FieldError:
-      type: object
-      properties:
-        field:
-          type: string
-        message:
-          type: string
-        objectName:
-          type: string
-    ScopeResponse_ApiAccessPolicy:
-      type: object
-      properties:
-        displayName:
-          type: string
-        id:
-          type: string
-        name:
-          type: string
     IdReferenceRequest_ApiAccessPolicy:
       required:
       - id
@@ -377,9 +322,64 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ScopeResponse_ApiAccessPolicy'
+    FieldError:
+      type: object
+      properties:
+        field:
+          type: string
+        message:
+          type: string
+        objectName:
+          type: string
+    NameAndId_ApiAccessPolicy:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID of the represented entity
     AdminApiSecurityPolicyAssignmentResponse_ApiAccessPolicy:
       type: object
       properties:
+        application:
+          $ref: '#/components/schemas/NameAndId_ApiAccessPolicy'
+        client:
+          $ref: '#/components/schemas/NameAndId_ApiAccessPolicy'
+        scopes:
+          uniqueItems: true
+          type: array
+          items:
+            $ref: '#/components/schemas/ScopeResponse_ApiAccessPolicy'
+    ApiSecurityPolicyAssignmentUpsertRequest_ApiAccessPolicy:
+      required:
+      - apiAccessPolicy
+      - client
+      - scopes
+      type: object
+      properties:
+        apiAccessPolicy:
+          $ref: '#/components/schemas/IdReferenceRequest_ApiAccessPolicy'
+        client:
+          $ref: '#/components/schemas/IdReferenceRequest_ApiAccessPolicy'
+        scopes:
+          maxItems: 2147483647
+          minItems: 1
+          type: array
+          items:
+            $ref: '#/components/schemas/IdReferenceRequest_ApiAccessPolicy'
+    ScopeResponse_ApiAccessPolicy:
+      type: object
+      properties:
+        displayName:
+          type: string
+        id:
+          type: string
+        name:
+          type: string
+    ApiSecurityPolicyAssignmentResponse_ApiAccessPolicy:
+      type: object
+      properties:
+        apiAccessPolicy:
+          $ref: '#/components/schemas/IdReferenceResponse_ApiAccessPolicy'
         application:
           $ref: '#/components/schemas/NameAndId_ApiAccessPolicy'
         client:

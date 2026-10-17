@@ -251,34 +251,6 @@ paths:
       - API Security Policy Scope
 components:
   schemas:
-    Scope_InsertRequest:
-      required:
-      - name
-      type: object
-      properties:
-        name:
-          maxLength: 256
-          minLength: 1
-          pattern: ^[a-zA-Z0-9_!#$&'()*+,/:;=?@\[\].]*$
-          type: string
-    FieldError:
-      type: object
-      properties:
-        field:
-          type: string
-        message:
-          type: string
-        objectName:
-          type: string
-    ScopeResponse_ApiAccessPolicy:
-      type: object
-      properties:
-        displayName:
-          type: string
-        id:
-          type: string
-        name:
-          type: string
     ProblemJson:
       type: object
       properties:
@@ -315,6 +287,34 @@ components:
         title:
           type: string
       description: Based on [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807)
+    FieldError:
+      type: object
+      properties:
+        field:
+          type: string
+        message:
+          type: string
+        objectName:
+          type: string
+    Scope_InsertRequest:
+      required:
+      - name
+      type: object
+      properties:
+        name:
+          maxLength: 256
+          minLength: 1
+          pattern: ^[a-zA-Z0-9_!#$&'()*+,/:;=?@\[\].]*$
+          type: string
+    ScopeResponse_ApiAccessPolicy:
+      type: object
+      properties:
+        displayName:
+          type: string
+        id:
+          type: string
+        name:
+          type: string
     ScopeUpsertRequest_ApiAccessPolicy:
       required:
       - id

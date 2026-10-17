@@ -334,70 +334,41 @@ components:
           type: boolean
         uploaded:
           type: boolean
-    SystemTranslation:
+    BrandTranslationAdditionalContent:
       type: object
       properties:
-        externalLoginProviderUnlinkedNotification:
+        html:
           type: string
-        notificationPreferenceDescriptors:
-          type: object
-          additionalProperties:
-            $ref: '#/components/schemas/NotificationPreferenceDescriptor'
-        notificationPreferencesUpdatedNotification:
-          type: string
-    TranslationJson:
-      required:
-      - accountAttribute
-      - brand
-      - consent
-      - externalLoginProvider
-      - identityProofing
-      - notificationPolicy
-      - system
-      type: object
-      properties:
-        accountAttribute:
-          type: object
-          additionalProperties:
-            type: object
-            additionalProperties:
-              $ref: '#/components/schemas/AccountAttributeTranslation'
-        brand:
-          type: object
-          additionalProperties:
-            $ref: '#/components/schemas/BrandTranslation'
-        consent:
-          type: object
-          additionalProperties:
-            $ref: '#/components/schemas/ConsentTranslation'
-        externalLoginProvider:
-          type: object
-          additionalProperties:
-            $ref: '#/components/schemas/ExternalLoginProviderTranslation'
-        identityProofing:
-          type: object
-          additionalProperties:
-            $ref: '#/components/schemas/IdentityProofingTranslation'
-        notificationPolicy:
-          type: object
-          additionalProperties:
-            type: object
-            additionalProperties:
-              type: object
-              additionalProperties:
-                $ref: '#/components/schemas/NotificationTemplateTranslation'
-        system:
-          $ref: '#/components/schemas/SystemTranslation'
-      description: Represents an imported translation
-    IdentityProofingTranslationField:
+    NotificationPreferenceDescriptor:
       type: object
       properties:
         displayName:
           type: string
-    ExternalLoginProviderTranslation:
+    BrandTranslation:
       type: object
       properties:
-        loginButtonText:
+        additionalContents:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/BrandTranslationAdditionalContents'
+        additionalTexts:
+          type: object
+          additionalProperties:
+            type: string
+        copyright:
+          type: string
+        supportText:
+          type: string
+    IdentityProofingTranslation:
+      type: object
+      properties:
+        dataSteps:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/IdentityProofingTranslationDataStep'
+        failureMessage:
+          type: string
+        proofingNotificationDisplayText:
           type: string
     AccountAttributeTranslation:
       type: object
@@ -410,42 +381,6 @@ components:
           type: object
           additionalProperties:
             type: string
-    IdentityProofingTranslation:
-      type: object
-      properties:
-        dataSteps:
-          type: object
-          additionalProperties:
-            $ref: '#/components/schemas/IdentityProofingTranslationDataStep'
-        failureMessage:
-          type: string
-        proofingNotificationDisplayText:
-          type: string
-    BrandTranslationAdditionalContents:
-      type: object
-      properties:
-        footer:
-          $ref: '#/components/schemas/BrandTranslationAdditionalContent'
-        header:
-          $ref: '#/components/schemas/BrandTranslationAdditionalContent'
-        left:
-          $ref: '#/components/schemas/BrandTranslationAdditionalContent'
-        right:
-          $ref: '#/components/schemas/BrandTranslationAdditionalContent'
-    NotificationTemplateTranslation:
-      type: object
-      properties:
-        body:
-          type: string
-        plainTextBody:
-          type: string
-        subject:
-          type: string
-    GenericTranslationResponse:
-      type: object
-      oneOf:
-      - $ref: '#/components/schemas/LanguageCodeListResponse'
-      - $ref: '#/components/schemas/TranslationListResponse'
     ProblemJson:
       type: object
       properties:
@@ -491,33 +426,32 @@ components:
           type: string
         objectName:
           type: string
-    NotificationPreferenceDescriptor:
+    LanguageCodeListResponse:
       type: object
       properties:
-        displayName:
+        languageCode:
           type: string
-    ConsentTranslation:
+    BrandTranslationAdditionalContents:
       type: object
       properties:
-        displayText:
-          type: string
-        selfServiceDisplayText:
-          type: string
-    BrandTranslation:
+        footer:
+          $ref: '#/components/schemas/BrandTranslationAdditionalContent'
+        header:
+          $ref: '#/components/schemas/BrandTranslationAdditionalContent'
+        left:
+          $ref: '#/components/schemas/BrandTranslationAdditionalContent'
+        right:
+          $ref: '#/components/schemas/BrandTranslationAdditionalContent'
+    ExternalLoginProviderTranslation:
       type: object
       properties:
-        additionalContents:
-          type: object
-          additionalProperties:
-            $ref: '#/components/schemas/BrandTranslationAdditionalContents'
-        additionalTexts:
-          type: object
-          additionalProperties:
-            type: string
-        copyright:
+        loginButtonText:
           type: string
-        supportText:
-          type: string
+    GenericTranslationResponse:
+      type: object
+      oneOf:
+      - $ref: '#/components/schemas/LanguageCodeListResponse'
+      - $ref: '#/components/schemas/TranslationListResponse'
     IdentityProofingTranslationDataStep:
       type: object
       properties:
@@ -527,15 +461,81 @@ components:
           type: object
           additionalProperties:
             $ref: '#/components/schemas/IdentityProofingTranslationField'
-    LanguageCodeListResponse:
+    SystemTranslation:
       type: object
       properties:
-        languageCode:
+        externalLoginProviderUnlinkedNotification:
           type: string
-    BrandTranslationAdditionalContent:
+        notificationPreferenceDescriptors:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/NotificationPreferenceDescriptor'
+        notificationPreferencesUpdatedNotification:
+          type: string
+    NotificationTemplateTranslation:
       type: object
       properties:
-        html:
+        body:
+          type: string
+        plainTextBody:
+          type: string
+        subject:
+          type: string
+    IdentityProofingTranslationField:
+      type: object
+      properties:
+        displayName:
+          type: string
+    TranslationJson:
+      required:
+      - accountAttribute
+      - brand
+      - consent
+      - externalLoginProvider
+      - identityProofing
+      - notificationPolicy
+      - system
+      type: object
+      properties:
+        accountAttribute:
+          type: object
+          additionalProperties:
+            type: object
+            additionalProperties:
+              $ref: '#/components/schemas/AccountAttributeTranslation'
+        brand:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/BrandTranslation'
+        consent:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/ConsentTranslation'
+        externalLoginProvider:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/ExternalLoginProviderTranslation'
+        identityProofing:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/IdentityProofingTranslation'
+        notificationPolicy:
+          type: object
+          additionalProperties:
+            type: object
+            additionalProperties:
+              type: object
+              additionalProperties:
+                $ref: '#/components/schemas/NotificationTemplateTranslation'
+        system:
+          $ref: '#/components/schemas/SystemTranslation'
+      description: Represents an imported translation
+    ConsentTranslation:
+      type: object
+      properties:
+        displayText:
+          type: string
+        selfServiceDisplayText:
           type: string
   securitySchemes:
     securityScheme:

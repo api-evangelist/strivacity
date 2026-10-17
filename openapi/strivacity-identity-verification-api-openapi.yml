@@ -257,6 +257,32 @@ paths:
       - Identity Verification
 components:
   schemas:
+    CustomerIdentityVerificationResponse_AccountProofing:
+      type: object
+      properties:
+        attempts:
+          type: integer
+          format: int64
+        id:
+          type: string
+          format: uuid
+        invalidatedAt:
+          type: string
+          format: date-time
+        policyId:
+          type: string
+        proofedAt:
+          type: string
+          format: date-time
+      description: Represents an identity verification
+    CustomerIdentityVerificationInsertRequest_AccountProofing:
+      required:
+      - policyId
+      type: object
+      properties:
+        policyId:
+          minLength: 1
+          type: string
     ProblemJson:
       type: object
       properties:
@@ -301,32 +327,6 @@ components:
         message:
           type: string
         objectName:
-          type: string
-    CustomerIdentityVerificationResponse_AccountProofing:
-      type: object
-      properties:
-        attempts:
-          type: integer
-          format: int64
-        id:
-          type: string
-          format: uuid
-        invalidatedAt:
-          type: string
-          format: date-time
-        policyId:
-          type: string
-        proofedAt:
-          type: string
-          format: date-time
-      description: Represents an identity verification
-    CustomerIdentityVerificationInsertRequest_AccountProofing:
-      required:
-      - policyId
-      type: object
-      properties:
-        policyId:
-          minLength: 1
           type: string
   securitySchemes:
     securityScheme:

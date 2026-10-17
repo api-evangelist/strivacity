@@ -207,96 +207,6 @@ paths:
       - Bulk Operation
 components:
   schemas:
-    Result:
-      type: object
-      properties:
-        failure:
-          type: integer
-          format: int32
-        success:
-          type: integer
-          format: int32
-        total:
-          type: integer
-          format: int32
-    BulkStatus:
-      type: object
-      properties:
-        endDate:
-          type: string
-        id:
-          type: string
-        result:
-          $ref: '#/components/schemas/Result'
-        startDate:
-          type: string
-        status:
-          type: string
-    EnableAccountOperationRequest:
-      required:
-      - accountId
-      - identityStore
-      - operation
-      type: object
-      properties:
-        accountId:
-          type: string
-        identityStore:
-          type: string
-        operation:
-          type: string
-          enum:
-          - enableAccount
-    UpdatePersonalDataOperationRequest:
-      required:
-      - accountId
-      - identityStore
-      - operation
-      - value
-      type: object
-      properties:
-        accountId:
-          type: string
-        identityStore:
-          type: string
-        operation:
-          type: string
-          enum:
-          - updatePersonalData
-        value:
-          type: object
-          additionalProperties:
-            type: object
-    FieldError:
-      type: object
-      properties:
-        field:
-          type: string
-        message:
-          type: string
-        objectName:
-          type: string
-    DisableAccountOperationRequest:
-      required:
-      - accountId
-      - identityStore
-      - operation
-      type: object
-      properties:
-        accountId:
-          type: string
-        identityStore:
-          type: string
-        operation:
-          type: string
-          enum:
-          - disableAccount
-    JobIdReferenceResponse:
-      type: object
-      properties:
-        id:
-          type: string
-          description: ID of the represented entity
     ProblemJson:
       type: object
       properties:
@@ -333,6 +243,96 @@ components:
         title:
           type: string
       description: Based on [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807)
+    UpdatePersonalDataOperationRequest:
+      required:
+      - accountId
+      - identityStore
+      - operation
+      - value
+      type: object
+      properties:
+        accountId:
+          type: string
+        identityStore:
+          type: string
+        operation:
+          type: string
+          enum:
+          - updatePersonalData
+        value:
+          type: object
+          additionalProperties:
+            type: object
+    FieldError:
+      type: object
+      properties:
+        field:
+          type: string
+        message:
+          type: string
+        objectName:
+          type: string
+    BulkStatus:
+      type: object
+      properties:
+        endDate:
+          type: string
+        id:
+          type: string
+        result:
+          $ref: '#/components/schemas/Result'
+        startDate:
+          type: string
+        status:
+          type: string
+    Result:
+      type: object
+      properties:
+        failure:
+          type: integer
+          format: int32
+        success:
+          type: integer
+          format: int32
+        total:
+          type: integer
+          format: int32
+    EnableAccountOperationRequest:
+      required:
+      - accountId
+      - identityStore
+      - operation
+      type: object
+      properties:
+        accountId:
+          type: string
+        identityStore:
+          type: string
+        operation:
+          type: string
+          enum:
+          - enableAccount
+    JobIdReferenceResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID of the represented entity
+    DisableAccountOperationRequest:
+      required:
+      - accountId
+      - identityStore
+      - operation
+      type: object
+      properties:
+        accountId:
+          type: string
+        identityStore:
+          type: string
+        operation:
+          type: string
+          enum:
+          - disableAccount
     BulkOperationErrorEntry:
       type: object
       properties:

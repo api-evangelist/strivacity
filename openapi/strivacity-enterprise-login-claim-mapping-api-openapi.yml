@@ -370,77 +370,6 @@ paths:
       - Enterprise Login Claim Mapping
 components:
   schemas:
-    PageMetadata:
-      type: object
-      properties:
-        number:
-          type: integer
-          format: int64
-        size:
-          type: integer
-          format: int64
-        totalElements:
-          type: integer
-          format: int64
-        totalPages:
-          type: integer
-          format: int64
-    IdReferenceRequest:
-      required:
-      - id
-      type: object
-      properties:
-        id:
-          pattern: ^[a-zA-Z0-9-]{1,36}$
-          type: string
-          description: ID of the represented entity
-    ExternalLogin_Mapping_InsertRequest:
-      required:
-      - nativeClaim
-      - sourcePath
-      type: object
-      properties:
-        enabled:
-          type: boolean
-          default: false
-        fieldValueRegex:
-          type: string
-        nativeClaim:
-          $ref: '#/components/schemas/IdReferenceRequest'
-        sourcePath:
-          maxLength: 256
-          minLength: 0
-          type: string
-    NameIdAndDisplayName:
-      type: object
-      properties:
-        displayName:
-          type: string
-          description: Display name of the represented entity
-        id:
-          type: string
-          description: ID of the represented entity
-        name:
-          type: string
-          description: Name of the represented entity
-    PagedModelExternalLoginMappingResponse:
-      type: object
-      properties:
-        content:
-          type: array
-          items:
-            $ref: '#/components/schemas/ExternalLoginMappingResponse'
-        page:
-          $ref: '#/components/schemas/PageMetadata'
-    FieldError:
-      type: object
-      properties:
-        field:
-          type: string
-        message:
-          type: string
-        objectName:
-          type: string
     ExternalLoginMappingUpsertRequest:
       required:
       - id
@@ -461,6 +390,18 @@ components:
           maxLength: 256
           minLength: 0
           type: string
+    NameIdAndDisplayName:
+      type: object
+      properties:
+        displayName:
+          type: string
+          description: Display name of the represented entity
+        id:
+          type: string
+          description: ID of the represented entity
+        name:
+          type: string
+          description: Name of the represented entity
     ProblemJson:
       type: object
       properties:
@@ -497,6 +438,48 @@ components:
         title:
           type: string
       description: Based on [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807)
+    PagedModelExternalLoginMappingResponse:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExternalLoginMappingResponse'
+        page:
+          $ref: '#/components/schemas/PageMetadata'
+    FieldError:
+      type: object
+      properties:
+        field:
+          type: string
+        message:
+          type: string
+        objectName:
+          type: string
+    IdReferenceRequest:
+      required:
+      - id
+      type: object
+      properties:
+        id:
+          pattern: ^[a-zA-Z0-9-]{1,36}$
+          type: string
+          description: ID of the represented entity
+    PageMetadata:
+      type: object
+      properties:
+        number:
+          type: integer
+          format: int64
+        size:
+          type: integer
+          format: int64
+        totalElements:
+          type: integer
+          format: int64
+        totalPages:
+          type: integer
+          format: int64
     ExternalLoginMappingResponse:
       type: object
       properties:
@@ -509,6 +492,23 @@ components:
         nativeClaim:
           $ref: '#/components/schemas/NameIdAndDisplayName'
         sourcePath:
+          type: string
+    ExternalLogin_Mapping_InsertRequest:
+      required:
+      - nativeClaim
+      - sourcePath
+      type: object
+      properties:
+        enabled:
+          type: boolean
+          default: false
+        fieldValueRegex:
+          type: string
+        nativeClaim:
+          $ref: '#/components/schemas/IdReferenceRequest'
+        sourcePath:
+          maxLength: 256
+          minLength: 0
           type: string
   securitySchemes:
     securityScheme:

@@ -424,108 +424,60 @@ paths:
       - Lifecycle Event Hook
 components:
   schemas:
-    NoValueRequest_EventHookFunction:
+    HookVariableUpsertRequest_EventHookFunction:
       required:
+      - default
+      - name
       - type
       type: object
-      allOf:
-      - $ref: '#/components/schemas/DefaultValueRequest_EventHookFunction'
-    EventHookStatusResponse_EventHookFunction:
-      type: object
       properties:
-        status:
-          type: string
-          enum:
-          - ACTIVE
-          - UPGRADING
-          - UNHEALTHY
-          - NOT_RUNNING
-          - NON_DEPLOYED
-    PageMetadata:
-      type: object
-      properties:
-        number:
-          type: integer
-          format: int64
-        size:
-          type: integer
-          format: int64
-        totalElements:
-          type: integer
-          format: int64
-        totalPages:
-          type: integer
-          format: int64
-    EventHookFunctionWithStatusResponse_EventHookFunction:
-      type: object
-      properties:
-        blocking:
-          type: boolean
-        code:
-          type: string
+        default:
+          oneOf:
+          - $ref: '#/components/schemas/DefaultValueRequest_EventHookFunction'
+          - $ref: '#/components/schemas/NoValueRequest_EventHookFunction'
+          - $ref: '#/components/schemas/StaticSecretRequest_EventHookFunction'
+          - $ref: '#/components/schemas/StaticVariableRequest_EventHookFunction'
+          - $ref: '#/components/schemas/VariableReferenceRequest_EventHookFunction'
         description:
-          type: string
-        hook:
-          type: string
-          enum:
-          - DENY_AUTHENTICATION
-          - UNIDENTIFIED_USER
-          - POST_ACCOUNT_LOGIN
-          - POST_CONSENT_UPDATE
-          - POST_ID_PROOFING
-          - POST_IDENTIFICATION
-          - POST_MFA_FACTOR_CHANGE
-          - POST_REGISTRATION
-          - POST_EXTERNAL_LOGIN
-          - POST_TOKEN_REFRESH
-          - PRE_ID_PROOFING
-          - PRE_ID_TOKEN_GENERATION
-          - PRE_SAML2_ASSERTION_GENERATION
-          - PRE_PROGRESSIVE_PROFILING
-          - PRE_REGISTRATION
-          - PRE_PASSWORD
-          - PRE_PASSWORD_RESET
-          - PRE_MULTI_STAGE_REGISTRATION
-          - PRE_EXTERNAL_REGISTRATION
-          - PRE_AUTHENTICATOR_ENROLLMENT
-          - PRE_PASSWORD_PERSIST
-          - PRE_CONTACT_UPDATE
-          - POST_ACCOUNT_DELETION
-          - POST_ACCOUNT_UPDATE
-        id:
+          maxLength: 1024
+          minLength: 0
           type: string
         name:
+          maxLength: 64
+          minLength: 0
+          pattern: ^$|^[A-Za-z_][A-Za-z_0-9]*$
           type: string
-        packageDependencies:
-          type: object
-          additionalProperties:
-            type: string
-        policyTag:
-          type: string
-        requestBody:
-          type: string
-        status:
+        required:
+          type: boolean
+        type:
           type: string
           enum:
-          - ACTIVE
-          - UPGRADING
-          - UNHEALTHY
-          - NOT_RUNNING
-          - NON_DEPLOYED
-        variables:
-          uniqueItems: true
-          type: array
-          items:
-            $ref: '#/components/schemas/HookVariableResponse_EventHookFunction'
-    PagedModelEventHookFunctionListItemResponse:
+          - variable
+          - secret
+    FieldError:
       type: object
       properties:
-        content:
-          type: array
-          items:
-            $ref: '#/components/schemas/EventHookFunctionListItemResponse'
-        page:
-          $ref: '#/components/schemas/PageMetadata'
+        field:
+          type: string
+        message:
+          type: string
+        objectName:
+          type: string
+    DefaultValueResponse_EventHookFunction:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - noValue
+          - variableReference
+          - staticVariable
+          - staticSecret
+      oneOf:
+      - $ref: '#/components/schemas/NoValueResponse_EventHookFunction'
+      - $ref: '#/components/schemas/StaticVariableResponse_EventHookFunction'
+      - $ref: '#/components/schemas/StaticSecretResponse_EventHookFunction'
+      - $ref: '#/components/schemas/VariableReferenceResponse_EventHookFunction'
     EventHookFunction_InsertRequest:
       required:
       - blocking
@@ -598,16 +550,6 @@ components:
           items:
             $ref: '#/components/schemas/HookVariableUpsertRequest_EventHookFunction'
       description: Represents an event hook function
-    StaticSecretResponse_EventHookFunction:
-      type: object
-      properties:
-        type:
-          type: string
-          enum:
-          - noValue
-          - variableReference
-          - staticVariable
-          - staticSecret
     StaticVariableRequest_EventHookFunction:
       required:
       - type
@@ -621,7 +563,43 @@ components:
             maxLength: 8192
             minLength: 0
             type: string
-    DefaultValueResponse_EventHookFunction:
+    ProblemJson:
+      type: object
+      properties:
+        detail:
+          type: string
+        entityName:
+          type: string
+          description: The name of the entity within the error has occurred
+        errorKey:
+          type: string
+          description: A unique identifier of the error
+        fieldErrors:
+          type: array
+          description: Field constraint violation errors
+          items:
+            $ref: '#/components/schemas/FieldError'
+        message:
+          type: string
+          description: A unique identifier in format of 'error.{errorKey}'
+        params:
+          type: array
+          description: Further information related to the actual error
+          items:
+            type: object
+            additionalProperties:
+              type: object
+        path:
+          type: string
+          description: Request URI
+        status:
+          type: integer
+          description: Status code
+          format: int32
+        title:
+          type: string
+      description: Based on [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807)
+    StaticSecretResponse_EventHookFunction:
       type: object
       properties:
         type:
@@ -631,11 +609,16 @@ components:
           - variableReference
           - staticVariable
           - staticSecret
-      oneOf:
-      - $ref: '#/components/schemas/NoValueResponse_EventHookFunction'
-      - $ref: '#/components/schemas/StaticVariableResponse_EventHookFunction'
-      - $ref: '#/components/schemas/StaticSecretResponse_EventHookFunction'
-      - $ref: '#/components/schemas/VariableReferenceResponse_EventHookFunction'
+    NoValueResponse_EventHookFunction:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - noValue
+          - variableReference
+          - staticVariable
+          - staticSecret
     DefaultValueRequest_EventHookFunction:
       required:
       - type
@@ -650,6 +633,127 @@ components:
           - staticSecret
       discriminator:
         propertyName: type
+    VariableReferenceRequest_EventHookFunction:
+      required:
+      - type
+      - value
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/DefaultValueRequest_EventHookFunction'
+      - type: object
+        properties:
+          value:
+            maxLength: 36
+            minLength: 0
+            type: string
+    StaticVariableResponse_EventHookFunction:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - noValue
+          - variableReference
+          - staticVariable
+          - staticSecret
+        value:
+          type: string
+    PagedModelEventHookFunctionListItemResponse:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/EventHookFunctionListItemResponse'
+        page:
+          $ref: '#/components/schemas/PageMetadata'
+    EventHookFunctionWithStatusResponse_EventHookFunction:
+      type: object
+      properties:
+        blocking:
+          type: boolean
+        code:
+          type: string
+        description:
+          type: string
+        hook:
+          type: string
+          enum:
+          - DENY_AUTHENTICATION
+          - UNIDENTIFIED_USER
+          - POST_ACCOUNT_LOGIN
+          - POST_CONSENT_UPDATE
+          - POST_ID_PROOFING
+          - POST_IDENTIFICATION
+          - POST_MFA_FACTOR_CHANGE
+          - POST_REGISTRATION
+          - POST_EXTERNAL_LOGIN
+          - POST_TOKEN_REFRESH
+          - PRE_ID_PROOFING
+          - PRE_ID_TOKEN_GENERATION
+          - PRE_SAML2_ASSERTION_GENERATION
+          - PRE_PROGRESSIVE_PROFILING
+          - PRE_REGISTRATION
+          - PRE_PASSWORD
+          - PRE_PASSWORD_RESET
+          - PRE_MULTI_STAGE_REGISTRATION
+          - PRE_EXTERNAL_REGISTRATION
+          - PRE_AUTHENTICATOR_ENROLLMENT
+          - PRE_PASSWORD_PERSIST
+          - PRE_CONTACT_UPDATE
+          - POST_ACCOUNT_DELETION
+          - POST_ACCOUNT_UPDATE
+        id:
+          type: string
+        name:
+          type: string
+        packageDependencies:
+          type: object
+          additionalProperties:
+            type: string
+        policyTag:
+          type: string
+        requestBody:
+          type: string
+        status:
+          type: string
+          enum:
+          - ACTIVE
+          - UPGRADING
+          - UNHEALTHY
+          - NOT_RUNNING
+          - NON_DEPLOYED
+        variables:
+          uniqueItems: true
+          type: array
+          items:
+            $ref: '#/components/schemas/HookVariableResponse_EventHookFunction'
+    PageMetadata:
+      type: object
+      properties:
+        number:
+          type: integer
+          format: int64
+        size:
+          type: integer
+          format: int64
+        totalElements:
+          type: integer
+          format: int64
+        totalPages:
+          type: integer
+          format: int64
+    EventHookStatusResponse_EventHookFunction:
+      type: object
+      properties:
+        status:
+          type: string
+          enum:
+          - ACTIVE
+          - UPGRADING
+          - UNHEALTHY
+          - NOT_RUNNING
+          - NON_DEPLOYED
     EventHookFunctionListItemResponse:
       type: object
       properties:
@@ -699,15 +803,6 @@ components:
           - UNHEALTHY
           - NOT_RUNNING
           - NON_DEPLOYED
-    FieldError:
-      type: object
-      properties:
-        field:
-          type: string
-        message:
-          type: string
-        objectName:
-          type: string
     EventHookFunctionRequest_EventHookFunction:
       required:
       - blocking
@@ -782,95 +877,6 @@ components:
           items:
             $ref: '#/components/schemas/HookVariableUpsertRequest_EventHookFunction'
       description: Represents an event hook function
-    ProblemJson:
-      type: object
-      properties:
-        detail:
-          type: string
-        entityName:
-          type: string
-          description: The name of the entity within the error has occurred
-        errorKey:
-          type: string
-          description: A unique identifier of the error
-        fieldErrors:
-          type: array
-          description: Field constraint violation errors
-          items:
-            $ref: '#/components/schemas/FieldError'
-        message:
-          type: string
-          description: A unique identifier in format of 'error.{errorKey}'
-        params:
-          type: array
-          description: Further information related to the actual error
-          items:
-            type: object
-            additionalProperties:
-              type: object
-        path:
-          type: string
-          description: Request URI
-        status:
-          type: integer
-          description: Status code
-          format: int32
-        title:
-          type: string
-      description: Based on [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807)
-    HookVariableResponse_EventHookFunction:
-      type: object
-      properties:
-        default:
-          $ref: '#/components/schemas/DefaultValueResponse_EventHookFunction'
-        description:
-          type: string
-        name:
-          type: string
-        required:
-          type: boolean
-        type:
-          type: string
-          enum:
-          - variable
-          - secret
-    StaticVariableResponse_EventHookFunction:
-      type: object
-      properties:
-        type:
-          type: string
-          enum:
-          - noValue
-          - variableReference
-          - staticVariable
-          - staticSecret
-        value:
-          type: string
-    StaticSecretRequest_EventHookFunction:
-      required:
-      - type
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/DefaultValueRequest_EventHookFunction'
-      - type: object
-        properties:
-          secretValue:
-            maxLength: 8192
-            minLength: 0
-            type: string
-    VariableReferenceRequest_EventHookFunction:
-      required:
-      - type
-      - value
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/DefaultValueRequest_EventHookFunction'
-      - type: object
-        properties:
-          value:
-            maxLength: 36
-            minLength: 0
-            type: string
     VariableReferenceResponse_EventHookFunction:
       type: object
       properties:
@@ -883,46 +889,6 @@ components:
           - staticSecret
         value:
           type: string
-    HookVariableUpsertRequest_EventHookFunction:
-      required:
-      - default
-      - name
-      - type
-      type: object
-      properties:
-        default:
-          oneOf:
-          - $ref: '#/components/schemas/DefaultValueRequest_EventHookFunction'
-          - $ref: '#/components/schemas/NoValueRequest_EventHookFunction'
-          - $ref: '#/components/schemas/StaticSecretRequest_EventHookFunction'
-          - $ref: '#/components/schemas/StaticVariableRequest_EventHookFunction'
-          - $ref: '#/components/schemas/VariableReferenceRequest_EventHookFunction'
-        description:
-          maxLength: 1024
-          minLength: 0
-          type: string
-        name:
-          maxLength: 64
-          minLength: 0
-          pattern: ^$|^[A-Za-z_][A-Za-z_0-9]*$
-          type: string
-        required:
-          type: boolean
-        type:
-          type: string
-          enum:
-          - variable
-          - secret
-    NoValueResponse_EventHookFunction:
-      type: object
-      properties:
-        type:
-          type: string
-          enum:
-          - noValue
-          - variableReference
-          - staticVariable
-          - staticSecret
     EventHookFunctionResponse_EventHookFunction:
       type: object
       properties:
@@ -976,6 +942,40 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/HookVariableResponse_EventHookFunction'
+    HookVariableResponse_EventHookFunction:
+      type: object
+      properties:
+        default:
+          $ref: '#/components/schemas/DefaultValueResponse_EventHookFunction'
+        description:
+          type: string
+        name:
+          type: string
+        required:
+          type: boolean
+        type:
+          type: string
+          enum:
+          - variable
+          - secret
+    StaticSecretRequest_EventHookFunction:
+      required:
+      - type
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/DefaultValueRequest_EventHookFunction'
+      - type: object
+        properties:
+          secretValue:
+            maxLength: 8192
+            minLength: 0
+            type: string
+    NoValueRequest_EventHookFunction:
+      required:
+      - type
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/DefaultValueRequest_EventHookFunction'
   securitySchemes:
     securityScheme:
       scheme: bearer

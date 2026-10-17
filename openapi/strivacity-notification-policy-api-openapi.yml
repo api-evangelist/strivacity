@@ -397,6 +397,15 @@ paths:
           description: Your Strivacity tenant
 components:
   schemas:
+    FieldError:
+      type: object
+      properties:
+        field:
+          type: string
+        message:
+          type: string
+        objectName:
+          type: string
     ProblemJson:
       type: object
       properties:
@@ -433,22 +442,6 @@ components:
         title:
           type: string
       description: Based on [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807)
-    FieldError:
-      type: object
-      properties:
-        field:
-          type: string
-        message:
-          type: string
-        objectName:
-          type: string
-    AdminNotificationPolicyResponse:
-      type: object
-      properties:
-        sender:
-          type: string
-        senderDisplayName:
-          type: string
     AdminNotificationPolicyUpdateRequest:
       required:
       - sender
@@ -463,22 +456,14 @@ components:
           maxLength: 255
           minLength: 1
           type: string
-    PageMetadata:
+    AdminNotificationPolicyResponse:
       type: object
       properties:
-        number:
-          type: integer
-          format: int64
-        size:
-          type: integer
-          format: int64
-        totalElements:
-          type: integer
-          format: int64
-        totalPages:
-          type: integer
-          format: int64
-    NotificationPolicyResponse:
+        sender:
+          type: string
+        senderDisplayName:
+          type: string
+    NotificationPolicyResponse_NotificationPolicy:
       type: object
       properties:
         description:
@@ -524,30 +509,6 @@ components:
           maxLength: 255
           minLength: 1
           type: string
-    PagedModelNotificationPolicyResponse:
-      type: object
-      properties:
-        content:
-          type: array
-          items:
-            $ref: '#/components/schemas/NotificationPolicyResponse'
-        page:
-          $ref: '#/components/schemas/PageMetadata'
-    NotificationPolicyResponse_NotificationPolicy:
-      type: object
-      properties:
-        description:
-          type: string
-        id:
-          type: string
-        name:
-          type: string
-        policyTag:
-          type: string
-        sender:
-          type: string
-        senderDisplayName:
-          type: string
     NotificationPolicy_InsertRequest:
       required:
       - name
@@ -576,6 +537,45 @@ components:
           maxLength: 255
           minLength: 1
           type: string
+    NotificationPolicyResponse:
+      type: object
+      properties:
+        description:
+          type: string
+        id:
+          type: string
+        name:
+          type: string
+        policyTag:
+          type: string
+        sender:
+          type: string
+        senderDisplayName:
+          type: string
+    PageMetadata:
+      type: object
+      properties:
+        number:
+          type: integer
+          format: int64
+        size:
+          type: integer
+          format: int64
+        totalElements:
+          type: integer
+          format: int64
+        totalPages:
+          type: integer
+          format: int64
+    PagedModelNotificationPolicyResponse:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/NotificationPolicyResponse'
+        page:
+          $ref: '#/components/schemas/PageMetadata'
   securitySchemes:
     securityScheme:
       scheme: bearer

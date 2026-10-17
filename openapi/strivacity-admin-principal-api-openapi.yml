@@ -75,6 +75,52 @@ paths:
       - Admin Principal
 components:
   schemas:
+    PrincipalUpdateRequest_AdminPrincipal:
+      required:
+      - uiSettings
+      type: object
+      properties:
+        uiSettings:
+          type: object
+          additionalProperties:
+            type: object
+            description: Represents the UI settings on the admin console
+          description: Represents the UI settings on the admin console
+    PrincipalResponse_AdminPrincipal:
+      type: object
+      properties:
+        email:
+          type: string
+          description: Email address of the account, if the account has an email identifier, it's the email identifier, otherwise it's the email native claim
+        id:
+          type: string
+          description: ID of the admin account
+        name:
+          type: object
+          additionalProperties:
+            type: string
+        permissions:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+        phone:
+          type: string
+          description: Phone identifier of the account
+        picture:
+          type: string
+          description: Picture URL of the account
+        store:
+          type: string
+          description: Identity store of the admin account
+        uiSettings:
+          type: object
+          additionalProperties:
+            type: object
+            description: Represents the UI settings on the admin console
+          description: Represents the UI settings on the admin console
+        userName:
+          type: string
     ProblemJson:
       type: object
       properties:
@@ -120,52 +166,6 @@ components:
           type: string
         objectName:
           type: string
-    PrincipalResponse_AdminPrincipal:
-      type: object
-      properties:
-        email:
-          type: string
-          description: Email address of the account, if the account has an email identifier, it's the email identifier, otherwise it's the email native claim
-        id:
-          type: string
-          description: ID of the admin account
-        name:
-          type: object
-          additionalProperties:
-            type: string
-        permissions:
-          uniqueItems: true
-          type: array
-          items:
-            type: string
-        phone:
-          type: string
-          description: Phone identifier of the account
-        picture:
-          type: string
-          description: Picture URL of the account
-        store:
-          type: string
-          description: Identity store of the admin account
-        uiSettings:
-          type: object
-          additionalProperties:
-            type: object
-            description: Represents the UI settings on the admin console
-          description: Represents the UI settings on the admin console
-        userName:
-          type: string
-    PrincipalUpdateRequest_AdminPrincipal:
-      required:
-      - uiSettings
-      type: object
-      properties:
-        uiSettings:
-          type: object
-          additionalProperties:
-            type: object
-            description: Represents the UI settings on the admin console
-          description: Represents the UI settings on the admin console
   securitySchemes:
     securityScheme:
       scheme: bearer

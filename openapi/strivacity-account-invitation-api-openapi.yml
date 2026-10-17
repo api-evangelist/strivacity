@@ -344,45 +344,6 @@ paths:
       - Account Invitation
 components:
   schemas:
-    AccountInvitationInsertRequest_AccountInvitationDetails:
-      required:
-      - clientId
-      - email
-      - groups
-      - language
-      - metadata
-      - roles
-      type: object
-      properties:
-        clientId:
-          minLength: 1
-          type: string
-          description: ID of the represented client
-        email:
-          type: string
-          format: email
-          minLength: 1
-        groups:
-          type: array
-          items:
-            $ref: '#/components/schemas/IdReferenceRequest_AccountInvitationDetails'
-        language:
-          pattern: '[a-z]{2,3}-[A-Z0-9]{2,3}'
-          type: string
-          default: en-US
-        metadata:
-          type: object
-          additionalProperties:
-            type: object
-            description: Represents metadata for an account to be invited
-          description: Represents metadata for an account to be invited
-        organization:
-          type: string
-          description: ID of the represented organization. If not specified, the invited account will be non-organizational.
-        roles:
-          type: array
-          items:
-            $ref: '#/components/schemas/AccountRole_AccountInvitationDetails'
     AccountInvitationResponse_Account:
       type: object
       properties:
@@ -407,24 +368,48 @@ components:
         validUntil:
           type: string
           format: date-time
-    FieldError_AccountInvitationDetails:
+    AccountInvitationResponse_AccountInvitationDetails:
       type: object
       properties:
-        field:
+        accountId:
           type: string
-        message:
+        clientId:
           type: string
-        objectName:
+          description: ID of the represented client
+        email:
           type: string
-    IdReferenceRequest_AccountInvitationDetails:
-      required:
-      - id
-      type: object
-      properties:
+        groups:
+          type: array
+          description: List of group ids that are assigned to the account.
+          items:
+            $ref: '#/components/schemas/IdReferenceResponse_AccountInvitationDetails'
+          default: []
         id:
-          pattern: ^[a-zA-Z0-9-]{1,36}$
           type: string
-          description: ID of the represented entity
+        language:
+          type: string
+          description: Language of the invitation
+          default: en-US
+        metadata:
+          type: object
+          additionalProperties:
+            type: object
+        organization:
+          type: string
+          description: ID of the represented organization. If not specified, the invited account will be non-organizational.
+        roles:
+          type: array
+          items:
+            $ref: '#/components/schemas/AccountRole_AccountInvitationDetails'
+        sent:
+          type: string
+          format: date-time
+        store:
+          type: string
+          description: Name of the represented identity store
+        validUntil:
+          type: string
+          format: date-time
     ProblemJson:
       type: object
       properties:
@@ -461,6 +446,15 @@ components:
         title:
           type: string
       description: Based on [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807)
+    IdReferenceRequest_AccountInvitationDetails:
+      required:
+      - id
+      type: object
+      properties:
+        id:
+          pattern: ^[a-zA-Z0-9-]{1,36}$
+          type: string
+          description: ID of the represented entity
     FieldError:
       type: object
       properties:
@@ -470,12 +464,15 @@ components:
           type: string
         objectName:
           type: string
-    IdReferenceResponse_AccountInvitationDetails:
+    FieldError_AccountInvitationDetails:
       type: object
       properties:
-        id:
+        field:
           type: string
-          description: ID of the represented entity
+        message:
+          type: string
+        objectName:
+          type: string
     AccountRole_AccountInvitationDetails:
       required:
       - id
@@ -528,32 +525,38 @@ components:
           format: int32
         title:
           type: string
-    AccountInvitationResponse_AccountInvitationDetails:
+    AccountInvitationInsertRequest_AccountInvitationDetails:
+      required:
+      - clientId
+      - email
+      - groups
+      - language
+      - metadata
+      - roles
       type: object
       properties:
-        accountId:
-          type: string
         clientId:
+          minLength: 1
           type: string
           description: ID of the represented client
         email:
           type: string
+          format: email
+          minLength: 1
         groups:
           type: array
-          description: List of group ids that are assigned to the account.
           items:
-            $ref: '#/components/schemas/IdReferenceResponse_AccountInvitationDetails'
-          default: []
-        id:
-          type: string
+            $ref: '#/components/schemas/IdReferenceRequest_AccountInvitationDetails'
         language:
+          pattern: '[a-z]{2,3}-[A-Z0-9]{2,3}'
           type: string
-          description: Language of the invitation
           default: en-US
         metadata:
           type: object
           additionalProperties:
             type: object
+            description: Represents metadata for an account to be invited
+          description: Represents metadata for an account to be invited
         organization:
           type: string
           description: ID of the represented organization. If not specified, the invited account will be non-organizational.
@@ -561,15 +564,12 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/AccountRole_AccountInvitationDetails'
-        sent:
+    IdReferenceResponse_AccountInvitationDetails:
+      type: object
+      properties:
+        id:
           type: string
-          format: date-time
-        store:
-          type: string
-          description: Name of the represented identity store
-        validUntil:
-          type: string
-          format: date-time
+          description: ID of the represented entity
   securitySchemes:
     securityScheme:
       scheme: bearer

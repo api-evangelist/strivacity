@@ -405,15 +405,18 @@ paths:
       - Bridge Policy Resource
 components:
   schemas:
-    BridgePolicyResourceInsertRequest_ApplicationConfig:
+    BridgePolicyResourceUpdateRequest_ApplicationConfig:
       required:
       - authentication
+      - id
       - methods
       - pathPattern
       type: object
       properties:
         authentication:
           $ref: '#/components/schemas/BridgePolicyResourceRequest.Authentication_ApplicationConfig'
+        id:
+          type: string
         methods:
           maxItems: 2147483647
           minItems: 1
@@ -425,57 +428,12 @@ components:
           maxLength: 1024
           minLength: 0
           type: string
-    BridgePolicyResourceRequest.Authentication_ApplicationConfig:
-      required:
-      - authorizationScopes
-      type: object
-      properties:
-        authorizationScopes:
-          type: array
-          items:
-            $ref: '#/components/schemas/IdReferenceRequest_ApplicationConfig'
-        required:
-          type: boolean
-          default: true
-    BridgePolicyResourceResponse.Authentication_ApplicationConfig:
-      type: object
-      properties:
-        authorizationScopes:
-          uniqueItems: true
-          type: array
-          items:
-            $ref: '#/components/schemas/IdReferenceResponse_ApplicationConfig'
-        required:
-          type: boolean
-    BridgePolicyResourceResponse_ApplicationConfig:
-      type: object
-      properties:
-        authentication:
-          $ref: '#/components/schemas/BridgePolicyResourceResponse.Authentication_ApplicationConfig'
-        id:
-          type: string
-        methods:
-          uniqueItems: true
-          type: array
-          items:
-            type: string
-        pathPattern:
-          type: string
     IdReferenceResponse_ApplicationConfig:
       type: object
       properties:
         id:
           type: string
           description: ID of the represented entity
-    FieldError:
-      type: object
-      properties:
-        field:
-          type: string
-        message:
-          type: string
-        objectName:
-          type: string
     ProblemJson:
       type: object
       properties:
@@ -521,18 +479,60 @@ components:
           pattern: ^[a-zA-Z0-9-]{1,36}$
           type: string
           description: ID of the represented entity
-    BridgePolicyResourceUpdateRequest_ApplicationConfig:
+    FieldError:
+      type: object
+      properties:
+        field:
+          type: string
+        message:
+          type: string
+        objectName:
+          type: string
+    BridgePolicyResourceResponse_ApplicationConfig:
+      type: object
+      properties:
+        authentication:
+          $ref: '#/components/schemas/BridgePolicyResourceResponse.Authentication_ApplicationConfig'
+        id:
+          type: string
+        methods:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+        pathPattern:
+          type: string
+    BridgePolicyResourceRequest.Authentication_ApplicationConfig:
+      required:
+      - authorizationScopes
+      type: object
+      properties:
+        authorizationScopes:
+          type: array
+          items:
+            $ref: '#/components/schemas/IdReferenceRequest_ApplicationConfig'
+        required:
+          type: boolean
+          default: true
+    BridgePolicyResourceResponse.Authentication_ApplicationConfig:
+      type: object
+      properties:
+        authorizationScopes:
+          uniqueItems: true
+          type: array
+          items:
+            $ref: '#/components/schemas/IdReferenceResponse_ApplicationConfig'
+        required:
+          type: boolean
+    BridgePolicyResourceInsertRequest_ApplicationConfig:
       required:
       - authentication
-      - id
       - methods
       - pathPattern
       type: object
       properties:
         authentication:
           $ref: '#/components/schemas/BridgePolicyResourceRequest.Authentication_ApplicationConfig'
-        id:
-          type: string
         methods:
           maxItems: 2147483647
           minItems: 1

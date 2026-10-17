@@ -261,6 +261,44 @@ paths:
       - Custom Adaptive MFA
 components:
   schemas:
+    CustomMfaInsertRequest_CustomMfa:
+      required:
+      - methods
+      - name
+      - packageDependencies
+      type: object
+      properties:
+        code:
+          maxLength: 256000
+          minLength: 1
+          type: string
+          description: Code of the custom mfa, if not specified it's generated automatically for each type
+          default: '*example code*'
+        description:
+          type: string
+        iconUrl:
+          maxLength: 1024
+          minLength: 1
+          pattern: ^$|^\S(.*\S)?$
+          type: string
+        methods:
+          maxItems: 1
+          minItems: 1
+          type: array
+          items:
+            pattern: ^(passcode|magicLink)$
+            type: string
+        name:
+          maxLength: 255
+          minLength: 1
+          pattern: ^$|^[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°]([\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*° ]*[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°])?$
+          type: string
+        packageDependencies:
+          type: object
+          additionalProperties:
+            type: string
+            description: Dependencies used for the event hook function
+          description: Dependencies used for the event hook function
     CustomMfaUpdateRequest_CustomMfa:
       required:
       - id
@@ -283,89 +321,6 @@ components:
           pattern: ^$|^\S(.*\S)?$
           type: string
         id:
-          type: string
-        methods:
-          maxItems: 1
-          minItems: 1
-          type: array
-          items:
-            pattern: ^(passcode|magicLink)$
-            type: string
-        name:
-          maxLength: 255
-          minLength: 1
-          pattern: ^$|^[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°]([\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*° ]*[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°])?$
-          type: string
-        packageDependencies:
-          type: object
-          additionalProperties:
-            type: string
-            description: Dependencies used for the event hook function
-          description: Dependencies used for the event hook function
-    CustomMfaResponse_CustomMfa:
-      type: object
-      properties:
-        code:
-          type: string
-        description:
-          type: string
-        iconUrl:
-          type: string
-        id:
-          type: string
-        methods:
-          type: array
-          items:
-            type: string
-        name:
-          type: string
-        packageDependencies:
-          type: object
-          additionalProperties:
-            type: string
-    FieldError:
-      type: object
-      properties:
-        field:
-          type: string
-        message:
-          type: string
-        objectName:
-          type: string
-    CustomMfaListResponse_CustomMfa:
-      type: object
-      properties:
-        description:
-          type: string
-        iconUrl:
-          type: string
-        id:
-          type: string
-        methods:
-          type: array
-          items:
-            type: string
-        name:
-          type: string
-    CustomMfaInsertRequest_CustomMfa:
-      required:
-      - methods
-      - name
-      - packageDependencies
-      type: object
-      properties:
-        code:
-          maxLength: 256000
-          minLength: 1
-          type: string
-          description: Code of the custom mfa, if not specified it's generated automatically for each type
-          default: '*example code*'
-        description:
-          type: string
-        iconUrl:
-          maxLength: 1024
-          minLength: 1
-          pattern: ^$|^\S(.*\S)?$
           type: string
         methods:
           maxItems: 1
@@ -421,6 +376,51 @@ components:
         title:
           type: string
       description: Based on [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807)
+    FieldError:
+      type: object
+      properties:
+        field:
+          type: string
+        message:
+          type: string
+        objectName:
+          type: string
+    CustomMfaResponse_CustomMfa:
+      type: object
+      properties:
+        code:
+          type: string
+        description:
+          type: string
+        iconUrl:
+          type: string
+        id:
+          type: string
+        methods:
+          type: array
+          items:
+            type: string
+        name:
+          type: string
+        packageDependencies:
+          type: object
+          additionalProperties:
+            type: string
+    CustomMfaListResponse_CustomMfa:
+      type: object
+      properties:
+        description:
+          type: string
+        iconUrl:
+          type: string
+        id:
+          type: string
+        methods:
+          type: array
+          items:
+            type: string
+        name:
+          type: string
   securitySchemes:
     securityScheme:
       scheme: bearer

@@ -190,51 +190,6 @@ paths:
       - Lifecycle Event Hook Log
 components:
   schemas:
-    LogSummaryResponse:
-      type: object
-      properties:
-        error:
-          type: integer
-          format: int32
-        exception:
-          type: boolean
-        info:
-          type: integer
-          format: int32
-    EventHookLogResponse:
-      type: object
-      properties:
-        accountEventId:
-          type: string
-        accountId:
-          type: string
-        application:
-          $ref: '#/components/schemas/NameAndIdResponse'
-        client:
-          $ref: '#/components/schemas/NameAndIdResponse'
-        hook:
-          $ref: '#/components/schemas/HookInfoResponse'
-        id:
-          type: string
-        identityStore:
-          type: string
-        logSummary:
-          $ref: '#/components/schemas/LogSummaryResponse'
-        logs:
-          type: array
-          items:
-            $ref: '#/components/schemas/LogResponse'
-        timestamp:
-          type: string
-    HookInfoResponse:
-      type: object
-      properties:
-        id:
-          type: string
-        name:
-          type: string
-        type:
-          type: string
     NameAndIdResponse:
       type: object
       properties:
@@ -245,45 +200,6 @@ components:
           type: string
           description: Name of the represented entity
           example: Entity name
-    EventHookLogListResponse:
-      type: object
-      properties:
-        accountEventId:
-          type: string
-        accountId:
-          type: string
-        application:
-          $ref: '#/components/schemas/NameAndIdResponse'
-        client:
-          $ref: '#/components/schemas/NameAndIdResponse'
-        hook:
-          $ref: '#/components/schemas/HookInfoResponse'
-        id:
-          type: string
-        identityStore:
-          type: string
-        logSummary:
-          $ref: '#/components/schemas/LogSummaryResponse'
-        timestamp:
-          type: string
-    FieldError:
-      type: object
-      properties:
-        field:
-          type: string
-        message:
-          type: string
-        objectName:
-          type: string
-    LogResponse:
-      type: object
-      properties:
-        level:
-          type: string
-        message:
-          type: string
-        timestamp:
-          type: string
     ProblemJson:
       type: object
       properties:
@@ -320,6 +236,90 @@ components:
         title:
           type: string
       description: Based on [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807)
+    EventHookLogListResponse:
+      type: object
+      properties:
+        accountEventId:
+          type: string
+        accountId:
+          type: string
+        application:
+          $ref: '#/components/schemas/NameAndIdResponse'
+        client:
+          $ref: '#/components/schemas/NameAndIdResponse'
+        hook:
+          $ref: '#/components/schemas/HookInfoResponse'
+        id:
+          type: string
+        identityStore:
+          type: string
+        logSummary:
+          $ref: '#/components/schemas/LogSummaryResponse'
+        timestamp:
+          type: string
+    FieldError:
+      type: object
+      properties:
+        field:
+          type: string
+        message:
+          type: string
+        objectName:
+          type: string
+    HookInfoResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        type:
+          type: string
+    EventHookLogResponse:
+      type: object
+      properties:
+        accountEventId:
+          type: string
+        accountId:
+          type: string
+        application:
+          $ref: '#/components/schemas/NameAndIdResponse'
+        client:
+          $ref: '#/components/schemas/NameAndIdResponse'
+        hook:
+          $ref: '#/components/schemas/HookInfoResponse'
+        id:
+          type: string
+        identityStore:
+          type: string
+        logSummary:
+          $ref: '#/components/schemas/LogSummaryResponse'
+        logs:
+          type: array
+          items:
+            $ref: '#/components/schemas/LogResponse'
+        timestamp:
+          type: string
+    LogSummaryResponse:
+      type: object
+      properties:
+        error:
+          type: integer
+          format: int32
+        exception:
+          type: boolean
+        info:
+          type: integer
+          format: int32
+    LogResponse:
+      type: object
+      properties:
+        level:
+          type: string
+        message:
+          type: string
+        timestamp:
+          type: string
   securitySchemes:
     securityScheme:
       scheme: bearer

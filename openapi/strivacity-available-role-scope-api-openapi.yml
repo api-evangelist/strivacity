@@ -58,6 +58,21 @@ paths:
       - Available Role Scope
 components:
   schemas:
+    AvailableScopeResponse:
+      type: object
+      properties:
+        delete:
+          type: string
+          description: Delete permission for the scope
+        name:
+          type: string
+        read:
+          type: string
+          description: Read permission for the scope
+        write:
+          type: string
+          description: Write permission for the scope
+      description: Represents an available scope
     ProblemJson:
       type: object
       properties:
@@ -94,21 +109,6 @@ components:
         title:
           type: string
       description: Based on [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807)
-    AvailableScopeResponse:
-      type: object
-      properties:
-        delete:
-          type: string
-          description: Delete permission for the scope
-        name:
-          type: string
-        read:
-          type: string
-          description: Read permission for the scope
-        write:
-          type: string
-          description: Write permission for the scope
-      description: Represents an available scope
     FieldError:
       type: object
       properties:

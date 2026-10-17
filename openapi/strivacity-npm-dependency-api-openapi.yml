@@ -122,12 +122,6 @@ components:
           type: string
           description: Query string to match for NPM dependencies
       description: Represents a query to match for NPM dependencies
-    AvailableVersion_Npm:
-      type: object
-      properties:
-        version:
-          type: string
-          example: 1.0.0
     NpmPackageSuggestion_Npm:
       type: object
       properties:
@@ -139,6 +133,12 @@ components:
           type: string
           example: 1.0.0
       description: Represents an NPM package suggestion based on a prefix search
+    AvailableVersion_Npm:
+      type: object
+      properties:
+        version:
+          type: string
+          example: 1.0.0
     ProblemJson:
       type: object
       properties:
@@ -194,12 +194,6 @@ components:
           type: string
           description: Name of the NPM dependency
       description: Represents a package by its name for fetching available package versions
-    NpmPackage_Npm:
-      type: object
-      properties:
-        packument:
-          $ref: '#/components/schemas/Packument_Npm'
-      description: Represents an NPM package
     Packument_Npm:
       type: object
       properties:
@@ -213,6 +207,12 @@ components:
           items:
             $ref: '#/components/schemas/AvailableVersion_Npm'
       description: Represents the available versions and the latest stable version for an NPM package
+    NpmPackage_Npm:
+      type: object
+      properties:
+        packument:
+          $ref: '#/components/schemas/Packument_Npm'
+      description: Represents an NPM package
   securitySchemes:
     securityScheme:
       scheme: bearer

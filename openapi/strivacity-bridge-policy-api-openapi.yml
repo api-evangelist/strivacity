@@ -320,37 +320,10 @@ paths:
       - Bridge Policy
 components:
   schemas:
-    BridgePolicyResponse_ApplicationConfig:
-      type: object
-      properties:
-        apiAccessPolicy:
-          $ref: '#/components/schemas/IdReferenceResponse_ApplicationConfig'
-        headers:
-          uniqueItems: true
-          type: array
-          items:
-            $ref: '#/components/schemas/BridgePolicyResponse.Header_ApplicationConfig'
-        healthMonitoringPath:
-          type: string
-        upstreamUrlPath:
-          type: string
-        upstreamUrls:
-          uniqueItems: true
-          type: array
-          items:
-            type: string
     BridgePolicyUpsertRequest.Header_ApplicationConfig:
       required:
       - idTokenClaim
       - key
-      type: object
-      properties:
-        idTokenClaim:
-          type: string
-        key:
-          type: string
-      description: Forwards a value to upstream server from id_token under the specified key
-    BridgePolicyResponse.Header_ApplicationConfig:
       type: object
       properties:
         idTokenClaim:
@@ -364,15 +337,6 @@ components:
         id:
           type: string
           description: ID of the represented entity
-    FieldError:
-      type: object
-      properties:
-        field:
-          type: string
-        message:
-          type: string
-        objectName:
-          type: string
     ProblemJson:
       type: object
       properties:
@@ -418,6 +382,23 @@ components:
           pattern: ^[a-zA-Z0-9-]{1,36}$
           type: string
           description: ID of the represented entity
+    FieldError:
+      type: object
+      properties:
+        field:
+          type: string
+        message:
+          type: string
+        objectName:
+          type: string
+    BridgePolicyResponse.Header_ApplicationConfig:
+      type: object
+      properties:
+        idTokenClaim:
+          type: string
+        key:
+          type: string
+      description: Forwards a value to upstream server from id_token under the specified key
     BridgePolicyUpsertRequest_ApplicationConfig:
       required:
       - apiAccessPolicy
@@ -449,6 +430,25 @@ components:
             minLength: 0
             type: string
             description: Must start with `http(s)://` and must not contain path, query or fragment part. An optional port can be specified.
+    BridgePolicyResponse_ApplicationConfig:
+      type: object
+      properties:
+        apiAccessPolicy:
+          $ref: '#/components/schemas/IdReferenceResponse_ApplicationConfig'
+        headers:
+          uniqueItems: true
+          type: array
+          items:
+            $ref: '#/components/schemas/BridgePolicyResponse.Header_ApplicationConfig'
+        healthMonitoringPath:
+          type: string
+        upstreamUrlPath:
+          type: string
+        upstreamUrls:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
   securitySchemes:
     securityScheme:
       scheme: bearer

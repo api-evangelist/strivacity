@@ -311,66 +311,6 @@ paths:
       - Variables
 components:
   schemas:
-    VariableResponse:
-      type: object
-      properties:
-        description:
-          type: string
-        id:
-          type: string
-        name:
-          type: string
-        policyTag:
-          type: string
-        type:
-          type: string
-          enum:
-          - variable
-          - secret
-        value:
-          type: string
-        valueUpdatedAt:
-          type: string
-          format: date-time
-    PageMetadata:
-      type: object
-      properties:
-        number:
-          type: integer
-          format: int64
-        size:
-          type: integer
-          format: int64
-        totalElements:
-          type: integer
-          format: int64
-        totalPages:
-          type: integer
-          format: int64
-    SecretVariableUpdateRequest:
-      required:
-      - id
-      - name
-      - type
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/VariableUpdateRequest'
-      - type: object
-        properties:
-          secretValue:
-            maxLength: 8192
-            minLength: 0
-            type: string
-            description: It will not be overridden unless provided.
-    PagedModelVariableListResponse:
-      type: object
-      properties:
-        content:
-          type: array
-          items:
-            $ref: '#/components/schemas/VariableListResponse'
-        page:
-          $ref: '#/components/schemas/PageMetadata'
     VariableInsertRequest:
       required:
       - name
@@ -397,44 +337,22 @@ components:
           - secret
       discriminator:
         propertyName: type
-    VariableVariableInsertRequest:
+    SecretVariableUpdateRequest:
       required:
+      - id
       - name
-      - type
-      - value
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/VariableInsertRequest'
-      - type: object
-        properties:
-          value:
-            maxLength: 8192
-            minLength: 0
-            type: string
-    FieldError:
-      type: object
-      properties:
-        field:
-          type: string
-        message:
-          type: string
-        objectName:
-          type: string
-    SecretVariableInsertRequest:
-      required:
-      - name
-      - secretValue
       - type
       type: object
       allOf:
-      - $ref: '#/components/schemas/VariableInsertRequest'
+      - $ref: '#/components/schemas/VariableUpdateRequest'
       - type: object
         properties:
           secretValue:
             maxLength: 8192
             minLength: 0
             type: string
-    VariableListResponse:
+            description: It will not be overridden unless provided.
+    VariableResponse:
       type: object
       properties:
         description:
@@ -450,6 +368,8 @@ components:
           enum:
           - variable
           - secret
+        value:
+          type: string
         valueUpdatedAt:
           type: string
           format: date-time
@@ -533,6 +453,86 @@ components:
             maxLength: 8192
             minLength: 0
             type: string
+    FieldError:
+      type: object
+      properties:
+        field:
+          type: string
+        message:
+          type: string
+        objectName:
+          type: string
+    SecretVariableInsertRequest:
+      required:
+      - name
+      - secretValue
+      - type
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/VariableInsertRequest'
+      - type: object
+        properties:
+          secretValue:
+            maxLength: 8192
+            minLength: 0
+            type: string
+    PageMetadata:
+      type: object
+      properties:
+        number:
+          type: integer
+          format: int64
+        size:
+          type: integer
+          format: int64
+        totalElements:
+          type: integer
+          format: int64
+        totalPages:
+          type: integer
+          format: int64
+    VariableVariableInsertRequest:
+      required:
+      - name
+      - type
+      - value
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/VariableInsertRequest'
+      - type: object
+        properties:
+          value:
+            maxLength: 8192
+            minLength: 0
+            type: string
+    VariableListResponse:
+      type: object
+      properties:
+        description:
+          type: string
+        id:
+          type: string
+        name:
+          type: string
+        policyTag:
+          type: string
+        type:
+          type: string
+          enum:
+          - variable
+          - secret
+        valueUpdatedAt:
+          type: string
+          format: date-time
+    PagedModelVariableListResponse:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/VariableListResponse'
+        page:
+          $ref: '#/components/schemas/PageMetadata'
   securitySchemes:
     securityScheme:
       scheme: bearer

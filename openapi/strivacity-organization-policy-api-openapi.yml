@@ -313,24 +313,15 @@ paths:
       - Organization Policy
 components:
   schemas:
-    OrganizationPolicyResponse:
+    FieldError:
       type: object
       properties:
-        loginProviders:
-          $ref: '#/components/schemas/OrganizationPolicyResponseLoginProviders'
-        organization:
-          $ref: '#/components/schemas/OnlyIdResponse'
-        policies:
-          $ref: '#/components/schemas/OrganizationPolicyResponsePolicies'
-    OrganizationPolicyResponse_OrganizationPolicy:
-      type: object
-      properties:
-        loginProviders:
-          $ref: '#/components/schemas/OrganizationPolicyResponseLoginProviders_OrganizationPolicy'
-        organization:
-          $ref: '#/components/schemas/OnlyIdResponse_OrganizationPolicy'
-        policies:
-          $ref: '#/components/schemas/OrganizationPolicyResponsePolicies_OrganizationPolicy'
+        field:
+          type: string
+        message:
+          type: string
+        objectName:
+          type: string
     OrganizationPolicyResponseLoginProviders:
       type: object
       properties:
@@ -348,37 +339,15 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/IdReferenceResponse'
-    PageMetadata:
-      type: object
-      properties:
-        number:
-          type: integer
-          format: int64
-        size:
-          type: integer
-          format: int64
-        totalElements:
-          type: integer
-          format: int64
-        totalPages:
-          type: integer
-          format: int64
-    OnlyIdResponse:
+    IdReferenceRequest_OrganizationPolicy:
+      required:
+      - id
       type: object
       properties:
         id:
+          pattern: ^[a-zA-Z0-9-]{1,36}$
           type: string
-    OrganizationPolicyUpsertRequest_OrganizationPolicy:
-      required:
-      - organization
-      type: object
-      properties:
-        loginProviders:
-          $ref: '#/components/schemas/LoginProviders_OrganizationPolicy'
-        organization:
-          $ref: '#/components/schemas/IdReferenceRequest_OrganizationPolicy'
-        policies:
-          $ref: '#/components/schemas/Policies_OrganizationPolicy'
+          description: ID of the represented entity
     Policies_OrganizationPolicy:
       type: object
       properties:
@@ -393,39 +362,6 @@ components:
         selfServicePolicy:
           $ref: '#/components/schemas/IdReferenceRequest_OrganizationPolicy'
       description: Defines which policy to override for an application. If any of them is set to `null`, that policy won't be overridden by the organization.
-    NameAndId_OrganizationPolicy:
-      type: object
-      properties:
-        id:
-          type: string
-          description: ID of the represented entity
-    FieldError:
-      type: object
-      properties:
-        field:
-          type: string
-        message:
-          type: string
-        objectName:
-          type: string
-    OnlyIdResponse_OrganizationPolicy:
-      type: object
-      properties:
-        id:
-          type: string
-    OrganizationPolicyResponsePolicies:
-      type: object
-      properties:
-        adaptiveMFA:
-          $ref: '#/components/schemas/NameAndId'
-        brand:
-          $ref: '#/components/schemas/NameAndId'
-        identityProofing:
-          $ref: '#/components/schemas/NameAndId'
-        notificationPolicy:
-          $ref: '#/components/schemas/NameAndId'
-        selfServicePolicy:
-          $ref: '#/components/schemas/NameAndId'
     ProblemJson:
       type: object
       properties:
@@ -462,6 +398,42 @@ components:
         title:
           type: string
       description: Based on [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807)
+    NameAndId_OrganizationPolicy:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID of the represented entity
+    OrganizationPolicyResponseLoginProviders_OrganizationPolicy:
+      type: object
+      properties:
+        enterpriseLoginProviders:
+          uniqueItems: true
+          type: array
+          items:
+            $ref: '#/components/schemas/IdReferenceResponse_OrganizationPolicy'
+        forwardToExternalProviderEnabled:
+          type: boolean
+        localLoginProviderEnabled:
+          type: boolean
+        socialLoginProviders:
+          uniqueItems: true
+          type: array
+          items:
+            $ref: '#/components/schemas/IdReferenceResponse_OrganizationPolicy'
+    OrganizationPolicyResponsePolicies:
+      type: object
+      properties:
+        adaptiveMFA:
+          $ref: '#/components/schemas/NameAndId'
+        brand:
+          $ref: '#/components/schemas/NameAndId'
+        identityProofing:
+          $ref: '#/components/schemas/NameAndId'
+        notificationPolicy:
+          $ref: '#/components/schemas/NameAndId'
+        selfServicePolicy:
+          $ref: '#/components/schemas/NameAndId'
     LoginProviders_OrganizationPolicy:
       required:
       - enterpriseLoginProviders
@@ -483,18 +455,6 @@ components:
           items:
             $ref: '#/components/schemas/IdReferenceRequest_OrganizationPolicy'
       description: Represents both social and enterprise login providers.
-    IdReferenceResponse_OrganizationPolicy:
-      type: object
-      properties:
-        id:
-          type: string
-          description: ID of the represented entity
-    IdReferenceResponse:
-      type: object
-      properties:
-        id:
-          type: string
-          description: ID of the represented entity
     OrganizationPolicyResponsePolicies_OrganizationPolicy:
       type: object
       properties:
@@ -508,33 +468,61 @@ components:
           $ref: '#/components/schemas/NameAndId_OrganizationPolicy'
         selfServicePolicy:
           $ref: '#/components/schemas/NameAndId_OrganizationPolicy'
-    OrganizationPolicyResponseLoginProviders_OrganizationPolicy:
+    OrganizationPolicyUpsertRequest_OrganizationPolicy:
+      required:
+      - organization
       type: object
       properties:
-        enterpriseLoginProviders:
-          uniqueItems: true
-          type: array
-          items:
-            $ref: '#/components/schemas/IdReferenceResponse_OrganizationPolicy'
-        forwardToExternalProviderEnabled:
-          type: boolean
-        localLoginProviderEnabled:
-          type: boolean
-        socialLoginProviders:
-          uniqueItems: true
-          type: array
-          items:
-            $ref: '#/components/schemas/IdReferenceResponse_OrganizationPolicy'
-    IdReferenceRequest_OrganizationPolicy:
-      required:
-      - id
+        loginProviders:
+          $ref: '#/components/schemas/LoginProviders_OrganizationPolicy'
+        organization:
+          $ref: '#/components/schemas/IdReferenceRequest_OrganizationPolicy'
+        policies:
+          $ref: '#/components/schemas/Policies_OrganizationPolicy'
+    OnlyIdResponse_OrganizationPolicy:
       type: object
       properties:
         id:
-          pattern: ^[a-zA-Z0-9-]{1,36}$
           type: string
-          description: ID of the represented entity
-    NameAndId:
+    PageMetadata:
+      type: object
+      properties:
+        number:
+          type: integer
+          format: int64
+        size:
+          type: integer
+          format: int64
+        totalElements:
+          type: integer
+          format: int64
+        totalPages:
+          type: integer
+          format: int64
+    OrganizationPolicyResponse_OrganizationPolicy:
+      type: object
+      properties:
+        loginProviders:
+          $ref: '#/components/schemas/OrganizationPolicyResponseLoginProviders_OrganizationPolicy'
+        organization:
+          $ref: '#/components/schemas/OnlyIdResponse_OrganizationPolicy'
+        policies:
+          $ref: '#/components/schemas/OrganizationPolicyResponsePolicies_OrganizationPolicy'
+    OnlyIdResponse:
+      type: object
+      properties:
+        id:
+          type: string
+    OrganizationPolicyResponse:
+      type: object
+      properties:
+        loginProviders:
+          $ref: '#/components/schemas/OrganizationPolicyResponseLoginProviders'
+        organization:
+          $ref: '#/components/schemas/OnlyIdResponse'
+        policies:
+          $ref: '#/components/schemas/OrganizationPolicyResponsePolicies'
+    IdReferenceResponse:
       type: object
       properties:
         id:
@@ -549,6 +537,18 @@ components:
             $ref: '#/components/schemas/OrganizationPolicyResponse'
         page:
           $ref: '#/components/schemas/PageMetadata'
+    NameAndId:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID of the represented entity
+    IdReferenceResponse_OrganizationPolicy:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID of the represented entity
   securitySchemes:
     securityScheme:
       scheme: bearer

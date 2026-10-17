@@ -329,138 +329,28 @@ paths:
       - Event Streaming
 components:
   schemas:
-    ElasticsearchEventStreamingInsertRequest:
-      required:
-      - accountEventStreaming
-      - auditLogStreaming
-      - configuration
-      - eventHookLogStreaming
-      - name
-      - type
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/EventStreamingInsertRequest'
-      - type: object
-        properties:
-          configuration:
-            $ref: '#/components/schemas/ElasticsearchEventStreamingInsertRequest.Configuration'
-    SplunkEventStreamingUpdateRequest.Configuration:
-      required:
-      - url
+    FieldError:
       type: object
       properties:
-        apiKey:
-          maxLength: 200
-          minLength: 0
+        field:
           type: string
-        index:
-          maxLength: 200
-          minLength: 1
+        message:
           type: string
-        sourceType:
-          maxLength: 200
-          minLength: 1
+        objectName:
           type: string
-        url:
-          type: string
-    HttpsEventStreamingUpdateRequest.Configuration:
-      required:
-      - headerName
-      - url
-      type: object
-      properties:
-        apiKey:
-          maxLength: 200
-          minLength: 0
-          type: string
-        headerName:
-          maxLength: 64
-          minLength: 0
-          type: string
-        url:
-          type: string
-    EventStreamingInsertRequest.AuditLogStreaming:
+    EventStreamingResponse.AccountEventStreaming:
       type: object
       properties:
         enabled:
           type: boolean
-    ElasticsearchEventStreamingUpdateRequest:
-      required:
-      - accountEventStreaming
-      - auditLogStreaming
-      - configuration
-      - eventHookLogStreaming
-      - id
-      - name
-      - type
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/EventStreamingUpdateRequest'
-      - type: object
-        properties:
-          configuration:
-            $ref: '#/components/schemas/ElasticsearchEventStreamingUpdateRequest.Configuration'
-    EventStreamingResponse:
-      type: object
-      properties:
-        accountEventStreaming:
-          $ref: '#/components/schemas/EventStreamingResponse.AccountEventStreaming'
-        auditLogStreaming:
-          $ref: '#/components/schemas/EventStreamingResponse.AuditLogStreaming'
-        configuration:
-          type: object
-          oneOf:
-          - $ref: '#/components/schemas/SplunkConfiguration'
-          - $ref: '#/components/schemas/ElasticsearchConfiguration'
-          - $ref: '#/components/schemas/HttpsConfiguration'
-        description:
-          type: string
-        enabled:
+        includeActions:
           type: boolean
-        eventHookLogStreaming:
-          $ref: '#/components/schemas/EventStreamingResponse.EventHookLogStreaming'
-        id:
-          type: string
-        name:
-          type: string
-        type:
-          type: string
-          enum:
-          - splunk
-          - elasticsearch
-          - https
-      description: Represents an event streaming configuration
-    HttpsEventStreamingUpdateRequest:
-      required:
-      - accountEventStreaming
-      - auditLogStreaming
-      - configuration
-      - eventHookLogStreaming
-      - id
-      - name
-      - type
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/EventStreamingUpdateRequest'
-      - type: object
-        properties:
-          configuration:
-            $ref: '#/components/schemas/HttpsEventStreamingUpdateRequest.Configuration'
-    PagedModelEventStreamingResponse:
-      type: object
-      properties:
-        content:
+        nativeClaims:
+          uniqueItems: true
           type: array
           items:
-            $ref: '#/components/schemas/EventStreamingResponse'
-        page:
-          $ref: '#/components/schemas/PageMetadata'
+            $ref: '#/components/schemas/OnlyIdResponse'
     EventStreamingResponse.EventHookLogStreaming:
-      type: object
-      properties:
-        enabled:
-          type: boolean
-    EventStreamingInsertRequest.EventHookLogStreaming:
       type: object
       properties:
         enabled:
@@ -497,51 +387,6 @@ components:
       description: Represents an event streaming configuration
       discriminator:
         propertyName: type
-    PageMetadata:
-      type: object
-      properties:
-        number:
-          type: integer
-          format: int64
-        size:
-          type: integer
-          format: int64
-        totalElements:
-          type: integer
-          format: int64
-        totalPages:
-          type: integer
-          format: int64
-    IdReferenceRequest:
-      required:
-      - id
-      type: object
-      properties:
-        id:
-          pattern: ^[a-zA-Z0-9-]{1,36}$
-          type: string
-          description: ID of the represented entity
-    ElasticsearchEventStreamingInsertRequest.Configuration:
-      required:
-      - apiKey
-      - url
-      type: object
-      properties:
-        apiKey:
-          maxLength: 200
-          minLength: 0
-          type: string
-        index:
-          maxLength: 200
-          minLength: 1
-          type: string
-        url:
-          type: string
-    OnlyIdResponse:
-      type: object
-      properties:
-        id:
-          type: string
     HttpsEventStreamingInsertRequest:
       required:
       - accountEventStreaming
@@ -557,129 +402,43 @@ components:
         properties:
           configuration:
             $ref: '#/components/schemas/HttpsEventStreamingInsertRequest.Configuration'
-    EventStreamingInsertRequest.AccountEventStreaming:
-      required:
-      - nativeClaims
-      type: object
-      properties:
-        enabled:
-          type: boolean
-        includeActions:
-          type: boolean
-        nativeClaims:
-          uniqueItems: true
-          type: array
-          items:
-            $ref: '#/components/schemas/IdReferenceRequest'
-    ElasticsearchConfiguration:
-      type: object
-      properties:
-        index:
-          type: string
-        url:
-          type: string
-    ElasticsearchEventStreamingUpdateRequest.Configuration:
-      required:
-      - url
-      type: object
-      properties:
-        apiKey:
-          maxLength: 200
-          minLength: 0
-          type: string
-        index:
-          maxLength: 200
-          minLength: 1
-          type: string
-        url:
-          type: string
-    SplunkConfiguration:
-      type: object
-      properties:
-        index:
-          type: string
-        sourceType:
-          type: string
-        url:
-          type: string
-    HttpsEventStreamingInsertRequest.Configuration:
-      required:
-      - apiKey
-      - headerName
-      - url
-      type: object
-      properties:
-        apiKey:
-          maxLength: 200
-          minLength: 0
-          type: string
-        headerName:
-          maxLength: 64
-          minLength: 0
-          type: string
-        url:
-          type: string
-    SplunkEventStreamingInsertRequest.Configuration:
-      required:
-      - apiKey
-      - url
-      type: object
-      properties:
-        apiKey:
-          maxLength: 200
-          minLength: 0
-          type: string
-        index:
-          maxLength: 200
-          minLength: 1
-          type: string
-        sourceType:
-          maxLength: 200
-          minLength: 1
-          type: string
-        url:
-          type: string
-    EventStreamingResponse.AccountEventStreaming:
-      type: object
-      properties:
-        enabled:
-          type: boolean
-        includeActions:
-          type: boolean
-        nativeClaims:
-          uniqueItems: true
-          type: array
-          items:
-            $ref: '#/components/schemas/OnlyIdResponse'
-    FieldError:
-      type: object
-      properties:
-        field:
-          type: string
-        message:
-          type: string
-        objectName:
-          type: string
-    EventStreamingResponse.AuditLogStreaming:
-      type: object
-      properties:
-        enabled:
-          type: boolean
-    SplunkEventStreamingInsertRequest:
+    SplunkEventStreamingUpdateRequest:
       required:
       - accountEventStreaming
       - auditLogStreaming
       - configuration
       - eventHookLogStreaming
+      - id
       - name
       - type
       type: object
       allOf:
-      - $ref: '#/components/schemas/EventStreamingInsertRequest'
+      - $ref: '#/components/schemas/EventStreamingUpdateRequest'
       - type: object
         properties:
           configuration:
-            $ref: '#/components/schemas/SplunkEventStreamingInsertRequest.Configuration'
+            $ref: '#/components/schemas/SplunkEventStreamingUpdateRequest.Configuration'
+    EventStreamingInsertRequest.AuditLogStreaming:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+    ElasticsearchEventStreamingUpdateRequest:
+      required:
+      - accountEventStreaming
+      - auditLogStreaming
+      - configuration
+      - eventHookLogStreaming
+      - id
+      - name
+      - type
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/EventStreamingUpdateRequest'
+      - type: object
+        properties:
+          configuration:
+            $ref: '#/components/schemas/ElasticsearchEventStreamingUpdateRequest.Configuration'
     ProblemJson:
       type: object
       properties:
@@ -716,26 +475,15 @@ components:
         title:
           type: string
       description: Based on [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807)
-    HttpsConfiguration:
+    SplunkConfiguration:
       type: object
       properties:
-        headerName:
+        index:
+          type: string
+        sourceType:
           type: string
         url:
           type: string
-    EventStreamingTestResponse:
-      type: object
-      properties:
-        body:
-          type: string
-        headers:
-          type: object
-          additionalProperties:
-            type: string
-        statusCode:
-          type: integer
-          format: int32
-      description: The response from the tested event streaming endpoint
     EventStreamingUpdateRequest:
       required:
       - accountEventStreaming
@@ -772,7 +520,125 @@ components:
       description: Represents an event streaming configuration
       discriminator:
         propertyName: type
-    SplunkEventStreamingUpdateRequest:
+    IdReferenceRequest:
+      required:
+      - id
+      type: object
+      properties:
+        id:
+          pattern: ^[a-zA-Z0-9-]{1,36}$
+          type: string
+          description: ID of the represented entity
+    EventStreamingInsertRequest.EventHookLogStreaming:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+    EventStreamingTestResponse:
+      type: object
+      properties:
+        body:
+          type: string
+        headers:
+          type: object
+          additionalProperties:
+            type: string
+        statusCode:
+          type: integer
+          format: int32
+      description: The response from the tested event streaming endpoint
+    ElasticsearchEventStreamingUpdateRequest.Configuration:
+      required:
+      - url
+      type: object
+      properties:
+        apiKey:
+          maxLength: 200
+          minLength: 0
+          type: string
+        index:
+          maxLength: 200
+          minLength: 1
+          type: string
+        url:
+          type: string
+    HttpsEventStreamingUpdateRequest.Configuration:
+      required:
+      - headerName
+      - url
+      type: object
+      properties:
+        apiKey:
+          maxLength: 200
+          minLength: 0
+          type: string
+        headerName:
+          maxLength: 64
+          minLength: 0
+          type: string
+        url:
+          type: string
+    HttpsConfiguration:
+      type: object
+      properties:
+        headerName:
+          type: string
+        url:
+          type: string
+    SplunkEventStreamingInsertRequest:
+      required:
+      - accountEventStreaming
+      - auditLogStreaming
+      - configuration
+      - eventHookLogStreaming
+      - name
+      - type
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/EventStreamingInsertRequest'
+      - type: object
+        properties:
+          configuration:
+            $ref: '#/components/schemas/SplunkEventStreamingInsertRequest.Configuration'
+    ElasticsearchEventStreamingInsertRequest.Configuration:
+      required:
+      - apiKey
+      - url
+      type: object
+      properties:
+        apiKey:
+          maxLength: 200
+          minLength: 0
+          type: string
+        index:
+          maxLength: 200
+          minLength: 1
+          type: string
+        url:
+          type: string
+    EventStreamingResponse.AuditLogStreaming:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+    HttpsEventStreamingInsertRequest.Configuration:
+      required:
+      - apiKey
+      - headerName
+      - url
+      type: object
+      properties:
+        apiKey:
+          maxLength: 200
+          minLength: 0
+          type: string
+        headerName:
+          maxLength: 64
+          minLength: 0
+          type: string
+        url:
+          type: string
+    HttpsEventStreamingUpdateRequest:
       required:
       - accountEventStreaming
       - auditLogStreaming
@@ -787,7 +653,141 @@ components:
       - type: object
         properties:
           configuration:
-            $ref: '#/components/schemas/SplunkEventStreamingUpdateRequest.Configuration'
+            $ref: '#/components/schemas/HttpsEventStreamingUpdateRequest.Configuration'
+    SplunkEventStreamingUpdateRequest.Configuration:
+      required:
+      - url
+      type: object
+      properties:
+        apiKey:
+          maxLength: 200
+          minLength: 0
+          type: string
+        index:
+          maxLength: 200
+          minLength: 1
+          type: string
+        sourceType:
+          maxLength: 200
+          minLength: 1
+          type: string
+        url:
+          type: string
+    PageMetadata:
+      type: object
+      properties:
+        number:
+          type: integer
+          format: int64
+        size:
+          type: integer
+          format: int64
+        totalElements:
+          type: integer
+          format: int64
+        totalPages:
+          type: integer
+          format: int64
+    SplunkEventStreamingInsertRequest.Configuration:
+      required:
+      - apiKey
+      - url
+      type: object
+      properties:
+        apiKey:
+          maxLength: 200
+          minLength: 0
+          type: string
+        index:
+          maxLength: 200
+          minLength: 1
+          type: string
+        sourceType:
+          maxLength: 200
+          minLength: 1
+          type: string
+        url:
+          type: string
+    OnlyIdResponse:
+      type: object
+      properties:
+        id:
+          type: string
+    EventStreamingInsertRequest.AccountEventStreaming:
+      required:
+      - nativeClaims
+      type: object
+      properties:
+        enabled:
+          type: boolean
+        includeActions:
+          type: boolean
+        nativeClaims:
+          uniqueItems: true
+          type: array
+          items:
+            $ref: '#/components/schemas/IdReferenceRequest'
+    ElasticsearchConfiguration:
+      type: object
+      properties:
+        index:
+          type: string
+        url:
+          type: string
+    ElasticsearchEventStreamingInsertRequest:
+      required:
+      - accountEventStreaming
+      - auditLogStreaming
+      - configuration
+      - eventHookLogStreaming
+      - name
+      - type
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/EventStreamingInsertRequest'
+      - type: object
+        properties:
+          configuration:
+            $ref: '#/components/schemas/ElasticsearchEventStreamingInsertRequest.Configuration'
+    EventStreamingResponse:
+      type: object
+      properties:
+        accountEventStreaming:
+          $ref: '#/components/schemas/EventStreamingResponse.AccountEventStreaming'
+        auditLogStreaming:
+          $ref: '#/components/schemas/EventStreamingResponse.AuditLogStreaming'
+        configuration:
+          type: object
+          oneOf:
+          - $ref: '#/components/schemas/SplunkConfiguration'
+          - $ref: '#/components/schemas/ElasticsearchConfiguration'
+          - $ref: '#/components/schemas/HttpsConfiguration'
+        description:
+          type: string
+        enabled:
+          type: boolean
+        eventHookLogStreaming:
+          $ref: '#/components/schemas/EventStreamingResponse.EventHookLogStreaming'
+        id:
+          type: string
+        name:
+          type: string
+        type:
+          type: string
+          enum:
+          - splunk
+          - elasticsearch
+          - https
+      description: Represents an event streaming configuration
+    PagedModelEventStreamingResponse:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/EventStreamingResponse'
+        page:
+          $ref: '#/components/schemas/PageMetadata'
   securitySchemes:
     securityScheme:
       scheme: bearer

@@ -349,33 +349,8 @@ paths:
       - Group
 components:
   schemas:
-    PageMetadata:
-      type: object
-      properties:
-        number:
-          type: integer
-          format: int64
-        size:
-          type: integer
-          format: int64
-        totalElements:
-          type: integer
-          format: int64
-        totalPages:
-          type: integer
-          format: int64
-    PagedModelGroupResponse:
-      type: object
-      properties:
-        content:
-          type: array
-          items:
-            $ref: '#/components/schemas/GroupResponse'
-        page:
-          $ref: '#/components/schemas/PageMetadata'
-    GroupUpdateRequest:
+    GroupInsertRequest:
       required:
-      - id
       - name
       type: object
       properties:
@@ -383,21 +358,10 @@ components:
           maxLength: 1024
           minLength: 0
           type: string
-        id:
-          type: string
         name:
           maxLength: 64
           minLength: 3
           pattern: ^$|^[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°]([\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*° ]*[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°])?$
-          type: string
-    FieldError:
-      type: object
-      properties:
-        field:
-          type: string
-        message:
-          type: string
-        objectName:
           type: string
     ProblemJson:
       type: object
@@ -435,19 +399,14 @@ components:
         title:
           type: string
       description: Based on [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807)
-    GroupInsertRequest:
-      required:
-      - name
+    FieldError:
       type: object
       properties:
-        description:
-          maxLength: 1024
-          minLength: 0
+        field:
           type: string
-        name:
-          maxLength: 64
-          minLength: 3
-          pattern: ^$|^[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°]([\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*° ]*[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°])?$
+        message:
+          type: string
+        objectName:
           type: string
     GroupResponse:
       type: object
@@ -458,6 +417,47 @@ components:
           type: string
         name:
           type: string
+    GroupUpdateRequest:
+      required:
+      - id
+      - name
+      type: object
+      properties:
+        description:
+          maxLength: 1024
+          minLength: 0
+          type: string
+        id:
+          type: string
+        name:
+          maxLength: 64
+          minLength: 3
+          pattern: ^$|^[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°]([\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*° ]*[\p{L}\p{N}\-.:\/_(){}\[\]|&'"?!@+*°])?$
+          type: string
+    PageMetadata:
+      type: object
+      properties:
+        number:
+          type: integer
+          format: int64
+        size:
+          type: integer
+          format: int64
+        totalElements:
+          type: integer
+          format: int64
+        totalPages:
+          type: integer
+          format: int64
+    PagedModelGroupResponse:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/GroupResponse'
+        page:
+          $ref: '#/components/schemas/PageMetadata'
   securitySchemes:
     securityScheme:
       scheme: bearer
