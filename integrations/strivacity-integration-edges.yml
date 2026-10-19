@@ -1,0 +1,142 @@
+edges:
+- partner_name: Maven Central
+  partner: maven-central
+  partner_match: register
+  type: register
+  direction: provider-built
+  category: official SDK (Java/JVM)
+  evidence: https://central.sonatype.com/artifact/com.strivacity.android/sdk
+  channel: package-registry
+  relationship: distribution-channel
+  contract_reference:
+    register: Maven Central (public registry JSON)
+    spec_file: null
+    language: Java/JVM
+    packages:
+    - name: com.strivacity.android:sdk
+      version: 3.0.0-rc.3
+      released: '2026-03-18'
+      released_field: lastUpdated
+      lapsed: false
+      page: https://central.sonatype.com/artifact/com.strivacity.android/sdk
+      repo_leg: github-org:strivacity
+      publisher_leg: groupId:strivacity.com
+      matched_by: domain
+    current: true
+    signal_note: 'an official package on the registry: distribution, not an integration; lapsed = no release in
+      24 months'
+    detected_by: sweep-official-sdks.py
+    detected: '2026-10-18'
+  detected_by: sweep-official-sdks.py
+  first_seen: '2026-10-18'
+- partner_name: npm registry
+  partner: npm
+  partner_match: register
+  type: register
+  direction: provider-built
+  category: official SDK (JavaScript/TypeScript)
+  evidence: https://www.npmjs.com/package/@strivacity/sdk-angular
+  channel: package-registry
+  relationship: distribution-channel
+  contract_reference:
+    register: npm registry (public registry JSON)
+    spec_file: null
+    language: JavaScript/TypeScript
+    packages:
+    - name: '@strivacity/sdk-angular'
+      version: 3.1.0
+      released: '2026-09-17'
+      released_field: modified
+      lapsed: false
+      page: https://www.npmjs.com/package/@strivacity/sdk-angular
+      repo_leg: github-org:strivacity
+      publisher_leg: email:strivacity.com
+      matched_by: domain
+    - name: '@strivacity/sdk-core'
+      version: 3.1.0
+      released: '2026-09-17'
+      released_field: modified
+      lapsed: false
+      page: https://www.npmjs.com/package/@strivacity/sdk-core
+      repo_leg: github-org:strivacity
+      publisher_leg: email:strivacity.com
+      matched_by: domain
+    - name: '@strivacity/sdk-next'
+      version: 3.1.0
+      released: '2026-09-17'
+      released_field: modified
+      lapsed: false
+      page: https://www.npmjs.com/package/@strivacity/sdk-next
+      repo_leg: github-org:strivacity
+      publisher_leg: email:strivacity.com
+      matched_by: domain
+    - name: '@strivacity/sdk-nuxt'
+      version: 3.1.0
+      released: '2026-09-17'
+      released_field: modified
+      lapsed: false
+      page: https://www.npmjs.com/package/@strivacity/sdk-nuxt
+      repo_leg: github-org:strivacity
+      publisher_leg: email:strivacity.com
+      matched_by: domain
+    - name: '@strivacity/sdk-react'
+      version: 3.1.0
+      released: '2026-09-17'
+      released_field: modified
+      lapsed: false
+      page: https://www.npmjs.com/package/@strivacity/sdk-react
+      repo_leg: github-org:strivacity
+      publisher_leg: email:strivacity.com
+      matched_by: domain
+    - name: '@strivacity/sdk-remix'
+      version: 3.1.0
+      released: '2026-09-13'
+      released_field: modified
+      lapsed: false
+      page: https://www.npmjs.com/package/@strivacity/sdk-remix
+      repo_leg: github-org:strivacity
+      publisher_leg: email:strivacity.com
+      matched_by: domain
+    - name: '@strivacity/sdk-svelte'
+      version: 3.1.0
+      released: '2026-09-17'
+      released_field: modified
+      lapsed: false
+      page: https://www.npmjs.com/package/@strivacity/sdk-svelte
+      repo_leg: github-org:strivacity
+      publisher_leg: email:strivacity.com
+      matched_by: domain
+    - name: '@strivacity/sdk-vue'
+      version: 3.1.0
+      released: '2026-09-17'
+      released_field: modified
+      lapsed: false
+      page: https://www.npmjs.com/package/@strivacity/sdk-vue
+      repo_leg: github-org:strivacity
+      publisher_leg: email:strivacity.com
+      matched_by: domain
+    current: true
+    signal_note: 'an official package on the registry: distribution, not an integration; lapsed = no release in
+      24 months'
+    detected_by: sweep-official-sdks.py
+    detected: '2026-10-18'
+  detected_by: sweep-official-sdks.py
+  first_seen: '2026-10-18'
+generated: '2026-10-18'
+method: searched
+source:
+- https://api.nuget.org/v3
+- https://crates.io/api/v1
+- https://proxy.golang.org
+- https://pypi.org/pypi
+- https://registry.npmjs.org
+- https://repo1.maven.org/maven2
+- https://rubygems.org/api/v1
+checked:
+- https://api.nuget.org/v3
+- https://crates.io/api/v1
+- https://proxy.golang.org
+- https://pypi.org/pypi
+- https://registry.npmjs.org
+- https://repo1.maven.org/maven2
+- https://rubygems.org/api/v1
