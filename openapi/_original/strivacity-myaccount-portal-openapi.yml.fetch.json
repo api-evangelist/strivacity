@@ -1,0 +1,12 @@
+{
+ "url": "https://docs.strivacity.com/openapi/myaccount-portal.json",
+ "requested_url": "https://docs.strivacity.com/openapi/myaccount-portal.json",
+ "status": 200,
+ "content_type": "application/json; charset=utf-8",
+ "bytes": 31892,
+ "sha256": "996505e75ba62d20d6a6df87c3f1016a72141a43b144a7b7f1e9aaf0daad0b3c",
+ "fetched_at": "2026-10-19",
+ "fetched_by": "APIEvangelist-Harvest/1.0 (+https://apievangelist.com)",
+ "match": "equivalent",
+ "note": "Re-fetched from the provider by verify-openapi-sources.py; the provider's current document describes the same operations (Jaccard 1.0), but the bytes differ, so the archive is an earlier or reformatted copy."
+}

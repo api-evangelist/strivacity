@@ -1,0 +1,12 @@
+{
+ "url": "https://docs.strivacity.com/openapi/simple-authentication-api.json",
+ "requested_url": "https://docs.strivacity.com/openapi/simple-authentication-api.json",
+ "status": 200,
+ "content_type": "application/json; charset=utf-8",
+ "bytes": 4503,
+ "sha256": "f7be164608e6de7893354f4c5f18176f4fa5b090016e3b4f2a8132e705902517",
+ "fetched_at": "2026-10-19",
+ "fetched_by": "APIEvangelist-Harvest/1.0 (+https://apievangelist.com)",
+ "match": "byte-identical",
+ "note": "Re-fetched from the provider by verify-openapi-sources.py; the archived file is byte-identical to what the provider serves."
+}

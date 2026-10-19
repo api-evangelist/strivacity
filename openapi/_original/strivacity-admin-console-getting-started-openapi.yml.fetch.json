@@ -1,0 +1,12 @@
+{
+ "url": "https://docs.strivacity.com/openapi/admin-console-getting-started.json",
+ "requested_url": "https://docs.strivacity.com/openapi/admin-console-getting-started.json",
+ "status": 200,
+ "content_type": "application/json; charset=utf-8",
+ "bytes": 1359,
+ "sha256": "4b1958abe939d60d5182477b8251142621564620788ea0c5e97d4a516ef4ed80",
+ "fetched_at": "2026-10-19",
+ "fetched_by": "APIEvangelist-Harvest/1.0 (+https://apievangelist.com)",
+ "match": "equivalent",
+ "note": "Re-fetched from the provider by verify-openapi-sources.py; the provider's current document describes the same operations (Jaccard 1.0), but the bytes differ, so the archive is an earlier or reformatted copy."
+}
