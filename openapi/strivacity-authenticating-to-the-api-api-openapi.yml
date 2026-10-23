@@ -61,3 +61,9 @@ components:
 x-readme:
   explorer-enabled: true
   proxy-enabled: true
+x-provenance:
+  method: harvested
+  publisher: Strivacity
+  source: https://docs.strivacity.com/openapi/admin-console-getting-started.json
+  note: split by refine-openapis from the provider's own published document, verified by fetch (openapi/_original/*.fetch.json);
+    stamped by stamp-openapi-provenance.py (roadmap#793)

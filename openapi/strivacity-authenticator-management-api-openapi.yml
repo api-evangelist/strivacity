@@ -259,3 +259,9 @@ components:
     securityScheme:
       scheme: bearer
       type: http
+x-provenance:
+  method: harvested
+  publisher: Strivacity
+  source: https://docs.strivacity.com/openapi/myaccount-portal.json
+  note: split by refine-openapis from the provider's own published document, verified by fetch (openapi/_original/*.fetch.json);
+    stamped by stamp-openapi-provenance.py (roadmap#793)
