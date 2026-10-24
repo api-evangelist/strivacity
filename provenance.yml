@@ -9,6 +9,9 @@ artifacts:
   authentication/strivacity-authentication.yml:
     method: searched
     evidence: declared in the artifact
+  capabilities/strivacity-capability-edges.yml:
+    method: unknown
+    evidence: no authorship recorded
   changelog/strivacity-changelog.yml:
     method: searched
     evidence: declared in the artifact
@@ -30,94 +33,13 @@ artifacts:
   front-door-ai/2026-09-17.yml:
     method: unknown
     evidence: no authorship recorded
-  kin/checks-2026-09-24T161608.yml:
+  integrations/_index.yml:
     method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-29T213958.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-29T230545.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-30T203505.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-30T220315.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-31T223420.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-01T063623.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-01T210448.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-01T222808.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-02T211804.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-02T224043.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-03T161828.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-03T174231.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-04T062714.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-04T212454.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-04T224856.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-05T055819.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-05T072335.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-05T144739.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-05T195450.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-05T211839.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-06T011047.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-06T211804.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-06T224210.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-07T200636.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-07T213054.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-08T214843.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-08T232836.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-10T204815.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-10T222408.yml:
+    evidence: carries an API Evangelist house phrase
+  integrations/strivacity-integration-edges.yml:
+    method: unknown
+    evidence: no authorship recorded
+  kin/checks-2026-10-11T110117.yml:
     method: generated
     evidence: Kin Score snapshot written by score.rb
   kin/score-2026-09-12T062655.yml:
@@ -201,6 +123,21 @@ artifacts:
   kin/score-2026-09-24T161608.yml:
     method: generated
     evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-25T210408.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-25T232841.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-10-03T000835.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-10-03T024842.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-10-11T110117.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
   lifecycle/strivacity-lifecycle.yml:
     method: searched
     evidence: declared in the artifact
@@ -218,12 +155,12 @@ artifacts:
     evidence: declared in the artifact
   openapi/_original/strivacity-admin-console-getting-started-openapi-original.json:
     method: harvested
-    evidence: found in openapi/_original/; the fetch URL and bytes were not recorded, so byte-identity
-      to the provider's source is unverified
+    evidence: byte-identical to https://docs.strivacity.com/openapi/admin-console-getting-started.json
+      (sha256 4b1958abe939, fetched 2026-10-19)
   openapi/_original/strivacity-admin-console-getting-started-openapi.yml:
     method: harvested
-    evidence: found in openapi/_original/; the fetch URL and bytes were not recorded, so byte-identity
-      to the provider's source is unverified
+    evidence: the same operations as https://docs.strivacity.com/openapi/admin-console-getting-started.json
+      (sha256 4b1958abe939, fetched 2026-10-19)
   openapi/_original/strivacity-admin-management-openapi-original.json:
     method: harvested
     evidence: found in openapi/_original/; the fetch URL and bytes were not recorded, so byte-identity
@@ -242,12 +179,12 @@ artifacts:
       to the provider's source is unverified
   openapi/_original/strivacity-myaccount-portal-openapi-original.json:
     method: harvested
-    evidence: found in openapi/_original/; the fetch URL and bytes were not recorded, so byte-identity
-      to the provider's source is unverified
+    evidence: byte-identical to https://docs.strivacity.com/openapi/myaccount-portal.json (sha256 996505e75ba6,
+      fetched 2026-10-19)
   openapi/_original/strivacity-myaccount-portal-openapi.yml:
     method: harvested
-    evidence: found in openapi/_original/; the fetch URL and bytes were not recorded, so byte-identity
-      to the provider's source is unverified
+    evidence: the same operations as https://docs.strivacity.com/openapi/myaccount-portal.json (sha256
+      996505e75ba6, fetched 2026-10-19)
   openapi/_original/strivacity-native-journey-openapi-original.json:
     method: harvested
     evidence: found in openapi/_original/; the fetch URL and bytes were not recorded, so byte-identity
@@ -258,12 +195,12 @@ artifacts:
       to the provider's source is unverified
   openapi/_original/strivacity-simple-authentication-openapi-original.json:
     method: harvested
-    evidence: found in openapi/_original/; the fetch URL and bytes were not recorded, so byte-identity
-      to the provider's source is unverified
+    evidence: byte-identical to https://docs.strivacity.com/openapi/simple-authentication-api.json (sha256
+      f7be164608e6, fetched 2026-10-19)
   openapi/_original/strivacity-simple-authentication-openapi.yml:
     method: harvested
-    evidence: found in openapi/_original/; the fetch URL and bytes were not recorded, so byte-identity
-      to the provider's source is unverified
+    evidence: the same operations as https://docs.strivacity.com/openapi/simple-authentication-api.json
+      (sha256 f7be164608e6, fetched 2026-10-19)
   openapi/strivacity-account-api-openapi.yml:
     method: derived
     evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
@@ -510,21 +447,267 @@ artifacts:
   openapi/strivacity-web-analytics-api-openapi.yml:
     method: derived
     evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  overlays/strivacity-account-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/strivacity-account-attribute-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/strivacity-account-child-attribute-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/strivacity-account-event-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/strivacity-account-event-ttl-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/strivacity-account-identity-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/strivacity-account-invitation-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/strivacity-account-lifecycle-rule-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/strivacity-active-telephony-provider-configuration-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/strivacity-adaptive-access-policy-adaptive-mfa-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/strivacity-admin-account-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/strivacity-admin-account-attribute-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/strivacity-admin-account-event-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/strivacity-admin-account-invitation-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/strivacity-admin-api-security-policy-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/strivacity-admin-claim-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/strivacity-admin-external-login-mapping-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/strivacity-admin-external-login-provider-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
   overlays/strivacity-admin-management-overlay.yaml:
-    method: unknown
-    evidence: no authorship recorded
+    method: derived
+    evidence: an API Evangelist overlay (title) over the provider's contract
+  overlays/strivacity-admin-notification-preference-descriptor-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
   overlays/strivacity-admin-portal-overlay.yaml:
-    method: unknown
-    evidence: no authorship recorded
+    method: derived
+    evidence: an API Evangelist overlay (title) over the provider's contract
+  overlays/strivacity-admin-principal-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/strivacity-admin-role-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/strivacity-admin-role-assignee-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/strivacity-api-security-policy-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/strivacity-api-security-policy-scope-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/strivacity-application-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/strivacity-application-client-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/strivacity-application-variant-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/strivacity-audit-entry-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/strivacity-authenticating-to-the-api-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/strivacity-authenticator-management-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/strivacity-available-role-scope-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/strivacity-branding-policy-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/strivacity-bridge-policy-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/strivacity-bridge-policy-resource-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/strivacity-bulk-operation-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/strivacity-claim-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/strivacity-consent-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/strivacity-custom-adaptive-mfa-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/strivacity-dialect-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/strivacity-email-provider-configuration-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/strivacity-enterprise-login-claim-mapping-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/strivacity-enterprise-login-provider-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/strivacity-event-streaming-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/strivacity-group-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/strivacity-group-api-security-policy-assignment-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/strivacity-group-member-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/strivacity-identity-store-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/strivacity-identity-verification-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/strivacity-identity-verification-policy-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/strivacity-identity-verification-step-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/strivacity-inbound-connection-beta-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/strivacity-instance-config-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/strivacity-lifecycle-event-hook-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/strivacity-lifecycle-event-hook-descriptor-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/strivacity-lifecycle-event-hook-log-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/strivacity-lifecycle-event-hook-tryout-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
   overlays/strivacity-myaccount-portal-overlay.yaml:
-    method: unknown
-    evidence: no authorship recorded
+    method: derived
+    evidence: an API Evangelist overlay (title) over the provider's contract
+  overlays/strivacity-native-claim-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/strivacity-native-journey-api-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
   overlays/strivacity-native-journey-overlay.yaml:
-    method: unknown
-    evidence: no authorship recorded
+    method: derived
+    evidence: an API Evangelist overlay (title) over the provider's contract
+  overlays/strivacity-notification-policy-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/strivacity-notification-preference-descriptor-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/strivacity-notification-template-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/strivacity-npm-dependency-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/strivacity-organization-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/strivacity-organization-policy-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/strivacity-outbound-provision-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/strivacity-password-quality-policy-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/strivacity-personal-data-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/strivacity-plugin-library-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/strivacity-policy-tag-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/strivacity-restricted-password-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/strivacity-role-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/strivacity-self-management-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/strivacity-self-service-policy-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
   overlays/strivacity-simple-authentication-overlay.yaml:
-    method: unknown
-    evidence: no authorship recorded
+    method: derived
+    evidence: an API Evangelist overlay (title) over the provider's contract
+  overlays/strivacity-simplelogin-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/strivacity-social-login-claim-mapping-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/strivacity-social-login-provider-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/strivacity-statistics-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/strivacity-tag-based-permission-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/strivacity-telephony-provider-configuration-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/strivacity-translation-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/strivacity-variables-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/strivacity-web-analytics-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
   packages/strivacity-packages.yml:
     method: searched
     evidence: declared in the artifact
